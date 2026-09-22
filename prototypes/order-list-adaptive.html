@@ -118,56 +118,86 @@ table.pc-table tr.group2{background:var(--group2);}
 .mo-gnb{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;}
 .mo-logo{font-weight:800;color:var(--brand);}
 .mo-search{margin:0 16px 10px;background:var(--tertiary);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-tertiary);}
-.mo-tab-toggle{margin:0 16px 10px;display:flex;gap:8px;}
-.mo-tab-toggle span{flex:1;text-align:center;padding:10px 0;font-size:13px;border-radius:4px;color:var(--text-secondary);
-  cursor:pointer;background:#fff;border:1px solid var(--border-primary);}
-.mo-tab-toggle span.active{background:var(--brand);color:#fff;font-weight:700;border-color:var(--brand);}
-.mo-filter-row{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;}
+/* 구입주문/대여주문 전환: filled segmented toggle (풀와이드) — Figma 가이드 메모 1번 */
+.mo-seg-wrap{background:#fafafa;padding:12px 16px 0;}
+.mo-seg{background:#eee;padding:4px;border-radius:999px;display:flex;gap:0;}
+.mo-seg-item{flex:1;text-align:center;padding:10px;font-size:16px;font-weight:600;color:var(--text-secondary);
+  border-radius:999px;cursor:pointer;}
+.mo-seg-item.active{background:var(--brand);color:#fff;font-weight:700;}
+/* 토글 영역과 필터칩 영역은 동일 배경, 사이 구분선 없음 */
+.mo-filter-row{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;background:#fafafa;}
+.mo-filter-row.hidden-chip [data-chip="item"]{display:none;}
 .mo-filter-chip{border:1px solid var(--border-primary);border-radius:999px;padding:6px 12px;font-size:12px;
   white-space:nowrap;color:var(--text-secondary);cursor:pointer;background:#fff;
   display:inline-flex;align-items:center;gap:4px;}
 .mo-count{padding:0 16px 10px;font-size:12px;color:var(--text-tertiary);}
 .mo-card-list{padding:0 16px;display:flex;flex-direction:column;gap:12px;}
-.mo-card{border:1px solid var(--border-secondary);border-radius:8px;padding:16px;cursor:pointer;}
+.mo-card{border:none;border-radius:8px;padding:16px 16px 24px;cursor:pointer;background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,.08), 0 0 0.5px rgba(0,0,0,.2);}
 .mo-card.group1{background:var(--group1);}
 .mo-card.group2{background:var(--group2);}
 .mo-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.mo-order-no{font-size:13px;color:var(--text-secondary);}
-.mo-order-no a{color:var(--brand);}
-.mo-sep{height:1px;background:var(--border-secondary);margin-bottom:12px;}
-.mo-row{display:flex;font-size:13px;margin-bottom:8px;}
-.mo-row .lb{width:70px;color:var(--text-tertiary);flex-shrink:0;}
-.mo-together{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--brand);font-weight:600;}
+.mo-card-date{font-size:16px;color:#555;}
+.mo-sep{height:1px;background:var(--tertiary);margin-bottom:12px;}
+.mo-name-row{display:flex;align-items:baseline;gap:4px;margin-bottom:4px;}
+.mo-name-row .name{font-size:20px;font-weight:700;color:var(--text-primary);}
+.mo-name-row .maskedid{font-size:18px;color:var(--text-secondary);}
+.mo-row{display:flex;gap:4px;font-size:18px;margin-bottom:0;}
+.mo-row .lb{color:#555;flex-shrink:0;}
+.mo-row .val{color:var(--text-primary);}
+.mo-row.link .val a{color:var(--brand);}
+.mo-together{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:16px;color:var(--brand);font-weight:600;
+  background:#fff;border-radius:999px;padding:4px 12px;box-shadow:0 2px 8px rgba(0,0,0,.08), 0 0 0.5px rgba(0,0,0,.2);}
 
 /* bottom sheet */
 .sheet-overlay{position:absolute;inset:0;background:rgba(20,20,22,0.5);display:none;align-items:flex-end;
   z-index:40;}
 .sheet-overlay.open{display:flex;}
-.sheet-box{background:#fff;width:100%;border-radius:16px 16px 0 0;max-height:80%;display:flex;flex-direction:column;}
-.sheet-handle{width:36px;height:4px;background:var(--border-primary);border-radius:2px;margin:10px auto 0;}
-.sheet-header{padding:12px 20px;font-size:16px;font-weight:700;text-align:center;border-bottom:1px solid var(--border-secondary);}
-.sheet-body{padding:16px 20px;overflow-y:auto;flex:1;}
-.sheet-flabel{font-size:14px;font-weight:600;margin-bottom:8px;}
-.sheet-btngroup{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
+/* Figma: 상단 모서리 40px, 드래그 핸들바 없이 타이틀+X로 바로 시작 */
+.sheet-box{background:#fff;width:100%;border-radius:40px 40px 0 0;max-height:85%;display:flex;flex-direction:column;
+  padding-top:12px;box-shadow:0 8px 24px rgba(0,0,0,.2), 0 0 4px rgba(0,0,0,.12);}
+.sheet-header{padding:0 20px 24px;display:flex;align-items:center;justify-content:space-between;
+  font-size:20px;font-weight:700;color:var(--text-primary);}
+.sheet-header .close-btn{cursor:pointer;color:var(--text-primary);flex-shrink:0;display:flex;}
+.sheet-body{padding:0 20px;overflow-y:auto;flex:1;}
+.sheet-section{margin-bottom:24px;}
+.sheet-flabel{font-size:18px;font-weight:600;margin-bottom:12px;color:var(--text-primary);}
+.sheet-btngroup{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 .sheet-optbtn{border:1px solid var(--border-primary);border-radius:4px;padding:12px 0;text-align:center;
-  font-size:13px;color:var(--text-secondary);cursor:pointer;}
-.sheet-optbtn.active{background:var(--tertiary);border-color:var(--border-active);color:var(--text-primary);font-weight:700;}
-.sheet-select-btn{border:1px solid var(--border-active);border-radius:4px;padding:12px;font-size:14px;
-  display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-bottom:16px;background:#fff;}
-.sheet-input{width:100%;border:1px solid var(--border-active);border-radius:4px;padding:12px;font-size:14px;margin-bottom:16px;}
-.sheet-radio-row{display:flex;align-items:center;gap:10px;padding:12px 0;font-size:15px;border-bottom:1px solid var(--border-secondary);cursor:pointer;}
-.sheet-item-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border-secondary);cursor:pointer;}
-.sheet-item-row .name{font-size:14px;}
-.sheet-footer{padding:16px 20px;display:flex;gap:8px;}
-.sheet-btn{flex:1;border-radius:4px;padding:14px 0;font-size:15px;font-weight:700;text-align:center;cursor:pointer;}
-.sheet-btn.outline{background:#fff;border:1px solid var(--border-primary);color:var(--text-secondary);flex:0 0 96px;}
-.sheet-btn.filled{background:var(--brand);color:#fff;border:none;}
+  font-size:16px;color:var(--text-secondary);cursor:pointer;background:#fff;}
+.sheet-optbtn.active{border-color:#333;color:#333;font-weight:600;}
+.sheet-daterange{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:8px;}
+.sheet-daterange .part{flex:1;border:1px solid var(--border-primary);border-radius:4px;padding:12px;
+  display:flex;align-items:center;justify-content:space-between;gap:4px;font-size:16px;
+  color:var(--text-disabled);background:var(--disabled-bg);}
+.sheet-daterange .part.enabled{background:#fff;color:var(--text-primary);border-color:#333;}
+.sheet-select-btn{border:1px solid var(--border-secondary);border-radius:4px;padding:12px;font-size:16px;
+  display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:#fff;color:var(--text-disabled);}
+.sheet-input{width:100%;border:1px solid var(--border-primary);border-radius:4px;padding:12px;font-size:16px;
+  background:#fff;color:var(--text-primary);}
+/* 품목/상태 선택 리스트: 라디오 아님 — 선택된 행만 틴트 배경 + 체크마크 (Figma 메모 4) */
+.sheet-select-list{display:flex;flex-direction:column;gap:6px;}
+.sheet-select-row{display:flex;align-items:center;justify-content:space-between;padding:10px 8px 10px 12px;
+  border-radius:4px;cursor:pointer;font-size:16px;color:var(--text-primary);}
+.sheet-select-row.selected{background:var(--group1);color:#141e76;}
+.sheet-select-row .check{visibility:hidden;color:#141e76;}
+.sheet-select-row.selected .check{visibility:visible;}
+.sheet-subheading{font-size:18px;font-weight:600;color:var(--text-primary);margin-bottom:12px;}
+.sheet-item-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px;
+  border-radius:6px;cursor:pointer;}
+.sheet-item-row + .sheet-item-row{border-top:1px solid var(--tertiary);}
+.sheet-item-row .name{font-size:18px;color:#555;flex:1;}
+.sheet-item-row .chev{color:var(--text-tertiary);flex-shrink:0;}
+.sheet-footer{padding:20px 20px calc(24px + env(safe-area-inset-bottom, 0px));display:flex;gap:8px;background:#fff;}
+.sheet-btn{border-radius:4px;padding:14px 0;font-size:18px;font-weight:600;text-align:center;cursor:pointer;}
+.sheet-btn.reset{background:var(--disabled-bg);color:#555;flex:0 0 120px;}
+.sheet-btn.filled{background:var(--brand);color:#fff;border:none;flex:1;}
 </style>
 </head>
 <body>
 <div id="wrap">
   <div class="banner">
-    <b>주문요청관리(대여) 리스트 — 적응형 프로토타입</b> — PC 검색 영역과 모바일 바텀시트를 실제 스펙대로 다시 반영했습니다. 모바일에서 필터 칩을 눌러 바텀시트를 열어보세요.
+    <b>주문요청관리(대여) 리스트 — 적응형 프로토타입</b> — Figma 실제 디자인(구입/대여 세그먼트 토글, 4종 바텀시트: 검색·품목 선택·주문상태 선택·함께 요청)을 반영했습니다. 모바일에서 필터 칩을 눌러 바텀시트를 열어보세요.
   </div>
 
   <div class="preset-row" id="preset-row">
@@ -261,71 +291,94 @@ table.pc-table tr.group2{background:var(--group2);}
         <div class="mo-view">
           <div class="mo-gnb"><span class="mo-logo">이로움</span><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
           <div class="mo-search">상품을 검색하세요</div>
-          <div class="mo-tab-toggle"><span>구입 주문</span><span class="active">대여 주문</span></div>
-          <div class="mo-filter-row">
-            <span class="mo-filter-chip" onclick="openSheet('item')">품목 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div class="mo-seg-wrap">
+            <div class="mo-seg" id="mo-seg">
+              <span class="mo-seg-item" data-seg="buy" onclick="selectSeg(this)">구입 주문</span>
+              <span class="mo-seg-item active" data-seg="rent" onclick="selectSeg(this)">대여 주문</span>
+            </div>
+          </div>
+          <div class="mo-filter-row" id="mo-filter-row">
+            <span class="mo-filter-chip" data-chip="item" onclick="openSheet('item')">품목 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span class="mo-filter-chip" onclick="openSheet('search')">상태: 전체 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span class="mo-filter-chip" onclick="openSheet('search')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> 검색</span>
           </div>
           <div class="mo-count">전체 128건</div>
           <div class="mo-card-list">
+            <!-- 신규배정: 주문번호 행 없음 (Figma 메모 8 — 비노출 상태) -->
             <div class="mo-card" onclick="alert('상세 이동')">
-              <div class="mo-card-head"><span class="chip info">신규배정</span>
-                <span class="mo-order-no" onclick="event.stopPropagation()">DB1234567890</span></div>
+              <div class="mo-card-head"><span class="chip info">신규배정</span><span class="mo-card-date">2026-06-19 10:20</span></div>
               <div class="mo-sep"></div>
-              <div class="mo-row"><span class="lb">품목</span><span>전동침대</span></div>
-              <div class="mo-row"><span class="lb">돌봄주문번호</span><span>DB1234567890</span></div>
-              <div class="mo-row"><span class="lb">주문번호</span><span>-</span></div>
+              <div class="mo-name-row"><span class="name">홍*동</span><span class="maskedid">L123456****</span></div>
+              <div class="mo-row"><span class="lb">품목 :</span><span class="val">전동침대</span></div>
+              <div class="mo-row"><span class="lb">상품정보 :</span><span class="val">천연BED ST-3</span></div>
               <div class="mo-together" onclick="event.stopPropagation();openSheet('together')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:2px;"><path d="M9 17H7A5 5 0 0 1 7 7h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 7h2a5 5 0 1 1 0 10h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>함께 요청 2건</div>
             </div>
+            <!-- 주문완료 묶음 2건: 주문번호 행 노출 -->
             <div class="mo-card group1" onclick="alert('상세 이동')">
-              <div class="mo-card-head"><span class="chip success">주문완료</span>
-                <span class="mo-order-no" onclick="event.stopPropagation()">DB1234500011</span></div>
+              <div class="mo-card-head"><span class="chip success">주문완료</span><span class="mo-card-date">2026-06-18 14:02</span></div>
               <div class="mo-sep"></div>
-              <div class="mo-row"><span class="lb">품목</span><span>전동침대</span></div>
-              <div class="mo-row"><span class="lb">돌봄주문번호</span><span>DB1234500011</span></div>
-              <div class="mo-row"><span class="lb">주문번호</span><span onclick="event.stopPropagation()"><a href="#">2026061800321</a></span></div>
+              <div class="mo-name-row"><span class="name">김*자</span><span class="maskedid">L654321****</span></div>
+              <div class="mo-row"><span class="lb">품목 :</span><span class="val">전동침대</span></div>
+              <div class="mo-row"><span class="lb">상품정보 :</span><span class="val">스탠다드형 ST-1</span></div>
+              <div class="mo-row link"><span class="lb">주문번호 :</span><span class="val" onclick="event.stopPropagation()"><a href="#">2026061800321</a></span></div>
             </div>
             <div class="mo-card group1" onclick="alert('상세 이동')">
-              <div class="mo-card-head"><span class="chip success">주문완료</span>
-                <span class="mo-order-no" onclick="event.stopPropagation()">DB1234500011</span></div>
+              <div class="mo-card-head"><span class="chip success">주문완료</span><span class="mo-card-date">2026-06-18 14:02</span></div>
               <div class="mo-sep"></div>
-              <div class="mo-row"><span class="lb">품목</span><span>수동휠체어</span></div>
-              <div class="mo-row"><span class="lb">돌봄주문번호</span><span>DB1234500011</span></div>
-              <div class="mo-row"><span class="lb">주문번호</span><span onclick="event.stopPropagation()"><a href="#">2026061800322</a></span></div>
+              <div class="mo-name-row"><span class="name">김*자</span><span class="maskedid">L654321****</span></div>
+              <div class="mo-row"><span class="lb">품목 :</span><span class="val">수동휠체어</span></div>
+              <div class="mo-row"><span class="lb">상품정보 :</span><span class="val">MW-1</span></div>
+              <div class="mo-row link"><span class="lb">주문번호 :</span><span class="val" onclick="event.stopPropagation()"><a href="#">2026061800322</a></span></div>
             </div>
+            <!-- 출고준비중: 주문완료 이후 상태도 주문번호 노출 -->
             <div class="mo-card group2" onclick="alert('상세 이동')">
-              <div class="mo-card-head"><span class="chip caution">출고준비중</span>
-                <span class="mo-order-no" onclick="event.stopPropagation()">DB1234499981</span></div>
+              <div class="mo-card-head"><span class="chip caution">출고준비중</span><span class="mo-card-date">2026-06-17 09:11</span></div>
               <div class="mo-sep"></div>
-              <div class="mo-row"><span class="lb">품목</span><span>경사로</span></div>
-              <div class="mo-row"><span class="lb">돌봄주문번호</span><span>DB1234499981</span></div>
-              <div class="mo-row"><span class="lb">주문번호</span><span onclick="event.stopPropagation()"><a href="#">2026061700171</a></span></div>
+              <div class="mo-name-row"><span class="name">박*희</span><span class="maskedid">L112233****</span></div>
+              <div class="mo-row"><span class="lb">품목 :</span><span class="val">경사로</span></div>
+              <div class="mo-row"><span class="lb">상품정보 :</span><span class="val">실외경사로 ST-3</span></div>
+              <div class="mo-row link"><span class="lb">주문번호 :</span><span class="val" onclick="event.stopPropagation()"><a href="#">2026061700171</a></span></div>
             </div>
           </div>
 
           <!-- 검색 바텀시트 -->
           <div class="sheet-overlay" id="sheet-search">
             <div class="sheet-box">
-              <div class="sheet-handle"></div>
-              <div class="sheet-header">검색</div>
+              <div class="sheet-header">검색<span class="close-btn" onclick="closeSheet('search')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
               <div class="sheet-body">
-                <div class="sheet-flabel">주문 요청일</div>
-                <div class="sheet-btngroup">
-                  <div class="sheet-optbtn active">3개월</div><div class="sheet-optbtn">일주일</div><div class="sheet-optbtn">이번달</div>
+                <div class="sheet-section">
+                  <div class="sheet-flabel">주문 요청일</div>
+                  <div class="sheet-btngroup">
+                    <div class="sheet-optbtn" onclick="selectDatePreset(this)">일주일</div>
+                    <div class="sheet-optbtn" onclick="selectDatePreset(this)">이번달</div>
+                    <div class="sheet-optbtn" onclick="selectDatePreset(this)">지난달</div>
+                  </div>
+                  <div class="sheet-btngroup" style="margin-top:8px;">
+                    <div class="sheet-optbtn active" onclick="selectDatePreset(this)">3개월</div>
+                    <div class="sheet-optbtn" onclick="selectDatePreset(this)">1년</div>
+                    <div class="sheet-optbtn" data-direct onclick="selectDatePreset(this)">직접선택</div>
+                  </div>
+                  <div class="sheet-daterange" id="sheet-daterange">
+                    <div class="part"><span>2026-03-07</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9H21" stroke="currentColor" stroke-width="2"/><path d="M8 3V6M16 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+                    <span>~</span>
+                    <div class="part"><span>2024-06-07</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9H21" stroke="currentColor" stroke-width="2"/><path d="M8 3V6M16 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+                  </div>
                 </div>
-                <div class="sheet-btngroup" style="margin-bottom:16px;">
-                  <div class="sheet-optbtn">지난달</div><div class="sheet-optbtn">1년</div><div class="sheet-optbtn">직접입력</div>
+                <div class="sheet-section">
+                  <div class="sheet-flabel">품목</div>
+                  <div class="sheet-select-btn" onclick="openSheet('item')"><span>전체</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 </div>
-                <div class="sheet-flabel">품목</div>
-                <div class="sheet-select-btn" onclick="openSheet('item')"><span>전체</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="sheet-flabel">주문 진행상태</div>
-                <div class="sheet-select-btn"><span>전체</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="sheet-flabel">상세검색</div>
-                <input class="sheet-input" placeholder="수급자명, 주문서번호 등">
+                <div class="sheet-section">
+                  <div class="sheet-flabel">주문 진행상태</div>
+                  <div class="sheet-select-btn" onclick="openSheet('status')"><span>전체</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                </div>
+                <div class="sheet-section">
+                  <div class="sheet-flabel">상세검색</div>
+                  <input class="sheet-input" placeholder="수급자명, 주문번호, 요양인정번호 검색">
+                </div>
               </div>
               <div class="sheet-footer">
-                <div class="sheet-btn outline" onclick="closeSheet('search')">초기화</div>
+                <div class="sheet-btn reset" onclick="closeSheet('search')">초기화</div>
                 <div class="sheet-btn filled" onclick="closeSheet('search')">검색</div>
               </div>
             </div>
@@ -334,13 +387,14 @@ table.pc-table tr.group2{background:var(--group2);}
           <!-- 품목 선택 바텀시트 -->
           <div class="sheet-overlay" id="sheet-item">
             <div class="sheet-box">
-              <div class="sheet-handle"></div>
-              <div class="sheet-header">품목 선택</div>
+              <div class="sheet-header">품목 선택<span class="close-btn" onclick="closeSheet('item')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
               <div class="sheet-body">
-                <div class="sheet-radio-row"><input type="radio" name="mo-item" checked>전체</div>
-                <div class="sheet-radio-row"><input type="radio" name="mo-item">전동침대</div>
-                <div class="sheet-radio-row"><input type="radio" name="mo-item">수동휠체어</div>
-                <div class="sheet-radio-row"><input type="radio" name="mo-item">경사로</div>
+                <div class="sheet-select-list">
+                  <div class="sheet-select-row selected" onclick="selectRow(this)"><span>전체</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>전동침대</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>수동휠체어</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>경사로</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                </div>
               </div>
               <div class="sheet-footer">
                 <div class="sheet-btn filled" onclick="closeSheet('item')">선택완료</div>
@@ -348,17 +402,41 @@ table.pc-table tr.group2{background:var(--group2);}
             </div>
           </div>
 
+          <!-- 주문상태 선택 바텀시트 -->
+          <div class="sheet-overlay" id="sheet-status">
+            <div class="sheet-box">
+              <div class="sheet-header">주문상태 선택<span class="close-btn" onclick="closeSheet('status')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
+              <div class="sheet-body" style="max-height:340px;">
+                <div class="sheet-select-list">
+                  <div class="sheet-select-row selected" onclick="selectRow(this)"><span>전체</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>신규배정</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>주문확인중</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>주문완료</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>출고준비중</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>출고완료</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>배송완료</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>취소요청</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>주문취소</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>취소완료</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                </div>
+              </div>
+              <div class="sheet-footer">
+                <div class="sheet-btn filled" onclick="closeSheet('status')">선택완료</div>
+              </div>
+            </div>
+          </div>
+
           <!-- 함께 요청 바텀시트 -->
           <div class="sheet-overlay" id="sheet-together">
             <div class="sheet-box">
-              <div class="sheet-handle"></div>
-              <div class="sheet-header">함께 요청한 대여상품</div>
+              <div class="sheet-header">함께 요청 대여상품<span class="close-btn" onclick="closeSheet('together')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
               <div class="sheet-body">
-                <div class="sheet-item-row" onclick="alert('상세 이동')"><span class="name">수동휠체어 MW-1</span><span class="chip success">주문완료</span></div>
-                <div class="sheet-item-row" onclick="alert('상세 이동')"><span class="name">경사로 ST-3</span><span class="chip info">신규배정</span></div>
+                <div class="sheet-subheading">동일 시간대에 요청된 묶음 주문 건</div>
+                <div class="sheet-item-row" onclick="alert('상세 이동')"><span class="name">수동휠체어 MW-1</span><span class="chip success">주문완료</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="sheet-item-row" onclick="alert('상세 이동')"><span class="name">경사로 ST-3</span><span class="chip info">신규배정</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
               </div>
               <div class="sheet-footer">
-                <div class="sheet-btn outline" style="flex:1;" onclick="closeSheet('together')">닫기</div>
+                <div class="sheet-btn filled" onclick="closeSheet('together')">확인</div>
               </div>
             </div>
           </div>
@@ -392,6 +470,27 @@ document.addEventListener('click', function(e){
 function setPage(btn){
   document.querySelectorAll('.page-btn.active').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
+}
+
+function selectSeg(el){
+  document.querySelectorAll('.mo-seg-item.active').forEach(function(s){ s.classList.remove('active'); });
+  el.classList.add('active');
+  // "대여 주문" 선택 시에만 품목 필터칩 노출 (Figma 가이드 메모 1번)
+  document.getElementById('mo-filter-row').classList.toggle('hidden-chip', el.getAttribute('data-seg') !== 'rent');
+}
+
+function selectDatePreset(el){
+  var group = el.closest('.sheet-section');
+  group.querySelectorAll('.sheet-optbtn.active').forEach(function(b){ b.classList.remove('active'); });
+  el.classList.add('active');
+  var isDirect = el.hasAttribute('data-direct');
+  document.querySelectorAll('#sheet-daterange .part').forEach(function(p){ p.classList.toggle('enabled', isDirect); });
+}
+
+function selectRow(el){
+  var list = el.closest('.sheet-select-list');
+  list.querySelectorAll('.sheet-select-row.selected').forEach(function(r){ r.classList.remove('selected'); });
+  el.classList.add('selected');
 }
 
 function openSheet(key){
