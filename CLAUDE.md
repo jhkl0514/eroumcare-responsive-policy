@@ -101,8 +101,9 @@
 - **PC**: anchored popover — 호버 200ms 지연 후 열림, 300ms 지연 후 닫힘 (실수 호버 방지). 다른 그룹 아이콘 호버 시 기존 팝오버 즉시 닫고 새로 열림
 - **모바일**: 탭하면 바텀시트로 열림
 - 달력/셀렉트 드롭다운도 같은 원칙: 모바일에서는 트리거 요소와 동일한 좌우 여백(`left:0;right:0`)으로 열림, PC에서만 고정폭(예: 달력 320px)
+- **바텀시트 공통 스펙**(Figma 확인, 2026-09-22): 상단 모서리 반경 **40px**, 드래그 핸들바 없음(타이틀+X 닫기로 바로 시작). 타이틀 상단 여백은 **32px**(바깥 래퍼 12px + 안쪽 Contents 래퍼 20px가 합산된 값 — 하나의 패딩 숫자가 아니니 구현 시 이중 래퍼 구조 그대로 가져갈 것)
 
-→ `order-detail-mobile.html`, `order-list-adaptive.html`
+→ `order-detail-mobile.html`, `order-list-adaptive.html`, `rental-return-list.html`
 
 ---
 
