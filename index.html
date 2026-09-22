@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이로움케어 반응형 정책 — 프로토타입 허브</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --bg-elevated:#ffffff; --bg-sunken:#eef0f3;
+    --border:#e2e5ea; --border-strong:#cbd0d8;
+    --text:#1c2128; --text-secondary:#5b6472; --text-tertiary:#8890999;
+    --accent:#3d5afe; --accent-soft:#eef0ff; --accent-text:#2a3fd6;
+    --code-bg:#f1f2f6; --code-text:#c0392b;
+    --shadow: 0 1px 2px rgba(16,24,40,.04), 0 1px 3px rgba(16,24,40,.06);
+    --radius:10px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15171c; --bg-elevated:#1c1f26; --bg-sunken:#12141a;
+      --border:#2a2e37; --border-strong:#3a3f4b;
+      --text:#e7e9ee; --text-secondary:#a2a9b6; --text-tertiary:#767d8a;
+      --accent:#8ba3ff; --accent-soft:#20264a; --accent-text:#aebcff;
+      --code-bg:#22252d; --code-text:#ff9d8a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 2px 6px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Segoe UI",Roboto,sans-serif;
+    font-size:14px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  .app{height:100vh; display:flex; flex-direction:column;}
+
+  /* ---------- Topbar ---------- */
+  .topbar{
+    height:60px; flex:0 0 auto; display:flex; align-items:center; justify-content:space-between;
+    padding:0 20px; background:var(--bg-elevated); border-bottom:1px solid var(--border);
+    box-shadow:var(--shadow); z-index:5;
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand .dot{width:10px; height:10px; border-radius:50%; background:var(--accent); flex:0 0 auto;}
+  .brand h1{font-size:15px; font-weight:700; margin:0; letter-spacing:-.01em;}
+  .brand .sub{font-size:12px; color:var(--text-secondary); margin-left:8px; font-weight:400;}
+  .top-actions{display:flex; align-items:center; gap:8px;}
+  .doc-link{
+    font-size:12.5px; color:var(--text-secondary); text-decoration:none; padding:7px 12px;
+    border:1px solid var(--border); border-radius:8px; background:var(--bg-sunken);
+    display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+  }
+  .doc-link:hover{border-color:var(--border-strong); color:var(--text);}
+
+  /* ---------- Body grid ---------- */
+  .body{flex:1 1 auto; display:grid; grid-template-columns:220px 1fr 360px; min-height:0;}
+
+  /* ---------- Left menu ---------- */
+  .sidebar-menu{
+    border-right:1px solid var(--border); background:var(--bg-elevated);
+    overflow-y:auto; padding:14px 10px;
+  }
+  .menu-label{font-size:11px; font-weight:700; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:.04em; padding:6px 8px 8px; margin-top:12px;}
+  .menu-label:first-child{margin-top:0;}
+  .menu-item{
+    display:flex; gap:10px; align-items:flex-start; width:100%; text-align:left;
+    padding:10px 10px; border-radius:8px; border:1px solid transparent; background:none;
+    cursor:pointer; margin-bottom:4px; font-family:inherit;
+  }
+  .menu-item:hover{background:var(--bg-sunken);}
+  .menu-item.active{background:var(--accent-soft); border-color:color-mix(in srgb, var(--accent) 35%, transparent);}
+  .menu-num{
+    flex:0 0 auto; width:22px; height:22px; border-radius:6px; background:var(--bg-sunken);
+    color:var(--text-secondary); font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
+  .menu-item.active .menu-num{background:var(--accent); color:#fff;}
+  .menu-text .menu-title{font-size:13px; font-weight:600; color:var(--text); margin-bottom:2px;}
+  .menu-item.active .menu-text .menu-title{color:var(--accent-text);}
+  .menu-text .menu-desc{font-size:11.5px; color:var(--text-secondary); line-height:1.4;}
+
+  /* ---------- Center stage ---------- */
+  .stage{display:flex; flex-direction:column; min-width:0; background:var(--bg-sunken);}
+  .stage-header{
+    flex:0 0 auto; padding:12px 18px; display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid var(--border); background:var(--bg-elevated);
+  }
+  .stage-header .file-title{font-size:13px; font-weight:700;}
+  .stage-header .file-name{font-size:11.5px; color:var(--text-tertiary); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; margin-top:2px;}
+  .stage-header .open-new{
+    font-size:12px; color:var(--accent-text); text-decoration:none; padding:6px 10px;
+    border:1px solid var(--border); border-radius:7px; background:var(--bg-sunken); white-space:nowrap;
+  }
+  .stage-header .open-new:hover{border-color:var(--border-strong);}
+  .proto-frame{flex:1 1 auto; width:100%; border:0; background:#fff;}
+
+  /* ---------- Right policy panel ---------- */
+  .policy-panel{
+    border-left:1px solid var(--border); background:var(--bg-elevated);
+    display:flex; flex-direction:column; min-width:0;
+  }
+  .policy-header{
+    flex:0 0 auto; padding:14px 18px 12px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .policy-header h2{font-size:13px; margin:0; font-weight:700;}
+  .toggle-btn{
+    font-size:11.5px; color:var(--text-secondary); background:var(--bg-sunken); border:1px solid var(--border);
+    border-radius:7px; padding:5px 9px; cursor:pointer; font-family:inherit;
+  }
+  .toggle-btn:hover{border-color:var(--border-strong); color:var(--text);}
+  .toggle-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .policy-content{flex:1 1 auto; overflow-y:auto; padding:16px 18px 40px;}
+
+  .p-section{margin-bottom:22px;}
+  .p-section.primary .p-section-card{border-color:color-mix(in srgb, var(--accent) 45%, var(--border)); box-shadow:0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent);}
+  .p-section-card{background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius); padding:14px 15px; box-shadow:var(--shadow);}
+  .p-tag{display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.03em; color:var(--accent-text); background:var(--accent-soft); padding:2px 7px; border-radius:5px; margin-bottom:8px;}
+  .p-tag.secondary{color:var(--text-secondary); background:var(--bg-sunken);}
+  .p-section h3{font-size:13.5px; margin:0 0 8px; font-weight:700; letter-spacing:-.01em;}
+  .p-section p{margin:0 0 8px; color:var(--text); font-size:12.8px;}
+  .p-section p:last-child{margin-bottom:0;}
+  .p-section ul, .p-section ol{margin:0 0 8px; padding-left:18px; font-size:12.8px;}
+  .p-section li{margin-bottom:5px;}
+  .p-section li:last-child{margin-bottom:0;}
+  .mono, code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.92em; background:var(--code-bg); color:var(--code-text); padding:1px 5px; border-radius:4px;}
+  .policy-table{width:100%; border-collapse:collapse; margin:0 0 10px; font-size:12.3px;}
+  .policy-table th, .policy-table td{border:1px solid var(--border); padding:6px 8px; text-align:left; vertical-align:top;}
+  .policy-table th{background:var(--bg-sunken); font-weight:700; color:var(--text-secondary); font-size:11.5px;}
+  .related-toggle{
+    width:100%; text-align:left; background:var(--bg-sunken); border:1px solid var(--border); border-radius:8px;
+    padding:9px 12px; font-size:12.5px; font-weight:600; color:var(--text-secondary); cursor:pointer; font-family:inherit;
+    display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;
+  }
+  .related-toggle:hover{color:var(--text); border-color:var(--border-strong);}
+  .related-toggle .chev{transition:transform .15s ease;}
+  .related-toggle.open .chev{transform:rotate(90deg);}
+  .related-body{display:none;}
+  .related-body.open{display:block;}
+  .checklist{list-style:none; padding-left:0;}
+  .checklist li{padding-left:22px; position:relative;}
+  .checklist li::before{content:"☐"; position:absolute; left:0; color:var(--text-tertiary);}
+  .checklist li.done{color:var(--text-secondary);}
+  .checklist li.done::before{content:"☑"; color:var(--accent);}
+  .checklist li.done .strike{text-decoration:line-through; color:var(--text-tertiary);}
+
+  /* ---------- Responsive: stack on narrow viewports ---------- */
+  @media (max-width: 980px){
+    .body{grid-template-columns:1fr; grid-template-rows:auto minmax(300px,55vh) auto; overflow-y:auto;}
+    .sidebar-menu{border-right:0; border-bottom:1px solid var(--border); display:flex; overflow-x:auto; overflow-y:hidden; padding:10px;}
+    .sidebar-menu .menu-label{display:none;}
+    .menu-item{flex:0 0 auto; width:220px; margin-bottom:0; margin-right:8px;}
+    .policy-panel{border-left:0; border-top:1px solid var(--border);}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <h1>이로움케어 반응형 정책</h1>
+      <span class="sub">프로토타입 허브</span>
+    </div>
+    <div class="top-actions">
+      <a class="doc-link" href="CLAUDE.md" target="_blank" rel="noopener">📄 CLAUDE.md 원문</a>
+    </div>
+  </header>
+
+  <div class="body">
+    <nav class="sidebar-menu" id="menu"></nav>
+    <main class="stage">
+      <div class="stage-header">
+        <div>
+          <div class="file-title" id="stageTitle">-</div>
+          <div class="file-name" id="stageFile">-</div>
+        </div>
+        <a class="open-new" id="stageOpen" href="#" target="_blank" rel="noopener">새 탭에서 열기 ↗</a>
+      </div>
+      <iframe class="proto-frame" id="protoFrame" title="prototype preview"></iframe>
+    </main>
+    <aside class="policy-panel">
+      <div class="policy-header">
+        <h2>관련 정책</h2>
+        <button class="toggle-btn" id="toggleFullDoc">전체 문서 보기</button>
+      </div>
+      <div class="policy-content" id="policyContent"></div>
+    </aside>
+  </div>
+</div>
+
+<script>
+/* ---------------- Policy section data (from CLAUDE.md) ---------------- */
+var SECTIONS = {
+  s1: { title:"1. 브레이크포인트 원칙", html:
+    '<table class="policy-table"><thead><tr><th>값</th><th>역할</th></tr></thead><tbody>'+
+    '<tr><td class="mono">1024px</td><td>PC ↔ 모바일 전환 기준 (전역, 유일한 1차 분기)</td></tr>'+
+    '<tr><td class="mono">360px</td><td>모바일 구간 내 하위 기준 — 모바일 최소 지원폭, 모달 Full 전환</td></tr>'+
+    '</tbody></table>'+
+    '<p><strong>폐기된 값</strong>: 480px, 640px, 768px, 1060px — 전부 과거 검토 과정에서 임시로 쓰였다가 위 두 값으로 통합됨.</p>'+
+    '<p><strong>1060px는 브레이크포인트가 아님</strong> — PC 레이아웃 내부 콘텐츠 컨테이너 고정 폭(1920 캔버스 → 1400 Wrapper → 1060 contents_wrapper)일 뿐.</p>'+
+    '<p><strong>1024px은 레이아웃 기준이지 입력장치 기준이 아니다</strong> — 터치 노트북·랜드스케이프 태블릿도 폭 1024 이상이면 PC 레이아웃. hover 전용 인터랙션 금지(클릭으로도 100% 동작).</p>'+
+    '<p><strong>PC 콘텐츠 영역 상한</strong>: 페이지별로 다름 — 정해두지 않으면 초광폭 모니터에서 무한정 늘어남.</p>' },
+
+  s2: { title:"2. 레이아웃 전략 — 반응형 vs 적응형", html:
+    '<table class="policy-table"><thead><tr><th>구분</th><th>정의</th><th>적용 사례</th></tr></thead><tbody>'+
+    '<tr><td><strong>반응형</strong></td><td>같은 DOM을 CSS로 재배치</td><td>상세보기, 모달</td></tr>'+
+    '<tr><td><strong>적응형</strong></td><td>PC·모바일 구조 자체가 다름(테이블 vs 카드)</td><td>리스트</td></tr>'+
+    '</tbody></table>'+
+    '<p>판단 기준: 정보 밀도·인터랙션 패턴이 본질적으로 다르면 적응형, 배치만 바꿔도 되면 반응형.</p>' },
+
+  s31: { title:"3-1. 텍스트형 (읽기전용 정보 테이블)", html:
+    '<p>예: 주문 정보, 회수 신청 정보 등 label-value 나열형 데이터.</p>'+
+    '<ul>'+
+    '<li>헤더(라벨) 셀: <span class="mono">max-width:128px; min-width:80px</span> (배경 <span class="mono">#f5f5f5</span>)</li>'+
+    '<li>값 셀: <span class="mono">min-width:160px</span></li>'+
+    '<li><strong>flex-shrink만 사용, wrap 없음</strong> — 최소 240px(80+160)까지 좌우 2열 유지 → 별도 스택 폴백 불필요</li>'+
+    '<li>배경 없는 버전(회수정보 조회형): 라벨 125px, 배경 없음</li>'+
+    '</ul>' },
+
+  s32: { title:"3-2. 입력필드형 (실제 입력 가능한 폼 필드)", html:
+    '<p>예: 배송정보 수정, 회수지 주소 수정 등.</p>'+
+    '<ul>'+
+    '<li>라벨: <span class="mono">125px 고정, flex-shrink:0</span></li>'+
+    '<li>콘텐츠: <span class="mono">flex:1 0 0</span>, 최소폭은 모드에 따라 다름'+
+      '<ul><li>수정 모드: <span class="mono">min-width:280px</span> → 전환 지점 125+4+280=<strong>409px</strong></li>'+
+      '<li>조회 모드: <span class="mono">min-width:180px</span> → 전환 지점 125+8+180=<strong>313px</strong></li></ul></li>'+
+    '<li>전환 지점은 브레이크포인트로 못박은 값이 아니라 공식에서 자연히 나오는 결과 — 문서엔 숫자 아닌 공식을 남길 것</li>'+
+    '<li>flex-wrap 컨테이너라 미디어쿼리 없이 순수 flexbox로 동작</li>'+
+    '<li><strong>PC(1024px↑) 상한</strong>: 입력 콘텐츠 영역 <span class="mono">max-width:480px</span> (Figma 실측)</li>'+
+    '</ul>' },
+
+  s33: { title:"3-3. 모달", html:
+    '<p><strong>타입 판단 기준</strong>: 테이블(행/열 데이터) 포함 여부 — 요소 개수가 아님.</p>'+
+    '<table class="policy-table"><thead><tr><th>유형</th><th>사이즈</th><th>예시</th></tr></thead><tbody>'+
+    '<tr><td>텍스트형(안내/확인)</td><td class="mono">sm-340</td><td>주문 불가 안내, 회수요청 취소 확인</td></tr>'+
+    '<tr><td>정보확인/입력형/검색-리스트형</td><td class="mono">md-480</td><td>회수 요청하기, 회수접수 취소, 주소 수정, 상품 변경</td></tr>'+
+    '<tr><td>테이블 포함형</td><td class="mono">lg-600 / xl-800</td><td>실제 사례 미확인 — 발생 시 문서 업데이트</td></tr>'+
+    '</tbody></table>'+
+    '<table class="policy-table"><thead><tr><th>구간</th><th>sm-340</th><th>md-480</th><th>lg-600/xl-800</th></tr></thead><tbody>'+
+    '<tr><td>1024px↑</td><td>340 고정</td><td>480 고정</td><td>600/800 고정</td></tr>'+
+    '<tr><td>360~1024px</td><td>340 고정</td><td><strong>340으로 축소</strong></td><td><strong>Full</strong>(테이블 가로 스크롤)</td></tr>'+
+    '<tr><td>360px 미만</td><td colspan="3">Full, 좌우 마진 10px</td></tr>'+
+    '</tbody></table>'+
+    '<p><strong>버튼 폭</strong>: md/lg가 1024px↑(=480/600으로 뜬 상태)일 때 각 150px 고정폭, gap 12px 가운데 정렬(150+12+150=312px). sm-340은 항상 전체폭 분할.</p>'+
+    '<ul><li>딤(dim) 배경 위 정중앙 정렬</li><li>오버레이(모달/드롭다운/달력/바텀시트)는 하나만 — 새로 열리면 기존 것 자동 닫힘</li>'+
+    '<li>내용이 넘치면 모달 자체를 max-height로 제한, 내부 스크롤(정중앙 정렬 유지)</li></ul>' },
+
+  s34: { title:"3-4. 액션 버튼 배치", html:
+    '<ul>'+
+    '<li><strong>PC</strong>: 페이지 타이틀 옆(우측), Hug 사이즈(<span class="mono">flex:0 0 auto</span>) — 전체폭 분할 금지</li>'+
+    '<li><strong>모바일</strong>: 타이틀 아래로 이동 + 화면 하단 sticky 플로팅(흰색 그라데이션 페이드), 버튼은 폭을 나눠 가짐(Full)</li>'+
+    '<li>모바일 하단 sticky 요소는 <span class="mono">env(safe-area-inset-bottom)</span> 필수</li>'+
+    '</ul>' },
+
+  s35: { title:"3-5. 팝오버 / 바텀시트", html:
+    '<ul>'+
+    '<li><strong>PC</strong>: anchored popover — 호버 200ms 지연 후 열림, 300ms 지연 후 닫힘. 다른 그룹 아이콘 호버 시 기존 팝오버 즉시 닫고 새로 열림</li>'+
+    '<li><strong>모바일</strong>: 탭하면 바텀시트로 열림</li>'+
+    '<li>달력/셀렉트 드롭다운 동일 원칙: 모바일은 트리거와 동일한 좌우 여백(<span class="mono">left:0;right:0</span>), PC만 고정폭(예: 달력 320px)</li>'+
+    '</ul>' },
+
+  s41: { title:"4-1. 대여 회수 상세보기", html:
+    '<ul>'+
+    '<li>상태별 액션 버튼:'+
+      '<ul><li>회수접수 · 회수확인중 → 회수접수 취소 + 이로움에 회수 요청</li>'+
+      '<li>회수요청 → <strong>회수요청 취소</strong>(활성) <em>— 구 명칭 "회수철회" 폐기, 2026-09-22 확정</em></li>'+
+      '<li>회수준비중 · 회수완료 · 회수취소 · 회수취소완료 → 액션 버튼 없음</li></ul></li>'+
+    '<li><strong>마스킹</strong>: 수급자/신청자 정보는 회수접수 상태에서만 마스킹, 이후 상태는 전체 노출</li>'+
+    '<li><strong>신청자 정보 필드</strong>: 수급자 이름 / 보호자 이름 / 상담받을 연락처 / 회수지주소 — 요양인정번호는 불포함</li>'+
+    '<li><strong>회수지주소</strong>: 주소 텍스트 위, "수정"(Filled) 아래로 세로 배치된 하나의 셀(PC colspan 전체폭)</li>'+
+    '<li>모달: 케어 공통 컴포넌트(타이틀+X) 통일, 회수 요청은 2단계(요청하기→요청 확인)+전체/하위동의, 회수지 주소는 우편번호/기본주소(읽기전용)/상세주소 3필드</li>'+
+    '<li>서비스 불가 지역은 <span class="mono">alert()</span> 대신 모달 내 인라인 안내</li>'+
+    '<li>취소 사유는 상품 정보 영역(상품명 아래) 배경 없는 텍스트 한 줄</li>'+
+    '<li>정보 테이블: 라벨-값 한 줄 유지, 완전 스택 금지 / 모바일 전용 접기·펼치기(PC 미노출)</li>'+
+    '</ul>' },
+
+  s42: { title:"4-2. 주문요청관리 리스트", html:
+    '<ul>'+
+    '<li><strong>적응형</strong>: PC=테이블, 모바일=카드</li>'+
+    '<li>PC 검색: 기본 주문일자만, "상세" 토글로 품목/상태/검색어 펼침. 날짜 두 개+구간 세그먼트(3개월/일주일/이번달/지난달/1년), 라벨 120px</li>'+
+    '<li><strong>꺽쇠 탭(PC)</strong>: 활성 탭은 좌·우·상단 2px 테두리만, 하단은 탭 그룹 전체를 감싸는 2px 라인 하나 공유</li>'+
+    '<li><strong>모바일 탭</strong>: 세그먼트 토글이 아니라 일반 Fill/Outline 버튼 2개 나란히</li>'+
+    '<li>모바일 바텀시트 3종: 검색, 품목 선택(라디오), 함께 요청(다른 품목 목록)</li>'+
+    '<li>그룹 행 하이라이트: 동일 수급자+동일 시간대는 <span class="mono">#EFF1FD</span> → <span class="mono">#E8F5E9</span> 교차 배경</li>'+
+    '<li>함께 요청 배지: 숫자는 본인 제외 나머지 건수, 품목 검색 시 배지 노출하되 배경 강조색 미적용</li>'+
+    '<li>주문번호: 주문완료 이상만 실제 번호 노출(클릭 시 대대여 이용현황 상세로 이동), 그 전엔 <span class="mono">-</span></li>'+
+    '<li>모바일 카드 터치 영역 3분리(카드 전체/주문번호/함께요청) — 목적지가 달라 <span class="mono">stopPropagation()</span> 필수</li>'+
+    '<li>아이콘은 이모지 대신 인라인 SVG(Lucide 스타일)</li>'+
+    '</ul>' },
+
+  s43: { title:"4-3. 주문요청관리 상세", html:
+    '<ul>'+
+    '<li>PC 콘텐츠 영역 상한 <strong>1400px</strong></li>'+
+    '<li>상태별 조건부 노출:'+
+      '<ul><li>총 대여 금액 바: 요양정보 확인 후부터, 신규배정·주문취소·취소완료는 미노출</li>'+
+      '<li>배송희망일: 신규배정 미노출, 주문확인중부터 편집 가능, 주문완료 이후 읽기전용, 주문취소·취소완료 미노출(침대 품목에서만 해당, 배송정보 변경과 별개 필드)</li>'+
+      '<li>설치옵션 추가/삭제, 상품변경: 주문완료 이후 읽기전용 리스트로 전환</li></ul></li>'+
+    '<li>코드 레벨: 모든 input/select는 배경·글자색 명시적 지정(OS 다크모드 자동 반영 렌더링 사고 방지 — select 검은 배경 버그 실제 발생)</li>'+
+    '</ul>' },
+
+  s5: { title:"5. DS 시맨틱 컬러 / 상태칩", html:
+    '<ul>'+
+    '<li>대여: 신규배정=Info(파랑), 주문확인중=Success Outline(초록), 주문완료=Success Tinted-Outline(밝은 초록), 출고준비중=Caution Outline(오렌지)</li>'+
+    '<li>출고완료=BrandSub(배송 진행 중), 배송완료=Default(최종 종결)</li>'+
+    '<li>명명 규칙: <span class="mono">Status chip-Order</span> / <span class="mono">-Return</span> / <span class="mono">-AS</span> — 구분자 하이픈 통일</li>'+
+    '<li>회수: 회수접수=옅은 파랑, 회수확인중=민트, 회수요청=앰버, 회수준비중=라임, 회수완료=진한 네이비(filled), 회수취소=핑크, 회수취소완료=회색</li>'+
+    '</ul>' },
+
+  s6: { title:"6. 코드 레벨 원칙", html:
+    '<ol>'+
+    '<li>모든 input/select/커스텀 필드는 배경·글자색을 <strong>명시적으로 지정</strong>한다 (OS 다크모드 방치 시 select가 검은 배경으로 렌더링된 실제 버그).</li>'+
+    '<li>아이콘은 이모지가 아니라 <strong>인라인 SVG</strong>로 구현한다.</li>'+
+    '<li>하단 고정 요소는 <span class="mono">env(safe-area-inset-bottom)</span>을 반드시 적용한다.</li>'+
+    '<li>오버레이는 항상 <strong>하나만</strong> — 새 오버레이가 열리면 기존 것을 먼저 닫는다.</li>'+
+    '<li>레이어 hidden 처리를 상태 전환마다 정확히 관리한다 — 화면 복제 시 반드시 재검토.</li>'+
+    '</ol>' },
+
+  s7: { title:"7. 아직 확정되지 않은 항목", html:
+    '<ul class="checklist">'+
+    '<li>모달 lg-600/xl-800(테이블 포함형)의 실제 사례가 아직 없음 — 발생 시 재검증</li>'+
+    '<li class="done"><span class="strike">회수철회 버튼 노출 범위</span> — <strong>확정(2026-09-22)</strong>: "회수요청 취소"로 명칭 변경, 회수요청 상태에서만 노출</li>'+
+    '<li>회수요청 취소(구 회수철회) 시 사유를 수집하지 않는 문제 — 접수취소와의 형평성 개선 여부</li>'+
+    '<li>배송희망일 잠금 처리가 정확히 "주문완료" 시점부터인지, 다른 상태 전환 시점도 있는지</li>'+
+    '<li>텍스트형/입력필드형 외 제3의 콘텐츠 유형이 더 있는지</li>'+
+    '</ul>' }
+};
+
+var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s41","s42","s43","s5","s6","s7"];
+
+/* ---------------- Category order (menu group order — edit here to reorder groups) ---------------- */
+var CATEGORY_ORDER = ["rental-system", "common-pattern"];
+var CATEGORY_LABEL = {
+  "rental-system": "대여 시스템 화면",
+  "common-pattern": "공통 컴포넌트 패턴"
+};
+
+/* ---------------- Prototype ↔ policy section map ----------------
+   새 프로토타입 추가 방법:
+   1) prototypes/ 에 HTML 파일을 추가한다.
+   2) 아래 배열에 항목을 하나 추가한다 (category는 위 CATEGORY_ORDER 중 하나,
+      새 카테고리가 필요하면 CATEGORY_ORDER/CATEGORY_LABEL에 먼저 추가).
+   3) 이 화면과 관련된 CLAUDE.md 조항이 있으면 SECTIONS에 추가하고
+      primary/related로 연결한다. 같은 카테고리 안에서는 배열에 적힌 순서 = 메뉴 노출 순서.
+------------------------------------------------------------------- */
+var PROTOS = [
+  // --- 대여 시스템 화면 (실제 사용자 흐름 순서: 리스트 → 상세 → 회수) ---
+  { id:"order-list-adaptive.html", title:"주문요청관리 리스트", category:"rental-system",
+    desc:"PC 테이블 / 모바일 카드 (적응형)",
+    primary:"s42", related:["s35","s2","s1","s6"] },
+  { id:"order-detail-mobile.html", title:"주문요청관리 상세", category:"rental-system",
+    desc:"반응형 전 구간, 상태별 조건부 노출",
+    primary:"s43", related:["s31","s34","s35","s5","s1","s2","s6"] },
+  { id:"rental-return-detail-prototype.html", title:"대여 회수 상세보기", category:"rental-system",
+    desc:"전체 상태값 + 모달 포함",
+    primary:"s41", related:["s31","s5","s7","s1","s2","s6"] },
+
+  // --- 공통 컴포넌트 패턴 (특정 화면에 종속되지 않는 재사용 가능한 반응형 패턴) ---
+  { id:"form-breakpoint-demo.html", title:"입력폼 브레이크포인트", category:"common-pattern",
+    desc:"라벨/필드 flex-wrap 구조 단독 데모",
+    primary:"s32", related:["s1","s6"] },
+  { id:"modal-types-gallery.html", title:"모달 타입 갤러리", category:"common-pattern",
+    desc:"8유형 사이즈/반응형 갤러리",
+    primary:"s33", related:["s1","s6"] }
+];
+
+/* ---------------- Render ---------------- */
+var state = { activeId:PROTOS[0].id, fullDoc:false };
+
+function renderMenu(){
+  var html = '';
+  var num = 1;
+  CATEGORY_ORDER.forEach(function(cat){
+    var items = PROTOS.filter(function(p){ return p.category === cat; });
+    if(!items.length) return;
+    html += '<div class="menu-label">'+CATEGORY_LABEL[cat]+' ('+items.length+')</div>';
+    items.forEach(function(p){
+      html += '<button class="menu-item'+(state.activeId===p.id?' active':'')+'" onclick="selectProto(\''+p.id+'\')">'+
+        '<span class="menu-num">'+(num++)+'</span>'+
+        '<span class="menu-text"><div class="menu-title">'+p.title+'</div><div class="menu-desc">'+p.desc+'</div></span>'+
+        '</button>';
+    });
+  });
+  document.getElementById('menu').innerHTML = html;
+}
+
+function renderStage(){
+  var p = PROTOS.find(function(x){ return x.id === state.activeId; });
+  document.getElementById('stageTitle').textContent = p.title;
+  document.getElementById('stageFile').textContent = 'prototypes/'+p.id;
+  document.getElementById('stageOpen').href = 'prototypes/'+p.id;
+  document.getElementById('protoFrame').src = 'prototypes/'+p.id;
+}
+
+function sectionCard(sid, isPrimary){
+  var s = SECTIONS[sid];
+  return '<div class="p-section'+(isPrimary?' primary':'')+'">'+
+    '<div class="p-section-card">'+
+    '<span class="p-tag'+(isPrimary?'':' secondary')+'">'+(isPrimary?'핵심 규칙':'함께 참고')+'</span>'+
+    '<h3>'+s.title+'</h3>'+s.html+
+    '</div></div>';
+}
+
+function renderPolicy(){
+  var box = document.getElementById('policyContent');
+  if(state.fullDoc){
+    box.innerHTML = FULL_DOC_ORDER.map(function(sid){ return sectionCard(sid, false); }).join('');
+    return;
+  }
+  var p = PROTOS.find(function(x){ return x.id === state.activeId; });
+  var html = sectionCard(p.primary, true);
+  if(p.related && p.related.length){
+    html += '<button class="related-toggle" id="relatedToggle" onclick="toggleRelated()">'+
+      '<span>함께 참고할 조항 ('+p.related.length+')</span><span class="chev">›</span></button>'+
+      '<div class="related-body" id="relatedBody">'+
+      p.related.map(function(sid){ return sectionCard(sid, false); }).join('')+
+      '</div>';
+  }
+  box.innerHTML = html;
+}
+
+function toggleRelated(){
+  document.getElementById('relatedToggle').classList.toggle('open');
+  document.getElementById('relatedBody').classList.toggle('open');
+}
+
+function selectProto(id){
+  state.activeId = id;
+  state.fullDoc = false;
+  document.getElementById('toggleFullDoc').classList.remove('active');
+  document.getElementById('toggleFullDoc').textContent = '전체 문서 보기';
+  renderMenu(); renderStage(); renderPolicy();
+}
+
+document.getElementById('toggleFullDoc').addEventListener('click', function(){
+  state.fullDoc = !state.fullDoc;
+  this.classList.toggle('active', state.fullDoc);
+  this.textContent = state.fullDoc ? '관련 항목만 보기' : '전체 문서 보기';
+  renderPolicy();
+});
+
+renderMenu(); renderStage(); renderPolicy();
+</script>
+</body>
+</html>
