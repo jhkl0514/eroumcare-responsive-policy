@@ -8,7 +8,7 @@
 :root{
   --bg:#f4f5f7; --card:#ffffff; --tertiary:#f5f5f5;
   --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999999;
-  --border-primary:#bdbdbd; --border-secondary:#eeeeee;
+  --border-primary:#bdbdbd; --border-secondary:#eeeeee; --border-active:#333333;
   --brand:#323da3;
   --zone-stack-bg:#fdf2f4; --zone-stack-border:#f5b8c4; --zone-stack-text:#be123c;
   --zone-2col-bg:#fff7e6; --zone-2col-border:#ffd699; --zone-2col-text:#b45309;
@@ -28,17 +28,11 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .preset-btn{border:1px solid var(--border-primary);background:var(--card);border-radius:999px;
   padding:7px 14px;font-size:13px;cursor:pointer;color:var(--text-secondary);white-space:nowrap;}
 .preset-btn.active{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600;}
-.preset-btn.key{border-color:var(--zone-2col-text);color:var(--zone-2col-text);font-weight:600;}
-.preset-btn.key.active{background:var(--zone-2col-text);border-color:var(--zone-2col-text);color:#fff;}
-
-.zone-bar{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;align-items:center;}
-.zone-chip{border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;border:1px solid;
-  opacity:0.35;transition:opacity .15s;}
-.zone-chip.active{opacity:1;}
-.zone-chip.stack{background:var(--zone-stack-bg);border-color:var(--zone-stack-border);color:var(--zone-stack-text);}
-.zone-chip.col2{background:var(--zone-2col-bg);border-color:var(--zone-2col-border);color:var(--zone-2col-text);}
-.width-readout{margin-left:auto;font-size:12px;color:var(--text-tertiary);font-variant-numeric:tabular-nums;}
-.hint{font-size:12px;color:var(--text-tertiary);margin-bottom:16px;}
+.preset-btn.key-edit{border-color:var(--zone-2col-text);color:var(--zone-2col-text);font-weight:600;}
+.preset-btn.key-edit.active{background:var(--zone-2col-text);border-color:var(--zone-2col-text);color:#fff;}
+.preset-btn.key-view{border-color:#0e7490;color:#0e7490;font-weight:600;}
+.preset-btn.key-view.active{background:#0e7490;border-color:#0e7490;color:#fff;}
+.width-readout{font-size:12px;color:var(--text-tertiary);font-variant-numeric:tabular-nums;margin-bottom:16px;}
 
 #device-frame-outer{overflow-x:auto;padding-bottom:8px;}
 #device-frame{width:100%;max-width:1440px;margin:0 auto;transition:width .2s;box-sizing:border-box;}
@@ -48,46 +42,70 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
   overflow-x:auto;}
 .form-title{font-size:20px;font-weight:700;border-bottom:1px solid var(--text-secondary);
   padding-bottom:12px;margin-bottom:4px;}
-.group-title{font-size:13px;color:var(--text-tertiary);margin:20px 0 6px;font-weight:600;}
+.group-title{font-size:13px;color:var(--text-tertiary);margin:24px 0 4px;font-weight:600;}
 .group-title:first-child{margin-top:0;}
+.group-desc{font-size:12px;color:var(--text-tertiary);margin-bottom:10px;}
+
+/* 각 그룹 전용 zone-bar — 그룹마다 전환 지점이 다르므로 개별 표시 */
+.zone-bar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center;}
+.zone-chip{border-radius:999px;padding:5px 12px;font-size:12px;font-weight:600;border:1px solid;
+  opacity:0.35;transition:opacity .15s;}
+.zone-chip.active{opacity:1;}
+.zone-chip.stack{background:var(--zone-stack-bg);border-color:var(--zone-stack-border);color:var(--zone-stack-text);}
+.zone-chip.col2{background:var(--zone-2col-bg);border-color:var(--zone-2col-border);color:var(--zone-2col-text);}
 
 /* 텍스트형 (읽기전용) — 헤더 128px + 값 192px, 고정 320, wrap 없음 */
 .text-row{display:flex;min-width:320px;border-bottom:1px solid var(--border-secondary);}
 .text-row .th{width:128px;flex-shrink:0;background:var(--tertiary);padding:16px 12px;font-size:14px;font-weight:600;}
 .text-row .td{width:192px;flex-shrink:0;padding:16px 12px;font-size:14px;}
 
-/* 입력필드형 — 라벨 125px(고정) + 콘텐츠(flex, min-width 280px), flex-wrap로 자동 전환. 미디어쿼리 없음 */
+/* 입력필드형 공통 — 라벨 125px(고정) + 콘텐츠(flex, min-width는 모드별로 다름), flex-wrap로 자동 전환. 미디어쿼리 없음 */
 .input-row{display:flex;flex-wrap:wrap;gap:4px;padding:14px 0;border-bottom:1px solid var(--border-secondary);}
 .input-row .label-block{width:125px;flex-shrink:0;display:flex;align-items:center;gap:2px;
   font-size:16px;font-weight:600;padding-top:2px;}
 .input-row .label-block .req{color:#e53935;font-size:14px;}
-.input-row .content-block{flex:1 0 0;min-width:280px;}
+/* 수정 모드: min-width 280px → 전환 409px(125+4+280) */
+.input-row.edit .content-block{flex:1 0 0;min-width:280px;}
+/* 조회 모드: min-width 180px → 전환 313px(125+8+180), gap도 8px로 다름 */
+.input-row.view{gap:8px;}
+.input-row.view .content-block{flex:1 0 0;min-width:180px;}
+
 .field-input{width:100%;border:1px solid var(--border-primary);border-radius:4px;
   padding:8px 12px;font-size:14px;font-family:inherit;background:var(--card);color:var(--text-primary);}
 .field-input[readonly]{background:var(--tertiary);color:var(--text-secondary);}
+.field-select{width:100%;border:1px solid var(--border-primary);border-radius:4px;padding:8px 34px 8px 12px;
+  font-size:14px;font-family:inherit;background-color:var(--card);color:var(--text-primary);
+  appearance:none;-webkit-appearance:none;-moz-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23333333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:14px 14px;}
+.field-textarea{width:100%;border:1px solid var(--border-primary);border-radius:4px;
+  padding:8px 12px;font-size:14px;font-family:inherit;background:var(--card);color:var(--text-primary);
+  min-height:64px;resize:vertical;}
+/* 복합 필드(우편번호 버튼 + input) — content-block 안에서 또 한 번 flex, 버튼만 shrink:0 */
+.zip-combo{display:flex;gap:8px;}
+.zip-combo .field-input{flex:1;}
+.zip-btn{flex-shrink:0;background:var(--tertiary);color:var(--text-primary);border:1px solid var(--border-primary);
+  border-radius:4px;padding:8px 16px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.readonly-text{padding:8px 0;font-size:14px;color:var(--text-primary);}
 </style>
 </head>
 <body>
 <div id="wrap">
   <div class="banner">
-    <b>입력필드 flex-wrap 구조 확인용 프로토타입</b> — 입력필드형(이름/주소/전화번호/휴대폰번호/배송희망일/배송요청사항)은 미디어쿼리가 아니라 <code>라벨 125px(고정) + gap 4px + 콘텐츠 최소폭 280px</code>의 flex-wrap 구조입니다. 합산 <b>409px</b>가 실제 전환 지점이며, 별도로 못박은 브레이크포인트 숫자가 아니라 이 폭 계산에서 자연히 나오는 값입니다.
+    <b>입력필드 flex-wrap 구조 확인용 프로토타입</b> — 입력필드형은 미디어쿼리가 아니라 <code>라벨 125px(고정) + 콘텐츠 최소폭</code>의 flex-wrap 구조입니다. 최소폭은 모드에 따라 다릅니다: <b>수정 모드 280px → 전환 409px</b>(125+4+280) / <b>조회 모드 180px → 전환 313px</b>(125+8+180). 이 전환 지점은 못박은 브레이크포인트가 아니라 위 공식에서 자연히 나오는 값이라, 라벨/최소폭이 바뀌면 같이 바뀝니다. 아래에서 콘텐츠 타입(텍스트/select/textarea/복합필드)별로 동일하게 적용되는지 비교해보세요.
   </div>
 
   <div class="preset-row" id="preset-row">
     <button class="preset-btn" data-w="320">320px</button>
-    <button class="preset-btn" data-w="360">360px</button>
-    <button class="preset-btn active" data-w="408">408px</button>
-    <button class="preset-btn key" data-w="409">409px (125+4+280)</button>
+    <button class="preset-btn" data-w="312">312px</button>
+    <button class="preset-btn key-view" data-w="313">313px (125+8+180)</button>
+    <button class="preset-btn active" data-w="360">360px</button>
+    <button class="preset-btn" data-w="408">408px</button>
+    <button class="preset-btn key-edit" data-w="409">409px (125+4+280)</button>
     <button class="preset-btn" data-w="1023">1023px</button>
     <button class="preset-btn" data-w="1024">1024px</button>
   </div>
-
-  <div class="zone-bar">
-    <span class="zone-chip stack">&lt;409 스택</span>
-    <span class="zone-chip col2">409↑ 좌/우</span>
-    <span class="width-readout" id="w-readout"></span>
-  </div>
-  <div class="hint">텍스트형(주문정보)은 폭과 무관하게 항상 고정 2열 — 아래에서 같이 비교해보세요.</div>
+  <div class="width-readout" id="w-readout"></div>
 
   <div id="device-frame-outer">
     <div id="device-frame">
@@ -95,7 +113,8 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
       <div class="form-shell">
         <div class="form-title">주문 정보 / 배송정보</div>
 
-        <div class="group-title">텍스트형 (읽기전용) — 128px + 192px 고정, wrap 없음</div>
+        <div class="group-title">1. 텍스트형 (읽기전용 표) — 128px + 192px 고정, wrap 없음</div>
+        <div class="group-desc">폭과 무관하게 항상 고정 2열. 아래 입력필드형들과 대비해서 보세요.</div>
         <div class="text-row">
           <div class="th">돌봄주문번호</div>
           <div class="td">DB1234567890</div>
@@ -105,26 +124,53 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
           <div class="td">2026010315235001</div>
         </div>
 
-        <div class="group-title">입력필드형 — 라벨 125px + 콘텐츠 최소 280px, flex-wrap 자동 전환</div>
-        <div class="input-row">
+        <div class="group-title">2. 입력필드형 · 수정 모드 — 콘텐츠 최소 280px</div>
+        <div class="group-desc">실제 입력 가능한 상태(배송정보 수정하기 등). 텍스트/select/복합필드/textarea 4가지 콘텐츠 타입으로 동일 공식 확인.</div>
+        <div class="zone-bar" data-mode="edit">
+          <span class="zone-chip stack">&lt;409 스택</span>
+          <span class="zone-chip col2">409↑ 좌/우</span>
+        </div>
+        <div class="input-row edit">
           <div class="label-block">이름<span class="req">*</span></div>
           <div class="content-block"><input class="field-input" placeholder="홍길동"></div>
         </div>
-        <div class="input-row">
+        <div class="input-row edit">
           <div class="label-block">주소<span class="req">*</span></div>
-          <div class="content-block"><input class="field-input" placeholder="(16495) 경기 수원시 영통구 광교로 32 (이의동, 아름학교)"></div>
+          <div class="content-block">
+            <div class="zip-combo">
+              <input class="field-input" readonly placeholder="16495">
+              <button class="zip-btn">우편번호</button>
+            </div>
+          </div>
         </div>
-        <div class="input-row">
-          <div class="label-block">휴대폰번호<span class="req">*</span></div>
-          <div class="content-block"><input class="field-input" placeholder="010-1234-5678"></div>
-        </div>
-        <div class="input-row">
+        <div class="input-row edit">
           <div class="label-block">배송희망일</div>
-          <div class="content-block"><input class="field-input" placeholder="2026-07-09 (금)"></div>
+          <div class="content-block">
+            <select class="field-select"><option>2026-07-09 (금)</option></select>
+          </div>
         </div>
-        <div class="input-row">
+        <div class="input-row edit">
           <div class="label-block">배송요청사항</div>
-          <div class="content-block"><input class="field-input" placeholder="직접입력"></div>
+          <div class="content-block"><textarea class="field-textarea" placeholder="부재시 현관 앞에 두고 가주세요"></textarea></div>
+        </div>
+
+        <div class="group-title">3. 입력필드형 · 조회 모드 — 콘텐츠 최소 180px</div>
+        <div class="group-desc">수정 불가한 조회 화면(회수정보 조회 등). gap도 8px로 수정 모드(4px)와 다름 — 라벨 폭은 동일 125px.</div>
+        <div class="zone-bar" data-mode="view">
+          <span class="zone-chip stack">&lt;313 스택</span>
+          <span class="zone-chip col2">313↑ 좌/우</span>
+        </div>
+        <div class="input-row view">
+          <div class="label-block">이름</div>
+          <div class="content-block"><div class="readonly-text">홍길동</div></div>
+        </div>
+        <div class="input-row view">
+          <div class="label-block">연락처</div>
+          <div class="content-block"><div class="readonly-text">010-1234-5678</div></div>
+        </div>
+        <div class="input-row view">
+          <div class="label-block">회수지주소</div>
+          <div class="content-block"><div class="readonly-text">(16495) 경기 수원시 영통구 광교로 32 (이의동, 아름학교)</div></div>
         </div>
       </div>
     </div>
@@ -135,6 +181,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 <script>
 var frame = document.getElementById('device-frame');
 var buttons = document.querySelectorAll('.preset-btn');
+var zoneBars = document.querySelectorAll('.zone-bar');
 
 function setWidth(w){
   buttons.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-w') === w); });
@@ -148,15 +195,14 @@ buttons.forEach(function(b){
 function updateReadout(){
   var w = Math.round(frame.getBoundingClientRect().width);
   document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px';
-  var chips = document.querySelectorAll('.zone-chip');
-  chips.forEach(function(c){ c.classList.remove('active'); });
-  if(w < 409){
-    document.querySelector('.zone-chip.stack').classList.add('active');
-  } else {
-    document.querySelector('.zone-chip.col2').classList.add('active');
-  }
+  zoneBars.forEach(function(bar){
+    var threshold = bar.getAttribute('data-mode') === 'view' ? 313 : 409;
+    bar.querySelectorAll('.zone-chip').forEach(function(c){ c.classList.remove('active'); });
+    var target = w < threshold ? bar.querySelector('.zone-chip.stack') : bar.querySelector('.zone-chip.col2');
+    target.classList.add('active');
+  });
 }
-setWidth('408');
+setWidth('360');
 window.addEventListener('resize', updateReadout);
 </script>
 </body>
