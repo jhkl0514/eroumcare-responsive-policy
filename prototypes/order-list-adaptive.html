@@ -42,7 +42,10 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .pc-tabrow{margin:0 24px;display:flex;border-bottom:2px solid #000;}
 .pc-tab{flex:1;text-align:center;padding:12px 0;font-size:16px;border:1px solid var(--border-secondary);
   border-bottom:none;cursor:pointer;color:var(--text-primary);}
-.pc-tab.active{border:2px solid var(--border-active);border-bottom:none;font-weight:700;color:var(--border-active);}
+/* 활성 탭: 좌/우/상단 2px만 보이는 'ㄷ' 모양. 부모(.pc-tabrow)의 공유 하단선이 비쳐 보이지 않도록
+   배경색과 동일한 하단 보더로 덮고, 음수 마진으로 그 위에 겹쳐 올린다. */
+.pc-tab.active{position:relative;z-index:1;border:2px solid var(--border-active);
+  border-bottom:2px solid var(--card);margin-bottom:-2px;font-weight:700;color:var(--border-active);background:var(--card);}
 .pc-search-wrap{margin:12px 24px 0;}
 .pc-search-card{background:var(--secondary-bg);border:1px solid var(--border-primary);border-radius:4px;
   padding:16px;position:relative;}
@@ -88,10 +91,20 @@ table.pc-table tr.group2{background:var(--group2);}
 .popover{position:absolute;top:100%;left:0;background:#fff;border:1px solid var(--border-primary);border-radius:8px;
   box-shadow:var(--shadow);padding:8px;width:260px;z-index:20;display:none;}
 .popover.open{display:block;}
+.popover-title{padding:6px 10px 8px;font-size:13px;font-weight:700;color:var(--text-primary);
+  border-bottom:1px solid var(--border-secondary);margin-bottom:4px;}
 .popover-row{padding:8px 10px;font-size:13px;border-radius:6px;display:flex;justify-content:space-between;gap:8px;
   cursor:pointer;}
 .popover-row:hover{background:var(--tertiary);}
-.pc-pagination{padding:16px 24px;text-align:center;font-size:13px;color:var(--text-tertiary);}
+.pagination{display:flex;justify-content:center;align-items:center;gap:4px;padding:20px 24px;}
+.page-nav{width:32px;height:32px;border-radius:6px;border:1px solid var(--border-secondary);background:#fff;
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);padding:0;}
+.page-nav:hover{background:var(--tertiary);}
+.page-nav:disabled{opacity:.4;cursor:not-allowed;}
+.page-btn{min-width:32px;height:32px;padding:0 6px;border-radius:6px;border:1px solid transparent;background:none;
+  font-size:13px;color:var(--text-secondary);cursor:pointer;font-family:inherit;}
+.page-btn:hover{background:var(--tertiary);color:var(--text-primary);}
+.page-btn.active{background:var(--brand);color:#fff;font-weight:700;cursor:default;}
 
 .chip{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid;}
 .chip.info{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text);}
@@ -219,16 +232,24 @@ table.pc-table tr.group2{background:var(--group2);}
             <tr><th>NO</th><th>품목</th><th>수급자명</th><th>연락처</th><th>신청일시</th><th>돌봄주문번호</th><th>주문번호</th><th>주문상태</th></tr>
             <tr class="rowlink"><td>10</td><td>전동침대</td><td>홍길동</td><td>010-1234-5678</td><td>2026-06-19 10:20</td>
               <td><span class="link2-wrap">DB1234567890<span class="link2-icon" onclick="event.stopPropagation();togglePop(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 17H7A5 5 0 0 1 7 7h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 7h2a5 5 0 1 1 0 10h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="num-badge">2</span></span>
-                <div class="popover"><div class="popover-row"><span>수동휠체어 MW-1</span><span class="chip success">주문완료</span></div><div class="popover-row"><span>경사로 ST-3</span><span class="chip info">신규배정</span></div></div>
+                <div class="popover"><div class="popover-title">함께 요청한 대여상품</div><div class="popover-row"><span>수동휠체어 MW-1</span><span class="chip success">주문완료</span></div><div class="popover-row"><span>경사로 ST-3</span><span class="chip info">신규배정</span></div></div>
               </span></td>
               <td>-</td><td><span class="chip info">신규배정</span></td></tr>
             <tr class="rowlink group1"><td>9</td><td>전동침대</td><td>김순자</td><td>010-2222-3333</td><td>2026-06-18 14:02</td><td>DB1234500011</td><td><a href="#">2026061800321</a></td><td><span class="chip success">주문완료</span></td></tr>
             <tr class="rowlink group1"><td>8</td><td>수동휠체어</td><td>김순자</td><td>010-2222-3333</td><td>2026-06-18 14:02</td><td>DB1234500011</td><td><a href="#">2026061800322</a></td><td><span class="chip success">주문완료</span></td></tr>
-            <tr class="rowlink group2"><td>7</td><td>경사로</td><td>박영희</td><td>010-4444-5555</td><td>2026-06-17 09:11</td><td>DB1234499981</td><td>-</td><td><span class="chip caution">출고준비중</span></td></tr>
-            <tr class="rowlink group2"><td>6</td><td>전동침대</td><td>박영희</td><td>010-4444-5555</td><td>2026-06-17 09:11</td><td>DB1234499981</td><td>-</td><td><span class="chip caution">출고준비중</span></td></tr>
+            <tr class="rowlink group2"><td>7</td><td>경사로</td><td>박영희</td><td>010-4444-5555</td><td>2026-06-17 09:11</td><td>DB1234499981</td><td><a href="#">2026061700171</a></td><td><span class="chip caution">출고준비중</span></td></tr>
+            <tr class="rowlink group2"><td>6</td><td>전동침대</td><td>박영희</td><td>010-4444-5555</td><td>2026-06-17 09:11</td><td>DB1234499981</td><td><a href="#">2026061700172</a></td><td><span class="chip caution">출고준비중</span></td></tr>
             <tr class="rowlink"><td>5</td><td>전동침대</td><td>이철수</td><td>010-7777-8888</td><td>2026-06-15 16:40</td><td>DB1234499870</td><td>-</td><td><span class="chip info">주문확인중</span></td></tr>
           </table>
-          <div class="pc-pagination">1 2 3 4 5 ›</div>
+          <div class="pagination">
+            <button class="page-nav" disabled aria-label="이전 페이지"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="page-btn active" onclick="setPage(this)">1</button>
+            <button class="page-btn" onclick="setPage(this)">2</button>
+            <button class="page-btn" onclick="setPage(this)">3</button>
+            <button class="page-btn" onclick="setPage(this)">4</button>
+            <button class="page-btn" onclick="setPage(this)">5</button>
+            <button class="page-nav" aria-label="다음 페이지"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
           </div>
         </div>
 
@@ -275,7 +296,7 @@ table.pc-table tr.group2{background:var(--group2);}
               <div class="mo-sep"></div>
               <div class="mo-row"><span class="lb">품목</span><span>경사로</span></div>
               <div class="mo-row"><span class="lb">돌봄주문번호</span><span>DB1234499981</span></div>
-              <div class="mo-row"><span class="lb">주문번호</span><span>-</span></div>
+              <div class="mo-row"><span class="lb">주문번호</span><span onclick="event.stopPropagation()"><a href="#">2026061700171</a></span></div>
             </div>
           </div>
 
@@ -363,6 +384,11 @@ document.addEventListener('click', function(e){
     document.querySelectorAll('.popover.open').forEach(function(p){ p.classList.remove('open'); });
   }
 });
+
+function setPage(btn){
+  document.querySelectorAll('.page-btn.active').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
 
 function openSheet(key){
   document.querySelectorAll('.sheet-overlay.open').forEach(function(s){ s.classList.remove('open'); });
