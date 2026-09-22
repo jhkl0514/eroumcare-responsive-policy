@@ -64,8 +64,11 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
   border-right:none;}
 .pc-radio-group{display:flex;gap:16px;flex-wrap:wrap;}
 .pc-radio-group label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;}
-.pc-select{border:1px solid var(--border-active);border-radius:4px;padding:8px 12px;font-size:14px;
-  width:160px;background:#fff;color:var(--border-active);}
+.pc-select{border:1px solid var(--border-active);border-radius:4px;padding:8px 34px 8px 12px;font-size:14px;
+  width:160px;background-color:#fff;color:var(--border-active);
+  appearance:none;-webkit-appearance:none;-moz-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23333333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:14px 14px;}
 .pc-desc{font-size:14px;color:var(--text-secondary);}
 .pc-search-input{border:1px solid var(--border-dark);border-radius:4px;padding:8px 12px;font-size:14px;
   flex:1;background:#fff;color:var(--text-disabled);}
@@ -121,7 +124,8 @@ table.pc-table tr.group2{background:var(--group2);}
 .mo-tab-toggle span.active{background:var(--brand);color:#fff;font-weight:700;border-color:var(--brand);}
 .mo-filter-row{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;}
 .mo-filter-chip{border:1px solid var(--border-primary);border-radius:999px;padding:6px 12px;font-size:12px;
-  white-space:nowrap;color:var(--text-secondary);cursor:pointer;background:#fff;}
+  white-space:nowrap;color:var(--text-secondary);cursor:pointer;background:#fff;
+  display:inline-flex;align-items:center;gap:4px;}
 .mo-count{padding:0 16px 10px;font-size:12px;color:var(--text-tertiary);}
 .mo-card-list{padding:0 16px;display:flex;flex-direction:column;gap:12px;}
 .mo-card{border:1px solid var(--border-secondary);border-radius:8px;padding:16px;cursor:pointer;}
@@ -149,7 +153,7 @@ table.pc-table tr.group2{background:var(--group2);}
   font-size:13px;color:var(--text-secondary);cursor:pointer;}
 .sheet-optbtn.active{background:var(--tertiary);border-color:var(--border-active);color:var(--text-primary);font-weight:700;}
 .sheet-select-btn{border:1px solid var(--border-active);border-radius:4px;padding:12px;font-size:14px;
-  display:flex;justify-content:space-between;cursor:pointer;margin-bottom:16px;background:#fff;}
+  display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-bottom:16px;background:#fff;}
 .sheet-input{width:100%;border:1px solid var(--border-active);border-radius:4px;padding:12px;font-size:14px;margin-bottom:16px;}
 .sheet-radio-row{display:flex;align-items:center;gap:10px;padding:12px 0;font-size:15px;border-bottom:1px solid var(--border-secondary);cursor:pointer;}
 .sheet-item-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border-secondary);cursor:pointer;}
@@ -187,7 +191,7 @@ table.pc-table tr.group2{background:var(--group2);}
           <div class="pc-tabrow"><div class="pc-tab">구입 주문</div><div class="pc-tab active">대여 주문</div></div>
           <div class="pc-search-wrap">
             <div class="pc-search-card">
-              <button class="pc-detail-toggle" onclick="toggleDetail()"><span id="detail-label">상세</span> <span id="detail-arrow">▲</span></button>
+              <button class="pc-detail-toggle" onclick="toggleDetail()"><span id="detail-label">상세</span> <svg id="detail-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" style="transform:rotate(180deg);transition:transform .15s;flex-shrink:0;"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               <div class="pc-frow">
                 <div class="pc-flabel">주문일자</div>
                 <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
@@ -255,13 +259,13 @@ table.pc-table tr.group2{background:var(--group2);}
 
         <!-- Mobile -->
         <div class="mo-view">
-          <div class="mo-gnb"><span class="mo-logo">이로움</span><span>☰</span></div>
+          <div class="mo-gnb"><span class="mo-logo">이로움</span><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
           <div class="mo-search">상품을 검색하세요</div>
           <div class="mo-tab-toggle"><span>구입 주문</span><span class="active">대여 주문</span></div>
           <div class="mo-filter-row">
-            <span class="mo-filter-chip" onclick="openSheet('item')">품목 ▾</span>
-            <span class="mo-filter-chip" onclick="openSheet('search')">상태: 전체 ▾</span>
-            <span class="mo-filter-chip" onclick="openSheet('search')">☰ 검색</span>
+            <span class="mo-filter-chip" onclick="openSheet('item')">품목 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="mo-filter-chip" onclick="openSheet('search')">상태: 전체 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="mo-filter-chip" onclick="openSheet('search')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> 검색</span>
           </div>
           <div class="mo-count">전체 128건</div>
           <div class="mo-card-list">
@@ -314,9 +318,9 @@ table.pc-table tr.group2{background:var(--group2);}
                   <div class="sheet-optbtn">지난달</div><div class="sheet-optbtn">1년</div><div class="sheet-optbtn">직접입력</div>
                 </div>
                 <div class="sheet-flabel">품목</div>
-                <div class="sheet-select-btn" onclick="openSheet('item')"><span>전체</span><span>▾</span></div>
+                <div class="sheet-select-btn" onclick="openSheet('item')"><span>전체</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <div class="sheet-flabel">주문 진행상태</div>
-                <div class="sheet-select-btn"><span>전체</span><span>▾</span></div>
+                <div class="sheet-select-btn"><span>전체</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 <div class="sheet-flabel">상세검색</div>
                 <input class="sheet-input" placeholder="수급자명, 주문서번호 등">
               </div>
@@ -371,7 +375,7 @@ var detailOpen = true;
 function toggleDetail(){
   detailOpen = !detailOpen;
   document.getElementById('pc-detail-fields').style.display = detailOpen ? 'block' : 'none';
-  document.getElementById('detail-arrow').textContent = detailOpen ? '▲' : '▼';
+  document.getElementById('detail-arrow').style.transform = detailOpen ? 'rotate(180deg)' : 'rotate(0deg)';
 }
 
 function togglePop(el){

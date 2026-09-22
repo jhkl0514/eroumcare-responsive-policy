@@ -193,7 +193,10 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .dv-input{width:100%;border:1px solid var(--input-border-active);border-radius:4px;padding:8px 12px;
   font-size:14px;font-family:inherit;background:var(--card);color:var(--input-text-active);}
 .dv-input[readonly]{background:var(--disabled-bg);color:var(--input-text-active);border-color:var(--border-primary);}
-select.dv-input{background:var(--card);color:var(--input-text-active);appearance:auto;}
+select.dv-input{background-color:var(--card);color:var(--input-text-active);
+  padding-right:34px;appearance:none;-webkit-appearance:none;-moz-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23333333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:14px 14px;}
 .help-row{display:flex;gap:6px;font-size:13px;color:var(--text-secondary);margin-top:6px;line-height:1.5;}
 .hint-caption{font-size:12px;color:var(--text-tertiary);font-weight:600;margin:12px 0 4px;}
 
@@ -303,7 +306,7 @@ select.dv-input{background:var(--card);color:var(--input-text-active);appearance
       <div class="divider"></div>
       <div class="opt-title-row">설치옵션 <span style="color:var(--text-tertiary);font-size:14px;">ⓘ</span></div>
       <div class="select-wrap">
-        <div class="select-box" onclick="toggleOptionDropdown()">설치옵션 선택 <span>▾</span></div>
+        <div class="select-box" onclick="toggleOptionDropdown()">설치옵션 선택 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="option-dropdown" id="option-dropdown" style="display:none;">
           <div class="option-row" onclick="pickOption(this,'손잡이 추가 20,000원')">손잡이 추가 20,000원</div>
           <div class="option-row selected" onclick="pickOption(this,'배수관 연장 15,000원')">배수관 연장 15,000원</div>
@@ -311,8 +314,8 @@ select.dv-input{background:var(--card);color:var(--input-text-active);appearance
           <div class="option-row" onclick="pickOption(this,'전동 리모컨 추가 12,000원')">전동 리모컨 추가 12,000원</div>
         </div>
       </div>
-      <div class="opt-chip"><span>기존 침대 외부 이동</span><span><span class="price">30,000원</span>✕</span></div>
-      <div class="opt-chip"><span>매트리스 폐기</span><span><span class="price">30,000원</span>✕</span></div>
+      <div class="opt-chip"><span>기존 침대 외부 이동</span><span><span class="price">30,000원</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
+      <div class="opt-chip"><span>매트리스 폐기</span><span><span class="price">30,000원</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
 
       <div class="divider"></div>
       <div class="lock-toggle">
@@ -462,7 +465,7 @@ function toggleOptionDropdown(){
 function pickOption(node, label){
   document.querySelectorAll('.option-row').forEach(function(r){ r.classList.remove('selected'); });
   node.classList.add('selected');
-  document.querySelector('.select-box').innerHTML = label + ' <span>▾</span>';
+  document.querySelector('.select-box').innerHTML = label + ' <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   document.getElementById('option-dropdown').style.display = 'none';
 }
 
