@@ -214,11 +214,11 @@ select.dv-input{background-color:var(--card);color:var(--input-text-active);
 <div class="control-wrap">
   <div class="preset-row" id="preset-row">
     <button class="preset-btn" data-w="320">320px</button>
-    <button class="preset-btn active" data-w="359">359px</button>
+    <button class="preset-btn" data-w="359">359px</button>
     <button class="preset-btn" data-w="360">360px</button>
     <button class="preset-btn" data-w="768">768px</button>
     <button class="preset-btn" data-w="1023">1023px</button>
-    <button class="preset-btn" data-w="1024">1024px</button>
+    <button class="preset-btn active" data-w="1024">1024px</button>
     <button class="preset-btn" data-w="1440">1440px</button>
   </div>
   <div class="w-readout" id="w-readout"></div>
@@ -518,7 +518,7 @@ function updateReadout(){
   var w = Math.round(frameEl.getBoundingClientRect().width);
   document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px' + (w >= 1024 ? ' (PC)' : ' (모바일)');
 }
-setWidth('359');
+setWidth('1024');
 </script>
 </body>
 </html>
