@@ -89,7 +89,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .text-row.plain{min-height:auto;padding:14px 0;}
 .text-row.plain .th{background:none;max-width:none;width:125px;flex:0 0 125px;padding:0;font-size:16px;font-weight:600;color:var(--text-primary);}
 .text-row.plain .td{min-width:0;padding:0;font-size:16px;font-weight:400;}
-.link2-badge{position:absolute;right:12px;top:8px;display:flex;align-items:center;gap:4px;}
+.link2-badge{position:absolute;right:12px;top:8px;display:flex;align-items:center;gap:4px;color:var(--text-secondary);}
 .number-dot{background:var(--brand);color:#fff;border-radius:999px;width:20px;height:20px;
   display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
 .mini-btn{background:var(--brand-subtle);color:var(--brand);font-size:13px;font-weight:600;
@@ -255,8 +255,8 @@ select.dv-input{background-color:var(--card);color:var(--input-text-active);
 
       <div class="text-row">
         <div class="th">돌봄주문번호</div>
-        <div class="td">DB1234567890{"\n"}(2026-04-19 12:08)</div>
-        <div class="link2-badge"><span class="number-dot">3</span></div>
+        <div class="td">DB1234567890<br>(2026-04-19 12:08)</div>
+        <div class="link2-badge"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 17H7A5 5 0 0 1 7 7h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 7h2a5 5 0 1 1 0 10h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="number-dot">3</span></div>
       </div>
       <div class="text-row">
         <div class="th">주문번호</div>
