@@ -36,9 +36,9 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 
 #device-frame-outer{overflow-x:auto;padding-bottom:8px;}
 #device-frame{width:100%;max-width:1440px;margin:0 auto;transition:width .2s;box-sizing:border-box;}
-#device-frame-chrome{border:1px dashed var(--border-primary);border-radius:8px;padding:16px;background:var(--bg);}
+#device-frame-chrome{border:1px dashed var(--border-primary);border-radius:8px;padding:4px;background:var(--bg);}
 
-.form-shell{background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:24px;width:100%;
+.form-shell{background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:12px;width:100%;
   overflow-x:auto;}
 .form-title{font-size:20px;font-weight:700;border-bottom:1px solid var(--text-secondary);
   padding-bottom:12px;margin-bottom:4px;}
@@ -54,10 +54,11 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .zone-chip.stack{background:var(--zone-stack-bg);border-color:var(--zone-stack-border);color:var(--zone-stack-text);}
 .zone-chip.col2{background:var(--zone-2col-bg);border-color:var(--zone-2col-border);color:var(--zone-2col-text);}
 
-/* 텍스트형 (읽기전용) — 헤더 128px + 값 192px, 고정 320, wrap 없음 */
-.text-row{display:flex;min-width:320px;border-bottom:1px solid var(--border-secondary);}
-.text-row .th{width:128px;flex-shrink:0;background:var(--tertiary);padding:16px 12px;font-size:14px;font-weight:600;}
-.text-row .td{width:192px;flex-shrink:0;padding:16px 12px;font-size:14px;}
+/* 텍스트형 (읽기전용) — CLAUDE.md 3-1: flex-shrink만 사용, wrap 없음.
+   헤더 128→80까지, 값은 160까지 줄어들며 버틴다 (최소 합 240px까지 2열 유지) */
+.text-row{display:flex;border-bottom:1px solid var(--border-secondary);}
+.text-row .th{flex:1 0 0;max-width:128px;min-width:80px;background:var(--tertiary);padding:16px 12px;font-size:14px;font-weight:600;}
+.text-row .td{flex:1 0 0;min-width:160px;padding:16px 12px;font-size:14px;overflow-wrap:break-word;}
 
 /* 입력필드형 공통 — 라벨 125px(고정) + 콘텐츠(flex, min-width는 모드별로 다름), flex-wrap로 자동 전환. 미디어쿼리 없음 */
 .input-row{display:flex;flex-wrap:wrap;gap:4px;padding:14px 0;border-bottom:1px solid var(--border-secondary);}
@@ -86,7 +87,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .zip-combo .field-input{flex:1;}
 .zip-btn{flex-shrink:0;background:var(--tertiary);color:var(--text-primary);border:1px solid var(--border-primary);
   border-radius:4px;padding:8px 16px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;}
-.readonly-text{padding:8px 0;font-size:14px;color:var(--text-primary);}
+.readonly-text{padding:8px 0;font-size:14px;color:var(--text-primary);overflow-wrap:break-word;word-break:keep-all;}
 </style>
 </head>
 <body>
@@ -130,7 +131,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
           <span class="zone-chip stack">&lt;409 스택</span>
           <span class="zone-chip col2">409↑ 좌/우</span>
         </div>
-        <div class="input-row edit">
+        <div class="input-row edit" id="row-measure-edit">
           <div class="label-block">이름<span class="req">*</span></div>
           <div class="content-block"><input class="field-input" placeholder="홍길동"></div>
         </div>
@@ -160,7 +161,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
           <span class="zone-chip stack">&lt;313 스택</span>
           <span class="zone-chip col2">313↑ 좌/우</span>
         </div>
-        <div class="input-row view">
+        <div class="input-row view" id="row-measure-view">
           <div class="label-block">이름</div>
           <div class="content-block"><div class="readonly-text">홍길동</div></div>
         </div>
@@ -192,13 +193,22 @@ buttons.forEach(function(b){
   b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
 });
 
+var rowEdit = document.getElementById('row-measure-edit');
+var rowView = document.getElementById('row-measure-view');
+
 function updateReadout(){
   var w = Math.round(frame.getBoundingClientRect().width);
-  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px';
+  var editRowW = Math.round(rowEdit.getBoundingClientRect().width);
+  var viewRowW = Math.round(rowView.getBoundingClientRect().width);
+  document.getElementById('w-readout').textContent =
+    '현재 프레임 폭: ' + w + 'px  ·  실제 행 폭(여백 제외): 수정 ' + editRowW + 'px / 조회 ' + viewRowW + 'px';
+  // 프레임 여백(chrome+shell padding)이 얼마든 상관없이, 실제 렌더링된 행의 폭을 직접 재서 판정한다
   zoneBars.forEach(function(bar){
-    var threshold = bar.getAttribute('data-mode') === 'view' ? 313 : 409;
+    var isView = bar.getAttribute('data-mode') === 'view';
+    var threshold = isView ? 313 : 409;
+    var rowW = isView ? viewRowW : editRowW;
     bar.querySelectorAll('.zone-chip').forEach(function(c){ c.classList.remove('active'); });
-    var target = w < threshold ? bar.querySelector('.zone-chip.stack') : bar.querySelector('.zone-chip.col2');
+    var target = rowW < threshold ? bar.querySelector('.zone-chip.stack') : bar.querySelector('.zone-chip.col2');
     target.classList.add('active');
   });
 }
