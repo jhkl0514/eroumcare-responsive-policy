@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>입력필드 flex-wrap 구조 - 배송정보/주문정보 폼 프로토타입</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#ffffff; --tertiary:#f5f5f5;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999999;
+  --border-primary:#bdbdbd; --border-secondary:#eeeeee;
+  --brand:#323da3;
+  --zone-stack-bg:#fdf2f4; --zone-stack-border:#f5b8c4; --zone-stack-text:#be123c;
+  --zone-2col-bg:#fff7e6; --zone-2col-border:#ffd699; --zone-2col-text:#b45309;
+  --shadow:0 1px 2px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.05);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;
+  padding:20px 16px 60px;}
+#wrap{max-width:1100px;margin:0 auto;}
+.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  padding:14px 18px;margin-bottom:16px;font-size:13px;color:var(--text-secondary);line-height:1.6;}
+.banner b{color:var(--text-primary);}
+.banner code{background:var(--tertiary);padding:1px 5px;border-radius:4px;font-size:12px;}
+
+.preset-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+.preset-btn{border:1px solid var(--border-primary);background:var(--card);border-radius:999px;
+  padding:7px 14px;font-size:13px;cursor:pointer;color:var(--text-secondary);white-space:nowrap;}
+.preset-btn.active{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600;}
+.preset-btn.key{border-color:var(--zone-2col-text);color:var(--zone-2col-text);font-weight:600;}
+.preset-btn.key.active{background:var(--zone-2col-text);border-color:var(--zone-2col-text);color:#fff;}
+
+.zone-bar{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;align-items:center;}
+.zone-chip{border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;border:1px solid;
+  opacity:0.35;transition:opacity .15s;}
+.zone-chip.active{opacity:1;}
+.zone-chip.stack{background:var(--zone-stack-bg);border-color:var(--zone-stack-border);color:var(--zone-stack-text);}
+.zone-chip.col2{background:var(--zone-2col-bg);border-color:var(--zone-2col-border);color:var(--zone-2col-text);}
+.width-readout{margin-left:auto;font-size:12px;color:var(--text-tertiary);font-variant-numeric:tabular-nums;}
+.hint{font-size:12px;color:var(--text-tertiary);margin-bottom:16px;}
+
+#device-frame-outer{overflow-x:auto;padding-bottom:8px;}
+#device-frame{width:100%;max-width:1440px;margin:0 auto;transition:width .2s;box-sizing:border-box;}
+#device-frame-chrome{border:1px dashed var(--border-primary);border-radius:8px;padding:16px;background:var(--bg);}
+
+.form-shell{background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:24px;width:100%;
+  overflow-x:auto;}
+.form-title{font-size:20px;font-weight:700;border-bottom:1px solid var(--text-secondary);
+  padding-bottom:12px;margin-bottom:4px;}
+.group-title{font-size:13px;color:var(--text-tertiary);margin:20px 0 6px;font-weight:600;}
+.group-title:first-child{margin-top:0;}
+
+/* 텍스트형 (읽기전용) — 헤더 128px + 값 192px, 고정 320, wrap 없음 */
+.text-row{display:flex;min-width:320px;border-bottom:1px solid var(--border-secondary);}
+.text-row .th{width:128px;flex-shrink:0;background:var(--tertiary);padding:16px 12px;font-size:14px;font-weight:600;}
+.text-row .td{width:192px;flex-shrink:0;padding:16px 12px;font-size:14px;}
+
+/* 입력필드형 — 라벨 125px(고정) + 콘텐츠(flex, min-width 280px), flex-wrap로 자동 전환. 미디어쿼리 없음 */
+.input-row{display:flex;flex-wrap:wrap;gap:4px;padding:14px 0;border-bottom:1px solid var(--border-secondary);}
+.input-row .label-block{width:125px;flex-shrink:0;display:flex;align-items:center;gap:2px;
+  font-size:16px;font-weight:600;padding-top:2px;}
+.input-row .label-block .req{color:#e53935;font-size:14px;}
+.input-row .content-block{flex:1 0 0;min-width:280px;}
+.field-input{width:100%;border:1px solid var(--border-primary);border-radius:4px;
+  padding:8px 12px;font-size:14px;font-family:inherit;background:var(--card);color:var(--text-primary);}
+.field-input[readonly]{background:var(--tertiary);color:var(--text-secondary);}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="banner">
+    <b>입력필드 flex-wrap 구조 확인용 프로토타입</b> — 입력필드형(이름/주소/전화번호/휴대폰번호/배송희망일/배송요청사항)은 미디어쿼리가 아니라 <code>라벨 125px(고정) + gap 4px + 콘텐츠 최소폭 280px</code>의 flex-wrap 구조입니다. 합산 <b>409px</b>가 실제 전환 지점이며, 별도로 못박은 브레이크포인트 숫자가 아니라 이 폭 계산에서 자연히 나오는 값입니다.
+  </div>
+
+  <div class="preset-row" id="preset-row">
+    <button class="preset-btn" data-w="320">320px</button>
+    <button class="preset-btn" data-w="360">360px</button>
+    <button class="preset-btn active" data-w="408">408px</button>
+    <button class="preset-btn key" data-w="409">409px (125+4+280)</button>
+    <button class="preset-btn" data-w="1023">1023px</button>
+    <button class="preset-btn" data-w="1024">1024px</button>
+  </div>
+
+  <div class="zone-bar">
+    <span class="zone-chip stack">&lt;409 스택</span>
+    <span class="zone-chip col2">409↑ 좌/우</span>
+    <span class="width-readout" id="w-readout"></span>
+  </div>
+  <div class="hint">텍스트형(주문정보)은 폭과 무관하게 항상 고정 2열 — 아래에서 같이 비교해보세요.</div>
+
+  <div id="device-frame-outer">
+    <div id="device-frame">
+    <div id="device-frame-chrome">
+      <div class="form-shell">
+        <div class="form-title">주문 정보 / 배송정보</div>
+
+        <div class="group-title">텍스트형 (읽기전용) — 128px + 192px 고정, wrap 없음</div>
+        <div class="text-row">
+          <div class="th">돌봄주문번호</div>
+          <div class="td">DB1234567890</div>
+        </div>
+        <div class="text-row">
+          <div class="th">주문번호</div>
+          <div class="td">2026010315235001</div>
+        </div>
+
+        <div class="group-title">입력필드형 — 라벨 125px + 콘텐츠 최소 280px, flex-wrap 자동 전환</div>
+        <div class="input-row">
+          <div class="label-block">이름<span class="req">*</span></div>
+          <div class="content-block"><input class="field-input" placeholder="홍길동"></div>
+        </div>
+        <div class="input-row">
+          <div class="label-block">주소<span class="req">*</span></div>
+          <div class="content-block"><input class="field-input" placeholder="(16495) 경기 수원시 영통구 광교로 32 (이의동, 아름학교)"></div>
+        </div>
+        <div class="input-row">
+          <div class="label-block">휴대폰번호<span class="req">*</span></div>
+          <div class="content-block"><input class="field-input" placeholder="010-1234-5678"></div>
+        </div>
+        <div class="input-row">
+          <div class="label-block">배송희망일</div>
+          <div class="content-block"><input class="field-input" placeholder="2026-07-09 (금)"></div>
+        </div>
+        <div class="input-row">
+          <div class="label-block">배송요청사항</div>
+          <div class="content-block"><input class="field-input" placeholder="직접입력"></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var frame = document.getElementById('device-frame');
+var buttons = document.querySelectorAll('.preset-btn');
+
+function setWidth(w){
+  buttons.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-w') === w); });
+  frame.style.width = w + 'px';
+  requestAnimationFrame(updateReadout);
+}
+buttons.forEach(function(b){
+  b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
+});
+
+function updateReadout(){
+  var w = Math.round(frame.getBoundingClientRect().width);
+  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px';
+  var chips = document.querySelectorAll('.zone-chip');
+  chips.forEach(function(c){ c.classList.remove('active'); });
+  if(w < 409){
+    document.querySelector('.zone-chip.stack').classList.add('active');
+  } else {
+    document.querySelector('.zone-chip.col2').classList.add('active');
+  }
+}
+setWidth('408');
+window.addEventListener('resize', updateReadout);
+</script>
+</body>
+</html>

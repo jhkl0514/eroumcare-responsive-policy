@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>주문요청관리 - 대여 주문 상세 (모바일)</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#ffffff; --tertiary:#f5f5f5; --secondary-bg:#fafafa; --disabled-bg:#eee;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999; --text-danger:#e53935;
+  --border-primary:#bdbdbd; --border-secondary:#eee; --border-tertiary:#e0e0e0; --border-dark:#616161;
+  --brand:#323da3; --brand-subtle:#e3e5f5;
+  --input-border-active:#333; --input-text-active:#333; --btn-text:#555;
+  --success-bg:#e8f5e9; --success-border:#c8e6c9; --success-text:#166534; --success-bold:#15803d;
+  --shadow:0 1px 2px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.05);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+#phone{max-width:none;width:100%;margin:0 auto;background:var(--card);min-height:100vh;position:relative;}
+.proto-note{max-width:800px;margin:0 auto 12px;background:var(--card);border:1px solid var(--border-secondary);
+  border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text-secondary);line-height:1.6;}
+#outer{padding:16px 0 0;}
+
+/* 반응형 프리셋 컨트롤 */
+.control-wrap{max-width:800px;margin:0 auto 12px;}
+.preset-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.preset-btn{border:1px solid var(--border-primary);background:var(--card);border-radius:999px;
+  padding:7px 14px;font-size:13px;cursor:pointer;color:var(--text-secondary);white-space:nowrap;}
+.preset-btn.active{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600;}
+.w-readout{font-size:12px;color:var(--text-tertiary);margin-bottom:8px;}
+#frame-outer{overflow-x:auto;}
+#frame{width:100%;max-width:1440px;margin:0 auto;box-sizing:border-box;transition:width .2s;}
+#frame-chrome{border:1px dashed var(--border-primary);border-radius:10px;padding:12px;background:var(--bg);}
+
+.breadcrumb{display:none;font-size:12px;color:var(--text-tertiary);padding:14px 20px 0;}
+.title-action-wrap{display:block;}
+
+/* 1024px 이상: PC 레이아웃 */
+@container pf (min-width: 1024px){
+  #phone{max-width:1400px;box-shadow:var(--shadow);border-radius:8px;overflow:hidden;}
+  .back{display:none;}
+  .breadcrumb{display:block;}
+  .gnb-menu{gap:28px;font-size:14px;}
+  .title-action-wrap{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 4px;}
+  .page-head{padding:0;}
+  .action-row{padding:0;width:auto;flex:none;}
+  .action-row .btn{flex:0 0 auto;width:auto;display:inline-block;padding:10px 20px;white-space:nowrap;}
+  .bug-note{margin:8px 20px 0;}
+  .bottom-actions{display:none;}
+}
+
+/* Nav */
+.gnb{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;}
+.logo{font-weight:800;color:var(--brand);font-size:16px;}
+.gnb-menu{display:flex;gap:16px;font-size:13px;color:var(--text-secondary);}
+.gnb-menu b{color:var(--text-primary);}
+.search-bar{margin:0 20px 10px;background:var(--tertiary);border-radius:8px;padding:10px 14px;
+  font-size:13px;color:var(--text-tertiary);}
+.tab-row{display:flex;padding:0 20px 12px;gap:20px;border-bottom:1px solid var(--border-secondary);}
+.tab{font-size:14px;color:var(--text-tertiary);padding-bottom:8px;}
+.tab.active{color:var(--text-primary);font-weight:700;border-bottom:2px solid var(--text-primary);}
+
+/* Page title + actions */
+.page-head{display:flex;align-items:center;gap:8px;padding:16px 20px 0;}
+.back{font-size:20px;color:var(--text-primary);}
+.page-title{font-size:18px;font-weight:700;}
+.action-row{display:flex;gap:8px;padding:12px 20px 4px;}
+.btn{border-radius:4px;font-size:14px;font-weight:600;padding:12px 0;flex:1;text-align:center;cursor:pointer;border:1px solid transparent;}
+.btn-outline{background:var(--card);color:var(--text-primary);border-color:var(--border-primary);}
+.btn-filled{background:var(--brand);color:#fff;}
+.bug-note{margin:4px 20px 0;font-size:11px;color:#b45309;background:#fff7e6;border:1px solid #ffd699;
+  border-radius:6px;padding:8px 10px;line-height:1.5;}
+
+.section{padding:24px 20px;}
+.section + .section{border-top:8px solid var(--bg);}
+.section-title-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border-dark);
+  padding-bottom:6px;margin-bottom:2px;}
+.section-title{font-size:20px;font-weight:700;}
+.badge-fill{background:var(--success-bold);color:#fff;font-size:14px;font-weight:600;padding:4px 8px;
+  border-radius:4px;height:28px;display:inline-flex;align-items:center;}
+
+/* 텍스트형 (읽기전용) — flex-shrink 기반, wrap 없음 */
+.text-row{display:flex;align-items:center;min-height:52px;border-bottom:1px solid var(--border-tertiary);position:relative;}
+.text-row .th{flex:1 0 0;max-width:128px;min-width:80px;background:var(--tertiary);align-self:stretch;
+  display:flex;align-items:center;padding:0 12px;font-size:14px;font-weight:600;}
+.text-row .td{flex:1 0 0;min-width:160px;padding:0 12px;font-size:14px;display:flex;align-items:center;gap:8px;white-space:pre-wrap;}
+/* 배송정보용 variant — 라벨 배경 없음, 16px (주문정보와 다른 실제 스펙) */
+.text-row.plain{min-height:auto;padding:14px 0;}
+.text-row.plain .th{background:none;max-width:none;width:125px;flex:0 0 125px;padding:0;font-size:16px;font-weight:600;color:var(--text-primary);}
+.text-row.plain .td{min-width:0;padding:0;font-size:16px;font-weight:400;}
+.link2-badge{position:absolute;right:12px;top:8px;display:flex;align-items:center;gap:4px;}
+.number-dot{background:var(--brand);color:#fff;border-radius:999px;width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+.mini-btn{background:var(--brand-subtle);color:var(--brand);font-size:13px;font-weight:600;
+  border-radius:4px;padding:7px 14px;white-space:nowrap;}
+.notice{font-size:13px;color:var(--text-secondary);line-height:1.6;padding:12px 0 0;}
+.notice .warn{color:var(--text-danger);text-decoration:underline;}
+
+/* 주문상품 */
+.product-top{display:flex;gap:8px;align-items:center;}
+.thumb{width:100px;height:100px;border:1px solid var(--border-secondary);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-tertiary);}
+.chip{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;
+  font-size:14px;font-weight:600;border:1px solid;background:var(--success-bg);border-color:var(--success-border);
+  color:var(--success-text);}
+.cat-tag{border:1px solid var(--border-primary);color:var(--text-secondary);font-size:14px;font-weight:600;
+  height:32px;display:inline-flex;align-items:center;padding:0 12px;border-radius:4px;background:var(--card);}
+.product-name{font-size:18px;font-weight:600;margin-top:8px;}
+.qty-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;}
+.qty-text{font-size:14px;}
+.qty-text b{color:var(--text-primary);}
+.small-outline-btn{background:var(--disabled-bg);color:var(--btn-text);font-size:14px;font-weight:600;
+  border-radius:4px;padding:8px 16px;}
+.price-box{background:var(--secondary-bg);border-radius:4px;padding:8px 12px;margin-top:10px;}
+.price-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:14px;font-weight:600;}
+.price-row .label{color:var(--text-secondary);}
+.price-row .value{font-size:18px;}
+.price-row.danger .value{color:var(--text-danger);}
+.divider{height:1px;background:var(--disabled-bg);margin:16px 0;}
+.opt-title-row{display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600;margin-bottom:8px;}
+.select-box{border:1px solid #333;border-radius:4px;padding:10px 12px;font-size:14px;color:#333;background:#fff;
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;cursor:pointer;}
+.opt-chip{background:var(--secondary-bg);border-radius:4px;padding:8px 16px;display:flex;
+  justify-content:space-between;align-items:center;font-size:14px;margin-bottom:4px;}
+.opt-chip .price{font-weight:900;color:#555;margin-right:8px;}
+.delivery-wrap{display:flex;flex-direction:column;}
+.delivery-left{padding-right:16px;}
+.delivery-title{font-size:16px;font-weight:600;white-space:nowrap;}
+.delivery-region{font-size:16px;margin:6px 0 0;color:var(--text-secondary);white-space:nowrap;}
+.delivery-region b{color:var(--brand);font-weight:600;}
+.date-box{border:1px solid #333;border-radius:4px;padding:10px 12px;font-size:14px;color:#333;
+  display:flex;justify-content:space-between;align-items:center;margin-top:12px;background:#fff;}
+.date-box-locked{background:var(--secondary-bg);border-radius:4px;padding:8px 16px;font-size:16px;
+  font-weight:600;color:var(--text-primary);margin-top:12px;flex:1;}
+.chip-complete{background:#f2fde4;border-color:#c6f68d;color:#09af00;}
+.total-price-bar{background:var(--tertiary);border-radius:4px;padding:12px 16px;display:flex;
+  justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:8px;}
+.total-price-bar .ttl{font-size:18px;font-weight:700;}
+.total-price-bar .rows{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.total-price-bar .row{display:flex;gap:10px;font-size:14px;align-items:center;}
+.total-price-bar .row .label{color:var(--text-secondary);}
+.total-price-bar .row .value{font-size:18px;font-weight:600;color:var(--text-primary);}
+.total-price-bar .row.danger .value{color:var(--text-danger);}
+.readonly-caption{font-size:12px;color:var(--text-tertiary);font-weight:600;margin:0 0 8px;}
+.select-wrap{position:relative;}
+.option-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #333;
+  border-radius:4px;box-shadow:0 2px 4px rgba(0,0,0,0.12),0 0 2px rgba(0,0,0,0.12);padding:8px;z-index:20;}
+.option-row{padding:8px 12px;border-radius:4px;font-size:16px;cursor:pointer;}
+.option-row:hover{background:#eff1fd;}
+.option-row.selected{background:#eff1fd;}
+.date-wrap{position:relative;}
+.calendar-popup{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #333;
+  border-radius:4px;box-shadow:0 2px 4px rgba(0,0,0,0.12),0 0 2px rgba(0,0,0,0.12);padding:12px;z-index:20;}
+@container pf (min-width: 1024px){
+  .calendar-popup{right:auto;width:320px;}
+}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cal-nav{width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:18px;color:var(--text-secondary);}
+.cal-title{font-size:18px;font-weight:900;}
+.cal-weekrow{display:flex;background:var(--tertiary);border-radius:4px;overflow:hidden;margin-bottom:4px;}
+.cal-weekrow span{flex:1;text-align:center;font-size:12px;padding:4px 0;color:var(--text-primary);}
+.cal-grid{display:flex;flex-wrap:wrap;}
+.cal-cell{width:14.28%;height:40px;display:flex;align-items:center;justify-content:center;}
+.cal-day{width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:600;cursor:pointer;color:var(--btn-text);}
+.cal-day.disabled{color:var(--text-disabled);cursor:default;}
+.cal-day.today{background:#90ee02;color:var(--text-primary);}
+.cal-day.selected{background:#f2fde4;color:var(--text-primary);}
+.lock-toggle{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary);
+  margin:6px 0 4px;}
+@container pf (min-width: 1024px){
+  .delivery-wrap{flex-direction:row;align-items:center;gap:8px;}
+  .delivery-left{flex:0 0 auto;}
+  .delivery-region{margin-top:2px;}
+  .date-box{width:188px;flex:0 0 188px;margin-top:0;}
+  .date-box-locked{margin-top:0;flex:1 0 0;}
+  .dv-content-edit{max-width:480px;}
+  .text-row.plain .td{max-width:480px;}
+}
+
+/* 배송조회 (텍스트형/입력형 flex-wrap) */
+.dv-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-dark);
+  padding-bottom:8px;margin-bottom:4px;}
+.dv-title{font-size:20px;font-weight:700;}
+.mode-btn{background:var(--disabled-bg);color:var(--btn-text);font-size:14px;font-weight:600;
+  border-radius:4px;padding:8px 16px;border:none;cursor:pointer;}
+.mode-btn.save{background:var(--brand);color:#fff;}
+.dv-row{display:flex;flex-wrap:wrap;gap:4px;padding:14px 0;border-bottom:1px solid var(--border-tertiary);}
+.dv-label{width:125px;flex-shrink:0;font-size:16px;font-weight:600;padding-top:2px;}
+.dv-content-edit{flex:1 0 0;min-width:280px;}
+.dv-input{width:100%;border:1px solid var(--input-border-active);border-radius:4px;padding:8px 12px;
+  font-size:14px;font-family:inherit;background:var(--card);color:var(--input-text-active);}
+.dv-input[readonly]{background:var(--disabled-bg);color:var(--input-text-active);border-color:var(--border-primary);}
+select.dv-input{background:var(--card);color:var(--input-text-active);appearance:auto;}
+.help-row{display:flex;gap:6px;font-size:13px;color:var(--text-secondary);margin-top:6px;line-height:1.5;}
+.hint-caption{font-size:12px;color:var(--text-tertiary);font-weight:600;margin:12px 0 4px;}
+
+/* 하단버튼 sticky */
+.bottom-actions{position:sticky;bottom:0;display:flex;gap:8px;padding:16px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+  background:linear-gradient(to bottom, rgba(255,255,255,0), var(--card) 35%);}
+</style>
+</head>
+<body>
+<div class="proto-note">
+  <b>검토용 프로토타입</b> — 주문요청관리(대여) 주문 상세, 모바일(360px). 텍스트형(읽기전용)은 좌우 고정+flex-shrink, 입력필드형(배송조회)은 라벨125px+콘텐츠 최소폭 기반 flex-wrap입니다. 하단 "변경하기/취소·저장" 버튼으로 배송정보 조회↔수정 모드를 전환해보세요.<br>
+  ⚠ 상단 액션 버튼(주문취소/주문하기)은 실제 Figma에서는 hidden 처리되어 있고 대신 하단에 다른 버튼이 노출되는 문제가 있었습니다 — 여기서는 <b>의도된 정상 상태</b>로 표시했습니다.
+</div>
+
+<div class="control-wrap">
+  <div class="preset-row" id="preset-row">
+    <button class="preset-btn" data-w="320">320px</button>
+    <button class="preset-btn active" data-w="359">359px</button>
+    <button class="preset-btn" data-w="360">360px</button>
+    <button class="preset-btn" data-w="768">768px</button>
+    <button class="preset-btn" data-w="1023">1023px</button>
+    <button class="preset-btn" data-w="1024">1024px</button>
+    <button class="preset-btn" data-w="1440">1440px</button>
+  </div>
+  <div class="w-readout" id="w-readout"></div>
+</div>
+
+<div id="frame-outer">
+<div id="frame" style="container-type:inline-size;container-name:pf;">
+<div id="frame-chrome">
+
+<div id="phone">
+  <div id="outer">
+    <div class="gnb">
+      <div class="logo">이로움</div>
+      <div class="gnb-menu"><span>판매</span><b>대여</b></div>
+    </div>
+    <div class="search-bar">상품을 검색하세요</div>
+    <div class="tab-row"><div class="tab">판매</div><div class="tab active">대여</div></div>
+    <div class="breadcrumb">사업소 운영관리 &gt; 주문요청관리(대여) &gt; 주문 상세보기</div>
+
+    <div class="title-action-wrap">
+      <div class="page-head">
+        <span class="back">&#8249;</span>
+        <span class="page-title">주문 상세보기</span>
+      </div>
+      <div class="action-row">
+        <div class="btn btn-outline">주문취소</div>
+        <div class="btn btn-filled">주문하기</div>
+      </div>
+    </div>
+    <div class="bug-note">⚠ 실제 파일: 이 버튼(outline+filled, 156px)이 hidden 처리되어 있고, 화면 맨 아래 다른 두 버튼(둘 다 Filled)이 대신 노출됩니다.</div>
+
+    <div class="section">
+      <div class="section-title-row"><div class="section-title">주문 정보</div></div>
+
+      <div class="text-row">
+        <div class="th">돌봄주문번호</div>
+        <div class="td">DB1234567890{"\n"}(2026-04-19 12:08)</div>
+        <div class="link2-badge"><span class="number-dot">3</span></div>
+      </div>
+      <div class="text-row">
+        <div class="th">주문번호</div>
+        <div class="td">-</div>
+      </div>
+      <div class="text-row">
+        <div class="th">수급자 이름</div>
+        <div class="td">홍길동 (남성, 85세)</div>
+      </div>
+      <div class="text-row">
+        <div class="th">요양인정번호</div>
+        <div class="td">- <span class="mini-btn">조회</span></div>
+      </div>
+      <div class="text-row">
+        <div class="th">연락처</div>
+        <div class="td">010-1234-5678</div>
+      </div>
+      <div class="text-row">
+        <div class="th">보호자</div>
+        <div class="td">홍꺽정 (011-3131-1455 / 자녀)</div>
+      </div>
+
+      <div class="notice">※ 보호자(수급자)의 주문요청 시점과 이로움에 주문 시점 사이에 수급자의 계약 조건이 변경될 수 있습니다. <span class="warn">주문 전, 반드시 요양정보를 다시 확인하시기 바랍니다.</span></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title-row"><div class="section-title">주문상품</div><span class="badge-fill">대여</span></div>
+      <div class="product-top" style="margin-top:12px;">
+        <div class="thumb">침대<br>이미지</div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="chip">주문확인중</span>
+            <span class="cat-tag">전동침대</span>
+          </div>
+          <div class="product-name">천연BED ST-3</div>
+        </div>
+      </div>
+      <div class="qty-row">
+        <div class="qty-text">대여 &nbsp; <b>1개</b></div>
+        <div class="small-outline-btn">상품변경</div>
+      </div>
+      <div class="price-box">
+        <div class="price-row"><span class="label">대여료(월)</span><span class="value">월 76,200원</span></div>
+        <div class="price-row danger"><span class="label">본인부담금(15%)</span><span class="value">월 3,300원</span></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="opt-title-row">설치옵션 <span style="color:var(--text-tertiary);font-size:14px;">ⓘ</span></div>
+      <div class="select-wrap">
+        <div class="select-box" onclick="toggleOptionDropdown()">설치옵션 선택 <span>▾</span></div>
+        <div class="option-dropdown" id="option-dropdown" style="display:none;">
+          <div class="option-row" onclick="pickOption(this,'손잡이 추가 20,000원')">손잡이 추가 20,000원</div>
+          <div class="option-row selected" onclick="pickOption(this,'배수관 연장 15,000원')">배수관 연장 15,000원</div>
+          <div class="option-row" onclick="pickOption(this,'방수 매트리스 커버 10,000원')">방수 매트리스 커버 10,000원</div>
+          <div class="option-row" onclick="pickOption(this,'전동 리모컨 추가 12,000원')">전동 리모컨 추가 12,000원</div>
+        </div>
+      </div>
+      <div class="opt-chip"><span>기존 침대 외부 이동</span><span><span class="price">30,000원</span>✕</span></div>
+      <div class="opt-chip"><span>매트리스 폐기</span><span><span class="price">30,000원</span>✕</span></div>
+
+      <div class="divider"></div>
+      <div class="lock-toggle">
+        <input type="checkbox" id="date-locked" onchange="renderDeliveryDate()">
+        <label for="date-locked">배송희망일 선택완료(수정불가) 상태로 보기</label>
+      </div>
+      <div class="delivery-wrap">
+        <div class="delivery-left">
+          <div class="delivery-title">배송희망일 (설치배송)</div>
+          <div class="delivery-region">배송지역 : <b>서울특별시 구로구</b></div>
+        </div>
+        <div class="date-wrap" style="flex:1;">
+          <div id="date-field-wrap"></div>
+          <div class="calendar-popup" id="calendar-popup" style="display:none;">
+            <div class="cal-head">
+              <div class="cal-nav">&#8249;</div>
+              <div class="cal-title">2026-06</div>
+              <div class="cal-nav">&#8250;</div>
+            </div>
+            <div class="cal-weekrow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+            <div class="cal-grid" id="cal-grid"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="readonly-caption">비교용 — 주문완료 상태의 주문상품 (읽기전용: 상품변경/옵션추가삭제/배송일수정 불가)</div>
+      <div class="section-title-row"><div class="section-title">주문상품</div><span class="badge-fill">대여</span></div>
+      <div class="product-top" style="margin-top:12px;">
+        <div class="thumb">침대<br>이미지</div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="chip chip-complete">주문완료</span>
+            <span class="cat-tag">전동침대</span>
+          </div>
+          <div class="product-name">천연BED ST-3</div>
+        </div>
+      </div>
+      <div class="qty-row">
+        <div class="qty-text">대여 &nbsp; <b>1개</b></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="opt-title-row">설치옵션</div>
+      <div class="opt-chip"><span>기존 침대 외부 이동</span><span class="price">30,000원</span></div>
+      <div class="opt-chip"><span>매트리스 폐기</span><span class="price">30,000원</span></div>
+
+      <div class="divider"></div>
+      <div class="delivery-wrap">
+        <div class="delivery-left">
+          <div class="delivery-title">배송희망일 (설치배송)</div>
+          <div class="delivery-region">배송지역 : <b>서울특별시 구로구</b></div>
+        </div>
+        <div style="flex:1;"><div class="date-box-locked">2026-10-03 (토)</div></div>
+      </div>
+
+      <div class="total-price-bar">
+        <div class="ttl">총 대여 금액</div>
+        <div class="rows">
+          <div class="row"><span class="label">대여료(월)</span><span class="value">월 392,400원</span></div>
+          <div class="row danger"><span class="label">본인부담금(15%)</span><span class="value">월 23,540원</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="delivery-section">
+      <!-- JS로 조회/수정 모드 렌더 -->
+    </div>
+  </div>
+
+  <div class="bottom-actions">
+    <div class="btn btn-filled" style="flex:0 0 100px;">확인</div>
+    <div class="btn btn-outline" style="flex:1;">주문 상세 목록으로</div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+var CAL_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px;"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9H21" stroke="currentColor" stroke-width="2"/><path d="M8 3V6M16 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+var editMode = false;
+
+function renderDelivery(){
+  var el = document.getElementById('delivery-section');
+  el.innerHTML =
+    '<div class="dv-head"><div class="dv-title">배송정보</div>'+
+      '<button class="mode-btn">변경하기</button></div>'+
+    '<div class="hint-caption">조회 상태 — 텍스트형(주문정보와 동일한 shrink 구조, wrap 없음)</div>'+
+    '<div class="text-row plain"><div class="th">이름</div><div class="td">홍길동</div></div>'+
+    '<div class="text-row plain"><div class="th">주소</div><div class="td">(16495) 경기 수원시 영통구 광교로 32 (이의동, 아름학교)</div></div>'+
+    '<div class="text-row plain"><div class="th">전화번호</div><div class="td">-</div></div>'+
+    '<div class="text-row plain"><div class="th">휴대폰번호</div><div class="td">010-1234-5678</div></div>'+
+    '<div class="text-row plain"><div class="th">배송요청사항</div><div class="td">부재시 현관 앞에 두고 가주세요</div></div>'+
+
+    '<div class="hint-caption" style="margin-top:20px;">수정 상태 — 입력필드형(라벨 125px + 콘텐츠 최소폭 280px, flex-wrap)</div>'+
+    '<div class="dv-head" style="border-top:none;padding-top:0;"><div class="dv-title" style="font-size:16px;">배송정보 수정</div>'+
+      '<div style="display:flex;gap:6px;">'+
+        '<button class="mode-btn">취소하기</button>'+
+        '<button class="mode-btn save">저장하기</button>'+
+      '</div></div>'+
+    '<div class="dv-row"><div class="dv-label">이름<span style="color:var(--text-danger)">*</span></div>'+
+      '<div class="dv-content-edit"><input class="dv-input" value="홍길동"></div></div>'+
+    '<div class="dv-row"><div class="dv-label">주소<span style="color:var(--text-danger)">*</span></div>'+
+      '<div class="dv-content-edit">'+
+        '<div style="display:flex;gap:8px;margin-bottom:6px;">'+
+          '<input class="dv-input" value="16495" readonly>'+
+          '<button class="mode-btn" style="flex-shrink:0;">우편번호</button>'+
+        '</div>'+
+        '<input class="dv-input" value="경기 수원시 영통구 광교로 32 (이의동, 아름학교)" readonly style="margin-bottom:6px;">'+
+        '<input class="dv-input" placeholder="상세주소 입력">'+
+      '</div></div>'+
+    '<div class="dv-row"><div class="dv-label">전화번호</div>'+
+      '<div class="dv-content-edit"><input class="dv-input" placeholder="- 없이 숫자만 입력"></div></div>'+
+    '<div class="dv-row"><div class="dv-label">휴대폰번호<span style="color:var(--text-danger)">*</span></div>'+
+      '<div class="dv-content-edit"><input class="dv-input" value="010-1234-5689"></div></div>'+
+    '<div class="dv-row"><div class="dv-label">배송희망일</div>'+
+      '<div class="dv-content-edit">'+
+        '<input class="dv-input" value="2026-07-09 (금)">'+
+        '<div class="help-row">ⓘ 마감 시각 기준으로 내일부터 최대 14일 후까지 선택할 수 있습니다. (오후 1시 마감)</div>'+
+      '</div></div>'+
+    '<div class="dv-row"><div class="dv-label">배송요청사항</div>'+
+      '<div class="dv-content-edit">'+
+        '<select class="dv-input" style="margin-bottom:6px;"><option>직접입력</option></select>'+
+        '<input class="dv-input" placeholder="한글 20자, 영문 40자 이내">'+
+      '</div></div>';
+}
+function renderDeliveryDate(){
+  var locked = document.getElementById('date-locked').checked;
+  var el = document.getElementById('date-field-wrap');
+  if(locked){
+    el.innerHTML = '<div class="date-box-locked">2026-10-03 (토)</div>';
+  } else {
+    el.innerHTML = '<div class="date-box" onclick="toggleCalendar()">2026-06-07 ' + CAL_ICON + '</div>';
+  }
+}
+renderDeliveryDate();
+
+function toggleOptionDropdown(){
+  var el = document.getElementById('option-dropdown');
+  var opening = el.style.display === 'none';
+  document.getElementById('calendar-popup').style.display = 'none';
+  el.style.display = opening ? 'block' : 'none';
+}
+function pickOption(node, label){
+  document.querySelectorAll('.option-row').forEach(function(r){ r.classList.remove('selected'); });
+  node.classList.add('selected');
+  document.querySelector('.select-box').innerHTML = label + ' <span>▾</span>';
+  document.getElementById('option-dropdown').style.display = 'none';
+}
+
+var CAL_DAYS = [
+  {d:25,dim:true},{d:26,dim:true},{d:27,dim:true},{d:28,dim:true},{d:29,dim:true},{d:30,dim:true},{d:1},
+  {d:2},{d:3},{d:4},{d:5},{d:6},{d:7},{d:8},
+  {d:9},{d:10},{d:11},{d:12},{d:13},{d:14},{d:15},
+  {d:16},{d:17},{d:18},{d:19},{d:20},{d:21,today:true},{d:22},
+  {d:23,selected:true},{d:24},{d:25},{d:26},{d:27},{d:28},{d:29},
+  {d:30},{d:1,dim:true},{d:2,dim:true},{d:3,dim:true},{d:4,dim:true},{d:5,dim:true},{d:6,dim:true}
+];
+function renderCalGrid(){
+  var html = '';
+  CAL_DAYS.forEach(function(c){
+    var cls = 'cal-day' + (c.dim ? ' disabled' : '') + (c.today ? ' today' : '') + (c.selected ? ' selected' : '');
+    var click = c.dim ? '' : 'onclick="pickDate(' + c.d + ', this)"';
+    html += '<div class="cal-cell"><div class="' + cls + '" ' + click + '>' + c.d + '</div></div>';
+  });
+  document.getElementById('cal-grid').innerHTML = html;
+}
+function toggleCalendar(){
+  var el = document.getElementById('calendar-popup');
+  var opening = el.style.display === 'none';
+  document.getElementById('option-dropdown').style.display = 'none';
+  el.style.display = opening ? 'block' : 'none';
+  if(opening){ renderCalGrid(); }
+}
+function pickDate(day, node){
+  document.querySelectorAll('.cal-day.selected').forEach(function(n){ n.classList.remove('selected'); });
+  node.classList.add('selected');
+  var dateStr = '2026-06-' + String(day).padStart(2,'0');
+  document.querySelector('#date-field-wrap .date-box').innerHTML = dateStr + ' ' + CAL_ICON;
+  document.getElementById('calendar-popup').style.display = 'none';
+}
+
+function toggleMode(){ editMode = !editMode; renderDelivery(); }
+renderDelivery();
+
+var frameEl = document.getElementById('frame');
+var presetButtons = document.querySelectorAll('.preset-btn');
+function setWidth(w){
+  presetButtons.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-w') === w); });
+  frameEl.style.width = w + 'px';
+  requestAnimationFrame(updateReadout);
+}
+presetButtons.forEach(function(b){
+  b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
+});
+function updateReadout(){
+  var w = Math.round(frameEl.getBoundingClientRect().width);
+  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px' + (w >= 1024 ? ' (PC)' : ' (모바일)');
+}
+setWidth('359');
+</script>
+</body>
+</html>

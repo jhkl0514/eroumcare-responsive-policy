@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>주문요청관리(대여) 리스트 - 적응형</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa; --disabled-bg:#eee;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999; --text-disabled:#bdbdbd;
+  --border-primary:#bdbdbd; --border-secondary:#eee; --border-dark:#616161; --border-active:#333;
+  --brand:#323da3; --group1:#eff1fd; --group2:#e8f5e9;
+  --info-bg:#eff6ff; --info-border:#dbeafe; --info-text:#1e40af;
+  --success-bg:#e8f5e9; --success-border:#c8e6c9; --success-text:#166534;
+  --caution-bg:#fff7e6; --caution-border:#ffd699; --caution-text:#b45309;
+  --shadow:0 1px 2px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.05);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+#wrap{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  padding:14px 18px;margin-bottom:16px;font-size:13px;color:var(--text-secondary);line-height:1.6;}
+.banner b{color:var(--text-primary);}
+.preset-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.preset-btn{border:1px solid var(--border-primary);background:var(--card);border-radius:999px;
+  padding:7px 14px;font-size:13px;cursor:pointer;color:var(--text-secondary);white-space:nowrap;}
+.preset-btn.active{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600;}
+.w-readout{font-size:12px;color:var(--text-tertiary);margin-bottom:12px;}
+#frame-outer{overflow-x:auto;}
+#frame{width:100%;max-width:1440px;margin:0 auto;box-sizing:border-box;transition:width .2s;}
+#frame-chrome{border:1px dashed var(--border-primary);border-radius:10px;padding:16px;background:var(--bg);}
+.page{background:var(--card);border-radius:8px;overflow:hidden;position:relative;}
+
+.pc-view, .mo-view{display:none;}
+@container pf (min-width:1024px){ .pc-view{display:block;} }
+@container pf (max-width:1023.98px){ .mo-view{display:block;} }
+
+/* ---- PC ---- */
+.pc-titlebar{padding:24px 24px 0;font-size:24px;font-weight:700;}
+.pc-breadcrumb{padding:6px 24px 20px;font-size:14px;color:#555;display:flex;align-items:center;gap:4px;}
+.pc-tabrow{margin:0 24px;display:flex;border-bottom:2px solid #000;}
+.pc-tab{flex:1;text-align:center;padding:12px 0;font-size:16px;border:1px solid var(--border-secondary);
+  border-bottom:none;cursor:pointer;color:var(--text-primary);}
+.pc-tab.active{border:2px solid var(--border-active);border-bottom:none;font-weight:700;color:var(--border-active);}
+.pc-search-wrap{margin:12px 24px 0;}
+.pc-search-card{background:var(--secondary-bg);border:1px solid var(--border-primary);border-radius:4px;
+  padding:16px;position:relative;}
+.pc-detail-toggle{position:absolute;top:16px;right:16px;background:var(--disabled-bg);border:none;border-radius:4px;
+  padding:8px 16px;font-size:14px;font-weight:600;color:#555;cursor:pointer;display:flex;align-items:center;gap:4px;}
+.pc-frow{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-secondary);}
+.pc-frow:last-of-type{border-bottom:none;}
+.pc-flabel{width:120px;flex-shrink:0;font-size:14px;font-weight:600;}
+.pc-datebox{border:1px solid var(--border-active);border-radius:4px;padding:8px 12px;font-size:14px;
+  color:var(--border-active);width:160px;display:flex;justify-content:space-between;align-items:center;background:#fff;}
+.pc-seg{border:1px solid var(--border-dark);border-radius:4px;padding:4px;display:flex;gap:4px;}
+.pc-seg span{padding:8px 4px;font-size:14px;color:var(--text-secondary);border-right:1px solid var(--disabled-bg);
+  width:64px;text-align:center;cursor:pointer;}
+.pc-seg span:last-child{border-right:none;}
+.pc-seg span.active{background:var(--disabled-bg);border-radius:4px;font-weight:600;color:var(--text-primary);
+  border-right:none;}
+.pc-radio-group{display:flex;gap:16px;flex-wrap:wrap;}
+.pc-radio-group label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;}
+.pc-select{border:1px solid var(--border-active);border-radius:4px;padding:8px 12px;font-size:14px;
+  width:160px;background:#fff;color:var(--border-active);}
+.pc-desc{font-size:14px;color:var(--text-secondary);}
+.pc-search-input{border:1px solid var(--border-dark);border-radius:4px;padding:8px 12px;font-size:14px;
+  flex:1;background:#fff;color:var(--text-disabled);}
+.pc-btnrow{display:flex;gap:10px;justify-content:center;padding-top:16px;}
+.pc-btn{border-radius:4px;padding:8px 16px;font-size:14px;font-weight:600;cursor:pointer;width:130px;text-align:center;}
+.pc-btn.outline{background:#fff;border:1px solid var(--brand);color:var(--brand);}
+.pc-btn.filled{background:var(--brand);color:#fff;border:none;}
+.pc-tablewrap{padding:0 24px 24px;margin-top:16px;}
+table.pc-table{width:100%;border-collapse:collapse;font-size:13px;}
+table.pc-table th{background:var(--tertiary);padding:14px 12px;text-align:left;border-bottom:1px solid var(--border-primary);
+  font-weight:600;}
+table.pc-table td{padding:14px 12px;border-bottom:1px solid var(--border-secondary);}
+table.pc-table tr.rowlink{cursor:pointer;}
+table.pc-table tr.rowlink:hover{background:#eff1fd;}
+table.pc-table tr.group1{background:var(--group1);}
+table.pc-table tr.group2{background:var(--group2);}
+.link2-wrap{position:relative;display:inline-flex;align-items:center;gap:2px;}
+.link2-icon{width:28px;height:28px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text-secondary);font-size:14px;}
+.link2-icon:hover{background:#eff1fd;color:var(--brand);}
+.num-badge{position:absolute;top:-6px;right:-6px;min-width:14px;height:14px;border-radius:999px;background:var(--brand);
+  color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 3px;}
+.popover{position:absolute;top:100%;left:0;background:#fff;border:1px solid var(--border-primary);border-radius:8px;
+  box-shadow:var(--shadow);padding:8px;width:260px;z-index:20;display:none;}
+.popover.open{display:block;}
+.popover-row{padding:8px 10px;font-size:13px;border-radius:6px;display:flex;justify-content:space-between;gap:8px;
+  cursor:pointer;}
+.popover-row:hover{background:var(--tertiary);}
+.pc-pagination{padding:16px 24px;text-align:center;font-size:13px;color:var(--text-tertiary);}
+
+.chip{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid;}
+.chip.info{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text);}
+.chip.success{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text);}
+.chip.caution{background:var(--caution-bg);border-color:var(--caution-border);color:var(--caution-text);}
+
+/* ---- Mobile ---- */
+.mo-gnb{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;}
+.mo-logo{font-weight:800;color:var(--brand);}
+.mo-search{margin:0 16px 10px;background:var(--tertiary);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-tertiary);}
+.mo-tab-toggle{margin:0 16px 10px;display:flex;gap:8px;}
+.mo-tab-toggle span{flex:1;text-align:center;padding:10px 0;font-size:13px;border-radius:4px;color:var(--text-secondary);
+  cursor:pointer;background:#fff;border:1px solid var(--border-primary);}
+.mo-tab-toggle span.active{background:var(--brand);color:#fff;font-weight:700;border-color:var(--brand);}
+.mo-filter-row{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;}
+.mo-filter-chip{border:1px solid var(--border-primary);border-radius:999px;padding:6px 12px;font-size:12px;
+  white-space:nowrap;color:var(--text-secondary);cursor:pointer;background:#fff;}
+.mo-count{padding:0 16px 10px;font-size:12px;color:var(--text-tertiary);}
+.mo-card-list{padding:0 16px;display:flex;flex-direction:column;gap:12px;}
+.mo-card{border:1px solid var(--border-secondary);border-radius:8px;padding:16px;cursor:pointer;}
+.mo-card.group1{background:var(--group1);}
+.mo-card.group2{background:var(--group2);}
+.mo-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.mo-order-no{font-size:13px;color:var(--text-secondary);}
+.mo-order-no a{color:var(--brand);}
+.mo-sep{height:1px;background:var(--border-secondary);margin-bottom:12px;}
+.mo-row{display:flex;font-size:13px;margin-bottom:8px;}
+.mo-row .lb{width:70px;color:var(--text-tertiary);flex-shrink:0;}
+.mo-together{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--brand);font-weight:600;}
+
+/* bottom sheet */
+.sheet-overlay{position:absolute;inset:0;background:rgba(20,20,22,0.5);display:none;align-items:flex-end;
+  z-index:40;}
+.sheet-overlay.open{display:flex;}
+.sheet-box{background:#fff;width:100%;border-radius:16px 16px 0 0;max-height:80%;display:flex;flex-direction:column;}
+.sheet-handle{width:36px;height:4px;background:var(--border-primary);border-radius:2px;margin:10px auto 0;}
+.sheet-header{padding:12px 20px;font-size:16px;font-weight:700;text-align:center;border-bottom:1px solid var(--border-secondary);}
+.sheet-body{padding:16px 20px;overflow-y:auto;flex:1;}
+.sheet-flabel{font-size:14px;font-weight:600;margin-bottom:8px;}
+.sheet-btngroup{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
+.sheet-optbtn{border:1px solid var(--border-primary);border-radius:4px;padding:12px 0;text-align:center;
+  font-size:13px;color:var(--text-secondary);cursor:pointer;}
+.sheet-optbtn.active{background:var(--tertiary);border-color:var(--border-active);color:var(--text-primary);font-weight:700;}
+.sheet-select-btn{border:1px solid var(--border-active);border-radius:4px;padding:12px;font-size:14px;
+  display:flex;justify-content:space-between;cursor:pointer;margin-bottom:16px;background:#fff;}
+.sheet-input{width:100%;border:1px solid var(--border-active);border-radius:4px;padding:12px;font-size:14px;margin-bottom:16px;}
+.sheet-radio-row{display:flex;align-items:center;gap:10px;padding:12px 0;font-size:15px;border-bottom:1px solid var(--border-secondary);cursor:pointer;}
+.sheet-item-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border-secondary);cursor:pointer;}
+.sheet-item-row .name{font-size:14px;}
+.sheet-footer{padding:16px 20px;display:flex;gap:8px;}
+.sheet-btn{flex:1;border-radius:4px;padding:14px 0;font-size:15px;font-weight:700;text-align:center;cursor:pointer;}
+.sheet-btn.outline{background:#fff;border:1px solid var(--border-primary);color:var(--text-secondary);flex:0 0 96px;}
+.sheet-btn.filled{background:var(--brand);color:#fff;border:none;}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="banner">
+    <b>주문요청관리(대여) 리스트 — 적응형 프로토타입</b> — PC 검색 영역과 모바일 바텀시트를 실제 스펙대로 다시 반영했습니다. 모바일에서 필터 칩을 눌러 바텀시트를 열어보세요.
+  </div>
+
+  <div class="preset-row" id="preset-row">
+    <button class="preset-btn" data-w="360">360px</button>
+    <button class="preset-btn" data-w="768">768px</button>
+    <button class="preset-btn" data-w="1023">1023px</button>
+    <button class="preset-btn active" data-w="1024">1024px</button>
+    <button class="preset-btn" data-w="1440">1440px</button>
+  </div>
+  <div class="w-readout" id="w-readout"></div>
+
+  <div id="frame-outer">
+    <div id="frame" style="container-type:inline-size;container-name:pf;">
+    <div id="frame-chrome">
+      <div class="page">
+
+        <!-- PC -->
+        <div class="pc-view">
+          <div class="pc-titlebar">주문요청 관리</div>
+          <div class="pc-breadcrumb">돌봄앱 운영관리 › 주문요청 관리</div>
+          <div class="pc-tabrow"><div class="pc-tab">구입 주문</div><div class="pc-tab active">대여 주문</div></div>
+          <div class="pc-search-wrap">
+            <div class="pc-search-card">
+              <button class="pc-detail-toggle" onclick="toggleDetail()"><span id="detail-label">상세</span> <span id="detail-arrow">▲</span></button>
+              <div class="pc-frow">
+                <div class="pc-flabel">주문일자</div>
+                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                  <div class="pc-datebox">2024-01-01 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9H21" stroke="currentColor" stroke-width="2"/><path d="M8 3V6M16 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+                  <span>~</span>
+                  <div class="pc-datebox">2024-04-01 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9H21" stroke="currentColor" stroke-width="2"/><path d="M8 3V6M16 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+                  <div class="pc-seg">
+                    <span class="active">3개월</span><span>일주일</span><span>이번달</span><span>지난달</span><span>1년</span>
+                  </div>
+                </div>
+              </div>
+              <div id="pc-detail-fields">
+                <div class="pc-frow">
+                  <div class="pc-flabel">품목</div>
+                  <div class="pc-radio-group">
+                    <label><input type="radio" name="pc-item" checked>전체</label>
+                    <label><input type="radio" name="pc-item">전동침대</label>
+                    <label><input type="radio" name="pc-item">수동휠체어</label>
+                    <label><input type="radio" name="pc-item">경사로</label>
+                  </div>
+                </div>
+                <div class="pc-frow">
+                  <div class="pc-flabel">주문상태</div>
+                  <select class="pc-select"><option>전체</option></select>
+                  <div class="pc-desc">선택된 상태값이 포함된 모든 주문건이 검색됩니다.</div>
+                </div>
+                <div class="pc-frow">
+                  <div class="pc-flabel">검색어</div>
+                  <select class="pc-select" style="width:120px;"><option>전체</option></select>
+                  <input class="pc-search-input" placeholder="검색어 입력">
+                </div>
+                <div class="pc-btnrow">
+                  <div class="pc-btn outline">초기화</div>
+                  <div class="pc-btn filled">검색</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pc-tablewrap">
+          <table class="pc-table">
+            <tr><th>NO</th><th>품목</th><th>수급자명</th><th>연락처</th><th>신청일시</th><th>돌봄주문번호</th><th>주문번호</th><th>주문상태</th></tr>
+            <tr class="rowlink"><td>10</td><td>전동침대</td><td>홍길동</td><td>010-1234-5678</td><td>2026-06-19 10:20</td>
+              <td><span class="link2-wrap">DB1234567890<span class="link2-icon" onclick="event.stopPropagation();togglePop(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 17H7A5 5 0 0 1 7 7h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 7h2a5 5 0 1 1 0 10h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="num-badge">2</span></span>
+                <div class="popover"><div class="popover-row"><span>수동휠체어 MW-1</span><span class="chip success">주문완료</span></div><div class="popover-row"><span>경사로 ST-3</span><span class="chip info">신규배정</span></div></div>
+              </span></td>
+              <td>-</td><td><span class="chip info">신규배정</span></td></tr>
+            <tr class="rowlink group1"><td>9</td><td>전동침대</td><td>김순자</td><td>010-2222-3333</td><td>2026-06-18 14:02</td><td>DB1234500011</td><td><a href="#">2026061800321</a></td><td><span class="chip success">주문완료</span></td></tr>
+            <tr class="rowlink group1"><td>8</td><td>수동휠체어</td><td>김순자</td><td>010-2222-3333</td><td>2026-06-18 14:02</td><td>DB1234500011</td><td><a href="#">2026061800322</a></td><td><span class="chip success">주문완료</span></td></tr>
+            <tr class="rowlink group2"><td>7</td><td>경사로</td><td>박영희</td><td>010-4444-5555</td><td>2026-06-17 09:11</td><td>DB1234499981</td><td>-</td><td><span class="chip caution">출고준비중</span></td></tr>
+            <tr class="rowlink group2"><td>6</td><td>전동침대</td><td>박영희</td><td>010-4444-5555</td><td>2026-06-17 09:11</td><td>DB1234499981</td><td>-</td><td><span class="chip caution">출고준비중</span></td></tr>
+            <tr class="rowlink"><td>5</td><td>전동침대</td><td>이철수</td><td>010-7777-8888</td><td>2026-06-15 16:40</td><td>DB1234499870</td><td>-</td><td><span class="chip info">주문확인중</span></td></tr>
+          </table>
+          <div class="pc-pagination">1 2 3 4 5 ›</div>
+          </div>
+        </div>
+
+        <!-- Mobile -->
+        <div class="mo-view">
+          <div class="mo-gnb"><span class="mo-logo">이로움</span><span>☰</span></div>
+          <div class="mo-search">상품을 검색하세요</div>
+          <div class="mo-tab-toggle"><span>구입 주문</span><span class="active">대여 주문</span></div>
+          <div class="mo-filter-row">
+            <span class="mo-filter-chip" onclick="openSheet('item')">품목 ▾</span>
+            <span class="mo-filter-chip" onclick="openSheet('search')">상태: 전체 ▾</span>
+            <span class="mo-filter-chip" onclick="openSheet('search')">☰ 검색</span>
+          </div>
+          <div class="mo-count">전체 128건</div>
+          <div class="mo-card-list">
+            <div class="mo-card" onclick="alert('상세 이동')">
+              <div class="mo-card-head"><span class="chip info">신규배정</span>
+                <span class="mo-order-no" onclick="event.stopPropagation()">DB1234567890</span></div>
+              <div class="mo-sep"></div>
+              <div class="mo-row"><span class="lb">품목</span><span>전동침대</span></div>
+              <div class="mo-row"><span class="lb">돌봄주문번호</span><span>DB1234567890</span></div>
+              <div class="mo-row"><span class="lb">주문번호</span><span>-</span></div>
+              <div class="mo-together" onclick="event.stopPropagation();openSheet('together')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:2px;"><path d="M9 17H7A5 5 0 0 1 7 7h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 7h2a5 5 0 1 1 0 10h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>함께 요청 2건</div>
+            </div>
+            <div class="mo-card group1" onclick="alert('상세 이동')">
+              <div class="mo-card-head"><span class="chip success">주문완료</span>
+                <span class="mo-order-no" onclick="event.stopPropagation()">DB1234500011</span></div>
+              <div class="mo-sep"></div>
+              <div class="mo-row"><span class="lb">품목</span><span>전동침대</span></div>
+              <div class="mo-row"><span class="lb">돌봄주문번호</span><span>DB1234500011</span></div>
+              <div class="mo-row"><span class="lb">주문번호</span><span onclick="event.stopPropagation()"><a href="#">2026061800321</a></span></div>
+            </div>
+            <div class="mo-card group1" onclick="alert('상세 이동')">
+              <div class="mo-card-head"><span class="chip success">주문완료</span>
+                <span class="mo-order-no" onclick="event.stopPropagation()">DB1234500011</span></div>
+              <div class="mo-sep"></div>
+              <div class="mo-row"><span class="lb">품목</span><span>수동휠체어</span></div>
+              <div class="mo-row"><span class="lb">돌봄주문번호</span><span>DB1234500011</span></div>
+              <div class="mo-row"><span class="lb">주문번호</span><span onclick="event.stopPropagation()"><a href="#">2026061800322</a></span></div>
+            </div>
+            <div class="mo-card group2" onclick="alert('상세 이동')">
+              <div class="mo-card-head"><span class="chip caution">출고준비중</span>
+                <span class="mo-order-no" onclick="event.stopPropagation()">DB1234499981</span></div>
+              <div class="mo-sep"></div>
+              <div class="mo-row"><span class="lb">품목</span><span>경사로</span></div>
+              <div class="mo-row"><span class="lb">돌봄주문번호</span><span>DB1234499981</span></div>
+              <div class="mo-row"><span class="lb">주문번호</span><span>-</span></div>
+            </div>
+          </div>
+
+          <!-- 검색 바텀시트 -->
+          <div class="sheet-overlay" id="sheet-search">
+            <div class="sheet-box">
+              <div class="sheet-handle"></div>
+              <div class="sheet-header">검색</div>
+              <div class="sheet-body">
+                <div class="sheet-flabel">주문 요청일</div>
+                <div class="sheet-btngroup">
+                  <div class="sheet-optbtn active">3개월</div><div class="sheet-optbtn">일주일</div><div class="sheet-optbtn">이번달</div>
+                </div>
+                <div class="sheet-btngroup" style="margin-bottom:16px;">
+                  <div class="sheet-optbtn">지난달</div><div class="sheet-optbtn">1년</div><div class="sheet-optbtn">직접입력</div>
+                </div>
+                <div class="sheet-flabel">품목</div>
+                <div class="sheet-select-btn" onclick="openSheet('item')"><span>전체</span><span>▾</span></div>
+                <div class="sheet-flabel">주문 진행상태</div>
+                <div class="sheet-select-btn"><span>전체</span><span>▾</span></div>
+                <div class="sheet-flabel">상세검색</div>
+                <input class="sheet-input" placeholder="수급자명, 주문서번호 등">
+              </div>
+              <div class="sheet-footer">
+                <div class="sheet-btn outline" onclick="closeSheet('search')">초기화</div>
+                <div class="sheet-btn filled" onclick="closeSheet('search')">검색</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 품목 선택 바텀시트 -->
+          <div class="sheet-overlay" id="sheet-item">
+            <div class="sheet-box">
+              <div class="sheet-handle"></div>
+              <div class="sheet-header">품목 선택</div>
+              <div class="sheet-body">
+                <div class="sheet-radio-row"><input type="radio" name="mo-item" checked>전체</div>
+                <div class="sheet-radio-row"><input type="radio" name="mo-item">전동침대</div>
+                <div class="sheet-radio-row"><input type="radio" name="mo-item">수동휠체어</div>
+                <div class="sheet-radio-row"><input type="radio" name="mo-item">경사로</div>
+              </div>
+              <div class="sheet-footer">
+                <div class="sheet-btn filled" onclick="closeSheet('item')">선택완료</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 함께 요청 바텀시트 -->
+          <div class="sheet-overlay" id="sheet-together">
+            <div class="sheet-box">
+              <div class="sheet-handle"></div>
+              <div class="sheet-header">함께 요청한 대여상품</div>
+              <div class="sheet-body">
+                <div class="sheet-item-row" onclick="alert('상세 이동')"><span class="name">수동휠체어 MW-1</span><span class="chip success">주문완료</span></div>
+                <div class="sheet-item-row" onclick="alert('상세 이동')"><span class="name">경사로 ST-3</span><span class="chip info">신규배정</span></div>
+              </div>
+              <div class="sheet-footer">
+                <div class="sheet-btn outline" style="flex:1;" onclick="closeSheet('together')">닫기</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var detailOpen = true;
+function toggleDetail(){
+  detailOpen = !detailOpen;
+  document.getElementById('pc-detail-fields').style.display = detailOpen ? 'block' : 'none';
+  document.getElementById('detail-arrow').textContent = detailOpen ? '▲' : '▼';
+}
+
+function togglePop(el){
+  var pop = el.parentElement.querySelector('.popover');
+  document.querySelectorAll('.popover.open').forEach(function(p){ if(p!==pop) p.classList.remove('open'); });
+  pop.classList.toggle('open');
+}
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.link2-wrap')){
+    document.querySelectorAll('.popover.open').forEach(function(p){ p.classList.remove('open'); });
+  }
+});
+
+function openSheet(key){
+  document.querySelectorAll('.sheet-overlay.open').forEach(function(s){ s.classList.remove('open'); });
+  document.getElementById('sheet-' + key).classList.add('open');
+}
+function closeSheet(key){
+  document.getElementById('sheet-' + key).classList.remove('open');
+}
+
+var frameEl = document.getElementById('frame');
+var presetButtons = document.querySelectorAll('.preset-btn');
+function setWidth(w){
+  presetButtons.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-w') === w); });
+  frameEl.style.width = w + 'px';
+  requestAnimationFrame(updateReadout);
+}
+presetButtons.forEach(function(b){
+  b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
+});
+function updateReadout(){
+  var w = Math.round(frameEl.getBoundingClientRect().width);
+  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px' + (w>=1024?' (PC 테이블)':' (모바일 카드)');
+}
+setWidth('1024');
+</script>
+</body>
+</html>

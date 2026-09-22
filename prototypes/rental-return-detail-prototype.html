@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<title>대여 회수 상세보기 - 검토용 프로토타입</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#ffffff; --card-alt:#fafafa; --tertiary:#f5f5f5; --disabled:#eeeeee;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999999; --text-disabled:#bdbdbd;
+  --border-primary:#bdbdbd; --border-secondary:#eeeeee; --border-tertiary:#e0e0e0;
+  --brand:#323da3; --brand-hover:#28327f; --on-brand:#ffffff;
+  --info-bg:#eff6ff; --info-border:#dbeafe; --info-text:#1e40af;
+  --mint-bg:#e8f5e9; --mint-border:#c8e6c9; --mint-text:#166534;
+  --amber-bg:#fff7e6; --amber-border:#ffd699; --amber-text:#b45309;
+  --lime-bg:#f2fbe6; --lime-border:#bfe89a; --lime-text:#4d7c0f;
+  --solid-bg:#2b3374; --solid-text:#ffffff;
+  --pinkc-bg:#fdf2f4; --pinkc-border:#f5b8c4; --pinkc-text:#be123c;
+  --grayc-bg:#f2f2f2; --grayc-border:#dcdcdc; --grayc-text:#5c5c5c;
+  --danger-bg:#fef3f2; --danger-border:#fecdca; --danger-text:#b42318;
+  --shadow:0 1px 2px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.05);
+}
+:root[data-mode="dark"]{
+  --bg:#111214; --card:#1c1d20; --card-alt:#202124; --tertiary:#232427; --disabled:#2a2b2e;
+  --text-primary:#f2f2f0; --text-secondary:#b7b6b0; --text-tertiary:#8a8a86; --text-disabled:#5c5c58;
+  --border-primary:#3a3a3a; --border-secondary:#2a2a2a; --border-tertiary:#333333;
+  --brand:#7b85d6; --brand-hover:#929bea; --on-brand:#101014;
+  --info-bg:#182238; --info-border:#28407a; --info-text:#a8c3f5;
+  --mint-bg:#122417; --mint-border:#245c34; --mint-text:#7fd99a;
+  --amber-bg:#2b2312; --amber-border:#6b5324; --amber-text:#f5c877;
+  --lime-bg:#1c2712; --lime-border:#4a6b24; --lime-text:#c3e88a;
+  --solid-bg:#4a55c0; --solid-text:#ffffff;
+  --pinkc-bg:#2b1920; --pinkc-border:#6b2b3d; --pinkc-text:#f2a9bd;
+  --grayc-bg:#232427; --grayc-border:#3a3a3a; --grayc-text:#c9c9c5;
+  --danger-bg:#2b1917; --danger-border:#6b2b25; --danger-text:#f2a99e;
+  --shadow:0 1px 2px rgba(0,0,0,0.4), 0 1px 12px rgba(0,0,0,0.35);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+#app{max-width:900px;margin:0 auto;padding:20px 16px 80px;}
+.proto-banner{background:var(--card);border:1px solid var(--border-tertiary);border-radius:10px;
+  padding:14px 18px;margin-bottom:16px;font-size:13px;color:var(--text-secondary);line-height:1.6;}
+.proto-banner b{color:var(--text-primary);}
+.sim-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;
+  border-top:1px dashed var(--border-tertiary);font-size:12px;color:var(--text-secondary);}
+#toast-slot{min-height:0;transition:min-height .2s;}
+#toast-slot.show{min-height:44px;}
+.toast{background:var(--mint-bg);border:1px solid var(--mint-border);color:var(--mint-text);
+  border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px;opacity:0;transition:opacity .25s;}
+.toast.show{opacity:1;}
+.toast.toast-fail{background:var(--danger-bg);border-color:var(--danger-border);color:var(--danger-text);}
+.toast-icon{margin-right:6px;font-weight:700;}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.tab{border:1px solid var(--border-tertiary);background:var(--card);color:var(--text-secondary);
+  border-radius:999px;padding:7px 14px;font-size:13px;cursor:pointer;white-space:nowrap;}
+.tab.active{background:var(--brand);border-color:var(--brand);color:var(--on-brand);font-weight:600;}
+.card{background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:24px 24px 8px;margin-bottom:16px;
+  position:relative;}
+.breadcrumb{font-size:12px;color:var(--text-tertiary);margin-bottom:8px;}
+.back-chevron{display:none;font-size:20px;margin-right:4px;color:var(--text-primary);}
+@media(max-width:640px){
+  .breadcrumb{display:none;}
+  .back-chevron{display:inline;}
+}
+.page-title-row{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;
+  margin-bottom:4px;}
+.page-title-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.page-title{font-size:20px;font-weight:700;}
+.actions-top{display:flex;gap:8px;flex-wrap:wrap;}
+.actions-bottom{display:none;gap:8px;padding:20px 0;flex-wrap:wrap;}
+@media(max-width:640px){
+  .actions-top{display:none;}
+  .actions-bottom.has-buttons{
+    display:flex;
+    position:sticky;
+    bottom:0;
+    margin:0 -16px;
+    padding:16px 16px 20px;
+    background:linear-gradient(to bottom, rgba(255,255,255,0), var(--card) 35%);
+    z-index:5;
+  }
+}
+.status-chip{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;
+  font-size:14px;font-weight:600;border:1px solid;}
+.status-chip.info{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text);}
+.status-chip.mint{background:var(--mint-bg);border-color:var(--mint-border);color:var(--mint-text);}
+.status-chip.amber{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber-text);}
+.status-chip.lime{background:var(--lime-bg);border-color:var(--lime-border);color:var(--lime-text);}
+.status-chip.solidnavy{background:var(--solid-bg);border-color:var(--solid-bg);color:var(--solid-text);}
+.status-chip.pinkc{background:var(--pinkc-bg);border-color:var(--pinkc-border);color:var(--pinkc-text);}
+.status-chip.grayc{background:var(--grayc-bg);border-color:var(--grayc-border);color:var(--grayc-text);}
+.status-desc{font-size:13px;color:var(--text-secondary);margin:6px 0 16px;}
+.cancel-caption{margin:4px 0 0;font-size:13px;font-weight:600;color:var(--pinkc-text);}
+.section-title-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--text-secondary);
+  padding-bottom:8px;margin-bottom:0;}
+.section-title{font-size:20px;font-weight:700;}
+.section-toggle{display:none;background:none;border:none;font-size:18px;color:var(--text-secondary);
+  cursor:pointer;margin-left:auto;padding:4px;}
+@media(max-width:640px){
+  .section-toggle{display:block;}
+  .collapsed-mobile{display:none;}
+}
+.badge-fill{background:var(--mint-text);color:#fff;font-size:14px;font-weight:600;padding:2px 8px;
+  height:28px;display:inline-flex;align-items:center;border-radius:4px;}
+.cat-tag{border:1px solid var(--border-primary);color:var(--text-secondary);font-size:14px;font-weight:600;
+  height:32px;display:inline-flex;align-items:center;padding:0 12px;border-radius:4px;background:var(--card);}
+table.info-table{width:100%;border-collapse:collapse;margin-bottom:24px;table-layout:fixed;}
+table.info-table th{background:var(--tertiary);border-bottom:1px solid var(--border-tertiary);
+  text-align:left;font-size:13px;font-weight:600;padding:12px;width:130px;}
+table.info-table td{border-bottom:1px solid var(--border-tertiary);font-size:13px;padding:12px;}
+.addr-cell{display:flex;flex-direction:column;align-items:flex-start;gap:10px;}
+.link-btn{background:var(--brand);border:1px solid var(--brand);color:var(--on-brand);font-size:13px;font-weight:600;
+  cursor:pointer;padding:8px 14px;border-radius:6px;white-space:nowrap;}
+.product-row{display:flex;gap:16px;padding-bottom:16px;flex-wrap:wrap;align-items:flex-start;
+  justify-content:space-between;}
+.product-main{display:flex;gap:16px;flex:1;min-width:220px;}
+.product-thumb{width:88px;height:88px;border:1px solid var(--border-secondary);border-radius:6px;flex-shrink:0;
+  background:var(--tertiary);display:flex;align-items:center;justify-content:center;color:var(--text-tertiary);
+  font-size:12px;}
+.product-info{flex:1;min-width:160px;display:flex;flex-direction:column;justify-content:center;gap:6px;}
+.product-badges{display:flex;gap:6px;align-items:center;}
+.product-name{font-size:18px;font-weight:600;line-height:1.45;}
+.product-side{display:flex;flex-direction:column;gap:10px;align-items:flex-end;min-width:170px;
+  padding-top:2px;}
+.side-row{font-size:14px;color:var(--text-primary);}
+.side-label{color:var(--text-secondary);font-weight:600;margin-right:8px;}
+.barcode-pill{background:var(--card-alt);border-radius:4px;padding:8px 10px;font-size:14px;
+  display:flex;align-items:center;gap:6px;color:var(--text-secondary);}
+.barcode-pill b{color:var(--text-primary);font-weight:600;}
+.barcode-icon{flex-shrink:0;}
+.divider{height:1px;background:var(--border-secondary);margin:0 0 16px;}
+.reason-box{border:1px solid var(--border-primary);border-radius:4px;padding:20px;font-size:16px;
+  min-height:52px;line-height:1.5;color:var(--text-primary);margin-bottom:20px;background:var(--disabled);}
+.memo-box{border:1px solid var(--border-primary);border-radius:6px;padding:16px;background:var(--card-alt);
+  margin-bottom:20px;}
+.memo-title-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.memo-title{font-size:15px;font-weight:600;}
+textarea.memo-input{width:100%;min-height:72px;border:1px solid var(--border-primary);border-radius:6px;
+  padding:12px;font-size:14px;font-family:inherit;background:var(--card);color:var(--text-primary);resize:vertical;}
+.memo-entry{border-top:1px solid var(--border-secondary);padding:14px 0;}
+.memo-entry-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.memo-date{font-size:12px;color:var(--text-tertiary);}
+.memo-text{font-size:14px;line-height:1.6;color:var(--text-primary);white-space:pre-wrap;}
+.btn{border-radius:6px;font-size:14px;font-weight:600;padding:11px 20px;cursor:pointer;border:1px solid transparent;}
+.btn-filled{background:var(--brand);color:var(--on-brand);}
+.btn-filled:hover{background:var(--brand-hover);}
+.btn-outline{background:var(--card);color:var(--text-secondary);border-color:var(--border-primary);}
+.btn-outline:hover{background:var(--tertiary);}
+.btn-disabled{background:var(--disabled);color:var(--text-disabled);cursor:not-allowed;}
+.btn-danger-outline{background:var(--card);color:var(--danger-text);border-color:var(--danger-border);}
+.btn-small{padding:6px 12px;font-size:12px;}
+.hint{font-size:12px;color:var(--text-tertiary);margin-top:6px;}
+.overlay{position:absolute;inset:0;background:rgba(20,20,22,0.5);display:flex;align-items:flex-start;
+  justify-content:center;padding:60px 16px;z-index:10;}
+.modal{background:var(--card);border-radius:14px;width:100%;max-width:440px;padding:0;box-shadow:var(--shadow);
+  max-height:85vh;display:flex;flex-direction:column;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 16px;
+  border-bottom:1px solid var(--border-tertiary);flex-shrink:0;}
+.modal-header h3{margin:0;font-size:19px;}
+.modal-close{background:none;border:none;font-size:22px;line-height:1;color:var(--text-secondary);
+  cursor:pointer;padding:2px 4px;}
+.modal-body{padding:20px;overflow-y:auto;}
+.modal p.desc{margin:0 0 18px;font-size:14px;color:var(--text-secondary);line-height:1.5;}
+.field-label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;}
+select.form-input, input.form-input, textarea.form-input{width:100%;border:1px solid var(--border-primary);
+  border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;background:var(--card);
+  color:var(--text-primary);margin-bottom:6px;}
+input.form-input[readonly]{background:var(--tertiary);color:var(--text-secondary);}
+textarea.form-input{min-height:70px;resize:vertical;}
+.zip-row{display:flex;gap:8px;align-items:flex-start;}
+.zip-row input{flex:1;}
+.zip-btn{flex-shrink:0;background:var(--info-bg);color:var(--info-text);border:1px solid var(--info-border);
+  border-radius:6px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.field-block{margin-bottom:14px;}
+.counter-line{text-align:right;font-size:12px;color:var(--text-tertiary);margin:0 0 14px;}
+.notice-line{font-size:12px;color:var(--text-tertiary);margin:0 0 14px;line-height:1.5;}
+.error-line{font-size:12px;color:var(--danger-text);margin:-2px 0 12px;display:none;}
+.modal-actions{display:flex;gap:8px;margin-top:6px;}
+.modal-actions .btn{flex:1;}
+.alert-inline{background:var(--danger-bg);border:1px solid var(--danger-border);color:var(--danger-text);
+  border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.5;margin-bottom:14px;}
+.summary-card{background:var(--card-alt);border:1px solid var(--border-secondary);border-radius:8px;
+  padding:14px;font-size:13px;margin-bottom:16px;display:flex;flex-direction:column;gap:4px;}
+.summary-card .row{display:flex;justify-content:space-between;gap:12px;}
+.summary-card .row span:first-child{color:var(--text-secondary);flex-shrink:0;}
+.summary-card .row span:last-child{text-align:right;}
+.barcode-box{background:var(--tertiary);border-radius:6px;padding:14px;text-align:center;font-size:15px;
+  letter-spacing:1px;margin-bottom:16px;}
+.product-card-modal{border:1px solid var(--border-secondary);border-radius:8px;padding:14px;
+  display:flex;gap:12px;margin-bottom:16px;}
+.product-card-modal .thumb{width:64px;height:64px;background:var(--tertiary);border-radius:6px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-tertiary);}
+.agree-row{display:flex;align-items:flex-start;gap:8px;font-size:13px;margin-bottom:8px;line-height:1.5;}
+.agree-row.all{font-weight:700;font-size:14px;border-bottom:1px solid var(--border-secondary);
+  padding-bottom:10px;margin-bottom:10px;}
+.agree-row input{margin-top:2px;}
+.info-icon-circle{width:40px;height:40px;border-radius:999px;background:var(--info-bg);color:var(--info-text);
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-style:italic;font-size:16px;}
+@media(max-width:640px){
+  table.info-table{display:grid;grid-template-columns:110px 1fr;width:100%;}
+  table.info-table tbody, table.info-table tr{display:contents;}
+  table.info-table th{display:block;background:none;border:none;border-bottom:1px solid var(--border-tertiary);
+    font-weight:700;padding:14px 8px 14px 0;}
+  table.info-table td{display:block;border:none;border-bottom:1px solid var(--border-tertiary);padding:14px 0;}
+  .card{padding:18px 16px 4px;}
+  .product-side{align-items:flex-start;width:100%;min-width:0;}
+  .barcode-pill{width:100%;box-sizing:border-box;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="proto-banner">
+    <b>검토용 프로토타입</b> · 대여 회수 상세보기(사업소 돌봄앱 운영관리). 상단 탭으로 7개 상태를 전환하거나, 화면 안의 버튼으로 실제 흐름(접수취소 · 이로움에 회수 요청 · 회수 철회 · 주소수정 · 메모)을 시뮬레이션할 수 있습니다. 모든 모달은 케어 모달 컴포넌트 기준(타이틀 + X 닫기)으로 통일했습니다.
+    <div class="sim-row">
+      <input type="checkbox" id="sim-stale" onchange="state.simStale=this.checked">
+      <label for="sim-stale">테스트: 회수 철회 클릭 시점에 서버 상태가 이미 '회수준비중'으로 바뀐 상황 시뮬레이션</label>
+    </div>
+  </div>
+  <div id="toast-slot"></div>
+  <div class="tabs" id="tabs"></div>
+  <div class="card" id="page"></div>
+</div>
+
+<script>
+var STATUS_ORDER = ['회수접수','회수확인중','회수요청','회수준비중','회수완료','회수취소','회수취소완료'];
+
+var STATUS_META = {
+  '회수접수':   {chip:'info',      desc:'돌봄앱에서 회수 신청이 접수된 상태', cancelBlock:false, buttons:[{type:'cancel'},{type:'request'}]},
+  '회수확인중': {chip:'mint',      desc:'사업소가 신청 내용을 확인 중인 상태', cancelBlock:false, buttons:[{type:'cancel'},{type:'request'}]},
+  '회수요청':   {chip:'amber',     desc:'이로움에 회수 요청 완료 - 대대여 회수번호가 생성된 상태', cancelBlock:false, buttons:[{type:'withdraw', enabled:true}]},
+  '회수준비중': {chip:'lime',      desc:'실제 회수 프로세스 진행 중 - 회수 철회 버튼은 노출되지만 비활성화됩니다', cancelBlock:false, buttons:[{type:'withdraw', enabled:false}]},
+  '회수완료':   {chip:'solidnavy', desc:'회수 처리가 완료된 상태 - 조회만 가능', cancelBlock:false, buttons:[]},
+  '회수취소':   {chip:'pinkc',     desc:'실제 회수요청 생성 전, 사업소가 접수를 취소한 상태 - 동일 상품 재신청 가능', cancelBlock:true, buttons:[]},
+  '회수취소완료': {chip:'grayc',   desc:'회수번호 생성 후 회수 철회로 취소 완료된 상태 - 동일 상품 재신청 가능', cancelBlock:true, buttons:[]}
+};
+
+var DEMO = {
+  '회수접수': {number:null, cancelInfo:null},
+  '회수확인중': {number:null, cancelInfo:null},
+  '회수요청': {number:'COL20260916A17C2', cancelInfo:null},
+  '회수준비중': {number:'COL20260916A17C2', cancelInfo:null},
+  '회수완료': {number:'COL20260916A17C2', cancelInfo:null},
+  '회수취소': {number:null, cancelInfo:{label:'회수접수 취소', reason:'수급자 단순 변심', detail:'', date:'2026-09-10 14:22'}},
+  '회수취소완료': {number:'COL20260916A17C2', cancelInfo:{label:'회수 철회', reason:'-', detail:'', date:'2026-09-12 09:03', noReason:true}}
+};
+
+var state = {
+  status:'회수접수', number:null, cancelInfo:null, simStale:false,
+  addr:{zip:'16495', base:'경기 수원시 영통구 광교로 32', detail:'이의동, 아름학교'},
+  memos:[{date:'2026-03-19 11:20', text:'수급자 관리는 단순한 정보 등록을 넘어, 지속적인 상태 파악과 맞춤형 서비스 제공을 위한 핵심 업무이다.'}],
+  collapsed:{info:false, applicant:false}
+};
+function toggleSection(key){
+  state.collapsed[key] = !state.collapsed[key];
+  renderPage();
+}
+
+var requestFormState = {reason:'', detail:'', agree1:false, agree2:false};
+
+function setStatus(key, overrides){
+  var d = DEMO[key];
+  state.status = key;
+  state.number = d.number;
+  state.cancelInfo = d.cancelInfo ? Object.assign({}, d.cancelInfo) : null;
+  if(overrides && overrides.cancelInfo){ state.cancelInfo = Object.assign({}, state.cancelInfo, overrides.cancelInfo); }
+  renderAll();
+}
+
+function showToast(msg){
+  var slot = document.getElementById('toast-slot');
+  slot.innerHTML = '<div class="toast" id="t">'+msg+'</div>';
+  slot.classList.add('show');
+  requestAnimationFrame(function(){ document.getElementById('t').classList.add('show'); });
+  setTimeout(function(){
+    var t = document.getElementById('t');
+    if(t){ t.classList.remove('show'); }
+    setTimeout(function(){ slot.classList.remove('show'); slot.innerHTML=''; }, 250);
+  }, 2400);
+}
+function showMemoToast(success){
+  var slot = document.getElementById('toast-slot');
+  var cls = success ? 'toast' : 'toast toast-fail';
+  var icon = success ? '\u2713' : '\u2715';
+  var msg = success ? '메모가 저장되었습니다' : '메모 저장에 실패했습니다';
+  slot.innerHTML = '<div class="'+cls+'" id="t"><span class="toast-icon">'+icon+'</span>'+msg+'</div>';
+  slot.classList.add('show');
+  requestAnimationFrame(function(){ document.getElementById('t').classList.add('show'); });
+  setTimeout(function(){
+    var t = document.getElementById('t');
+    if(t){ t.classList.remove('show'); }
+    setTimeout(function(){ slot.classList.remove('show'); slot.innerHTML=''; }, 250);
+  }, 2400);
+}
+
+function renderTabs(){
+  var html = '';
+  STATUS_ORDER.forEach(function(s){
+    html += '<button class="tab'+(state.status===s?' active':'')+'" onclick="setStatus(\''+s+'\')">'+s+'</button>';
+  });
+  document.getElementById('tabs').innerHTML = html;
+}
+
+function chipHtml(status){
+  var meta = STATUS_META[status];
+  return '<span class="status-chip '+meta.chip+'">'+status+'</span>';
+}
+
+function actionButtonsHtml(){
+  var meta = STATUS_META[state.status];
+  var html = '';
+  meta.buttons.forEach(function(b){
+    if(b.type === 'cancel'){
+      html += '<button class="btn btn-danger-outline" onclick="openCancelModal()">회수접수 취소</button>';
+    }
+    if(b.type === 'request'){
+      html += '<button class="btn btn-filled" onclick="openRequestModal()">이로움에 회수 요청</button>';
+    }
+    if(b.type === 'withdraw'){
+      if(b.enabled){
+        html += '<button class="btn btn-danger-outline" onclick="handleWithdrawClick()">회수 철회</button>';
+      } else {
+        html += '<button class="btn btn-disabled" disabled title="회수 준비가 진행된 이후에는 회수 요청을 철회할 수 없습니다.">회수 철회</button>';
+      }
+    }
+  });
+  return html;
+}
+
+function addrLine(){
+  return '('+state.addr.zip+') '+state.addr.base+' ('+state.addr.detail+')';
+}
+
+function productCancelCaptionHtml(){
+  var meta = STATUS_META[state.status];
+  if(!meta.cancelBlock || !state.cancelInfo){ return ''; }
+  var ci = state.cancelInfo;
+  var reasonLine = ci.noReason ? '-' : (ci.reason + (ci.detail ? (' - '+ci.detail) : ''));
+  return '<div class="cancel-caption">'+ci.label+' 사유 : '+reasonLine+'</div>';
+}
+
+function memoListHtml(){
+  return state.memos.map(function(m, i){
+    return '<div class="memo-entry"><div class="memo-entry-head"><span class="memo-date">'+m.date+'</span>'+
+      '<button class="btn btn-outline btn-small" onclick="openDeleteMemoModal('+i+')">삭제</button></div>'+
+      '<div class="memo-text">'+m.text+'</div></div>';
+  }).join('');
+}
+
+function renderPage(){
+  var meta = STATUS_META[state.status];
+  var numberCell = state.number ? state.number : '-';
+  var masked = state.status === '회수접수';
+  var name = masked ? '홍*동 (남성, 85세)' : '홍길동 (남성, 85세)';
+  var guardian = masked ? '홍*정 (수급자의 자녀)' : '홍꺽정 (수급자의 자녀)';
+  var phone = masked ? '010-****-5678' : '010-1234-5678';
+  var addrCell = masked
+    ? '<span>(16495) 경기 수원시 영통구 ***** (접수 확인 후 상세주소 노출)</span>'
+    : '<div class="addr-cell"><span>'+addrLine()+'</span><button class="link-btn" onclick="openAddressModal()">수정</button></div>';
+
+  var buttonsHtml = actionButtonsHtml();
+
+  var html =
+    '<div class="breadcrumb">사업소 운영관리 &gt; 대여 회수 관리 &gt; 대여 회수 상세보기</div>'+
+    '<div class="page-title-row">'+
+      '<div class="page-title-left"><span class="back-chevron">\u2039</span><span class="page-title">대여 회수 상세보기</span></div>'+
+      (buttonsHtml ? '<div class="actions-top">'+buttonsHtml+'</div>' : '')+
+    '</div>'+
+    '<div class="status-desc">'+meta.desc+'</div>'+
+
+    '<div class="section-title-row"><div class="section-title">회수 신청 정보</div>'+
+      '<button class="section-toggle" onclick="toggleSection(\'info\')">'+(state.collapsed.info ? '\u2304' : '\u2303')+'</button></div>'+
+    '<div class="'+(state.collapsed.info ? 'collapsed-mobile' : '')+'"><table class="info-table">'+
+      '<tr><th>회수 신청일시</th><td>2026-09-08 10:12:33</td>'+
+          '<th>이로움 원 주문번호</th><td><a href="javascript:void(0)" style="color:var(--brand)">2026010315235001</a></td></tr>'+
+      '<tr><th>돌봄 회수 신청번호</th><td>COL02609142072F5D3</td>'+
+          '<th>회수번호</th><td>'+numberCell+'</td></tr>'+
+    '</table></div>'+
+
+    '<div class="section-title-row"><div class="section-title">신청자 정보</div>'+
+      '<button class="section-toggle" onclick="toggleSection(\'applicant\')">'+(state.collapsed.applicant ? '\u2304' : '\u2303')+'</button></div>'+
+    '<div class="'+(state.collapsed.applicant ? 'collapsed-mobile' : '')+'"><table class="info-table">'+
+      '<tr><th>수급자 이름</th><td>'+name+'</td>'+
+          '<th>보호자 이름</th><td>'+guardian+'</td></tr>'+
+      '<tr><th>상담받을 연락처</th><td>'+phone+'</td><th></th><td></td></tr>'+
+      '<tr><th>회수지주소</th><td colspan="3">'+addrCell+'</td></tr>'+
+    '</table></div>'+
+
+    '<div class="section-title-row">'+
+      '<div class="section-title">회수 신청 상품 정보</div><span class="badge-fill">대여</span>'+
+    '</div>'+
+    '<div class="product-row" style="padding-top:16px;">'+
+      '<div class="product-main">'+
+        '<div class="product-thumb">이미지</div>'+
+        '<div class="product-info">'+
+          '<div class="product-badges">'+chipHtml(state.status)+'<span class="cat-tag">전동침대</span></div>'+
+          '<div class="product-name">전동식 침대(2모터) 스탠다드형</div>'+
+          productCancelCaptionHtml()+
+        '</div>'+
+      '</div>'+
+      '<div class="product-side">'+
+        '<div class="side-row"><span class="side-label">요청수량</span>1개</div>'+
+        '<div class="barcode-pill"><svg class="barcode-icon" width="13" height="20" viewBox="0 0 13 20" fill="none"><rect x="0" y="0" width="1.5" height="20" fill="currentColor"/><rect x="3" y="0" width="1" height="20" fill="currentColor"/><rect x="5.5" y="0" width="2" height="20" fill="currentColor"/><rect x="9" y="0" width="1.5" height="20" fill="currentColor"/><rect x="11.5" y="0" width="1" height="20" fill="currentColor"/></svg><b>바코드</b> 8801234567891</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="divider"></div>'+
+
+    '<div class="section-title" style="border:none;padding:0;margin-bottom:8px;">회수 사유</div>'+
+    '<div class="reason-box">대여 계약 만료로 인해 회수 요청합니다. 방문 가능한 시간대는 평일 오후이며, 사전 연락 부탁드립니다.</div>'+
+
+    '<div class="memo-box">'+
+      '<div class="memo-title-row"><div class="memo-title">메모를 작성해 주세요!</div>'+
+        '<button class="btn btn-disabled" id="memo-register-btn" style="padding:8px 16px;font-size:13px;" disabled onclick="registerMemo()">메모등록</button></div>'+
+      '<textarea class="memo-input" id="memo-draft" maxlength="1000" placeholder="사업소 내부용 메모를 입력 후 \'메모등록\' 버튼을 선택해 주세요." oninput="onMemoInput()"></textarea>'+
+      '<div class="hint" style="text-align:right;" id="memo-counter">0/1000자</div>'+
+      memoListHtml()+
+      '<div class="hint">메모는 수급자/보호자에게 노출되지 않으며 사업소 내부 관리 용도로만 사용됩니다. (저장 실패 토스트를 보려면 메모 내용에 \'실패\'를 포함해 등록해보세요.)</div>'+
+    '</div>'+
+
+    (buttonsHtml ? '<div class="actions-bottom'+(buttonsHtml?' has-buttons':'')+'">'+buttonsHtml+'</div>' : '');
+
+  document.getElementById('page').innerHTML = html;
+}
+
+function renderAll(){ renderTabs(); renderPage(); }
+
+function onMemoInput(){
+  var ta = document.getElementById('memo-draft');
+  document.getElementById('memo-counter').textContent = ta.value.length + '/1000자';
+  var ok = ta.value.trim().length > 0;
+  var btn = document.getElementById('memo-register-btn');
+  btn.disabled = !ok;
+  btn.className = 'btn ' + (ok ? 'btn-filled' : 'btn-disabled');
+  btn.style.padding = '8px 16px'; btn.style.fontSize = '13px';
+}
+function registerMemo(){
+  var ta = document.getElementById('memo-draft');
+  var text = ta.value.trim();
+  if(!text){ return; }
+  state.memos.unshift({date:'2026-09-16 지금', text:text});
+  renderPage();
+  showMemoToast(text.indexOf('실패') === -1);
+}
+function openDeleteMemoModal(idx){
+  openOverlay('메모 삭제',
+    '<p class="desc">메모를 삭제하시겠습니까?<br>삭제된 메모는 복구할 수 없습니다.</p>'+
+    '<div class="modal-actions">'+
+      '<button class="btn btn-outline" onclick="closeOverlay()">취소</button>'+
+      '<button class="btn btn-filled" onclick="confirmDeleteMemo('+idx+')">삭제</button>'+
+    '</div>'
+  );
+}
+function confirmDeleteMemo(idx){
+  state.memos.splice(idx, 1);
+  closeOverlay();
+  renderPage();
+}
+
+function openOverlay(title, bodyHtml){
+  closeOverlay();
+  var page = document.getElementById('page');
+  var ov = document.createElement('div');
+  ov.className = 'overlay';
+  ov.id = 'overlay';
+  ov.innerHTML =
+    '<div class="modal">'+
+      '<div class="modal-header"><h3>'+title+'</h3><button class="modal-close" onclick="closeOverlay()">&times;</button></div>'+
+      '<div class="modal-body">'+bodyHtml+'</div>'+
+    '</div>';
+  page.appendChild(ov);
+}
+function closeOverlay(){
+  var ov = document.getElementById('overlay');
+  if(ov){ ov.remove(); }
+}
+function openAlertModal(title, msg){
+  openOverlay(title,
+    '<p class="desc">'+msg+'</p>'+
+    '<div class="modal-actions"><button class="btn btn-filled" onclick="closeOverlay()">확인</button></div>'
+  );
+}
+
+function openRequestModal(){
+  openOverlay('회수 요청하기',
+    '<div class="product-card-modal"><div class="thumb">이미지</div>'+
+      '<div><div style="font-weight:600;margin-bottom:4px;">전동식 침대(2모터) 스탠다드형</div>'+
+      '<div style="font-size:12px;color:var(--text-secondary);">주문 수량 1개 &nbsp;|&nbsp; 회수 수량 1개</div></div></div>'+
+    '<label class="field-label">회수할 상품 바코드</label>'+
+    '<div class="barcode-box">8801234567891</div>'+
+    '<label class="field-label">회수 사유 선택</label>'+
+    '<select class="form-input" id="request-reason" onchange="toggleRequestDetail()">'+
+      '<option value="">사유를 선택해 주세요</option>'+
+      '<option value="사망">사망</option>'+
+      '<option value="병원,요양원 입소">병원, 요양원 입소</option>'+
+      '<option value="이사">이사</option>'+
+      '<option value="그 외">그 외 (직접 입력)</option>'+
+    '</select>'+
+    '<div class="error-line" id="request-reason-error">회수 사유를 선택해 주세요.</div>'+
+    '<div id="request-detail-wrap" style="display:none;">'+
+      '<textarea class="form-input" id="request-detail" maxlength="100" placeholder="상세 사유를 입력해 주세요 (선택)" oninput="document.getElementById(\'request-detail-counter\').textContent=this.value.length+\'/100자\'"></textarea>'+
+      '<div class="counter-line" id="request-detail-counter">0/100자</div>'+
+    '</div>'+
+    '<div class="agree-row all"><input type="checkbox" id="agree-all" onchange="toggleAgreeAll()"><label for="agree-all">전체동의</label></div>'+
+    '<div class="agree-row"><input type="checkbox" id="agree-1" onchange="syncAgreeAll()">'+
+      '<label for="agree-1">회수 요청 시 해당 수급자의 플러스+ (대대여) 계약이 종료됩니다.</label></div>'+
+    '<div class="agree-row"><input type="checkbox" id="agree-2" onchange="syncAgreeAll()">'+
+      '<label for="agree-2">회수 요청 후 바코드를 해지하지 않으면 대여료가 추가 발생할 수 있습니다.</label></div>'+
+    '<div class="modal-actions" style="margin-top:14px;">'+
+      '<button class="btn btn-outline" onclick="closeOverlay()">취소</button>'+
+      '<button class="btn btn-disabled" id="request-submit" disabled onclick="submitRequestForm()">회수 요청하기</button>'+
+    '</div>'
+  );
+  document.getElementById('request-reason').value = requestFormState.reason;
+  document.getElementById('agree-1').checked = requestFormState.agree1;
+  document.getElementById('agree-2').checked = requestFormState.agree2;
+  toggleRequestDetail();
+  if(requestFormState.detail){
+    document.getElementById('request-detail').value = requestFormState.detail;
+    document.getElementById('request-detail-counter').textContent = requestFormState.detail.length + '/100자';
+  }
+  syncAgreeAll();
+}
+function toggleRequestDetail(){
+  var v = document.getElementById('request-reason').value;
+  document.getElementById('request-detail-wrap').style.display = (v === '그 외') ? 'block' : 'none';
+}
+function toggleAgreeAll(){
+  var all = document.getElementById('agree-all').checked;
+  document.getElementById('agree-1').checked = all;
+  document.getElementById('agree-2').checked = all;
+  updateRequestSubmitState();
+}
+function syncAgreeAll(){
+  var a1 = document.getElementById('agree-1').checked;
+  var a2 = document.getElementById('agree-2').checked;
+  document.getElementById('agree-all').checked = a1 && a2;
+  updateRequestSubmitState();
+}
+function updateRequestSubmitState(){
+  var a1 = document.getElementById('agree-1').checked;
+  var a2 = document.getElementById('agree-2').checked;
+  var btn = document.getElementById('request-submit');
+  var ok = a1 && a2;
+  btn.disabled = !ok;
+  btn.className = 'btn ' + (ok ? 'btn-filled' : 'btn-disabled');
+}
+function submitRequestForm(){
+  requestFormState.reason = document.getElementById('request-reason').value;
+  var detailEl = document.getElementById('request-detail');
+  requestFormState.detail = detailEl ? detailEl.value.trim() : '';
+  requestFormState.agree1 = document.getElementById('agree-1').checked;
+  requestFormState.agree2 = document.getElementById('agree-2').checked;
+  if(!requestFormState.reason){
+    document.getElementById('request-reason-error').style.display = 'block';
+    return;
+  }
+  document.getElementById('request-reason-error').style.display = 'none';
+  openRequestConfirmModal();
+}
+function openRequestConfirmModal(){
+  var reasonText = requestFormState.reason + ' / ' + (requestFormState.detail || '-');
+  openOverlay('회수 요청 확인',
+    '<div style="text-align:center;margin-bottom:14px;"><span class="info-icon-circle">i</span></div>'+
+    '<p style="text-align:center;font-size:18px;font-weight:700;margin:0 0 20px;">아래 내용으로 <span style="color:var(--brand)">회수를 요청</span>하시겠어요?</p>'+
+    '<div class="product-card-modal"><div class="thumb">이미지</div>'+
+      '<div><div style="font-weight:600;margin-bottom:4px;">전동식 침대(2모터) 스탠다드형</div>'+
+      '<div style="font-size:12px;color:var(--text-secondary);">바코드 8801234567891</div></div></div>'+
+    '<div class="summary-card">'+
+      '<div class="row"><span>회수 사유</span><span>'+reasonText+'</span></div>'+
+      '<div class="row"><span>회수옵션</span><span>-</span></div>'+
+    '</div>'+
+    '<div class="modal-actions">'+
+      '<button class="btn btn-outline" onclick="backToRequestModal()">취소</button>'+
+      '<button class="btn btn-filled" onclick="confirmRequestFinal()">확인</button>'+
+    '</div>'
+  );
+}
+function backToRequestModal(){ openRequestModal(); }
+function confirmRequestFinal(){
+  closeOverlay();
+  setStatus('회수요청');
+  showToast('이로움에 회수 요청이 완료되어 회수번호가 발급되었습니다. (COL20260916A17C2)');
+}
+
+function handleWithdrawClick(){
+  if(state.simStale){
+    setStatus('회수준비중');
+    openAlertModal('회수 철회 불가', '회수 준비가 이미 진행되어 더 이상 회수 요청을 철회할 수 없습니다.');
+    return;
+  }
+  openWithdrawModal();
+}
+function openWithdrawModal(){
+  openOverlay('회수 철회',
+    '<p class="desc">회수를 철회하시겠습니까?</p>'+
+    '<div class="modal-actions">'+
+      '<button class="btn btn-outline" onclick="closeOverlay()">취소</button>'+
+      '<button class="btn btn-filled" onclick="confirmWithdraw()">확인</button>'+
+    '</div>'
+  );
+}
+function confirmWithdraw(){
+  closeOverlay();
+  setStatus('회수취소완료', {cancelInfo:{label:'회수 철회', reason:'-', detail:'', date:'2026-09-16 지금', noReason:true}});
+  showToast('회수 철회 처리가 완료되었습니다.');
+}
+
+function openCancelModal(){
+  openOverlay('회수접수 취소',
+    '<p class="desc">수급자 홍*동님의 회수 신청 건을 접수 취소 처리합니다. 사유를 선택해 주세요.</p>'+
+    '<label class="field-label">취소 사유</label>'+
+    '<select class="form-input" id="cancel-reason" onchange="toggleCancelDetail()">'+
+      '<option value="">사유를 선택해 주세요</option>'+
+      '<option value="수급자 단순 변심">수급자 단순 변심</option>'+
+      '<option value="대여 계약 연장">대여 계약 연장</option>'+
+      '<option value="회수 일정 변경 필요">회수 일정 변경 필요</option>'+
+      '<option value="수급자 연락 불가">수급자 연락 불가</option>'+
+      '<option value="기타">기타 (직접 입력)</option>'+
+    '</select>'+
+    '<div id="cancel-detail-wrap" style="display:none;">'+
+      '<label class="field-label">상세 사유</label>'+
+      '<textarea class="form-input" id="cancel-detail" placeholder="상세 사유를 입력해 주세요." oninput="validateCancel()"></textarea>'+
+    '</div>'+
+    '<div class="notice-line">입력한 취소 사유는 돌봄 사용자(수급자/보호자)에게도 노출됩니다. 상품 훼손·파손 관련 사유는 선택할 수 없습니다 - 대여상품은 상태와 관계없이 회수를 진행합니다.</div>'+
+    '<div class="modal-actions">'+
+      '<button class="btn btn-outline" onclick="closeOverlay()">취소</button>'+
+      '<button class="btn btn-disabled" id="cancel-save" disabled>저장</button>'+
+    '</div>'
+  );
+  document.getElementById('cancel-reason').addEventListener('change', validateCancel);
+}
+function toggleCancelDetail(){
+  var reason = document.getElementById('cancel-reason').value;
+  document.getElementById('cancel-detail-wrap').style.display = (reason === '기타') ? 'block' : 'none';
+  validateCancel();
+}
+function validateCancel(){
+  var reason = document.getElementById('cancel-reason').value;
+  var ok = !!reason;
+  if(reason === '기타'){
+    var detail = document.getElementById('cancel-detail').value.trim();
+    ok = detail.length > 0;
+  }
+  var btn = document.getElementById('cancel-save');
+  btn.disabled = !ok;
+  btn.className = 'btn ' + (ok ? 'btn-filled' : 'btn-disabled');
+  btn.onclick = ok ? confirmCancel : null;
+}
+function confirmCancel(){
+  var reason = document.getElementById('cancel-reason').value;
+  var detail = reason === '기타' ? document.getElementById('cancel-detail').value.trim() : '';
+  closeOverlay();
+  setStatus('회수취소', {cancelInfo:{label:'회수접수 취소', reason:reason, detail:detail, date:'2026-09-16 지금'}});
+  showToast('회수접수 취소 처리가 완료되었습니다.');
+}
+
+function openAddressModal(){
+  openOverlay('회수지 주소 수정',
+    '<p class="desc">대여 종료 상품을 회수할 정확한 주소를 확인하고 수정해 주세요.</p>'+
+    '<div id="addr-alert-slot"></div>'+
+    '<div class="field-block">'+
+      '<label class="field-label">우편번호</label>'+
+      '<div class="zip-row">'+
+        '<input class="form-input" id="addr-zip" value="'+state.addr.zip+'" readonly>'+
+        '<button type="button" class="zip-btn" onclick="searchZip()">우편번호</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="field-block">'+
+      '<label class="field-label">기본 주소</label>'+
+      '<input class="form-input" id="addr-base" value="'+state.addr.base+'" readonly>'+
+    '</div>'+
+    '<div class="field-block">'+
+      '<label class="field-label">상세 주소</label>'+
+      '<input class="form-input" id="addr-detail" value="'+state.addr.detail+'">'+
+    '</div>'+
+    '<div class="modal-actions">'+
+      '<button class="btn btn-outline" onclick="closeOverlay()">취소</button>'+
+      '<button class="btn btn-filled" onclick="confirmAddress()">수정</button>'+
+    '</div>'
+  );
+}
+function searchZip(){
+  document.getElementById('addr-zip').value = '08577';
+  document.getElementById('addr-base').value = '서울특별시 금천구 가산로 3';
+  document.getElementById('addr-detail').value = '';
+  document.getElementById('addr-detail').focus();
+}
+function confirmAddress(){
+  var zip = document.getElementById('addr-zip').value.trim();
+  var base = document.getElementById('addr-base').value.trim();
+  var detail = document.getElementById('addr-detail').value.trim();
+  if(base.indexOf('제주') > -1){
+    document.getElementById('addr-alert-slot').innerHTML =
+      '<div class="alert-inline">선택하신 주소는 회수 서비스가 어려운 지역입니다. 자세한 내용은 고객센터로 문의해주세요.</div>';
+    return;
+  }
+  state.addr = {zip:zip, base:base, detail:detail};
+  closeOverlay();
+  renderPage();
+  showToast('회수지 주소가 저장되었습니다.');
+}
+
+setStatus('회수접수');
+</script>
+</body>
+</html>

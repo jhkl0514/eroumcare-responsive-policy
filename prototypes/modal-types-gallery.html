@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>모달 8유형 반응형 갤러리</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa; --disabled-bg:#eee;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999; --text-danger:#e53935;
+  --border-primary:#bdbdbd; --border-secondary:#eee; --border-dark:#616161;
+  --brand:#323da3; --brand-hover:#28327f; --btn-text:#555;
+  --shadow:0 2px 4px rgba(0,0,0,0.12), 0 0 2px rgba(0,0,0,0.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+#wrap{max-width:1100px;margin:0 auto;padding:20px 16px 60px;}
+.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  padding:14px 18px;margin-bottom:16px;font-size:13px;color:var(--text-secondary);line-height:1.6;}
+.banner b{color:var(--text-primary);}
+.preset-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.preset-btn{border:1px solid var(--border-primary);background:var(--card);border-radius:999px;
+  padding:7px 14px;font-size:13px;cursor:pointer;color:var(--text-secondary);white-space:nowrap;}
+.preset-btn.active{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600;}
+.w-readout{font-size:12px;color:var(--text-tertiary);margin-bottom:12px;}
+#frame-outer{overflow-x:auto;}
+#frame{width:100%;max-width:1440px;margin:0 auto;box-sizing:border-box;transition:width .2s;}
+#frame-chrome{border:1px dashed var(--border-primary);border-radius:10px;padding:16px;background:var(--bg);
+  position:relative;min-height:560px;}
+
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.gallery-btn{background:var(--card);border:1px solid var(--border-primary);border-radius:8px;
+  padding:14px;text-align:left;cursor:pointer;font-size:13px;}
+.gallery-btn .num{display:inline-flex;width:20px;height:20px;border-radius:999px;background:var(--brand);
+  color:#fff;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-right:6px;}
+.gallery-btn .ttl{font-weight:700;font-size:14px;margin:6px 0 4px;}
+.gallery-btn .size{font-size:11px;color:var(--text-tertiary);}
+
+.modal-overlay{position:absolute;inset:0;background:rgba(20,20,22,0.5);display:none;
+  align-items:center;justify-content:center;padding:40px 16px;z-index:30;overflow-y:auto;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--card);border-radius:14px;box-shadow:var(--shadow);width:340px;
+  max-width:100%;overflow:hidden;margin:auto;}
+.modal-box[data-size="md"]{width:480px;}
+.modal-box[data-size="lg"]{width:600px;}
+@container pf (min-width: 1024px){
+  .modal-box[data-size="md"] .modal-actions,
+  .modal-box[data-size="lg"] .modal-actions{justify-content:center;}
+  .modal-box[data-size="md"] .modal-actions .btn,
+  .modal-box[data-size="lg"] .modal-actions .btn{flex:0 0 150px;}
+}
+@container pf (max-width: 1023.98px){
+  .modal-box[data-size="sm"]{width:340px;}
+  .modal-box[data-size="md"]{width:340px;}
+  .modal-box[data-size="lg"]{width:100%;}
+}
+@container pf (max-width: 359.98px){
+  .modal-box{width:100%;}
+  .modal-overlay{padding:10px;}
+}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 16px;
+  border-bottom:1px solid var(--border-secondary);}
+.modal-header h3{margin:0;font-size:19px;}
+.modal-close{background:none;border:none;font-size:22px;color:var(--text-secondary);cursor:pointer;}
+.modal-body{padding:20px;max-height:70vh;overflow-y:auto;}
+.modal-body p.desc{margin:0 0 16px;font-size:14px;color:var(--text-secondary);line-height:1.5;}
+.modal-actions{display:flex;gap:8px;margin-top:16px;}
+.btn{border-radius:6px;font-size:14px;font-weight:600;padding:11px 20px;cursor:pointer;border:1px solid transparent;flex:1;text-align:center;}
+.btn-filled{background:var(--brand);color:#fff;}
+.btn-outline{background:var(--card);color:var(--text-secondary);border-color:var(--border-primary);}
+.field-label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;}
+.form-input{width:100%;border:1px solid var(--border-primary);border-radius:6px;padding:10px 12px;
+  font-size:14px;font-family:inherit;background:var(--card);color:var(--text-primary);margin-bottom:12px;}
+.form-input[readonly]{background:var(--tertiary);color:var(--text-secondary);}
+.zip-row{display:flex;gap:8px;}
+.zip-row .form-input{flex:1;}
+.zip-btn{flex-shrink:0;background:var(--tertiary);color:var(--btn-text);border:1px solid var(--border-primary);
+  border-radius:6px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;height:41px;}
+.barcode-box{background:var(--tertiary);border-radius:6px;padding:12px;text-align:center;font-size:14px;margin-bottom:16px;}
+.product-card{border:1px solid var(--border-secondary);border-radius:8px;padding:14px;display:flex;gap:12px;margin-bottom:16px;}
+.product-card .thumb{width:56px;height:56px;background:var(--tertiary);border-radius:6px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-tertiary);}
+.agree-row{display:flex;gap:8px;font-size:13px;margin-bottom:8px;align-items:flex-start;}
+.agree-row.all{font-weight:700;border-bottom:1px solid var(--border-secondary);padding-bottom:10px;margin-bottom:10px;}
+.summary-card{background:var(--secondary-bg);border-radius:8px;padding:14px;font-size:13px;margin-bottom:16px;}
+.summary-card .row{display:flex;justify-content:space-between;padding:4px 0;}
+.summary-card .row span:first-child{color:var(--text-secondary);}
+.search-result{max-height:200px;overflow-y:auto;border:1px solid var(--border-primary);border-radius:6px;margin-top:-6px;margin-bottom:12px;}
+.search-row{padding:10px 12px;font-size:14px;cursor:pointer;border-bottom:1px solid var(--border-secondary);}
+.search-row:last-child{border-bottom:none;}
+.search-row:hover{background:#eff1fd;}
+.search-row.soldout{color:var(--text-tertiary);cursor:default;}
+.mini-table{width:100%;border-collapse:collapse;font-size:13px;}
+.mini-table th{background:var(--tertiary);text-align:left;padding:10px;border-bottom:1px solid var(--border-primary);}
+.mini-table td{padding:10px;border-bottom:1px solid var(--border-secondary);}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="banner">
+    <b>모달 8유형 반응형 갤러리</b> — 콘텐츠 기준 분류(①~⑧)에 맞춰 각 유형의 실제 반응형 크기 규칙(1024·360 기준, sm-340/md-480/lg-600)을 확인할 수 있습니다. 프리셋으로 폭을 바꾼 뒤 버튼을 눌러보세요. 오버레이는 하나만 열립니다.
+  </div>
+
+  <div class="preset-row" id="preset-row">
+    <button class="preset-btn" data-w="320">320px</button>
+    <button class="preset-btn" data-w="359">359px</button>
+    <button class="preset-btn active" data-w="360">360px</button>
+    <button class="preset-btn" data-w="1023">1023px</button>
+    <button class="preset-btn" data-w="1024">1024px</button>
+    <button class="preset-btn" data-w="1440">1440px</button>
+  </div>
+  <div class="w-readout" id="w-readout"></div>
+
+  <div id="frame-outer">
+    <div id="frame" style="container-type:inline-size;container-name:pf;">
+    <div id="frame-chrome">
+
+      <div class="gallery-grid">
+        <button class="gallery-btn" onclick="openModal('t1')"><span class="num">1</span><div class="ttl">텍스트형 - 안내</div><div class="size">sm-340</div></button>
+        <button class="gallery-btn" onclick="openModal('t2')"><span class="num">2</span><div class="ttl">텍스트형 - 확인</div><div class="size">sm-340</div></button>
+        <button class="gallery-btn" onclick="openModal('t3')"><span class="num">3</span><div class="ttl">정보 확인형</div><div class="size">md-480</div></button>
+        <button class="gallery-btn" onclick="openModal('t4')"><span class="num">4</span><div class="ttl">입력형 - 선택 위주</div><div class="size">md-480</div></button>
+        <button class="gallery-btn" onclick="openModal('t5')"><span class="num">5</span><div class="ttl">입력형 - 사유 작성</div><div class="size">md-480</div></button>
+        <button class="gallery-btn" onclick="openModal('t6')"><span class="num">6</span><div class="ttl">입력형 - 주소</div><div class="size">md-480</div></button>
+        <button class="gallery-btn" onclick="openModal('t7')"><span class="num">7</span><div class="ttl">검색 - 리스트형</div><div class="size">md-480</div></button>
+        <button class="gallery-btn" onclick="openModal('t8')"><span class="num">8</span><div class="ttl">테이블형</div><div class="size">lg-600</div></button>
+      </div>
+
+      <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-box" id="modal-box" data-size="sm">
+          <div class="modal-header"><h3 id="modal-title"></h3><button class="modal-close" onclick="closeModal()">&times;</button></div>
+          <div class="modal-body" id="modal-body"></div>
+        </div>
+      </div>
+
+    </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var MODALS = {
+  t1: {size:'sm', title:'주문 불가 안내', body:
+    '<p class="desc">본인부담률이 변경되었습니다.<br>변경된 본인부담률을 확인하여 수급자에게 안내 후 주문을 진행해 주세요.</p>'+
+    '<div class="modal-actions"><button class="btn btn-filled" onclick="closeModal()">확인</button></div>'},
+  t2: {size:'sm', title:'회수 철회', body:
+    '<p class="desc">회수를 철회하시겠습니까?</p>'+
+    '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="closeModal()">확인</button></div>'},
+  t3: {size:'md', title:'회수 요청 확인', body:
+    '<p class="desc">아래 내용으로 회수를 요청하시겠어요?</p>'+
+    '<div class="product-card"><div class="thumb">이미지</div><div><div style="font-weight:600;margin-bottom:4px;">전동식 침대(2모터) 스탠다드형</div>'+
+    '<div style="font-size:12px;color:var(--text-secondary);">바코드 8801234567891</div></div></div>'+
+    '<div class="summary-card"><div class="row"><span>회수 사유</span><span>사망 / -</span></div><div class="row"><span>회수옵션</span><span>-</span></div></div>'+
+    '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="closeModal()">확인</button></div>'},
+  t4: {size:'md', title:'회수 요청하기', body:
+    '<div class="product-card"><div class="thumb">이미지</div><div><div style="font-weight:600;margin-bottom:4px;">전동식 침대(2모터) 스탠다드형</div>'+
+    '<div style="font-size:12px;color:var(--text-secondary);">주문 수량 1개 | 회수 수량 1개</div></div></div>'+
+    '<label class="field-label">회수할 상품 바코드</label><div class="barcode-box">8801234567891</div>'+
+    '<label class="field-label">회수 사유 선택</label>'+
+    '<select class="form-input"><option>사망</option><option>병원, 요양원 입소</option><option>이사</option><option>그 외</option></select>'+
+    '<div class="agree-row all"><input type="checkbox"><label>전체동의</label></div>'+
+    '<div class="agree-row"><input type="checkbox"><label>회수 요청 시 해당 수급자의 플러스+ (대대여) 계약이 종료됩니다.</label></div>'+
+    '<div class="agree-row"><input type="checkbox"><label>회수 요청 후 바코드를 해지하지 않으면 대여료가 추가 발생할 수 있습니다.</label></div>'+
+    '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="closeModal()">확인</button></div>'},
+  t5: {size:'md', title:'회수접수 취소', body:
+    '<p class="desc">수급자 홍*동님의 회수 신청 건을 접수 취소 처리합니다. 사유를 선택해 주세요.</p>'+
+    '<label class="field-label">취소 사유</label>'+
+    '<select class="form-input"><option>사유를 선택해 주세요</option><option>수급자 단순 변심</option><option>대여 계약 연장</option><option>회수 일정 변경 필요</option><option>수급자 연락 불가</option><option>기타(직접 입력)</option></select>'+
+    '<label class="field-label">상세 사유</label>'+
+    '<textarea class="form-input" style="min-height:70px;" placeholder="상세 사유를 입력해 주세요."></textarea>'+
+    '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="closeModal()">저장</button></div>'},
+  t6: {size:'md', title:'회수지 주소 수정', body:
+    '<p class="desc">대여 종료 상품을 회수할 정확한 주소를 확인하고 수정해 주세요.</p>'+
+    '<label class="field-label">우편번호</label>'+
+    '<div class="zip-row"><input class="form-input" value="16495" readonly><button class="zip-btn">우편번호</button></div>'+
+    '<label class="field-label">기본 주소</label><input class="form-input" value="경기 수원시 영통구 광교로 32" readonly>'+
+    '<label class="field-label">상세 주소</label><input class="form-input" placeholder="상세주소 입력">'+
+    '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="closeModal()">수정</button></div>'},
+  t7: {size:'md', title:'상품 변경', body:
+    '<label class="field-label">상품 변경</label>'+
+    '<input class="form-input" value="전동침대" style="margin-bottom:0;">'+
+    '<div class="search-result">'+
+      '<div class="search-row">[대여] NY(M)-1300 (이용료 월 36,900원)</div>'+
+      '<div class="search-row">[대여] NY(M)-1300 (이용료 월 36,900원)</div>'+
+      '<div class="search-row">[대여] NY(M)-1300 (이용료 월 36,900원)</div>'+
+      '<div class="search-row soldout">[대여] NY(M)-1300 (이용료 월 36,900원) 품절</div>'+
+    '</div>'+
+    '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="closeModal()">상품 변경</button></div>'},
+  t8: {size:'lg', title:'대여 이력 조회', body:
+    '<table class="mini-table"><tr><th>주문일자</th><th>상품명</th><th>상태</th><th>금액</th></tr>'+
+    '<tr><td>2026-04-19</td><td>천연BED ST-3</td><td>주문완료</td><td>392,400원</td></tr>'+
+    '<tr><td>2026-01-08</td><td>전동 휠체어 WA-2</td><td>회수완료</td><td>128,000원</td></tr>'+
+    '<tr><td>2025-11-02</td><td>실외경사로 RM-1</td><td>취소완료</td><td>-</td></tr></table>'+
+    '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">닫기</button></div>'}
+};
+
+function openModal(key){
+  var m = MODALS[key];
+  document.getElementById('modal-title').textContent = m.title;
+  document.getElementById('modal-body').innerHTML = m.body;
+  document.getElementById('modal-box').setAttribute('data-size', m.size);
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+var frameEl = document.getElementById('frame');
+var presetButtons = document.querySelectorAll('.preset-btn');
+function setWidth(w){
+  presetButtons.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-w') === w); });
+  frameEl.style.width = w + 'px';
+  requestAnimationFrame(updateReadout);
+}
+presetButtons.forEach(function(b){
+  b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
+});
+function updateReadout(){
+  var w = Math.round(frameEl.getBoundingClientRect().width);
+  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px';
+}
+setWidth('360');
+</script>
+</body>
+</html>
