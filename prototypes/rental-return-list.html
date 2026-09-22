@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>대여 회수 관리 리스트 - 적응형</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa; --disabled-bg:#eee;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999; --text-disabled:#bdbdbd;
+  --border-primary:#bdbdbd; --border-secondary:#eee; --border-dark:#616161; --border-active:#333;
+  --brand:#323da3; --group1:#eff1fd; --group2:#e8f5e9;
+  --shadow:0 1px 2px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.05);
+  /* 회수 상태칩 — Figma 원본 대조 확정값(2026-09-22) */
+  --collect-접수-bg:#eff6ff; --collect-접수-border:#dbeafe; --collect-접수-text:#1e40af;
+  --collect-확인중-bg:#e8f5e9; --collect-확인중-border:#c8e6c9; --collect-확인중-text:#166534;
+  --collect-요청-bg:#fff8e1; --collect-요청-border:#ffb300; --collect-요청-text:#ff8f00;
+  --collect-준비중-bg:#f2fde4; --collect-준비중-border:#c6f68d; --collect-준비중-text:#09af00;
+  --collect-완료-bg:#e3e5f5; --collect-완료-border:#ced2f4; --collect-완료-text:#141e76;
+  --collect-취소-bg:#ffebee; --collect-취소-border:#ffcdd2; --collect-취소-text:#c62828;
+  --collect-취소완료-bg:#f5f5f5; --collect-취소완료-border:#bdbdbd; --collect-취소완료-text:#555;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+#wrap{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  padding:14px 18px;margin-bottom:16px;font-size:13px;color:var(--text-secondary);line-height:1.6;}
+.banner b{color:var(--text-primary);}
+.preset-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.preset-btn{border:1px solid var(--border-primary);background:var(--card);border-radius:999px;
+  padding:7px 14px;font-size:13px;cursor:pointer;color:var(--text-secondary);white-space:nowrap;}
+.preset-btn.active{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600;}
+.w-readout{font-size:12px;color:var(--text-tertiary);margin-bottom:12px;}
+#frame-outer{overflow-x:auto;}
+#frame{width:100%;max-width:1440px;margin:0 auto;box-sizing:border-box;transition:width .2s;}
+#frame-chrome{border:1px dashed var(--border-primary);border-radius:10px;padding:16px;background:var(--bg);}
+.page{background:var(--card);border-radius:8px;overflow:hidden;position:relative;}
+
+.pc-view, .mo-view{display:none;}
+@container pf (min-width:1024px){ .pc-view{display:block;} }
+@container pf (max-width:1023.98px){ .mo-view{display:block;} }
+
+/* ---- PC ---- */
+.pc-titlebar{padding:24px 24px 0;font-size:24px;font-weight:700;}
+.pc-breadcrumb{padding:6px 24px 20px;font-size:14px;color:#555;display:flex;align-items:center;gap:4px;}
+.pc-search-wrap{margin:0 24px;}
+.pc-search-card{background:var(--secondary-bg);border:1px solid var(--border-primary);border-radius:4px;
+  padding:16px;position:relative;}
+.pc-detail-toggle{position:absolute;top:16px;right:16px;background:var(--disabled-bg);border:none;border-radius:4px;
+  padding:8px 16px;font-size:14px;font-weight:600;color:#555;cursor:pointer;display:flex;align-items:center;gap:4px;}
+.pc-frow{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-secondary);}
+.pc-frow:last-of-type{border-bottom:none;}
+.pc-flabel{width:120px;flex-shrink:0;font-size:14px;font-weight:600;}
+.pc-datebox{border:1px solid var(--border-active);border-radius:4px;padding:8px 12px;font-size:14px;
+  color:var(--border-active);width:160px;display:flex;justify-content:space-between;align-items:center;background:#fff;}
+.pc-seg{border:1px solid var(--border-dark);border-radius:4px;padding:4px;display:flex;gap:4px;}
+.pc-seg span{padding:8px 4px;font-size:14px;color:var(--text-secondary);border-right:1px solid var(--disabled-bg);
+  width:64px;text-align:center;cursor:pointer;}
+.pc-seg span:last-child{border-right:none;}
+.pc-seg span.active{background:var(--disabled-bg);border-radius:4px;font-weight:600;color:var(--text-primary);
+  border-right:none;}
+.pc-select{border:1px solid var(--border-active);border-radius:4px;padding:8px 34px 8px 12px;font-size:14px;
+  width:160px;background-color:#fff;color:var(--border-active);
+  appearance:none;-webkit-appearance:none;-moz-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%23333333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:14px 14px;}
+.pc-search-input{border:1px solid var(--border-dark);border-radius:4px;padding:8px 12px;font-size:14px;
+  flex:1;background:#fff;color:var(--text-disabled);}
+.pc-btnrow{display:flex;gap:10px;justify-content:center;padding-top:16px;}
+.pc-btn{border-radius:4px;padding:8px 16px;font-size:14px;font-weight:600;cursor:pointer;width:130px;text-align:center;}
+.pc-btn.outline{background:#fff;border:1px solid var(--brand);color:var(--brand);}
+.pc-btn.filled{background:var(--brand);color:#fff;border:none;}
+.pc-tablewrap{padding:0 24px 24px;margin-top:16px;}
+table.pc-table{width:100%;border-collapse:collapse;font-size:13px;}
+table.pc-table th{background:var(--tertiary);padding:14px 12px;text-align:left;border-bottom:1px solid var(--border-primary);
+  font-weight:600;}
+table.pc-table td{padding:14px 12px;border-bottom:1px solid var(--border-secondary);}
+table.pc-table tr.rowlink{cursor:pointer;}
+table.pc-table tr.rowlink:hover{background:#eff1fd;}
+.pagination{display:flex;justify-content:center;align-items:center;gap:4px;padding:20px 24px;}
+.page-nav{width:32px;height:32px;border-radius:6px;border:1px solid var(--border-secondary);background:#fff;
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);padding:0;}
+.page-nav:hover{background:var(--tertiary);}
+.page-nav:disabled{opacity:.4;cursor:not-allowed;}
+.page-btn{min-width:32px;height:32px;padding:0 6px;border-radius:6px;border:1px solid transparent;background:none;
+  font-size:13px;color:var(--text-secondary);cursor:pointer;font-family:inherit;}
+.page-btn:hover{background:var(--tertiary);color:var(--text-primary);}
+.page-btn.active{background:var(--brand);color:#fff;font-weight:700;cursor:default;}
+
+/* 회수 상태칩 — 공통(PC/모바일) */
+.chip-collect{display:inline-flex;align-items:center;height:32px;padding:4px 12px;border-radius:999px;
+  font-size:14px;font-weight:600;border:1px solid;white-space:nowrap;}
+.chip-collect.접수{background:var(--collect-접수-bg);border-color:var(--collect-접수-border);color:var(--collect-접수-text);}
+.chip-collect.확인중{background:var(--collect-확인중-bg);border-color:var(--collect-확인중-border);color:var(--collect-확인중-text);}
+.chip-collect.요청{background:var(--collect-요청-bg);border-color:var(--collect-요청-border);color:var(--collect-요청-text);}
+.chip-collect.준비중{background:var(--collect-준비중-bg);border-color:var(--collect-준비중-border);color:var(--collect-준비중-text);}
+.chip-collect.완료{background:var(--collect-완료-bg);border-color:var(--collect-완료-border);color:var(--collect-완료-text);}
+.chip-collect.취소{background:var(--collect-취소-bg);border-color:var(--collect-취소-border);color:var(--collect-취소-text);}
+.chip-collect.취소완료{background:var(--collect-취소완료-bg);border-color:var(--collect-취소완료-border);color:var(--collect-취소완료-text);}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+
+/* ---- Mobile ---- */
+.mo-gnb{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;}
+.mo-logo{font-weight:800;color:var(--brand);}
+.mo-search{margin:0 16px 10px;background:var(--tertiary);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text-tertiary);}
+.mo-titlebar{padding:4px 16px 12px;font-size:20px;font-weight:700;}
+.mo-filter-row{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;}
+.mo-filter-chip{border:1px solid var(--border-primary);border-radius:999px;padding:6px 12px;font-size:12px;
+  white-space:nowrap;color:var(--text-secondary);cursor:pointer;background:#fff;
+  display:inline-flex;align-items:center;gap:4px;}
+.mo-count{padding:0 16px 10px;font-size:12px;color:var(--text-tertiary);}
+.mo-card-list{padding:0 16px;display:flex;flex-direction:column;gap:12px;}
+.mo-card{border:none;border-radius:8px;padding:16px 16px 24px;cursor:pointer;background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,.08), 0 0 0.5px rgba(0,0,0,.2);}
+.mo-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.mo-card-date{font-size:16px;color:#555;}
+.mo-sep{height:1px;background:var(--tertiary);margin-bottom:12px;}
+.mo-name-row{display:flex;align-items:baseline;gap:4px;margin-bottom:4px;}
+.mo-name-row .name{font-size:20px;font-weight:700;color:var(--text-primary);}
+.mo-name-row .maskedid{font-size:18px;color:var(--text-secondary);}
+.mo-row{display:flex;gap:4px;font-size:18px;}
+.mo-row .lb{color:#555;flex-shrink:0;}
+.mo-row .val{color:var(--text-primary);}
+
+/* bottom sheet (order-list-adaptive.html과 동일 규격) */
+.sheet-overlay{position:absolute;inset:0;background:rgba(20,20,22,0.5);display:none;align-items:flex-end;z-index:40;}
+.sheet-overlay.open{display:flex;}
+.sheet-box{background:#fff;width:100%;border-radius:40px 40px 0 0;max-height:85%;display:flex;flex-direction:column;
+  padding-top:12px;box-shadow:0 8px 24px rgba(0,0,0,.2), 0 0 4px rgba(0,0,0,.12);}
+.sheet-header{padding:20px 20px 24px;display:flex;align-items:center;justify-content:space-between;
+  font-size:20px;font-weight:700;color:var(--text-primary);}
+.sheet-header .close-btn{cursor:pointer;color:var(--text-primary);flex-shrink:0;display:flex;}
+.sheet-body{padding:0 20px;overflow-y:auto;flex:1;}
+.sheet-section{margin-bottom:24px;}
+.sheet-flabel{font-size:18px;font-weight:600;margin-bottom:12px;color:var(--text-primary);}
+.sheet-btngroup{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.sheet-optbtn{border:1px solid var(--border-primary);border-radius:4px;padding:12px 0;text-align:center;
+  font-size:16px;color:var(--text-secondary);cursor:pointer;background:#fff;}
+.sheet-optbtn.active{border-color:#333;color:#333;font-weight:600;}
+.sheet-daterange{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:8px;}
+.sheet-daterange .part{flex:1;border:1px solid var(--border-primary);border-radius:4px;padding:12px;
+  display:flex;align-items:center;justify-content:space-between;gap:4px;font-size:16px;
+  color:var(--text-disabled);background:var(--disabled-bg);}
+.sheet-daterange .part.enabled{background:#fff;color:var(--text-primary);border-color:#333;}
+.sheet-select-list{display:flex;flex-direction:column;gap:6px;}
+.sheet-select-row{display:flex;align-items:center;justify-content:space-between;padding:10px 8px 10px 12px;
+  border-radius:4px;cursor:pointer;font-size:16px;color:var(--text-primary);}
+.sheet-select-row.selected{background:var(--group1);color:#141e76;}
+.sheet-select-row .check{visibility:hidden;color:#141e76;}
+.sheet-select-row.selected .check{visibility:visible;}
+.sheet-footer{padding:20px 20px calc(24px + env(safe-area-inset-bottom, 0px));display:flex;gap:8px;background:#fff;}
+.sheet-btn{border-radius:4px;padding:14px 0;font-size:18px;font-weight:600;text-align:center;cursor:pointer;}
+.sheet-btn.reset{background:var(--disabled-bg);color:#555;flex:0 0 120px;}
+.sheet-btn.filled{background:var(--brand);color:#fff;border:none;flex:1;}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="banner">
+    <b>대여 회수 관리 리스트 — 적응형 프로토타입</b> — Figma 실제 디자인(node-id=6534-177231)을 반영했습니다. 회수 상태칩 7종 색상은 Figma 컴포넌트에서 직접 확인한 값입니다. 회수번호는 "회수요청" 단계부터 발급되어 노출됩니다(그 전/접수취소 상태는 <span class="mono">-</span>).
+  </div>
+
+  <div class="preset-row" id="preset-row">
+    <button class="preset-btn" data-w="360">360px</button>
+    <button class="preset-btn" data-w="768">768px</button>
+    <button class="preset-btn" data-w="1023">1023px</button>
+    <button class="preset-btn active" data-w="1024">1024px</button>
+    <button class="preset-btn" data-w="1440">1440px</button>
+  </div>
+  <div class="w-readout" id="w-readout"></div>
+
+  <div id="frame-outer">
+    <div id="frame" style="container-type:inline-size;container-name:pf;">
+    <div id="frame-chrome">
+      <div class="page">
+
+        <!-- PC -->
+        <div class="pc-view">
+          <div class="pc-titlebar">대여 회수 관리</div>
+          <div class="pc-breadcrumb">돌봄앱 운영관리 › 대여 회수 관리</div>
+          <div class="pc-search-wrap">
+            <div class="pc-search-card">
+              <button class="pc-detail-toggle" onclick="toggleDetail()"><span id="detail-label">상세</span> <svg id="detail-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" style="transform:rotate(180deg);transition:transform .15s;flex-shrink:0;"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <div class="pc-frow">
+                <div class="pc-flabel">회수 신청일</div>
+                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                  <div class="pc-datebox">2026-01-01 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9H21" stroke="currentColor" stroke-width="2"/><path d="M8 3V6M16 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+                  <span>~</span>
+                  <div class="pc-datebox">2026-01-01 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9H21" stroke="currentColor" stroke-width="2"/><path d="M8 3V6M16 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+                  <div class="pc-seg">
+                    <span>일주일</span><span>1개월</span><span class="active">3개월</span><span>6개월</span><span>1년</span>
+                  </div>
+                </div>
+              </div>
+              <div id="pc-detail-fields">
+                <div class="pc-frow">
+                  <div class="pc-flabel">회수 진행상태</div>
+                  <select class="pc-select"><option>전체</option></select>
+                </div>
+                <div class="pc-frow">
+                  <div class="pc-flabel">검색어</div>
+                  <select class="pc-select" style="width:120px;"><option>수급자</option></select>
+                  <input class="pc-search-input" placeholder="검색어 입력">
+                </div>
+                <div class="pc-btnrow">
+                  <div class="pc-btn outline">초기화</div>
+                  <div class="pc-btn filled">검색</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pc-tablewrap">
+          <table class="pc-table">
+            <tr><th>NO</th><th>수급자명</th><th>연락처</th><th>회수신청일시</th><th>돌봄주문번호</th><th>회수번호</th><th>회수상태</th></tr>
+            <tr class="rowlink"><td>7</td><td>홍길동</td><td>010-1234-5678</td><td>2026-06-19 10:20</td><td>RET-20260619-001</td><td>-</td><td><span class="chip-collect 접수">회수접수</span></td></tr>
+            <tr class="rowlink"><td>6</td><td>김순자</td><td>010-2222-3333</td><td>2026-06-18 14:02</td><td>RET-20260618-014</td><td>-</td><td><span class="chip-collect 확인중">회수확인중</span></td></tr>
+            <tr class="rowlink"><td>5</td><td>박영희</td><td>010-4444-5555</td><td>2026-06-17 09:11</td><td>RET-20260617-009</td><td>COL20260617A11C1</td><td><span class="chip-collect 요청">회수요청</span></td></tr>
+            <tr class="rowlink"><td>4</td><td>이철수</td><td>010-7777-8888</td><td>2026-06-15 16:40</td><td>RET-20260615-002</td><td>COL20260615A09C4</td><td><span class="chip-collect 준비중">회수준비중</span></td></tr>
+            <tr class="rowlink"><td>3</td><td>최민재</td><td>010-9999-1111</td><td>2026-06-12 11:05</td><td>RET-20260612-021</td><td>COL20260612A02C7</td><td><span class="chip-collect 완료">회수완료</span></td></tr>
+            <tr class="rowlink"><td>2</td><td>정수현</td><td>010-3333-2222</td><td>2026-06-10 13:27</td><td>RET-20260610-007</td><td>-</td><td><span class="chip-collect 취소">회수취소</span></td></tr>
+            <tr class="rowlink"><td>1</td><td>강태오</td><td>010-5555-6666</td><td>2026-06-08 08:52</td><td>RET-20260608-003</td><td>COL20260608A15C2</td><td><span class="chip-collect 취소완료">회수취소완료</span></td></tr>
+          </table>
+          <div class="pagination">
+            <button class="page-nav" disabled aria-label="이전 페이지"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="page-btn active" onclick="setPage(this)">1</button>
+            <button class="page-btn" onclick="setPage(this)">2</button>
+            <button class="page-btn" onclick="setPage(this)">3</button>
+            <button class="page-nav" aria-label="다음 페이지"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+          </div>
+        </div>
+
+        <!-- Mobile -->
+        <div class="mo-view">
+          <div class="mo-gnb"><span class="mo-logo">이로움</span><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
+          <div class="mo-search">상품을 검색하세요</div>
+          <div class="mo-titlebar">대여 회수 관리</div>
+          <div class="mo-filter-row">
+            <span class="mo-filter-chip" onclick="openSheet('search')">3개월 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="mo-filter-chip" onclick="openSheet('status')">상태: 전체 <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="mo-filter-chip" onclick="openSheet('search')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> 검색</span>
+          </div>
+          <div class="mo-count">전체 21건</div>
+          <div class="mo-card-list">
+            <div class="mo-card" onclick="alert('회수 상세 이동')">
+              <div class="mo-card-head"><span class="chip-collect 접수">회수접수</span><span class="mo-card-date">2026-06-19 10:20</span></div>
+              <div class="mo-sep"></div>
+              <div class="mo-name-row"><span class="name">홍*동</span><span class="maskedid">L123456****</span></div>
+              <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260619-001</span></div>
+            </div>
+            <div class="mo-card" onclick="alert('회수 상세 이동')">
+              <div class="mo-card-head"><span class="chip-collect 확인중">회수확인중</span><span class="mo-card-date">2026-06-18 14:02</span></div>
+              <div class="mo-sep"></div>
+              <div class="mo-name-row"><span class="name">김*자</span><span class="maskedid">L654321****</span></div>
+              <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260618-014</span></div>
+            </div>
+            <div class="mo-card" onclick="alert('회수 상세 이동')">
+              <div class="mo-card-head"><span class="chip-collect 요청">회수요청</span><span class="mo-card-date">2026-06-17 09:11</span></div>
+              <div class="mo-sep"></div>
+              <div class="mo-name-row"><span class="name">박*희</span><span class="maskedid">L112233****</span></div>
+              <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260617-009</span></div>
+            </div>
+            <div class="mo-card" onclick="alert('회수 상세 이동')">
+              <div class="mo-card-head"><span class="chip-collect 준비중">회수준비중</span><span class="mo-card-date">2026-06-15 16:40</span></div>
+              <div class="mo-sep"></div>
+              <div class="mo-name-row"><span class="name">이*수</span><span class="maskedid">L998877****</span></div>
+              <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260615-002</span></div>
+            </div>
+            <div class="mo-card" onclick="alert('회수 상세 이동')">
+              <div class="mo-card-head"><span class="chip-collect 완료">회수완료</span><span class="mo-card-date">2026-06-12 11:05</span></div>
+              <div class="mo-sep"></div>
+              <div class="mo-name-row"><span class="name">최*재</span><span class="maskedid">L665544****</span></div>
+              <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260612-021</span></div>
+            </div>
+            <div class="mo-card" onclick="alert('회수 상세 이동')">
+              <div class="mo-card-head"><span class="chip-collect 취소">회수취소</span><span class="mo-card-date">2026-06-10 13:27</span></div>
+              <div class="mo-sep"></div>
+              <div class="mo-name-row"><span class="name">정*현</span><span class="maskedid">L221100****</span></div>
+              <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260610-007</span></div>
+            </div>
+            <div class="mo-card" onclick="alert('회수 상세 이동')">
+              <div class="mo-card-head"><span class="chip-collect 취소완료">회수취소완료</span><span class="mo-card-date">2026-06-08 08:52</span></div>
+              <div class="mo-sep"></div>
+              <div class="mo-name-row"><span class="name">강*오</span><span class="maskedid">L334455****</span></div>
+              <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260608-003</span></div>
+            </div>
+          </div>
+
+          <!-- 검색 바텀시트 (회수 요청일) -->
+          <div class="sheet-overlay" id="sheet-search">
+            <div class="sheet-box">
+              <div class="sheet-header">검색<span class="close-btn" onclick="closeSheet('search')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
+              <div class="sheet-body">
+                <div class="sheet-section">
+                  <div class="sheet-flabel">회수 요청일</div>
+                  <div class="sheet-btngroup">
+                    <div class="sheet-optbtn" onclick="selectDatePreset(this)">일주일</div>
+                    <div class="sheet-optbtn" onclick="selectDatePreset(this)">1개월</div>
+                    <div class="sheet-optbtn active" onclick="selectDatePreset(this)">3개월</div>
+                  </div>
+                  <div class="sheet-btngroup" style="margin-top:8px;">
+                    <div class="sheet-optbtn" onclick="selectDatePreset(this)">6개월</div>
+                    <div class="sheet-optbtn" onclick="selectDatePreset(this)">1년</div>
+                    <div class="sheet-optbtn" data-direct onclick="selectDatePreset(this)">직접선택</div>
+                  </div>
+                  <div class="sheet-daterange" id="sheet-daterange">
+                    <div class="part"><span>2026-05-08</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9H21" stroke="currentColor" stroke-width="2"/><path d="M8 3V6M16 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+                    <span>~</span>
+                    <div class="part"><span>2026-05-08</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9H21" stroke="currentColor" stroke-width="2"/><path d="M8 3V6M16 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+                  </div>
+                </div>
+                <div class="sheet-section">
+                  <div class="sheet-flabel">회수 진행상태</div>
+                  <div class="sheet-select-btn" onclick="openSheet('status')" style="border:1px solid var(--border-secondary);border-radius:4px;padding:12px;font-size:16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:#fff;color:var(--text-disabled);"><span>전체</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                </div>
+                <div class="sheet-section">
+                  <div class="sheet-flabel">검색어</div>
+                  <input class="sheet-input" style="width:100%;border:1px solid var(--border-primary);border-radius:4px;padding:12px;font-size:16px;background:#fff;color:var(--text-primary);" placeholder="수급자명 검색">
+                </div>
+              </div>
+              <div class="sheet-footer">
+                <div class="sheet-btn reset" onclick="closeSheet('search')">초기화</div>
+                <div class="sheet-btn filled" onclick="closeSheet('search')">검색</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 회수상태 선택 바텀시트 -->
+          <div class="sheet-overlay" id="sheet-status">
+            <div class="sheet-box">
+              <div class="sheet-header">회수상태 선택<span class="close-btn" onclick="closeSheet('status')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
+              <div class="sheet-body" style="max-height:340px;">
+                <div class="sheet-select-list">
+                  <div class="sheet-select-row selected" onclick="selectRow(this)"><span>전체</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>회수접수</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>회수확인중</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>회수요청</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>회수준비중</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>회수완료</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>회수취소</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="sheet-select-row" onclick="selectRow(this)"><span>회수취소완료</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                </div>
+              </div>
+              <div class="sheet-footer">
+                <div class="sheet-btn filled" onclick="closeSheet('status')">선택완료</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var detailOpen = true;
+function toggleDetail(){
+  detailOpen = !detailOpen;
+  document.getElementById('pc-detail-fields').style.display = detailOpen ? 'block' : 'none';
+  document.getElementById('detail-arrow').style.transform = detailOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+function setPage(btn){
+  document.querySelectorAll('.page-btn.active').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function selectDatePreset(el){
+  var group = el.closest('.sheet-section');
+  group.querySelectorAll('.sheet-optbtn.active').forEach(function(b){ b.classList.remove('active'); });
+  el.classList.add('active');
+  var isDirect = el.hasAttribute('data-direct');
+  document.querySelectorAll('#sheet-daterange .part').forEach(function(p){ p.classList.toggle('enabled', isDirect); });
+}
+
+function selectRow(el){
+  var list = el.closest('.sheet-select-list');
+  list.querySelectorAll('.sheet-select-row.selected').forEach(function(r){ r.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function openSheet(key){
+  document.querySelectorAll('.sheet-overlay.open').forEach(function(s){ s.classList.remove('open'); });
+  document.getElementById('sheet-' + key).classList.add('open');
+}
+function closeSheet(key){
+  document.getElementById('sheet-' + key).classList.remove('open');
+}
+
+var frameEl = document.getElementById('frame');
+var presetButtons = document.querySelectorAll('.preset-btn');
+function setWidth(w){
+  presetButtons.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-w') === w); });
+  frameEl.style.width = w + 'px';
+  requestAnimationFrame(updateReadout);
+}
+presetButtons.forEach(function(b){
+  b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
+});
+function updateReadout(){
+  var w = Math.round(frameEl.getBoundingClientRect().width);
+  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px' + (w>=1024?' (PC 테이블)':' (모바일 카드)');
+}
+setWidth('1024');
+</script>
+</body>
+</html>

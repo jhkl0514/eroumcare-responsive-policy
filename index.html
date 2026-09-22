@@ -297,12 +297,24 @@ var SECTIONS = {
     '<li>코드 레벨: 모든 input/select는 배경·글자색 명시적 지정(OS 다크모드 자동 반영 렌더링 사고 방지 — select 검은 배경 버그 실제 발생)</li>'+
     '</ul>' },
 
+  s44: { title:"4-4. 대여 회수 관리 리스트", html:
+    '<p>Figma 실제 디자인(node-id=6534-177231, 2026-09-22 확인) 기준. 메뉴 순서상 주문요청관리 상세와 회수 상세보기 사이에 위치.</p>'+
+    '<ul>'+
+    '<li><strong>적응형</strong>: PC=테이블, 모바일=카드 (주문요청관리 리스트와 동일 패턴)</li>'+
+    '<li>PC 검색: 회수 신청일(날짜 2개+구간 세그먼트 일주일/1개월/3개월[기본]/6개월/1년) 기본 노출, "상세" 토글로 회수 진행상태/검색어까지 펼침(기본 펼침)</li>'+
+    '<li>PC 테이블 컬럼: NO / 수급자명 / 연락처 / 회수신청일시 / 돌봄주문번호 / 회수번호 / 회수상태</li>'+
+    '<li><strong>회수번호 노출 조건</strong>: 4-1의 "회수요청 시 발급" 규칙과 연동 — 회수접수·회수확인중·회수취소는 <span class="mono">-</span>, 회수요청·회수준비중·회수완료·회수취소완료는 실제 번호(<span class="mono">COL...</span>) 노출</li>'+
+    '<li>모바일 카드: 상태칩+회수신청일시(헤더), 수급자명(마스킹)+마스킹ID, 돌봄주문번호 — "함께 요청" 개념 없음</li>'+
+    '<li>모바일 필터칩: 기간(기본 3개월)/상태(기본 전체)/검색 — 대여-구입 전환 토글 없음(회수 관리는 대여 전용)</li>'+
+    '<li>모바일 바텀시트 2종: 검색(회수요청일+회수진행상태+검색어), 회수상태 선택(전체+7개 상태, 체크마크)</li>'+
+    '</ul>' },
+
   s5: { title:"5. DS 시맨틱 컬러 / 상태칩", html:
     '<ul>'+
     '<li>대여: 신규배정=Info(파랑), 주문확인중=Success Outline(초록), 주문완료=Success Tinted-Outline(밝은 초록), 출고준비중=Caution Outline(오렌지)</li>'+
     '<li>출고완료=BrandSub(배송 진행 중), 배송완료=Default(최종 종결)</li>'+
     '<li>명명 규칙: <span class="mono">Status chip-Order</span> / <span class="mono">-Return</span> / <span class="mono">-AS</span> — 구분자 하이픈 통일</li>'+
-    '<li>회수: 회수접수=옅은 파랑, 회수확인중=민트, 회수요청=앰버, 회수준비중=라임, 회수완료=진한 네이비(filled), 회수취소=핑크, 회수취소완료=회색</li>'+
+    '<li><strong>회수 관리 상태칩</strong> — <strong>확정(2026-09-22, Figma 컴포넌트 직접 확인)</strong>: 회수접수 <span class="mono">#eff6ff</span>, 회수확인중 <span class="mono">#e8f5e9</span>(초록 — 구 문서 "민트" 정정), 회수요청 <span class="mono">#fff8e1</span>(앰버), 회수준비중 <span class="mono">#f2fde4</span>(라임), 회수완료 <span class="mono">#e3e5f5</span>(연한 브랜드 틴트 — 구 문서 "진한 네이비 filled" 정정), 회수취소 <span class="mono">#ffebee</span>(핑크), 회수취소완료 <span class="mono">#f5f5f5</span>(회색). 상세 hex는 CLAUDE.md 5번 표 참고</li>'+
     '</ul>' },
 
   s6: { title:"6. 코드 레벨 원칙", html:
@@ -324,7 +336,7 @@ var SECTIONS = {
     '</ul>' }
 };
 
-var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s41","s42","s43","s5","s6","s7"];
+var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s41","s42","s43","s44","s5","s6","s7"];
 
 /* ---------------- Category order (menu group order — edit here to reorder groups) ---------------- */
 var CATEGORY_ORDER = ["rental-system", "common-pattern"];
@@ -349,6 +361,9 @@ var PROTOS = [
   { id:"order-detail-mobile.html", title:"주문요청관리 상세", category:"rental-system",
     desc:"반응형 전 구간, 상태별 조건부 노출",
     primary:"s43", related:["s31","s34","s35","s5","s1","s2","s6"] },
+  { id:"rental-return-list.html", title:"대여 회수 리스트", category:"rental-system",
+    desc:"PC 테이블 / 모바일 카드 (적응형) — 회수 상세 진입 전 단계",
+    primary:"s44", related:["s35","s5","s2","s1","s6"] },
   { id:"rental-return-detail-prototype.html", title:"대여 회수 상세보기", category:"rental-system",
     desc:"전체 상태값 + 모달 포함",
     primary:"s41", related:["s31","s5","s7","s1","s2","s6"] },
