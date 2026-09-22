@@ -211,10 +211,10 @@ textarea.form-input{min-height:70px;resize:vertical;}
 <body>
 <div id="app">
   <div class="proto-banner">
-    <b>검토용 프로토타입</b> · 대여 회수 상세보기(사업소 돌봄앱 운영관리). 상단 탭으로 7개 상태를 전환하거나, 화면 안의 버튼으로 실제 흐름(접수취소 · 이로움에 회수 요청 · 회수 철회 · 주소수정 · 메모)을 시뮬레이션할 수 있습니다. 모든 모달은 케어 모달 컴포넌트 기준(타이틀 + X 닫기)으로 통일했습니다.
+    <b>검토용 프로토타입</b> · 대여 회수 상세보기(사업소 돌봄앱 운영관리). 상단 탭으로 7개 상태를 전환하거나, 화면 안의 버튼으로 실제 흐름(접수취소 · 이로움에 회수 요청 · 회수요청 취소 · 주소수정 · 메모)을 시뮬레이션할 수 있습니다. 모든 모달은 케어 모달 컴포넌트 기준(타이틀 + X 닫기)으로 통일했습니다.
     <div class="sim-row">
       <input type="checkbox" id="sim-stale" onchange="state.simStale=this.checked">
-      <label for="sim-stale">테스트: 회수 철회 클릭 시점에 서버 상태가 이미 '회수준비중'으로 바뀐 상황 시뮬레이션</label>
+      <label for="sim-stale">테스트: 회수요청 취소 클릭 시점에 서버 상태가 이미 '회수준비중'으로 바뀐 상황 시뮬레이션</label>
     </div>
   </div>
   <div id="toast-slot"></div>
@@ -229,10 +229,10 @@ var STATUS_META = {
   '회수접수':   {chip:'info',      desc:'돌봄앱에서 회수 신청이 접수된 상태', cancelBlock:false, buttons:[{type:'cancel'},{type:'request'}]},
   '회수확인중': {chip:'mint',      desc:'사업소가 신청 내용을 확인 중인 상태', cancelBlock:false, buttons:[{type:'cancel'},{type:'request'}]},
   '회수요청':   {chip:'amber',     desc:'이로움에 회수 요청 완료 - 대대여 회수번호가 생성된 상태', cancelBlock:false, buttons:[{type:'withdraw', enabled:true}]},
-  '회수준비중': {chip:'lime',      desc:'실제 회수 프로세스 진행 중 - 회수 철회 버튼은 노출되지만 비활성화됩니다', cancelBlock:false, buttons:[{type:'withdraw', enabled:false}]},
+  '회수준비중': {chip:'lime',      desc:'실제 회수 프로세스 진행 중 - 회수요청 취소 불가, 액션 버튼 없음', cancelBlock:false, buttons:[]},
   '회수완료':   {chip:'solidnavy', desc:'회수 처리가 완료된 상태 - 조회만 가능', cancelBlock:false, buttons:[]},
   '회수취소':   {chip:'pinkc',     desc:'실제 회수요청 생성 전, 사업소가 접수를 취소한 상태 - 동일 상품 재신청 가능', cancelBlock:true, buttons:[]},
-  '회수취소완료': {chip:'grayc',   desc:'회수번호 생성 후 회수 철회로 취소 완료된 상태 - 동일 상품 재신청 가능', cancelBlock:true, buttons:[]}
+  '회수취소완료': {chip:'grayc',   desc:'회수번호 생성 후 회수요청 취소로 취소 완료된 상태 - 동일 상품 재신청 가능', cancelBlock:true, buttons:[]}
 };
 
 var DEMO = {
@@ -242,7 +242,7 @@ var DEMO = {
   '회수준비중': {number:'COL20260916A17C2', cancelInfo:null},
   '회수완료': {number:'COL20260916A17C2', cancelInfo:null},
   '회수취소': {number:null, cancelInfo:{label:'회수접수 취소', reason:'수급자 단순 변심', detail:'', date:'2026-09-10 14:22'}},
-  '회수취소완료': {number:'COL20260916A17C2', cancelInfo:{label:'회수 철회', reason:'-', detail:'', date:'2026-09-12 09:03', noReason:true}}
+  '회수취소완료': {number:'COL20260916A17C2', cancelInfo:{label:'회수요청 취소', reason:'-', detail:'', date:'2026-09-12 09:03', noReason:true}}
 };
 
 var state = {
@@ -316,12 +316,8 @@ function actionButtonsHtml(){
     if(b.type === 'request'){
       html += '<button class="btn btn-filled" onclick="openRequestModal()">이로움에 회수 요청</button>';
     }
-    if(b.type === 'withdraw'){
-      if(b.enabled){
-        html += '<button class="btn btn-danger-outline" onclick="handleWithdrawClick()">회수 철회</button>';
-      } else {
-        html += '<button class="btn btn-disabled" disabled title="회수 준비가 진행된 이후에는 회수 요청을 철회할 수 없습니다.">회수 철회</button>';
-      }
+    if(b.type === 'withdraw' && b.enabled){
+      html += '<button class="btn btn-danger-outline" onclick="handleWithdrawClick()">회수요청 취소</button>';
     }
   });
   return html;
@@ -585,14 +581,14 @@ function confirmRequestFinal(){
 function handleWithdrawClick(){
   if(state.simStale){
     setStatus('회수준비중');
-    openAlertModal('회수 철회 불가', '회수 준비가 이미 진행되어 더 이상 회수 요청을 철회할 수 없습니다.');
+    openAlertModal('회수요청 취소 불가', '회수 준비가 이미 진행되어 더 이상 회수요청을 취소할 수 없습니다.');
     return;
   }
   openWithdrawModal();
 }
 function openWithdrawModal(){
-  openOverlay('회수 철회',
-    '<p class="desc">회수를 철회하시겠습니까?</p>'+
+  openOverlay('회수요청 취소',
+    '<p class="desc">회수요청을 취소하시겠습니까?</p>'+
     '<div class="modal-actions">'+
       '<button class="btn btn-outline" onclick="closeOverlay()">취소</button>'+
       '<button class="btn btn-filled" onclick="confirmWithdraw()">확인</button>'+
@@ -601,8 +597,8 @@ function openWithdrawModal(){
 }
 function confirmWithdraw(){
   closeOverlay();
-  setStatus('회수취소완료', {cancelInfo:{label:'회수 철회', reason:'-', detail:'', date:'2026-09-16 지금', noReason:true}});
-  showToast('회수 철회 처리가 완료되었습니다.');
+  setStatus('회수취소완료', {cancelInfo:{label:'회수요청 취소', reason:'-', detail:'', date:'2026-09-16 지금', noReason:true}});
+  showToast('회수요청 취소 처리가 완료되었습니다.');
 }
 
 function openCancelModal(){
