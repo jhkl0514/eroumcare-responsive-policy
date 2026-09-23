@@ -37,8 +37,10 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .title-action-wrap{display:block;}
 
 /* 1024px 이상: PC 레이아웃 */
+/* PC 콘텐츠 상한 1060px — Figma 전 PC 화면 공통 contents_wrapper 폭(2026-09-23 확인, 기존 1400px는
+   좌측 "공단 자동등록" aside(302px)까지 포함한 Content Wrapper 폭을 콘텐츠 폭으로 착각한 값이었음) */
 @container pf (min-width: 1024px){
-  #phone{max-width:1400px;box-shadow:var(--shadow);border-radius:8px;overflow:hidden;}
+  #phone{max-width:1060px;box-shadow:var(--shadow);border-radius:8px;overflow:hidden;}
   .back{display:none;}
   .breadcrumb{display:block;}
   .gnb-menu{gap:28px;font-size:14px;}

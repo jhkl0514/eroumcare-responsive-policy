@@ -33,7 +33,9 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .page{background:var(--card);border-radius:8px;overflow:hidden;position:relative;}
 
 .pc-view, .mo-view{display:none;}
-@container pf (min-width:1024px){ .pc-view{display:block;} }
+/* PC 콘텐츠 상한 1060px — Figma 전 PC 화면 공통 contents_wrapper 폭(2026-09-23 확인).
+   1440px 프리셋은 "뷰포트를 넓혀도 콘텐츠는 안 늘어난다"를 보여주기 위한 것 — 1060 넘는 폭은 여백으로 남는다. */
+@container pf (min-width:1024px){ .pc-view{display:block;max-width:1060px;margin:0 auto;} }
 @container pf (max-width:1023.98px){ .mo-view{display:block;} }
 
 /* ---- PC ---- */

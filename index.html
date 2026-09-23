@@ -198,7 +198,7 @@ var SECTIONS = {
     '<p><strong>폐기된 값</strong>: 480px, 640px, 768px, 1060px — 전부 과거 검토 과정에서 임시로 쓰였다가 위 두 값으로 통합됨.</p>'+
     '<p><strong>1060px는 브레이크포인트가 아님</strong> — PC 레이아웃 내부 콘텐츠 컨테이너 고정 폭(1920 캔버스 → 1400 Wrapper → 1060 contents_wrapper)일 뿐.</p>'+
     '<p><strong>1024px은 레이아웃 기준이지 입력장치 기준이 아니다</strong> — 터치 노트북·랜드스케이프 태블릿도 폭 1024 이상이면 PC 레이아웃. hover 전용 인터랙션 금지(클릭으로도 100% 동작).</p>'+
-    '<p><strong>PC 콘텐츠 영역 상한</strong>: 페이지별로 다름 — 정해두지 않으면 초광폭 모니터에서 무한정 늘어남.</p>' },
+    '<p><strong>PC 콘텐츠 영역 상한</strong>: <strong>확정(2026-09-23, Figma 4개 PC 화면 전수 확인)</strong> — <strong>1060px 고정, 전 화면 공통</strong>(페이지마다 다르지 않음). 정해두지 않으면 초광폭 모니터에서 무한정 늘어남. (구 4-3의 "1400px"는 좌측 aside(302px) 포함 Content Wrapper 폭 오기 — 정정)</p>' },
 
   s2: { title:"2. 레이아웃 전략 — 반응형 vs 적응형", html:
     '<table class="policy-table"><thead><tr><th>구분</th><th>정의</th><th>적용 사례</th></tr></thead><tbody>'+
@@ -302,7 +302,7 @@ var SECTIONS = {
 
   s43: { title:"4-3. 주문요청관리 상세", html:
     '<ul>'+
-    '<li>PC 콘텐츠 영역 상한 <strong>1400px</strong></li>'+
+    '<li>PC 콘텐츠 영역 상한 <span style="text-decoration:line-through;color:var(--text-tertiary);">1400px</span> → <strong>정정(2026-09-23): 1060px</strong> — 1400px는 좌측 aside 포함 Content Wrapper 폭이었음</li>'+
     '<li>상태별 조건부 노출:'+
       '<ul><li>총 대여 금액 바: 요양정보 확인 후부터, 신규배정·주문취소·취소완료는 미노출</li>'+
       '<li>배송희망일: 신규배정 미노출, 주문확인중부터 편집 가능, <strong>주문완료 이후 읽기전용 — 확정(2026-09-23)</strong>, 주문취소·취소완료 미노출(침대 품목에서만 해당, 배송정보 변경과 별개 필드). <strong>단, 완전 잠금 아님</strong> — "배송정보 변경하기" 진입 시 함께 수정 가능해짐</li>'+
@@ -346,6 +346,7 @@ var SECTIONS = {
     '<li class="done"><span class="strike">회수요청 취소 시 사유 미수집 문제</span> — <strong>확정(2026-09-23)</strong>: 현상 유지, 사유 수집 안 함. 4-1 참고</li>'+
     '<li class="done"><span class="strike">배송희망일 잠금 시점</span> — <strong>확정(2026-09-23)</strong>: 주문완료부터, 단 "배송정보 변경하기" 진입 시 함께 수정 가능. 4-3 참고</li>'+
     '<li>텍스트형/입력필드형 외 제3의 콘텐츠 유형이 더 있는지</li>'+
+    '<li><strong>rental-return-detail-prototype.html 브레이크포인트 구조 불일치</strong>: 다른 3개 화면과 달리 옛 방식(<span class="mono">@media(max-width:640px)</span>, 폐기된 640px, PC 1060px 캡핑 미적용)을 씀(2026-09-23 발견) — 맞출지 결정 필요</li>'+
     '<li class="done"><span class="strike">페이지네이션 컴포넌트 스펙 미확인</span> — <strong>확정(2026-09-23)</strong>: Figma 실측 완료, 3-6 참고</li>'+
     '<li class="done"><span class="strike">모바일 "함께 요청" 바텀시트 기획 확인</span> — <strong>확정(2026-09-23)</strong>: 노출 범위·탭 이동 동작 모두 현재 구현과 동일. 4-2 참고</li>'+
     '</ul>' }
