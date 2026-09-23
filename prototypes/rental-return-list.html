@@ -78,15 +78,22 @@ table.pc-table th{background:var(--tertiary);padding:14px 12px;text-align:left;b
 table.pc-table td{padding:14px 12px;border-bottom:1px solid var(--border-secondary);}
 table.pc-table tr.rowlink{cursor:pointer;}
 table.pc-table tr.rowlink:hover{background:#eff1fd;}
-.pagination{display:flex;justify-content:center;align-items:center;gap:4px;padding:20px 24px;}
-.page-nav{width:32px;height:32px;border-radius:6px;border:1px solid var(--border-secondary);background:#fff;
-  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);padding:0;}
+/* Pagination — Figma 컴포넌트 실측(2026-09-23): 좌측 전체건수 / 중앙 페이지 컨트롤 / 우측 페이지 크기 선택, 3분할 justify-between */
+.pagination{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;flex-wrap:wrap;gap:12px;}
+.pagination-total{font-size:14px;color:var(--text-secondary);}
+.pagination-center{display:flex;align-items:center;gap:4px;}
+.page-nav{width:32px;height:32px;border-radius:4px;border:none;background:none;padding:4px;
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-primary);}
 .page-nav:hover{background:var(--tertiary);}
-.page-nav:disabled{opacity:.4;cursor:not-allowed;}
-.page-btn{min-width:32px;height:32px;padding:0 6px;border-radius:6px;border:1px solid transparent;background:none;
-  font-size:13px;color:var(--text-secondary);cursor:pointer;font-family:inherit;}
-.page-btn:hover{background:var(--tertiary);color:var(--text-primary);}
-.page-btn.active{background:var(--brand);color:#fff;font-weight:700;cursor:default;}
+.page-nav:disabled{opacity:.35;cursor:not-allowed;}
+.page-btn{width:32px;height:32px;padding:0;border-radius:4px;border:none;background:none;
+  font-size:14px;color:var(--text-primary);cursor:pointer;font-family:inherit;}
+.page-btn:hover{background:var(--tertiary);}
+.page-btn.active{background:var(--group1);color:#141e76;font-weight:600;cursor:default;}
+.page-btn.active:hover{background:var(--group1);}
+.pagination-size{display:flex;align-items:center;gap:4px;padding:8px 12px;border-radius:4px;cursor:pointer;
+  font-size:14px;color:var(--border-active);background:none;border:none;font-family:inherit;}
+.pagination-size:hover{background:var(--tertiary);}
 
 /* 회수 상태칩 — 공통(PC/모바일) */
 .chip-collect{display:inline-flex;align-items:center;height:32px;padding:4px 12px;border-radius:999px;
@@ -223,11 +230,15 @@ table.pc-table tr.rowlink:hover{background:#eff1fd;}
             <tr class="rowlink"><td>1</td><td>강태오</td><td>010-5555-6666</td><td>2026-06-08 08:52</td><td>RET-20260608-003</td><td>COL20260608A15C2</td><td><span class="chip-collect 취소완료">회수취소완료</span></td></tr>
           </table>
           <div class="pagination">
-            <button class="page-nav" disabled aria-label="이전 페이지"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button class="page-btn active" onclick="setPage(this)">1</button>
-            <button class="page-btn" onclick="setPage(this)">2</button>
-            <button class="page-btn" onclick="setPage(this)">3</button>
-            <button class="page-nav" aria-label="다음 페이지"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <span class="pagination-total">전체 7/21</span>
+            <div class="pagination-center">
+              <button class="page-nav" disabled aria-label="이전 페이지" onclick="shiftPage(-1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <button class="page-btn active" onclick="setPage(this)">1</button>
+              <button class="page-btn" onclick="setPage(this)">2</button>
+              <button class="page-btn" onclick="setPage(this)">3</button>
+              <button class="page-nav" aria-label="다음 페이지" onclick="shiftPage(1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            </div>
+            <button class="pagination-size">20개씩 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           </div>
           </div>
         </div>
@@ -367,6 +378,12 @@ function toggleDetail(){
 function setPage(btn){
   document.querySelectorAll('.page-btn.active').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
+}
+function shiftPage(dir){
+  var btns = Array.prototype.slice.call(document.querySelectorAll('.pagination .page-btn'));
+  var idx = btns.findIndex(function(b){ return b.classList.contains('active'); });
+  var next = btns[idx + dir];
+  if(next){ setPage(next); }
 }
 
 function selectDatePreset(el){

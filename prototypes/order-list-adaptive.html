@@ -99,15 +99,23 @@ table.pc-table tr.group2{background:var(--group2);}
 .popover-row{padding:8px 10px;font-size:13px;border-radius:6px;display:flex;justify-content:space-between;gap:8px;
   cursor:pointer;}
 .popover-row:hover{background:var(--tertiary);}
-.pagination{display:flex;justify-content:center;align-items:center;gap:4px;padding:20px 24px;}
-.page-nav{width:32px;height:32px;border-radius:6px;border:1px solid var(--border-secondary);background:#fff;
-  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);padding:0;}
+/* Pagination — Figma 컴포넌트 실측(2026-09-23): 좌측 전체건수 / 중앙 페이지 컨트롤 / 우측 페이지 크기 선택, 3분할 justify-between */
+.pagination{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;flex-wrap:wrap;gap:12px;}
+.pagination-total{font-size:14px;color:var(--text-secondary);}
+.pagination-center{display:flex;align-items:center;gap:4px;}
+.page-nav{width:32px;height:32px;border-radius:4px;border:none;background:none;padding:4px;
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-primary);}
 .page-nav:hover{background:var(--tertiary);}
-.page-nav:disabled{opacity:.4;cursor:not-allowed;}
-.page-btn{min-width:32px;height:32px;padding:0 6px;border-radius:6px;border:1px solid transparent;background:none;
-  font-size:13px;color:var(--text-secondary);cursor:pointer;font-family:inherit;}
-.page-btn:hover{background:var(--tertiary);color:var(--text-primary);}
-.page-btn.active{background:var(--brand);color:#fff;font-weight:700;cursor:default;}
+.page-nav:disabled{opacity:.35;cursor:not-allowed;}
+.page-btn{width:32px;height:32px;padding:0;border-radius:4px;border:none;background:none;
+  font-size:14px;color:var(--text-primary);cursor:pointer;font-family:inherit;}
+.page-btn:hover{background:var(--tertiary);}
+/* 활성 페이지: 브랜드색 꽉 채움이 아니라 연한 틴트 배경 + 진한 텍스트 */
+.page-btn.active{background:var(--group1);color:#141e76;font-weight:600;cursor:default;}
+.page-btn.active:hover{background:var(--group1);}
+.pagination-size{display:flex;align-items:center;gap:4px;padding:8px 12px;border-radius:4px;cursor:pointer;
+  font-size:14px;color:var(--border-active);background:none;border:none;font-family:inherit;}
+.pagination-size:hover{background:var(--tertiary);}
 
 .chip{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid;}
 .chip.info{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text);}
@@ -276,13 +284,19 @@ table.pc-table tr.group2{background:var(--group2);}
             <tr class="rowlink"><td>5</td><td>전동침대</td><td>이철수</td><td>010-7777-8888</td><td>2026-06-15 16:40</td><td>DB1234499870</td><td>-</td><td><span class="chip info">주문확인중</span></td></tr>
           </table>
           <div class="pagination">
-            <button class="page-nav" disabled aria-label="이전 페이지"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button class="page-btn active" onclick="setPage(this)">1</button>
-            <button class="page-btn" onclick="setPage(this)">2</button>
-            <button class="page-btn" onclick="setPage(this)">3</button>
-            <button class="page-btn" onclick="setPage(this)">4</button>
-            <button class="page-btn" onclick="setPage(this)">5</button>
-            <button class="page-nav" aria-label="다음 페이지"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <span class="pagination-total">전체 20/100</span>
+            <div class="pagination-center">
+              <button class="page-nav" aria-label="이전 페이지" onclick="shiftPage(-1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              <button class="page-btn" onclick="setPage(this)">1</button>
+              <button class="page-btn active" onclick="setPage(this)">2</button>
+              <button class="page-btn" onclick="setPage(this)">3</button>
+              <button class="page-btn" onclick="setPage(this)">4</button>
+              <button class="page-btn" onclick="setPage(this)">5</button>
+              <button class="page-btn" onclick="setPage(this)">6</button>
+              <button class="page-btn" onclick="setPage(this)">7</button>
+              <button class="page-nav" aria-label="다음 페이지" onclick="shiftPage(1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            </div>
+            <button class="pagination-size">20개씩 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           </div>
           </div>
         </div>
@@ -470,6 +484,12 @@ document.addEventListener('click', function(e){
 function setPage(btn){
   document.querySelectorAll('.page-btn.active').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
+}
+function shiftPage(dir){
+  var btns = Array.prototype.slice.call(document.querySelectorAll('.pagination .page-btn'));
+  var idx = btns.findIndex(function(b){ return b.classList.contains('active'); });
+  var next = btns[idx + dir];
+  if(next){ setPage(next); }
 }
 
 function selectSeg(el){

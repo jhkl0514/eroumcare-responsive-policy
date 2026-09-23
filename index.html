@@ -259,6 +259,16 @@ var SECTIONS = {
     '<li><strong>바텀시트 공통 스펙</strong>(Figma 확인, 2026-09-22): 상단 모서리 반경 <strong>40px</strong>, 드래그 핸들바 없음(타이틀+X로 바로 시작). 타이틀 상단 여백 <strong>32px</strong>(바깥 래퍼 12px+안쪽 Contents 래퍼 20px 합산 — 이중 래퍼 구조 그대로 가져갈 것)</li>'+
     '</ul>' },
 
+  s36: { title:"3-6. 페이지네이션 (PC 전용)", html:
+    '<p><strong>확정(Figma 실측, 2026-09-23)</strong> — 이전엔 스펙 없이 임시 구현, 이제 정식 규칙.</p>'+
+    '<ul>'+
+    '<li>3분할(<span class="mono">justify-content:space-between</span>): 좌측 "전체 N/M" 건수 · 중앙 이전/다음+페이지 번호 · 우측 "N개씩" 선택</li>'+
+    '<li>페이지 번호 버튼: <strong>32×32px, radius 4px</strong> — 원형/알약 아님</li>'+
+    '<li><strong>활성 페이지</strong>: 브랜드색 꽉 채움이 아니라 <strong>연한 틴트 배경(<span class="mono">#eff1fd</span>) + 진한 텍스트(<span class="mono">#141e76</span>) semibold</strong></li>'+
+    '<li>이전/다음 버튼: 테두리 없는 아이콘 버튼, 비활성 시 투명도로만 표시</li>'+
+    '<li>모바일에는 이 컴포넌트 없음(카드 리스트는 별도 스크롤 방식)</li>'+
+    '</ul>' },
+
   s41: { title:"4-1. 대여 회수 상세보기", html:
     '<ul>'+
     '<li>상태별 액션 버튼:'+
@@ -334,10 +344,11 @@ var SECTIONS = {
     '<li>회수요청 취소(구 회수철회) 시 사유를 수집하지 않는 문제 — 접수취소와의 형평성 개선 여부</li>'+
     '<li>배송희망일 잠금 처리가 정확히 "주문완료" 시점부터인지, 다른 상태 전환 시점도 있는지</li>'+
     '<li>텍스트형/입력필드형 외 제3의 콘텐츠 유형이 더 있는지</li>'+
+    '<li class="done"><span class="strike">페이지네이션 컴포넌트 스펙 미확인</span> — <strong>확정(2026-09-23)</strong>: Figma 실측 완료, 3-6 참고</li>'+
     '</ul>' }
 };
 
-var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s41","s42","s43","s44","s5","s6","s7"];
+var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s36","s41","s42","s43","s44","s5","s6","s7"];
 
 /* ---------------- Category order (menu group order — edit here to reorder groups) ---------------- */
 var CATEGORY_ORDER = ["rental-system", "common-pattern"];
@@ -358,13 +369,13 @@ var PROTOS = [
   // --- 대여 시스템 화면 (실제 사용자 흐름 순서: 리스트 → 상세 → 회수) ---
   { id:"order-list-adaptive.html", title:"주문요청관리 리스트", category:"rental-system",
     desc:"PC 테이블 / 모바일 카드 (적응형)",
-    primary:"s42", related:["s35","s2","s1","s6"] },
+    primary:"s42", related:["s35","s36","s2","s1","s6"] },
   { id:"order-detail-mobile.html", title:"주문요청관리 상세", category:"rental-system",
     desc:"반응형 전 구간, 상태별 조건부 노출",
     primary:"s43", related:["s31","s34","s35","s5","s1","s2","s6"] },
   { id:"rental-return-list.html", title:"대여 회수 리스트", category:"rental-system",
     desc:"PC 테이블 / 모바일 카드 (적응형) — 회수 상세 진입 전 단계",
-    primary:"s44", related:["s35","s5","s2","s1","s6"] },
+    primary:"s44", related:["s35","s36","s5","s2","s1","s6"] },
   { id:"rental-return-detail-prototype.html", title:"대여 회수 상세보기", category:"rental-system",
     desc:"전체 상태값 + 모달 포함",
     primary:"s41", related:["s31","s5","s7","s1","s2","s6"] },
