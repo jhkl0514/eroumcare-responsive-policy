@@ -4,6 +4,8 @@
 >
 > 함께 전달되는 프로토타입 파일(5개)은 이 문서의 규칙을 실제로 구현한 참고용 예시입니다. 각 섹션 끝에 해당 프로토타입 파일명을 표시해뒀습니다.
 
+**배포**: [eroumcare-responsive-policy.vercel.app](https://eroumcare-responsive-policy.vercel.app/) (GitHub `main` 브랜치와 연동 — push 시 자동 배포) · 저장소: [github.com/jhkl0514/eroumcare-responsive-policy](https://github.com/jhkl0514/eroumcare-responsive-policy)
+
 ---
 
 ## 1. 브레이크포인트 원칙 (최우선 — 모든 컴포넌트가 이 값을 인용)
