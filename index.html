@@ -287,7 +287,7 @@ var SECTIONS = {
   s42: { title:"4-2. 주문요청관리 리스트", html:
     '<ul>'+
     '<li><strong>적응형</strong>: PC=테이블, 모바일=카드</li>'+
-    '<li>PC 검색: 기본 주문일자만, "상세" 토글로 품목/상태/검색어 펼침. 날짜 두 개+구간 세그먼트(3개월/일주일/이번달/지난달/1년), 라벨 120px</li>'+
+    '<li>PC 검색: 기본 주문일자만, "상세" 토글로 품목/상태/검색어 펼침. 날짜 두 개+구간 세그먼트(3개월/일주일/이번달/지난달/1년), 라벨 <strong>120px</strong>(⚠️ 3-2 입력필드형 라벨 125px와는 다른 값, 혼동 주의)</li>'+
     '<li><strong>꺽쇠 탭(PC)</strong>: 활성 탭은 좌·우·상단 2px 테두리만, 하단은 탭 그룹 전체를 감싸는 2px 라인 하나 공유</li>'+
     '<li><strong>모바일 구입/대여 전환</strong>: <strong>확정(2026-09-22, Figma 가이드 메모 대조)</strong> — filled segmented toggle(풀와이드). 회색(<span class="mono">#eee</span>) 알약 트랙 안에서 선택된 세그먼트만 브랜드색(<span class="mono">#323da3</span>) 배경. 토글·필터칩 영역은 동일 배경(<span class="mono">#fafafa</span>), 사이 구분선 없음. "대여 주문"에서만 "품목" 필터칩 노출</li>'+
     '<li>모바일 카드 본문: 돌봄주문번호/주문번호 행은 삭제됨 — 헤더는 상태칩+신청일시, 본문은 수급자명(마스킹)+품목+상품정보. "함께 요청" 배지는 흰 배경 그림자 알약 스타일</li>'+
@@ -323,10 +323,10 @@ var SECTIONS = {
     '</ul>' },
 
   s5: { title:"5. DS 시맨틱 컬러 / 상태칩", html:
+    '<p><strong>대여 주문상태칩</strong> — <strong>확정(2026-09-23, Figma "대여 - 상태값" 범례 9종 전수 실측)</strong>. 기존 문서는 "주문완료=초록(Success)"으로 잘못 기재돼 있었고(실제는 출고완료와 같은 라임 계열), 취소 계열 3종은 색상 정의 자체가 없었음 — 코드(<span class="mono">order-list-adaptive.html</span>)도 같은 문제라 같이 수정함.</p>'+
     '<ul>'+
-    '<li>대여: 신규배정=Info(파랑), 주문확인중=Success Outline(초록), 주문완료=Success Tinted-Outline(밝은 초록), 출고준비중=Caution Outline(오렌지)</li>'+
-    '<li>출고완료=BrandSub(배송 진행 중), 배송완료=Default(최종 종결)</li>'+
-    '<li>명명 규칙: <span class="mono">Status chip-Order</span> / <span class="mono">-Return</span> / <span class="mono">-AS</span> — 구분자 하이픈 통일</li>'+
+    '<li>신규배정 <span class="mono">#eff6ff</span> · 주문확인중 <span class="mono">#e8f5e9</span>(초록) · 주문완료/출고완료 <span class="mono">#f2fde4</span>(라임) · 출고준비중/취소요청 <span class="mono">#fff8e1</span>(앰버) · 배송완료 <span class="mono">#e3e5f5</span>(브랜드 틴트) · 주문취소 <span class="mono">#ffebee</span>(레드) · 취소완료 <span class="mono">#f5f5f5</span>(회색)</li>'+
+    '<li>명명 규칙: <span class="mono">Status chip-Order</span> / <span class="mono">-Return</span> / <span class="mono">-AS</span> — 구분자 하이픈 통일. 반품완료·A/S완료 등 크로스 도메인은 아직 미검증</li>'+
     '<li><strong>회수 관리 상태칩</strong> — <strong>확정(2026-09-22, Figma 컴포넌트 직접 확인)</strong>: 회수접수 <span class="mono">#eff6ff</span>, 회수확인중 <span class="mono">#e8f5e9</span>(초록 — 구 문서 "민트" 정정), 회수요청 <span class="mono">#fff8e1</span>(앰버), 회수준비중 <span class="mono">#f2fde4</span>(라임), 회수완료 <span class="mono">#e3e5f5</span>(연한 브랜드 틴트 — 구 문서 "진한 네이비 filled" 정정), 회수취소 <span class="mono">#ffebee</span>(핑크), 회수취소완료 <span class="mono">#f5f5f5</span>(회색). 상세 hex는 CLAUDE.md 5번 표 참고</li>'+
     '</ul>' },
 
