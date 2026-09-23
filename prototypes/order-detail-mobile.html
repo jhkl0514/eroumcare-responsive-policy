@@ -319,8 +319,9 @@ select.dv-input{background-color:var(--card);color:var(--input-text-active);
 
       <div class="divider"></div>
       <div class="lock-toggle">
-        <input type="checkbox" id="date-locked" onchange="renderDeliveryDate()">
+        <input type="checkbox" id="date-locked" checked onchange="renderDeliveryDate()">
         <label for="date-locked">배송희망일 선택완료(수정불가) 상태로 보기</label>
+        <span style="color:var(--text-tertiary);margin-left:4px;">※ 아래 "배송정보 변경하기" 진입 시 자동 해제됨(완전 잠금 아님, 2026-09-23 확정)</span>
       </div>
       <div class="delivery-wrap">
         <div class="delivery-left">
@@ -403,47 +404,50 @@ var editMode = false;
 
 function renderDelivery(){
   var el = document.getElementById('delivery-section');
-  el.innerHTML =
-    '<div class="dv-head"><div class="dv-title">배송정보</div>'+
-      '<button class="mode-btn">변경하기</button></div>'+
-    '<div class="hint-caption">조회 상태 — 텍스트형(주문정보와 동일한 shrink 구조, wrap 없음)</div>'+
-    '<div class="text-row plain"><div class="th">이름</div><div class="td">홍길동</div></div>'+
-    '<div class="text-row plain"><div class="th">주소</div><div class="td">(16495) 경기 수원시 영통구 광교로 32 (이의동, 아름학교)</div></div>'+
-    '<div class="text-row plain"><div class="th">전화번호</div><div class="td">-</div></div>'+
-    '<div class="text-row plain"><div class="th">휴대폰번호</div><div class="td">010-1234-5678</div></div>'+
-    '<div class="text-row plain"><div class="th">배송요청사항</div><div class="td">부재시 현관 앞에 두고 가주세요</div></div>'+
-
-    '<div class="hint-caption" style="margin-top:20px;">수정 상태 — 입력필드형(라벨 125px + 콘텐츠 최소폭 280px, flex-wrap)</div>'+
-    '<div class="dv-head" style="border-top:none;padding-top:0;"><div class="dv-title" style="font-size:16px;">배송정보 수정</div>'+
-      '<div style="display:flex;gap:6px;">'+
-        '<button class="mode-btn">취소하기</button>'+
-        '<button class="mode-btn save">저장하기</button>'+
-      '</div></div>'+
-    '<div class="dv-row"><div class="dv-label">이름<span style="color:var(--text-danger)">*</span></div>'+
-      '<div class="dv-content-edit"><input class="dv-input" value="홍길동"></div></div>'+
-    '<div class="dv-row"><div class="dv-label">주소<span style="color:var(--text-danger)">*</span></div>'+
-      '<div class="dv-content-edit">'+
-        '<div style="display:flex;gap:8px;margin-bottom:6px;">'+
-          '<input class="dv-input" value="16495" readonly>'+
-          '<button class="mode-btn" style="flex-shrink:0;">우편번호</button>'+
-        '</div>'+
-        '<input class="dv-input" value="경기 수원시 영통구 광교로 32 (이의동, 아름학교)" readonly style="margin-bottom:6px;">'+
-        '<input class="dv-input" placeholder="상세주소 입력">'+
-      '</div></div>'+
-    '<div class="dv-row"><div class="dv-label">전화번호</div>'+
-      '<div class="dv-content-edit"><input class="dv-input" placeholder="- 없이 숫자만 입력"></div></div>'+
-    '<div class="dv-row"><div class="dv-label">휴대폰번호<span style="color:var(--text-danger)">*</span></div>'+
-      '<div class="dv-content-edit"><input class="dv-input" value="010-1234-5689"></div></div>'+
-    '<div class="dv-row"><div class="dv-label">배송희망일</div>'+
-      '<div class="dv-content-edit">'+
-        '<input class="dv-input" value="2026-07-09 (금)">'+
-        '<div class="help-row">ⓘ 마감 시각 기준으로 내일부터 최대 14일 후까지 선택할 수 있습니다. (오후 1시 마감)</div>'+
-      '</div></div>'+
-    '<div class="dv-row"><div class="dv-label">배송요청사항</div>'+
-      '<div class="dv-content-edit">'+
-        '<select class="dv-input" style="margin-bottom:6px;"><option>직접입력</option></select>'+
-        '<input class="dv-input" placeholder="한글 20자, 영문 40자 이내">'+
-      '</div></div>';
+  if(!editMode){
+    el.innerHTML =
+      '<div class="dv-head"><div class="dv-title">배송정보</div>'+
+        '<button class="mode-btn" onclick="toggleMode()">변경하기</button></div>'+
+      '<div class="hint-caption">조회 상태 — 텍스트형(주문정보와 동일한 shrink 구조, wrap 없음)</div>'+
+      '<div class="text-row plain"><div class="th">이름</div><div class="td">홍길동</div></div>'+
+      '<div class="text-row plain"><div class="th">주소</div><div class="td">(16495) 경기 수원시 영통구 광교로 32 (이의동, 아름학교)</div></div>'+
+      '<div class="text-row plain"><div class="th">전화번호</div><div class="td">-</div></div>'+
+      '<div class="text-row plain"><div class="th">휴대폰번호</div><div class="td">010-1234-5678</div></div>'+
+      '<div class="text-row plain"><div class="th">배송요청사항</div><div class="td">부재시 현관 앞에 두고 가주세요</div></div>';
+  } else {
+    el.innerHTML =
+      '<div class="hint-caption">수정 상태 — 입력필드형(라벨 125px + 콘텐츠 최소폭 280px, flex-wrap)</div>'+
+      '<div class="dv-head" style="border-top:none;padding-top:0;"><div class="dv-title" style="font-size:16px;">배송정보 수정</div>'+
+        '<div style="display:flex;gap:6px;">'+
+          '<button class="mode-btn" onclick="toggleMode()">취소하기</button>'+
+          '<button class="mode-btn save" onclick="toggleMode()">저장하기</button>'+
+        '</div></div>'+
+      '<div class="dv-row"><div class="dv-label">이름<span style="color:var(--text-danger)">*</span></div>'+
+        '<div class="dv-content-edit"><input class="dv-input" value="홍길동"></div></div>'+
+      '<div class="dv-row"><div class="dv-label">주소<span style="color:var(--text-danger)">*</span></div>'+
+        '<div class="dv-content-edit">'+
+          '<div style="display:flex;gap:8px;margin-bottom:6px;">'+
+            '<input class="dv-input" value="16495" readonly>'+
+            '<button class="mode-btn" style="flex-shrink:0;">우편번호</button>'+
+          '</div>'+
+          '<input class="dv-input" value="경기 수원시 영통구 광교로 32 (이의동, 아름학교)" readonly style="margin-bottom:6px;">'+
+          '<input class="dv-input" placeholder="상세주소 입력">'+
+        '</div></div>'+
+      '<div class="dv-row"><div class="dv-label">전화번호</div>'+
+        '<div class="dv-content-edit"><input class="dv-input" placeholder="- 없이 숫자만 입력"></div></div>'+
+      '<div class="dv-row"><div class="dv-label">휴대폰번호<span style="color:var(--text-danger)">*</span></div>'+
+        '<div class="dv-content-edit"><input class="dv-input" value="010-1234-5689"></div></div>'+
+      '<div class="dv-row"><div class="dv-label">배송희망일</div>'+
+        '<div class="dv-content-edit">'+
+          '<input class="dv-input" value="2026-07-09 (금)">'+
+          '<div class="help-row">ⓘ 마감 시각 기준으로 내일부터 최대 14일 후까지 선택할 수 있습니다. (오후 1시 마감)</div>'+
+        '</div></div>'+
+      '<div class="dv-row"><div class="dv-label">배송요청사항</div>'+
+        '<div class="dv-content-edit">'+
+          '<select class="dv-input" style="margin-bottom:6px;"><option>직접입력</option></select>'+
+          '<input class="dv-input" placeholder="한글 20자, 영문 40자 이내">'+
+        '</div></div>';
+  }
 }
 function renderDeliveryDate(){
   var locked = document.getElementById('date-locked').checked;
@@ -501,7 +505,16 @@ function pickDate(day, node){
   document.getElementById('calendar-popup').style.display = 'none';
 }
 
-function toggleMode(){ editMode = !editMode; renderDelivery(); }
+function toggleMode(){
+  editMode = !editMode;
+  renderDelivery();
+  // 배송정보 "변경하기" 진입 시 배송희망일(주문상품 영역)도 함께 잠금 해제 — 완전 잠금 아님 (2026-09-23 확정)
+  var lockCb = document.getElementById('date-locked');
+  if(lockCb){
+    lockCb.checked = !editMode;
+    renderDeliveryDate();
+  }
+}
 renderDelivery();
 
 var frameEl = document.getElementById('frame');
