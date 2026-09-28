@@ -217,6 +217,7 @@ Figma 실제 디자인(node-id=6534-177231, 2026-09-22 확인) 기준. `rental-r
 3. **하단 고정 요소는 `env(safe-area-inset-bottom)`을 반드시 적용한다.**
 4. **오버레이는 항상 하나만 열려 있어야 한다** — 새 오버레이가 열리면 기존 것을 먼저 닫는다.
 5. **레이어 표시/숨김(hidden) 처리를 상태 전환 시마다 정확히 관리한다** — Figma에서 정상 버튼이 hidden 처리되고 범용 버튼이 노출된 채로 방치되는 사례가 여러 화면에서 반복 발견됨(주문요청관리 상세, 회수 관리 상세 등). 화면 복제 시 반드시 hidden 상태를 재검토할 것.
+6. **폰트는 SUIT, 사이즈는 14px 이상 짝수(14/16/18/20/22...)만 사용한다.** **확정(2026-09-28)**: 프로토타입 6개 파일 전부 SUIT 웹폰트가 로드된 적이 없어(`@font-face`/`fonts.google`/`fonts.gstatic` 전부 미검출) 시스템 폰트로 폴백되고 있었고, 11~13.5px 사이 font-size가 6개 파일에 걸쳐 약 100곳 가까이 남아 있었음(실제 사용 폰트가 SUIT가 아니면 같은 px 값도 더 작아 보여서 발견됨). SUIT는 `https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css`로 로드하고 `font-family`에 `'SUIT'`를 최우선으로 지정할 것. **예외**: 배지류처럼 Figma가 명시적으로 더 작은 값을 지정한 경우는 유지 가능 — 예: `order-list-adaptive.html`의 원형 숫자 배지(`.num-badge`, Figma 사양 "min-width 14px, 원형, 9px Bold")는 9px 그대로 둠. 새 화면 작업 시 폰트 사이즈를 홀수/13px 이하로 임의 조정하지 말 것.
 
 ---
 

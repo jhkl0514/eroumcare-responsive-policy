@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>이로움케어 반응형 정책 — 프로토타입 허브</title>
 <style>
@@ -28,7 +29,7 @@
   html,body{height:100%;}
   body{
     margin:0; background:var(--bg); color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Segoe UI",Roboto,sans-serif;
+    font-family:'SUIT',-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Segoe UI",Roboto,sans-serif;
     font-size:14px; line-height:1.55; -webkit-font-smoothing:antialiased;
   }
   .app{height:100vh; display:flex; flex-direction:column;}
@@ -386,6 +387,7 @@ var SECTIONS = {
     '<li>하단 고정 요소는 <span class="mono">env(safe-area-inset-bottom)</span>을 반드시 적용한다.</li>'+
     '<li>오버레이는 항상 <strong>하나만</strong> — 새 오버레이가 열리면 기존 것을 먼저 닫는다.</li>'+
     '<li>레이어 hidden 처리를 상태 전환마다 정확히 관리한다 — 화면 복제 시 반드시 재검토.</li>'+
+    '<li>폰트는 <strong>SUIT</strong>, 사이즈는 <strong>14px 이상 짝수</strong>(14/16/18/20...)만 사용한다 — <strong>확정(2026-09-28)</strong>: 프로토타입 전체에 SUIT 웹폰트가 로드된 적이 없어 시스템 폰트로 폴백되고 있었고 11~13.5px 사이 값이 다수 남아있었음. 예외: Figma가 명시한 배지류(예: <span class="mono">.num-badge</span> 9px)는 유지.</li>'+
     '</ol>' },
 
   s7: { title:"7. 아직 확정되지 않은 항목", html:
