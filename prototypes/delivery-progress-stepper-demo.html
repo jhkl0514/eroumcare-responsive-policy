@@ -44,21 +44,20 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .frame{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
   box-shadow:var(--shadow);padding:24px 16px;}
 
-/* ---- Step indicator (공식 문서 + Figma 실측) ---- */
-.stepper{display:flex;}
-.step{width:120px;flex:0 0 120px;position:relative;padding-bottom:20px;text-align:center;}
-.step-line{position:absolute;bottom:6px;left:50%;right:-50%;height:1px;background:var(--border-secondary);}
-.step:last-child .step-line{display:none;}
-.step-dot{width:14px;height:14px;border-radius:999px;background:#fff;border:2px solid var(--border-primary);
-  margin:0 auto 8px;position:relative;z-index:1;}
-.step.active .step-dot{border:3px solid var(--brand);}
-.step.done .step-dot{background:var(--brand);border-color:var(--brand);}
-.step-label{font-size:12px;font-weight:500;letter-spacing:-0.18px;color:var(--text-secondary);}
-.step.active .step-label{color:var(--brand);font-weight:600;}
+/* ---- Step indicator (공식 문서 + Figma 실측) — 연결선은 행 전체에 딱 하나만, 그 위에 라벨+마커를 얹는 구조 */
+.stepper{position:relative;display:flex;}
+.stepper-line{position:absolute;top:33px;left:0;right:0;height:1px;background:var(--border-secondary);z-index:0;}
+.step{width:120px;flex:0 0 120px;position:relative;z-index:1;text-align:center;}
+.step-label{height:18px;line-height:18px;font-size:12px;font-weight:500;letter-spacing:-0.18px;
+  color:var(--text-secondary);margin-bottom:8px;white-space:nowrap;}
 .step.done .step-label{color:var(--text-primary);}
-.step-badge{display:none;background:var(--brand);color:#fff;font-size:12px;font-weight:500;
-  border-radius:999px;padding:2px 8px;margin-bottom:4px;}
-.step.active .step-badge{display:inline-block;}
+.step-marker{height:14px;display:flex;align-items:center;justify-content:center;}
+.step-dot{width:14px;height:14px;border-radius:999px;background:#fff;border:2px solid var(--border-primary);}
+.step.done .step-dot{background:var(--brand);border-color:var(--brand);}
+/* 진행중 단계: 원 대신 라벨을 담은 브랜드색 알약이 선 위에 바로 얹힘 (라벨 별도 표시 없음) */
+.step.active .step-label{visibility:hidden;}
+.step.active .step-marker .pill{background:var(--brand);color:#fff;font-size:12px;font-weight:500;
+  border-radius:999px;padding:3px 10px;white-space:nowrap;}
 
 .mo-scroll{overflow-x:auto;padding-bottom:4px;}
 .mo-scroll .stepper{width:480px;}
@@ -109,12 +108,14 @@ var steps = [
   {label:'배송완료', state:'todo'}
 ];
 function buildStepper(){
-  var html = '';
+  var html = '<div class="stepper-line"></div>';
   steps.forEach(function(s){
     html += '<div class="step '+s.state+'">'+
-      (s.state==='active' ? '<div class="step-badge">'+s.label+'</div>' : '')+
-      '<div class="step-line"></div><div class="step-dot"></div>'+
-      '<div class="step-label">'+s.label+'</div></div>';
+      '<div class="step-label">'+s.label+'</div>'+
+      '<div class="step-marker">'+
+        (s.state==='active' ? '<span class="pill">'+s.label+'</span>' : '<div class="step-dot"></div>')+
+      '</div>'+
+      '</div>';
   });
   return html;
 }

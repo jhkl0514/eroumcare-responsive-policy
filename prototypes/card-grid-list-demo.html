@@ -54,9 +54,19 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .p-card{display:flex;flex-direction:column;}
 .p-thumb{aspect-ratio:1/1;background:var(--tertiary);border:1px solid var(--border-secondary);
   border-radius:4px;margin-bottom:8px;}
-.p-title{font-size:14px;color:var(--text-primary);line-height:1.4;margin-bottom:4px;
+.p-title{font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.4;margin-bottom:2px;}
+.p-tags{font-size:14px;color:var(--text-tertiary);line-height:1.4;margin-bottom:8px;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.p-price{font-size:16px;font-weight:700;color:var(--text-primary);}
+.p-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.p-row .p-label{font-size:14px;background:var(--tertiary);color:var(--text-secondary);
+  border-radius:4px;padding:2px 8px;flex:0 0 auto;}
+.p-row .p-label.brand{background:var(--brand);color:#fff;}
+.p-row .p-value{font-size:14px;font-weight:700;color:var(--text-primary);}
+.p-badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;}
+.p-badge{font-size:14px;border-radius:4px;padding:2px 8px;}
+.p-badge.danger{background:#ffebee;color:#c62828;}
+.p-badge.info{background:#eff6ff;color:#1e40af;}
+.p-badge.success{background:#e8f5e9;color:#166534;}
 
 .pagination{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:20px;}
 .page-btn{width:32px;height:32px;border-radius:4px;border:none;background:none;font-size:14px;
@@ -78,6 +88,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
       <li><b>PC</b>: <code>4×3(12개)</code> 그리드, 간격 수직 <code>40px</code> / 수평 <code>20px</code>. 21번째 상품부터 <b>Pagination</b> 노출</li>
       <li><b>모바일</b>: <code>2×2</code> 그리드, 간격 수직 <code>32px</code> / 수평 <code>16px</code>. 페이지네이션 대신 <b>무한 스크롤</b>로 자동 로드</li>
       <li>카드 내부 텍스트: 상품정보/가격 최대 3줄, 상세정보 최대 5줄. 버튼 권장 2개, 최대 3개</li>
+      <li>카드 구성: 상품명+해시태그, <b>급여가(월)</b>(회색 라벨), <b>이용료(월)</b>(브랜드색 라벨), 재고/단종 상태 배지(일시품절·급여탈락예정·단종예정 등)</li>
       <li>상단 UI: 필터=Tab, 검색=Search 패턴, 정렬=Select</li>
     </ul>
     기존 3-1의 "적응형(PC=테이블/모바일=카드)"과 다른 <b>제3의 리스트 유형</b> — PC도 모바일도 둘 다 카드지만, 컬럼 수와 하단 네비게이션 방식(페이지네이션 vs 무한스크롤)이 다릅니다.
@@ -120,14 +131,28 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
   </div>
 </div>
 <script>
-var names = ['전동침대 MIRAGE7','수동휠체어 R-125SL','경사로 ST-3','전동침대 천연BED','욕창방지매트리스','보행보조기','환자용 리프트','자세변환매트'];
-var prices = ['월 45,000원','월 12,000원','월 8,000원','월 38,000원','월 15,000원','월 9,000원','월 60,000원','월 20,000원'];
+var products = [
+  {name:'전동침대 MIRAGE7', tags:'#전동침대 #3모터 #MIRAGE7', 급여가:'45,000원', 이용료:'38,100원 ~', badges:[]},
+  {name:'수동휠체어 R-125SL', tags:'#수동휠체어 #경량형 #R125SL', 급여가:'12,000원', 이용료:'10,200원 ~', badges:[{t:'일시품절',c:'danger'}]},
+  {name:'경사로 ST-3', tags:'#이동식경사로 #알루미늄 #ST3', 급여가:'8,000원', 이용료:'6,800원 ~', badges:[]},
+  {name:'천연BED ST-3', tags:'#전동침대 #2모터 #천연BED', 급여가:'38,000원', 이용료:'32,300원 ~', badges:[{t:'급여탈락예정',c:'info'}]},
+  {name:'욕창방지매트리스', tags:'#매트리스 #욕창방지 #에어셀', 급여가:'15,000원', 이용료:'12,750원 ~', badges:[]},
+  {name:'보행보조기 까미노', tags:'#성인용보행기 #바퀴워커 #까미노', 급여가:'9,000원', 이용료:'7,650원 ~', badges:[{t:'단종예정',c:'success'}]},
+  {name:'환자용 리프트', tags:'#이동리프트 #전동 #리모컨', 급여가:'60,000원', 이용료:'51,000원 ~', badges:[]},
+  {name:'자세변환매트', tags:'#체위변경 #욕창예방 #매트', 급여가:'20,000원', 이용료:'17,000원 ~', badges:[]}
+];
 function buildCards(n){
   var html = '';
   for(var i=0;i<n;i++){
+    var p = products[i % products.length];
+    var badges = p.badges.map(function(b){ return '<span class="p-badge '+b.c+'">'+b.t+'</span>'; }).join('');
     html += '<div class="p-card"><div class="p-thumb"></div>'+
-      '<div class="p-title">'+names[i % names.length]+'</div>'+
-      '<div class="p-price">'+prices[i % prices.length]+'</div></div>';
+      '<div class="p-title">'+p.name+'</div>'+
+      '<div class="p-tags">'+p.tags+'</div>'+
+      '<div class="p-row"><span class="p-label">급여가(월)</span><span class="p-value">'+p.급여가+'</span></div>'+
+      '<div class="p-row"><span class="p-label brand">이용료(월)</span><span class="p-value">'+p.이용료+'</span></div>'+
+      (badges ? '<div class="p-badges">'+badges+'</div>' : '')+
+      '</div>';
   }
   return html;
 }
