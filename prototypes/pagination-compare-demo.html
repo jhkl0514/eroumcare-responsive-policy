@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>페이지네이션 — PC 전용 컴포넌트 비교</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999;
+  --border-primary:#bdbdbd; --border-secondary:#eee;
+  --brand:#323da3; --group1:#eff1fd;
+  --shadow:0 2px 4px rgba(0,0,0,0.12), 0 0 2px rgba(0,0,0,0.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+#wrap{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+
+.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  padding:14px 18px;margin-bottom:20px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+.banner b{color:var(--text-primary);}
+.banner ul{margin:8px 0 0;padding-left:18px;}
+.banner li{margin-bottom:4px;}
+.banner code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+@media (max-width:820px){ .compare-grid{grid-template-columns:1fr;} }
+.compare-col{display:flex;flex-direction:column;gap:10px;}
+.compare-label{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;}
+.compare-tag{font-size:14px;font-weight:700;color:#fff;background:var(--brand);
+  border-radius:4px;padding:2px 10px;}
+.compare-tag.none{background:var(--text-tertiary);}
+
+.callout{font-size:14px;color:var(--text-secondary);line-height:1.6;background:var(--card);
+  border:1px solid var(--border-secondary);border-radius:8px;padding:12px 14px;}
+.callout b{color:var(--text-primary);}
+.callout code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+
+/* ---- PC 테이블 + Pagination (order-list-adaptive.html과 동일 클래스/스펙) ---- */
+.pc-frame{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  box-shadow:var(--shadow);overflow:hidden;}
+.mini-table{width:100%;border-collapse:collapse;}
+.mini-table th{font-size:14px;color:var(--text-tertiary);text-align:left;font-weight:600;
+  padding:10px 16px;border-bottom:1px solid var(--border-secondary);}
+.mini-table td{font-size:14px;padding:10px 16px;border-bottom:1px solid var(--border-secondary);}
+.mini-table tr:last-child td{border-bottom:none;}
+
+.pagination{display:flex;align-items:center;justify-content:space-between;padding:16px 16px;flex-wrap:wrap;gap:12px;}
+.pagination-total{font-size:14px;color:var(--text-secondary);}
+.pagination-center{display:flex;align-items:center;gap:4px;}
+.page-nav{width:32px;height:32px;border-radius:4px;border:none;background:none;padding:4px;
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-primary);}
+.page-nav:hover{background:var(--tertiary);}
+.page-nav:disabled{opacity:.35;cursor:not-allowed;}
+.page-btn{width:32px;height:32px;padding:0;border-radius:4px;border:none;background:none;
+  font-size:14px;color:var(--text-primary);cursor:pointer;font-family:inherit;}
+.page-btn:hover{background:var(--tertiary);}
+.page-btn.active{background:var(--group1);color:#141e76;font-weight:600;cursor:default;}
+.pagination-size{display:flex;align-items:center;gap:4px;padding:8px 12px;border-radius:4px;cursor:pointer;
+  font-size:14px;color:var(--text-primary);background:none;border:none;font-family:inherit;}
+.pagination-size:hover{background:var(--tertiary);}
+
+/* ---- 모바일: 페이지네이션 없음, 카드 + 더보기 ---- */
+.mo-shell{width:320px;max-width:100%;margin:0 auto;background:var(--card);border:1px solid var(--border-secondary);
+  border-radius:20px;box-shadow:var(--shadow);overflow:hidden;padding:10px;}
+.mo-list{padding:4px;display:flex;flex-direction:column;gap:8px;}
+.mo-card{border:1px solid var(--border-secondary);border-radius:8px;padding:12px;}
+.mo-card .name{font-size:14px;font-weight:700;margin-bottom:4px;}
+.mo-card .sub{font-size:14px;color:var(--text-secondary);}
+.load-more{margin:8px 4px 4px;padding:12px 0;text-align:center;font-size:14px;font-weight:600;
+  color:var(--text-primary);background:var(--tertiary);border-radius:8px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="banner">
+    <b>3-6. 페이지네이션 (PC 전용)</b> — CLAUDE.md 규칙 원문:
+    <ul>
+      <li>3분할 레이아웃(<code>justify-content:space-between</code>): 좌측 "전체 N/M" 건수 텍스트 · 중앙 이전/다음 + 페이지 번호 · 우측 "N개씩" 페이지 크기 선택</li>
+      <li>페이지 번호 버튼: <b>32×32px, radius 4px</b> — 원형/알약 아님</li>
+      <li>활성 페이지: 브랜드색 꽉 채움이 아니라 <b>연한 틴트 배경(#eff1fd) + 진한 텍스트(#141e76) semibold</b></li>
+      <li><b>모바일에는 이 컴포넌트가 없음</b> — 카드 리스트는 별도 스크롤/더보기 방식</li>
+    </ul>
+    다른 유형들과 달리 이건 <b>"모바일 버전이 다르게 생겼다"가 아니라 "모바일엔 아예 없다"</b>는 게 핵심입니다. 그래서 오른쪽 컬럼은 페이지네이션의 축소판이 아니라, 실제로 Figma에 존재하는 <b>"더보기" 버튼 패턴</b>을 보여줍니다.
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-label"><span class="compare-tag">PC</span> 1024px 이상 — 3분할 페이지네이션</div>
+      <div class="pc-frame">
+        <table class="mini-table">
+          <tr><th>수급자명</th><th>연락처</th><th>상태</th></tr>
+          <tr><td>홍길동</td><td>010-1234-5678</td><td>주문완료</td></tr>
+          <tr><td>김영수</td><td>010-2345-6789</td><td>배송완료</td></tr>
+          <tr><td>박영희</td><td>010-3456-7890</td><td>출고준비중</td></tr>
+        </table>
+        <div class="pagination">
+          <span class="pagination-total">전체 20/100</span>
+          <div class="pagination-center">
+            <button class="page-nav" aria-label="이전 페이지"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="page-btn">1</button>
+            <button class="page-btn active">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-nav" aria-label="다음 페이지"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+          <button class="pagination-size">20개씩 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+      <div class="callout">
+        좌측 건수 텍스트 · 중앙 페이지 버튼(32×32, 활성 페이지는 틴트 배경) · 우측 페이지 크기 선택이 <code>space-between</code>으로 나뉩니다.
+      </div>
+    </div>
+
+    <div class="compare-col">
+      <div class="compare-label"><span class="compare-tag none">Mobile</span> 1024px 미만 — 컴포넌트 자체가 없음</div>
+      <div class="mo-shell">
+        <div class="mo-list">
+          <div class="mo-card"><div class="name">홍길동</div><div class="sub">010-1234-5678 · 주문완료</div></div>
+          <div class="mo-card"><div class="name">김영수</div><div class="sub">010-2345-6789 · 배송완료</div></div>
+          <div class="mo-card"><div class="name">박영희</div><div class="sub">010-3456-7890 · 출고준비중</div></div>
+          <div class="load-more">더보기</div>
+        </div>
+      </div>
+      <div class="callout">
+        페이지 번호나 이전/다음 버튼 자체가 <b>존재하지 않습니다.</b> 대신 카드 리스트 하단에 "더보기"를 눌러 다음 목록을 이어붙이는 방식 — 반응형으로 축소된 페이지네이션이 아니라 <b>애초에 다른 컴포넌트</b>입니다.
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

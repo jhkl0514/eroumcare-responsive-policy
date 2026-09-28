@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>텍스트형 정보 테이블 — 폭 비교</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999;
+  --border-primary:#bdbdbd; --border-secondary:#eee; --border-tertiary:#eee;
+  --brand:#323da3;
+  --shadow:0 2px 4px rgba(0,0,0,0.12), 0 0 2px rgba(0,0,0,0.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+#wrap{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+
+.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  padding:14px 18px;margin-bottom:20px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+.banner b{color:var(--text-primary);}
+.banner ul{margin:8px 0 0;padding-left:18px;}
+.banner li{margin-bottom:4px;}
+.banner code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+@media (max-width:820px){ .compare-grid{grid-template-columns:1fr;} }
+.compare-col{display:flex;flex-direction:column;gap:10px;}
+.compare-label{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;}
+.compare-tag{font-size:14px;font-weight:700;color:#fff;background:var(--brand);
+  border-radius:4px;padding:2px 10px;}
+
+.callout{font-size:14px;color:var(--text-secondary);line-height:1.6;background:var(--card);
+  border:1px solid var(--border-secondary);border-radius:8px;padding:12px 14px;}
+.callout b{color:var(--text-primary);}
+.callout code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+
+/* ---- 텍스트형 정보 테이블 (order-detail-mobile.html과 동일 클래스/스펙) ---- */
+.section-title{font-size:14px;font-weight:700;color:var(--text-tertiary);margin:16px 0 6px;}
+.section-title:first-child{margin-top:0;}
+.table-shell{background:var(--card);border-radius:10px;
+  box-shadow:var(--shadow);overflow:hidden;padding:4px 0;}
+
+.text-row{display:flex;align-items:center;min-height:52px;border-bottom:1px solid var(--border-tertiary);}
+.text-row:last-child{border-bottom:none;}
+.text-row .th{flex:1 0 0;max-width:128px;min-width:80px;background:var(--tertiary);align-self:stretch;
+  display:flex;align-items:center;padding:0 12px;font-size:14px;font-weight:600;}
+.text-row .td{flex:1 0 0;min-width:160px;padding:0 12px;font-size:14px;display:flex;align-items:center;white-space:pre-wrap;}
+/* 배경 없는 variant — 회수정보 조회형: 라벨 125px, 배경 없음 */
+.text-row.plain{min-height:auto;padding:14px 0;}
+.text-row.plain .th{background:none;max-width:none;width:125px;flex:0 0 125px;padding:0;margin:0;
+  font-size:16px;font-weight:600;color:var(--text-primary);}
+.text-row.plain .td{min-width:0;padding:0;font-size:16px;font-weight:400;}
+
+/* 폭 시뮬레이션용 컨테이너 */
+.width-frame{border:1px dashed var(--border-primary);border-radius:8px;padding:0;}
+.width-tag{font-size:14px;color:var(--text-tertiary);text-align:center;padding:6px 0;}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="banner">
+    <b>3-1. 텍스트형 (읽기전용 정보 테이블)</b> — CLAUDE.md 규칙 원문:
+    <ul>
+      <li>헤더(라벨) 셀: <code>max-width:128px; min-width:80px</code> (배경 있음, <code>#f5f5f5</code>)</li>
+      <li>값 셀: <code>min-width:160px</code></li>
+      <li><b>flex-shrink만 사용, wrap 없음</b> — 헤더가 128→80까지, 값이 자기 min-width까지 줄어들며 버틴다. 최소 <b>240px</b>(80+160)까지는 좌우 2열 유지 → 별도 스택 폴백 불필요</li>
+      <li>배경 없는 버전(예: 회수정보 조회형)은 라벨 125px, 배경 없음</li>
+    </ul>
+    이 유형은 PC/모바일이 <b>구조 자체는 안 바뀌는</b> 반응형 컴포넌트라, "PC 화면 / 모바일 화면"이 아니라 <b>같은 컴포넌트를 담은 컨테이너 폭</b>을 바꿔서 비교합니다 — 넓을 때와, 최소 지원폭인 240px일 때 둘 다 좌우 2열이 그대로 유지되는지 확인하는 게 포인트입니다.
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-label"><span class="compare-tag">넓은 컨테이너</span> 480px — 라벨 128px 여유</div>
+      <div class="width-frame">
+        <div class="width-tag">컨테이너 폭 480px</div>
+        <div style="width:480px;max-width:100%;margin:0 auto;">
+          <div class="table-shell">
+            <div class="section-title">주문 정보</div>
+            <div class="text-row"><div class="th">수급자 이름</div><div class="td">홍길동</div></div>
+            <div class="text-row"><div class="th">돌봄주문번호</div><div class="td">20260920-000123</div></div>
+            <div class="text-row"><div class="th">신청일시</div><div class="td">2026-09-20 10:30</div></div>
+          </div>
+          <div class="table-shell" style="margin-top:16px;">
+            <div class="section-title">회수정보 조회 (배경 없음 variant)</div>
+            <div class="text-row plain"><div class="th">회수지주소</div><div class="td">서울특별시 강남구 테헤란로 123, 4층 (역삼동)</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout">
+        라벨 폭이 <code>128px</code>로 여유 있게 표시되고, 값 셀도 한 줄에 넉넉하게 들어갑니다.
+      </div>
+    </div>
+
+    <div class="compare-col">
+      <div class="compare-label"><span class="compare-tag">최소 지원폭</span> 240px — 라벨 80px까지 축소</div>
+      <div class="width-frame">
+        <div class="width-tag">컨테이너 폭 240px (80+160 최소 한계)</div>
+        <div style="width:240px;max-width:100%;margin:0 auto;">
+          <div class="table-shell">
+            <div class="section-title">주문 정보</div>
+            <div class="text-row"><div class="th">수급자 이름</div><div class="td">홍길동</div></div>
+            <div class="text-row"><div class="th">돌봄주문번호</div><div class="td">20260920-000123</div></div>
+            <div class="text-row"><div class="th">신청일시</div><div class="td">2026-09-20 10:30</div></div>
+          </div>
+          <div class="table-shell" style="margin-top:16px;">
+            <div class="section-title">회수정보 조회 (배경 없음 variant)</div>
+            <div class="text-row plain"><div class="th">회수지주소</div><div class="td">서울특별시 강남구 테헤란로 123, 4층 (역삼동)</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout">
+        240px까지 줄어들어도 <b>줄바꿈(wrap)이나 스택 전환이 일어나지 않고</b> 좌우 2열이 그대로 유지됩니다. 라벨은 80px, 값은 160px에서 더 줄지 않고 버티며(<code>flex-shrink</code>), 긴 주소 텍스트는 값 셀 안에서 자연 줄바꿈됩니다.
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

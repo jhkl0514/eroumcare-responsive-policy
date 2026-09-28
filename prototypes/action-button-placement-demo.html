@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>액션 버튼 배치 — PC vs 모바일 비교</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa; --disabled-bg:#eee;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999;
+  --border-primary:#bdbdbd; --border-secondary:#eee; --border-dark:#616161;
+  --brand:#323da3;
+  --shadow:0 2px 4px rgba(0,0,0,0.12), 0 0 2px rgba(0,0,0,0.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+#wrap{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+
+.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  padding:14px 18px;margin-bottom:20px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+.banner b{color:var(--text-primary);}
+.banner ul{margin:8px 0 0;padding-left:18px;}
+.banner li{margin-bottom:4px;}
+
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+@media (max-width:820px){ .compare-grid{grid-template-columns:1fr;} }
+
+.compare-col{display:flex;flex-direction:column;gap:10px;}
+.compare-label{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;}
+.compare-tag{font-size:14px;font-weight:700;color:#fff;background:var(--brand);
+  border-radius:4px;padding:2px 10px;}
+
+/* ---- PC 목업 프레임 ---- */
+.pc-frame{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  box-shadow:var(--shadow);overflow:hidden;}
+.pc-topbar{height:14px;background:var(--tertiary);display:flex;align-items:center;gap:5px;padding:0 10px;}
+.pc-dot{width:6px;height:6px;border-radius:999px;background:var(--border-primary);}
+.pc-titlewrap{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0;}
+.pc-title{font-size:20px;font-weight:700;}
+.pc-actions{display:flex;gap:8px;}
+.btn{border-radius:4px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid transparent;
+  text-align:center;white-space:nowrap;}
+.btn-hug{flex:0 0 auto;padding:10px 20px;}
+.btn-outline{background:var(--card);color:var(--text-primary);border-color:var(--border-primary);}
+.btn-filled{background:var(--brand);color:#fff;}
+.pc-body{padding:20px 24px 28px;}
+.mock-line{height:14px;background:var(--tertiary);border-radius:4px;margin-bottom:10px;}
+.mock-line.w60{width:60%;}
+.mock-line.w90{width:90%;}
+.mock-line.w40{width:40%;}
+.mock-card{height:56px;background:var(--secondary-bg);border:1px solid var(--border-secondary);
+  border-radius:8px;margin-bottom:10px;}
+
+.callout{font-size:14px;color:var(--text-secondary);line-height:1.6;background:var(--card);
+  border:1px solid var(--border-secondary);border-radius:8px;padding:12px 14px;}
+.callout b{color:var(--text-primary);}
+.callout code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+
+/* ---- 모바일 목업 프레임 (실제 스크롤 + sticky 데모) ---- */
+.mo-shell{width:320px;max-width:100%;margin:0 auto;background:var(--card);border:1px solid var(--border-secondary);
+  border-radius:20px;box-shadow:var(--shadow);overflow:hidden;padding:10px;}
+.mo-screen{position:relative;height:520px;overflow-y:auto;border-radius:12px;background:var(--card);}
+.mo-titlewrap{padding:16px 16px 0;position:sticky;top:0;background:var(--card);z-index:1;}
+.mo-title{font-size:18px;font-weight:700;margin-bottom:12px;}
+.mo-body{padding:0 16px 16px;}
+.mo-bottom-actions{position:sticky;bottom:0;display:flex;gap:8px;
+  padding:14px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+  background:linear-gradient(to bottom, rgba(255,255,255,0), var(--card) 35%);}
+.mo-bottom-actions .btn{flex:1;padding:12px 0;}
+.scroll-hint{text-align:center;font-size:14px;color:var(--text-tertiary);padding:6px 0 2px;}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="banner">
+    <b>3-4. 액션 버튼 배치</b> — CLAUDE.md 규칙 원문 그대로:
+    <ul>
+      <li><b>PC</b>: 페이지 타이틀 옆(우측), <b>Hug 사이즈</b>(텍스트+패딩만큼만, <code>flex:0 0 auto</code>) — 전체폭 분할 금지</li>
+      <li><b>모바일</b>: 타이틀 아래로 이동 + 화면 하단 <b>sticky</b> 플로팅(흰색 그라데이션 페이드), 각 버튼은 폭을 나눠 가짐(Full)</li>
+      <li>모바일 하단 sticky 요소는 <code>env(safe-area-inset-bottom)</code> 필수 (노치/홈 인디케이터 대응)</li>
+    </ul>
+    이 페이지는 화면 하나를 프리셋 폭으로 전환하는 대신, <b>PC/모바일을 나란히</b> 놓고 "이 규칙이 실제로 이렇게 적용된다"를 바로 비교해보는 시험용 포맷입니다. 모바일 쪽은 실제로 스크롤해보면 하단 버튼바가 sticky로 붙는 걸 확인할 수 있습니다.
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-label"><span class="compare-tag">PC</span> 1024px 이상 — 타이틀 옆 Hug 버튼</div>
+      <div class="pc-frame">
+        <div class="pc-topbar"><span class="pc-dot"></span><span class="pc-dot"></span><span class="pc-dot"></span></div>
+        <div class="pc-titlewrap">
+          <div class="pc-title">주문요청관리 상세</div>
+          <div class="pc-actions">
+            <div class="btn btn-hug btn-outline">주문취소</div>
+            <div class="btn btn-hug btn-filled">주문하기</div>
+          </div>
+        </div>
+        <div class="pc-body">
+          <div class="mock-line w40"></div>
+          <div class="mock-card"></div>
+          <div class="mock-line w90"></div>
+          <div class="mock-line w60"></div>
+        </div>
+      </div>
+      <div class="callout">
+        버튼이 타이틀과 <b>같은 줄, 우측</b>에 붙고 텍스트+패딩만큼만 차지(<code>flex:0 0 auto</code>) — 컨텐츠 폭이 넓어져도 버튼이 늘어나지 않습니다.
+      </div>
+    </div>
+
+    <div class="compare-col">
+      <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 미만 — 타이틀 아래 + 하단 sticky</div>
+      <div class="mo-shell">
+        <div class="mo-screen" id="moScreen">
+          <div class="mo-titlewrap">
+            <div class="mo-title">주문요청관리 상세</div>
+          </div>
+          <div class="mo-body">
+            <div class="mock-line w60"></div>
+            <div class="mock-card"></div>
+            <div class="mock-card"></div>
+            <div class="mock-line w90"></div>
+            <div class="mock-line w40"></div>
+            <div class="mock-card"></div>
+            <div class="mock-line w60"></div>
+          </div>
+          <div class="mo-bottom-actions">
+            <div class="btn btn-outline">주문취소</div>
+            <div class="btn btn-filled">주문하기</div>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-hint">↑ 프레임 안쪽을 스크롤해보세요 — 버튼바가 하단에 sticky로 붙습니다</div>
+      <div class="callout">
+        버튼이 타이틀 <b>아래로 내려오고</b>, 화면 하단에 <b>sticky</b>로 붙으며 흰색 그라데이션 페이드가 콘텐츠와 자연스럽게 이어집니다. 각 버튼은 폭을 나눠가짐(Full), 하단 여백엔 <code>env(safe-area-inset-bottom)</code>이 더해집니다.
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
