@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Toast 알림 — PC vs 모바일 비교</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999;
+  --border-primary:#bdbdbd; --border-secondary:#eee;
+  --brand:#323da3;
+  --shadow:0 2px 4px rgba(0,0,0,0.12), 0 0 2px rgba(0,0,0,0.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+#wrap{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+
+.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  padding:14px 18px;margin-bottom:20px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+.banner b{color:var(--text-primary);}
+.banner ul{margin:8px 0 0;padding-left:18px;}
+.banner li{margin-bottom:4px;}
+.banner code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+.src-tag{display:inline-block;font-size:14px;font-weight:700;color:#fff;background:#09af00;
+  border-radius:4px;padding:1px 8px;margin-left:6px;vertical-align:middle;}
+
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+@media (max-width:820px){ .compare-grid{grid-template-columns:1fr;} }
+.compare-col{display:flex;flex-direction:column;gap:10px;}
+.compare-label{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;}
+.compare-tag{font-size:14px;font-weight:700;color:#fff;background:var(--brand);
+  border-radius:4px;padding:2px 10px;}
+
+.callout{font-size:14px;color:var(--text-secondary);line-height:1.6;background:var(--card);
+  border:1px solid var(--border-secondary);border-radius:8px;padding:12px 14px;}
+.callout b{color:var(--text-primary);}
+.callout code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+
+.pc-frame{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  box-shadow:var(--shadow);overflow:hidden;position:relative;height:420px;}
+.pc-topbar{height:14px;background:var(--tertiary);display:flex;align-items:center;gap:5px;padding:0 10px;}
+.pc-dot{width:6px;height:6px;border-radius:999px;background:var(--border-primary);}
+.pc-body{padding:20px 24px;}
+.mock-line{height:14px;background:var(--tertiary);border-radius:4px;margin-bottom:10px;}
+.mock-line.w60{width:60%;}.mock-line.w90{width:90%;}.mock-line.w40{width:40%;}
+.mock-card{height:56px;background:var(--secondary-bg);border:1px solid var(--border-secondary);
+  border-radius:8px;margin-bottom:10px;}
+
+.mo-shell{width:320px;max-width:100%;margin:0 auto;background:var(--card);border:1px solid var(--border-secondary);
+  border-radius:20px;box-shadow:var(--shadow);overflow:hidden;padding:10px;}
+.mo-screen{position:relative;height:420px;overflow:hidden;border-radius:12px;background:var(--card);}
+.mo-body{padding:16px;}
+
+/* ---- Toast (공식 문서 실측: uxuithkc.netlify.app/framework) ---- */
+.toast-stack{position:absolute;left:0;right:0;bottom:48px;display:flex;flex-direction:column-reverse;
+  align-items:center;gap:16px;pointer-events:none;z-index:10;}
+.mo-screen .toast-stack{bottom:28px;gap:12px;}
+.toast{width:520px;max-width:calc(100% - 32px);min-height:58px;border-radius:8px;display:flex;align-items:center;gap:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,.2), 0 0 4px rgba(0,0,0,.12);
+  transition:bottom .3s, opacity .3s;}
+.mo-screen .toast{width:80%;}
+.toast.success{background:#e8f5e9;border:1px solid #43a047;padding:8px 16px 8px 44px;}
+.toast.error{background:#ffebee;border:1px solid #e53935;padding:8px 16px 8px 48px;}
+.toast .msg{font-size:16px;font-weight:600;color:var(--text-primary);}
+.toast .desc{font-size:14px;color:var(--text-secondary);margin-top:2px;}
+.toast .icon{flex:0 0 auto;}
+.toast.success .icon{width:20px;height:14px;}
+.toast.error .icon{width:24px;height:24px;}
+
+.trigger-row{display:flex;gap:8px;justify-content:center;margin-top:10px;}
+.trigger-btn{border-radius:4px;padding:8px 16px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid transparent;}
+.trigger-btn.success{background:#43a047;color:#fff;}
+.trigger-btn.error{background:#e53935;color:#fff;}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="banner">
+    <b>Toast 알림</b> — CLAUDE.md 9번(입출고 창고에서 발견) + 공식 디자인시스템 문서<span class="src-tag">실측 반영</span> (<code>uxuithkc.netlify.app/framework/1.0.3/components/message/toast</code>):
+    <ul>
+      <li><b>색상</b>: Success — 배경 <code>#e8f5e9</code> / 테두리 <code>#43a047</code>. Error — 배경 <code>#ffebee</code> / 테두리 <code>#e53935</code></li>
+      <li><b>크기</b>: PC <code>520px</code> 고정폭, 모바일 화면폭의 <code>80%</code>. 최소 높이 <code>58px</code>, radius <code>8px</code></li>
+      <li><b>패딩</b>: 아이콘 자리 확보 위해 좌측만 넓음 — Success <code>8px 16px 8px 44px</code>, Error <code>8px 16px 8px 48px</code></li>
+      <li><b>텍스트</b>: 본문 16px SemiBold, 설명 14px. <b>아이콘</b>: Success 20×14px, Error 24×24px</li>
+      <li><b>위치</b>: 화면 하단 중앙, PC는 하단에서 <code>48px</code>, 모바일은 <code>28px</code> 띄움. <code>z-index:900</code></li>
+      <li><b>동작</b>: 액션/닫기 버튼 없으면 <b>2초 후 자동 소멸</b>. 여러 개 쌓일 땐 <code>flex-direction:column-reverse</code>(새 토스트가 위로)</li>
+      <li><b>그림자</b>: <code>0 8px 24px rgba(0,0,0,.2), 0 0 4px rgba(0,0,0,.12)</code></li>
+    </ul>
+    아래 버튼을 눌러보면 실제로 2초 뒤 사라지는 것과 스택 쌓임을 확인할 수 있습니다.
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-label"><span class="compare-tag">PC</span> 1024px 이상 — 하단 중앙 48px, 520px 고정폭</div>
+      <div class="pc-frame">
+        <div class="pc-topbar"><span class="pc-dot"></span><span class="pc-dot"></span><span class="pc-dot"></span></div>
+        <div class="pc-body">
+          <div class="mock-line w40"></div><div class="mock-card"></div>
+          <div class="mock-line w90"></div><div class="mock-line w60"></div>
+        </div>
+        <div class="toast-stack" id="pcStack"></div>
+      </div>
+      <div class="trigger-row">
+        <div class="trigger-btn success" onclick="addToast('pcStack','success',false)">Success 추가</div>
+        <div class="trigger-btn error" onclick="addToast('pcStack','error',false)">Error 추가</div>
+      </div>
+      <div class="callout">
+        폭이 넓어져도 토스트는 <b>520px 고정</b> — 화면 전체폭에 비례해서 늘어나지 않습니다.
+      </div>
+    </div>
+
+    <div class="compare-col">
+      <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 미만 — 하단 중앙 28px, 화면폭 80%</div>
+      <div class="mo-shell">
+        <div class="mo-screen">
+          <div class="mo-body">
+            <div class="mock-line w60"></div><div class="mock-card"></div>
+            <div class="mock-line w90"></div><div class="mock-line w40"></div>
+          </div>
+          <div class="toast-stack" id="moStack"></div>
+        </div>
+      </div>
+      <div class="trigger-row">
+        <div class="trigger-btn success" onclick="addToast('moStack','success',true)">Success 추가</div>
+        <div class="trigger-btn error" onclick="addToast('moStack','error',true)">Error 추가</div>
+      </div>
+      <div class="callout">
+        모바일은 화면폭의 <b>80%</b>로 축소되고, 하단 여백도 28px로 PC(48px)보다 좁아집니다.
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function addToast(stackId, type, isMobile){
+  var stack = document.getElementById(stackId);
+  var el = document.createElement('div');
+  el.className = 'toast ' + type;
+  var iconColor = type === 'success' ? '#43a047' : '#e53935';
+  el.innerHTML = '<div class="icon" style="background:'+iconColor+';border-radius:3px;"></div>'+
+    '<div><div class="msg">'+(type==='success' ? '정상적으로 처리되었습니다.' : '처리 중 오류가 발생했습니다.')+'</div></div>';
+  stack.appendChild(el);
+  setTimeout(function(){
+    el.style.opacity = '0';
+    setTimeout(function(){ el.remove(); }, 300);
+  }, 2000);
+}
+</script>
+</body>
+</html>

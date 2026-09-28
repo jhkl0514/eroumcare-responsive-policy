@@ -486,10 +486,11 @@ var SECTIONS = {
 var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s36","s41","s42","s43","s44","s5","s6","s9"];
 
 /* ---------------- Category order (menu group order — edit here to reorder groups) ---------------- */
-var CATEGORY_ORDER = ["rental-system", "common-pattern"];
+var CATEGORY_ORDER = ["rental-system", "common-pattern", "ops-pattern"];
 var CATEGORY_LABEL = {
   "rental-system": "대여 시스템 화면",
-  "common-pattern": "공통 컴포넌트 패턴"
+  "common-pattern": "공통 컴포넌트 패턴",
+  "ops-pattern": "운영관리 화면군 패턴 (9번)"
 };
 
 /* ---------------- Prototype ↔ policy section map ----------------
@@ -533,7 +534,21 @@ var PROTOS = [
     primary:"s32", related:["s1","s6"] },
   { id:"pagination-compare-demo.html", title:"페이지네이션 PC 전용 비교", category:"common-pattern",
     desc:"PC 3분할 페이지네이션 vs 모바일 '컴포넌트 자체 없음'(더보기 카드)",
-    primary:"s36", related:["s1","s6"] }
+    primary:"s36", related:["s1","s6"] },
+
+  // --- 운영관리 화면군 패턴 (이로움케어 사업소/입출고 창고/설치파트너, 9번 — 공식 DS 문서 실측 반영) ---
+  { id:"toast-notification-demo.html", title:"Toast 알림 비교", category:"ops-pattern",
+    desc:"Success/Error variant, PC 520px 고정 vs 모바일 80% — 공식 DS 문서 실측",
+    primary:"s9", related:["s6"] },
+  { id:"card-grid-list-demo.html", title:"상품 카드 그리드 리스트", category:"ops-pattern",
+    desc:"PC 4×3+페이지네이션 vs 모바일 2×2+무한스크롤 — 제3의 리스트 유형",
+    primary:"s9", related:["s2","s36"] },
+  { id:"delivery-progress-stepper-demo.html", title:"배송 진행 스텝퍼", category:"ops-pattern",
+    desc:"DeliveryProgress — 가로 4단계, 모바일은 임시 가로스크롤(미확정)",
+    primary:"s9", related:["s6"] },
+  { id:"process-guide-illustration-demo.html", title:"3단계 프로세스 안내", category:"ops-pattern",
+    desc:"원형 아이콘+화살표 절차 안내, 모바일은 세로 스택 제안(미확정)",
+    primary:"s9", related:[] }
 ];
 
 /* ---------------- Render ---------------- */
