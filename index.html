@@ -522,6 +522,7 @@ document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !docM
 (function(){
   var bodyGrid = document.getElementById('bodyGrid');
   var handle = document.getElementById('resizeHandle');
+  var protoFrame = document.getElementById('protoFrame');
   var MIN_W = 300, MAX_W = 760;
   var saved;
   try{ saved = localStorage.getItem('policyPanelWidth'); }catch(e){}
@@ -545,6 +546,7 @@ document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !docM
     dragging = false;
     handle.classList.remove('dragging');
     document.body.style.userSelect = '';
+    if(protoFrame) protoFrame.style.pointerEvents = '';
     try{ localStorage.setItem('policyPanelWidth', currentWidth()); }catch(e){}
   }
   function onDown(e){
@@ -553,6 +555,7 @@ document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !docM
     startW = currentWidth();
     handle.classList.add('dragging');
     document.body.style.userSelect = 'none';
+    if(protoFrame) protoFrame.style.pointerEvents = 'none';
     e.preventDefault();
   }
   handle.addEventListener('mousedown', onDown);
