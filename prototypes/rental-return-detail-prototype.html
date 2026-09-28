@@ -37,7 +37,20 @@
 *{box-sizing:border-box;}
 body{margin:0;background:var(--bg);color:var(--text-primary);
   font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
-#app{max-width:900px;margin:0 auto;padding:20px 16px 80px;}
+
+/* ---- 반응형 프리셋 컨트롤 (다른 3개 화면과 동일한 테스트 도구, 2026-09-28 추가) ---- */
+.preset-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;padding:0 16px;}
+.preset-btn{border:1px solid var(--border-primary);background:var(--card);border-radius:999px;
+  padding:7px 14px;font-size:13px;cursor:pointer;color:var(--text-secondary);white-space:nowrap;font-family:inherit;}
+.preset-btn.active{background:var(--brand);border-color:var(--brand);color:var(--on-brand);font-weight:600;}
+.w-readout{font-size:12px;color:var(--text-tertiary);margin:0 16px 12px;}
+#frame-outer{overflow-x:auto;}
+#frame{width:100%;max-width:1440px;margin:0 auto;transition:width .2s;box-sizing:border-box;}
+#frame-chrome{border:1px dashed var(--border-primary);border-radius:10px;padding:16px;background:var(--bg);}
+
+/* PC 콘텐츠 상한 1060px — Figma 전 PC 화면 공통값(CLAUDE.md 1번). 1024 미만은 자유폭. */
+#app{margin:0 auto;padding:20px 16px 80px;}
+@container pf (min-width:1024px){ #app{max-width:1060px;} }
 .proto-banner{background:var(--card);border:1px solid var(--border-tertiary);border-radius:10px;
   padding:14px 18px;margin-bottom:16px;font-size:13px;color:var(--text-secondary);line-height:1.6;}
 .proto-banner b{color:var(--text-primary);}
@@ -58,7 +71,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
   position:relative;}
 .breadcrumb{font-size:12px;color:var(--text-tertiary);margin-bottom:8px;}
 .back-chevron{display:none;font-size:20px;margin-right:4px;color:var(--text-primary);}
-@media(max-width:640px){
+@container pf (max-width:1023.98px){
   .breadcrumb{display:none;}
   .back-chevron{display:inline;}
 }
@@ -68,7 +81,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .page-title{font-size:20px;font-weight:700;}
 .actions-top{display:flex;gap:8px;flex-wrap:wrap;}
 .actions-bottom{display:none;gap:8px;padding:20px 0;flex-wrap:wrap;}
-@media(max-width:640px){
+@container pf (max-width:1023.98px){
   .actions-top{display:none;}
   .actions-bottom.has-buttons{
     display:flex;
@@ -96,7 +109,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .section-title{font-size:20px;font-weight:700;}
 .section-toggle{display:none;background:none;border:none;font-size:18px;color:var(--text-secondary);
   cursor:pointer;margin-left:auto;padding:4px;}
-@media(max-width:640px){
+@container pf (max-width:1023.98px){
   .section-toggle{display:block;}
   .collapsed-mobile{display:none;}
 }
@@ -199,7 +212,7 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
 .agree-row input{margin-top:2px;}
 .info-icon-circle{width:40px;height:40px;border-radius:999px;background:var(--info-bg);color:var(--info-text);
   display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-style:italic;font-size:16px;}
-@media(max-width:640px){
+@container pf (max-width:1023.98px){
   table.info-table{display:grid;grid-template-columns:110px 1fr;width:100%;}
   table.info-table tbody, table.info-table tr{display:contents;}
   table.info-table th{display:block;background:none;border:none;border-bottom:1px solid var(--border-tertiary);
@@ -212,6 +225,18 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
 </style>
 </head>
 <body>
+<div class="preset-row" id="preset-row">
+  <button class="preset-btn" data-w="360">360px</button>
+  <button class="preset-btn" data-w="768">768px</button>
+  <button class="preset-btn" data-w="1023">1023px</button>
+  <button class="preset-btn active" data-w="1024">1024px</button>
+  <button class="preset-btn" data-w="1440">1440px</button>
+</div>
+<div class="w-readout" id="w-readout"></div>
+
+<div id="frame-outer">
+  <div id="frame" style="container-type:inline-size;container-name:pf;">
+  <div id="frame-chrome">
 <div id="app">
   <div class="proto-banner">
     <b>검토용 프로토타입</b> · 대여 회수 상세보기(사업소 돌봄앱 운영관리). 상단 탭으로 7개 상태를 전환하거나, 화면 안의 버튼으로 실제 흐름(접수취소 · 이로움에 회수 요청 · 회수요청 취소 · 주소수정 · 메모)을 시뮬레이션할 수 있습니다. 모든 모달은 케어 모달 컴포넌트 기준(타이틀 + X 닫기)으로 통일했습니다.
@@ -223,6 +248,9 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
   <div id="toast-slot"></div>
   <div class="tabs" id="tabs"></div>
   <div class="card" id="page"></div>
+</div>
+  </div>
+  </div>
 </div>
 
 <script>
@@ -700,6 +728,22 @@ function confirmAddress(){
 }
 
 setStatus('회수접수');
+
+var frameEl = document.getElementById('frame');
+var presetButtons = document.querySelectorAll('.preset-btn');
+function setWidth(w){
+  presetButtons.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-w') === w); });
+  frameEl.style.width = w + 'px';
+  requestAnimationFrame(updateReadout);
+}
+presetButtons.forEach(function(b){
+  b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
+});
+function updateReadout(){
+  var w = Math.round(frameEl.getBoundingClientRect().width);
+  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px' + (w>=1024?' (PC 레이아웃)':' (모바일 레이아웃)');
+}
+setWidth('1024');
 </script>
 </body>
 </html>
