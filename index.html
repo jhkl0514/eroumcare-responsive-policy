@@ -272,7 +272,8 @@ var SECTIONS = {
     '<li>콘텐츠: <span class="mono">flex:1 0 0</span>, 최소폭은 모드에 따라 다름'+
       '<ul><li>수정 모드: <span class="mono">min-width:280px</span> → 전환 지점 125+4+280=<strong>409px</strong></li>'+
       '<li>조회 모드: <span class="mono">min-width:180px</span> → 전환 지점 125+8+180=<strong>313px</strong></li></ul></li>'+
-    '<li>전환 지점은 브레이크포인트로 못박은 값이 아니라 공식에서 자연히 나오는 결과 — 문서엔 숫자 아닌 공식을 남길 것</li>'+
+    '<li>전환 지점은 브레이크포인트로 못박은 값이 아니라 공식에서 자연히 나오는 결과 — 문서엔 숫자 아닌 공식을 남길 것'+
+      '<ul><li><strong>재확인(2026-09-28, Figma 노드 실측)</strong>: 409px·313px는 산수로 지어낸 값이 아니라 Figma에 그 폭 그대로 프레임이 존재함. <span class="mono">배송조회_입력폼</span>(node 6591:177940, 폭 409px)에서 라벨 x=0/w=125, 콘텐츠 x=129/w=280(gap 4px) 확인. <span class="mono">배송조회</span>(node 6591:173787, 폭 313px)에서 라벨 x=0/w=125, 콘텐츠 x=133/w=180(gap 8px) 확인. 340px 프레임(node 6591:160253)에서는 라벨/콘텐츠가 위아래로 줄바꿈된 상태도 확인.</li></ul></li>'+
     '<li>flex-wrap 컨테이너라 미디어쿼리 없이 순수 flexbox로 동작</li>'+
     '<li><strong>PC(1024px↑) 상한</strong>: 입력 콘텐츠 영역 <span class="mono">max-width:480px</span> (Figma 실측)</li>'+
     '</ul>' },
