@@ -40,11 +40,12 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
   font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
 
 /* ---- 반응형 프리셋 컨트롤 (다른 3개 화면과 동일한 테스트 도구, 2026-09-28 추가) ---- */
-.preset-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;padding:0 16px;}
+#wrap{max-width:1504px;margin:0 auto;padding:20px 16px 60px;}
+.preset-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;padding:0;}
 .preset-btn{border:1px solid var(--border-primary);background:var(--card);border-radius:999px;
   padding:7px 14px;font-size:14px;cursor:pointer;color:var(--text-secondary);white-space:nowrap;font-family:inherit;}
 .preset-btn.active{background:var(--brand);border-color:var(--brand);color:var(--on-brand);font-weight:600;}
-.w-readout{font-size:14px;color:var(--text-tertiary);margin:0 16px 12px;}
+.w-readout{font-size:14px;color:var(--text-tertiary);margin:0 0 12px;}
 #frame-outer{overflow-x:auto;}
 #frame{width:100%;max-width:1440px;margin:0 auto;transition:width .2s;box-sizing:border-box;}
 #frame-chrome{border:1px dashed var(--border-primary);border-radius:10px;padding:16px;background:var(--bg);}
@@ -226,6 +227,7 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
 </style>
 </head>
 <body>
+<div id="wrap">
 <div class="preset-row" id="preset-row">
   <button class="preset-btn" data-w="360">360px</button>
   <button class="preset-btn" data-w="768">768px</button>
@@ -252,6 +254,7 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
 </div>
   </div>
   </div>
+</div>
 </div>
 
 <script>
