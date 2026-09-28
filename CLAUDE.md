@@ -2,9 +2,11 @@
 
 > 이 문서는 claude.ai 채팅에서 정리된 반응형 관련 결정사항을 모은 것입니다. 클로드 코드로 작업을 이어받을 때 `CLAUDE.md` 또는 `docs/decisions.md`로 저장해두면, 새 세션이 시작될 때마다 이 맥락을 참고할 수 있습니다.
 >
-> 함께 전달되는 프로토타입 파일(6개, 8번 목록 참고)은 이 문서의 규칙을 실제로 구현한 참고용 예시입니다. 각 섹션 끝에 해당 프로토타입 파일명을 표시해뒀습니다.
+> 함께 전달되는 프로토타입 파일(10개, 8번 목록 참고)은 이 문서의 규칙을 실제로 구현한 참고용 예시입니다. 각 섹션 끝에 해당 프로토타입 파일명을 표시해뒀습니다.
 
 **배포**: [eroumcare-responsive-policy.vercel.app](https://eroumcare-responsive-policy.vercel.app/) (GitHub `main` 브랜치와 연동 — push 시 자동 배포) · 저장소: [github.com/jhkl0514/eroumcare-responsive-policy](https://github.com/jhkl0514/eroumcare-responsive-policy)
+
+**Claude Code 스킬**: `.claude/skills/eroumcare-design-system/SKILL.md` — 이 문서의 규칙을 새 화면 제작/검수 작업에 바로 활용할 수 있도록 패키징한 스킬. "이로움케어", "대여", "회수", "반응형", "디자인시스템" 등의 작업에서 자동 트리거됨. 규칙이 바뀌면 이 문서·`index.html`의 SECTIONS·스킬 파일 셋 다 동기화할 것 (2026-09-28 추가).
 
 ---
 
@@ -255,4 +257,13 @@ Figma 실제 디자인(node-id=6534-177231, 2026-09-22 확인) 기준. `rental-r
 | 5 | `form-breakpoint-demo.html` | 입력폼 라벨/필드 flex-wrap 구조 단독 데모 |
 | 6 | `modal-types-gallery.html` | 모달 8유형 사이즈/반응형 갤러리 |
 
-모든 파일은 자체적으로 프리셋 폭 버튼(320/360/1023/1024/1440 등)을 내장하고 있어, 실제 창 크기를 조절하지 않아도 각 브레이크포인트 구간을 클릭으로 확인할 수 있습니다.
+1~6번 파일은 자체적으로 프리셋 폭 버튼(320/360/1023/1024/1440 등)을 내장하고 있어, 실제 창 크기를 조절하지 않아도 각 브레이크포인트 구간을 클릭으로 확인할 수 있습니다.
+
+**유형별 PC/모바일 비교 데모**(2026-09-28 추가 — 3번 컴포넌트별 규칙을 화면 하나 안에서 프리셋 전환하는 대신, PC 예시와 모바일 예시를 나란히 놓고 바로 대조하는 실험적 포맷. 프리셋 버튼 없음)
+
+| 순서 | 파일명 | 내용 |
+|---|---|---|
+| 7 | `action-button-placement-demo.html` | 3-4 액션 버튼 배치 — PC Hug 버튼 vs 모바일 하단 sticky |
+| 8 | `text-table-compare-demo.html` | 3-1 텍스트형 정보 테이블 — 넓은 컨테이너 vs 최소 240px |
+| 9 | `input-field-compare-demo.html` | 3-2 입력필드형 — 수정모드 409px vs 조회모드 313px 전환점 대비 |
+| 10 | `pagination-compare-demo.html` | 3-6 페이지네이션 — PC 전용 컴포넌트 vs 모바일 "컴포넌트 자체 없음"(더보기 카드) |
