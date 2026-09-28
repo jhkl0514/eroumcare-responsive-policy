@@ -2,7 +2,7 @@
 
 > 이 문서는 claude.ai 채팅에서 정리된 반응형 관련 결정사항을 모은 것입니다. 클로드 코드로 작업을 이어받을 때 `CLAUDE.md` 또는 `docs/decisions.md`로 저장해두면, 새 세션이 시작될 때마다 이 맥락을 참고할 수 있습니다.
 >
-> 함께 전달되는 프로토타입 파일(13개, 8번 목록 참고)은 이 문서의 규칙을 실제로 구현한 참고용 예시입니다. 각 섹션 끝에 해당 프로토타입 파일명을 표시해뒀습니다.
+> 함께 전달되는 프로토타입 파일(14개, 8번 목록 참고)은 이 문서의 규칙을 실제로 구현한 참고용 예시입니다. 각 섹션 끝에 해당 프로토타입 파일명을 표시해뒀습니다.
 
 **배포**: [eroumcare-responsive-policy.vercel.app](https://eroumcare-responsive-policy.vercel.app/) (GitHub `main` 브랜치와 연동 — push 시 자동 배포) · 저장소: [github.com/jhkl0514/eroumcare-responsive-policy](https://github.com/jhkl0514/eroumcare-responsive-policy)
 
@@ -108,7 +108,7 @@
 - 달력/셀렉트 드롭다운도 같은 원칙: 모바일에서는 트리거 요소와 동일한 좌우 여백(`left:0;right:0`)으로 열림, PC에서만 고정폭(예: 달력 320px)
 - **바텀시트 공통 스펙**(Figma 확인, 2026-09-22): 상단 모서리 반경 **40px**, 드래그 핸들바 없음(타이틀+X 닫기로 바로 시작). 타이틀 상단 여백은 **32px**(바깥 래퍼 12px + 안쪽 Contents 래퍼 20px가 합산된 값 — 하나의 패딩 숫자가 아니니 구현 시 이중 래퍼 구조 그대로 가져갈 것)
 
-→ `order-detail-mobile.html`, `order-list-adaptive.html`, `rental-return-list.html`
+→ `order-detail-mobile.html`, `order-list-adaptive.html`, `rental-return-list.html`, `popover-bottomsheet-compare-demo.html`
 
 ### 3-6. 페이지네이션 (PC 전용)
 
@@ -267,14 +267,15 @@ Figma 실제 디자인(node-id=6534-177231, 2026-09-22 확인) 기준. `rental-r
 | 8 | `text-table-compare-demo.html` | 3-1 텍스트형 정보 테이블 — 넓은 컨테이너 vs 최소 240px |
 | 9 | `input-field-compare-demo.html` | 3-2 입력필드형 — 수정모드 409px vs 조회모드 313px 전환점 대비 |
 | 10 | `pagination-compare-demo.html` | 3-6 페이지네이션 — PC 전용 컴포넌트 vs 모바일 "컴포넌트 자체 없음"(더보기 카드) |
+| 11 | `popover-bottomsheet-compare-demo.html` | 3-5 팝오버/바텀시트 — PC 호버 팝오버(200ms/300ms 지연) vs 모바일 탭→바텀시트, 달력 드롭다운 고정폭 vs 트리거 폭 (2026-09-28 추가) |
 
 **9번(운영관리 화면군) 패턴 데모**(2026-09-28 추가 — Figma 실측 + 사내 디자인시스템 문서 실측 반영. 프리셋 버튼 없음, PC/모바일 비교 포맷은 위와 동일)
 
 | 순서 | 파일명 | 내용 |
 |---|---|---|
-| 11 | `toast-notification-demo.html` | Toast 알림 — Success/Error, PC 520px 고정 vs 모바일 80%, 공식 문서 실측 |
-| 12 | `card-grid-list-demo.html` | 상품 카드 그리드 리스트 — PC 4×3+페이지네이션 vs 모바일 2×2+무한스크롤 |
-| 13 | `shell-sidenav-demo.html` | 9-1 운영관리 셸(입출고 창고·설치파트너 전용) — PC GNB+SideNav vs 모바일 상단 브랜드색 GNB+햄버거→전체메뉴 오버레이(실제 동작) |
+| 12 | `toast-notification-demo.html` | Toast 알림 — Success/Error, PC 520px 고정 vs 모바일 80%, 공식 문서 실측 |
+| 13 | `card-grid-list-demo.html` | 상품 카드 그리드 리스트 — PC 4×3+페이지네이션 vs 모바일 2×2+무한스크롤 |
+| 14 | `shell-sidenav-demo.html` | 9-1 운영관리 셸(입출고 창고·설치파트너 전용) — PC GNB+SideNav vs 모바일 상단 브랜드색 GNB+햄버거→전체메뉴 오버레이(실제 동작) |
 
 > `delivery-progress-stepper-demo.html`, `process-guide-illustration-demo.html`은 **2026-09-28부터 정책 범위 제외(hidden)** — 반응형 정책에 굳이 포함할 필요 없다고 판단됨. 파일은 `prototypes/`에 남아있으나 이 문서·`index.html` 메뉴 어디에도 링크하지 않음.
 
