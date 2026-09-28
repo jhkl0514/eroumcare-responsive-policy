@@ -48,7 +48,7 @@
   .doc-link{
     font-size:12.5px; color:var(--text-secondary); text-decoration:none; padding:7px 12px;
     border:1px solid var(--border); border-radius:8px; background:var(--bg-sunken);
-    display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+    display:inline-flex; align-items:center; gap:6px; white-space:nowrap; font-family:inherit;
   }
   .doc-link:hover{border-color:var(--border-strong); color:var(--text);}
 
@@ -177,6 +177,44 @@
   .doc-modal-body .p-section p, .doc-modal-body .p-section ul, .doc-modal-body .p-section ol{font-size:15.5px;}
   .doc-modal-body .p-section h3{font-size:17px;}
 
+  /* ---------- 템플릿 갤러리: 프로토타입을 썸네일 카드로 한눈에 ---------- */
+  .gallery-modal-overlay{
+    position:fixed; inset:0; background:rgba(16,20,28,.5); z-index:50;
+    display:flex; align-items:center; justify-content:center; padding:5vh 20px;
+  }
+  .gallery-modal-overlay[hidden]{ display:none; }
+  .gallery-modal{
+    background:var(--bg-elevated); border-radius:14px; box-shadow:0 20px 60px rgba(0,0,0,.3);
+    width:min(1200px, 100%); height:100%; max-height:90vh; display:flex; flex-direction:column; overflow:hidden;
+  }
+  .gallery-modal-header{
+    flex:0 0 auto; padding:18px 24px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .gallery-modal-header h2{font-size:17px; margin:0; font-weight:700;}
+  .gallery-modal-close{
+    width:32px; height:32px; border-radius:8px; border:1px solid var(--border); background:var(--bg-sunken);
+    color:var(--text-secondary); cursor:pointer; display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+  }
+  .gallery-modal-close:hover{border-color:var(--border-strong); color:var(--text);}
+  .gallery-modal-body{flex:1 1 auto; overflow-y:auto; padding:24px 28px 48px;}
+  .gallery-group-label{font-size:13px; font-weight:700; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:.03em;
+    margin:28px 0 12px;}
+  .gallery-group-label:first-child{margin-top:0;}
+  .gallery-grid{display:flex; flex-wrap:wrap; gap:16px;}
+  .gallery-card{width:280px; border:1px solid var(--border); border-radius:10px; overflow:hidden;
+    background:var(--bg-elevated); cursor:pointer; text-align:left; transition:border-color .15s, box-shadow .15s;
+    padding:0; margin:0; font:inherit; display:block;}
+  .gallery-card:hover{border-color:var(--accent); box-shadow:var(--shadow);}
+  .gallery-thumb{width:280px; height:175px; overflow:hidden; position:relative; background:#fff; pointer-events:none;
+    border-bottom:1px solid var(--border);}
+  .gallery-thumb iframe{width:1280px; height:800px; border:0; transform:scale(0.21875); transform-origin:top left;}
+  .gallery-thumb-placeholder{width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+    color:var(--text-tertiary); font-size:13px;}
+  .gallery-card-body{padding:12px 14px;}
+  .gallery-card-title{font-size:14.5px; font-weight:700; color:var(--text); margin-bottom:4px;}
+  .gallery-card-desc{font-size:12.5px; color:var(--text-secondary); line-height:1.5;}
+
   /* ---------- Responsive: stack on narrow viewports ---------- */
   @media (max-width: 980px){
     .body{grid-template-columns:1fr; grid-template-rows:auto minmax(300px,55vh) auto; overflow-y:auto;}
@@ -199,6 +237,7 @@
       <span class="sub">프로토타입 허브</span>
     </div>
     <div class="top-actions">
+      <button class="doc-link" id="toggleGallery" style="cursor:pointer;">🖼 템플릿 갤러리</button>
       <a class="doc-link" href="CLAUDE.md" target="_blank" rel="noopener">📄 CLAUDE.md 원문</a>
     </div>
   </header>
@@ -233,6 +272,16 @@
       <button class="doc-modal-close" id="docModalClose" aria-label="닫기">✕</button>
     </div>
     <div class="doc-modal-body" id="docModalBody"></div>
+  </div>
+</div>
+
+<div class="gallery-modal-overlay" id="galleryModalOverlay" hidden>
+  <div class="gallery-modal">
+    <div class="gallery-modal-header">
+      <h2>템플릿 갤러리 — 프로토타입 10개 한눈에 보기</h2>
+      <button class="gallery-modal-close" id="galleryModalClose" aria-label="닫기">✕</button>
+    </div>
+    <div class="gallery-modal-body" id="galleryModalBody"></div>
   </div>
 </div>
 
@@ -393,7 +442,7 @@ var SECTIONS = {
 
   s7: { title:"7. 아직 확정되지 않은 항목", html:
     '<ul class="checklist">'+
-    '<li>모달 lg-600/xl-800(테이블 포함형)의 실제 사례가 아직 없음 — 발생 시 재검증</li>'+
+    '<li class="done"><span class="strike">모달 lg-600/xl-800(테이블 포함형)의 실제 사례가 아직 없음</span> — <strong>확정(2026-09-28)</strong>: 이로움케어 사업소·입출고 창고 Figma에서 다수 실제 사례 확인. 9번 참고</li>'+
     '<li class="done"><span class="strike">회수철회 버튼 노출 범위</span> — <strong>확정(2026-09-22)</strong>: "회수요청 취소"로 명칭 변경, 회수요청 상태에서만 노출</li>'+
     '<li class="done"><span class="strike">회수요청 취소 시 사유 미수집 문제</span> — <strong>확정(2026-09-23)</strong>: 현상 유지, 사유 수집 안 함. 4-1 참고</li>'+
     '<li class="done"><span class="strike">배송희망일 잠금 시점</span> — <strong>확정(2026-09-23)</strong>: 주문완료부터, 단 "배송정보 변경하기" 진입 시 함께 수정 가능. 4-3 참고</li>'+
@@ -401,10 +450,40 @@ var SECTIONS = {
     '<li class="done"><span class="strike">rental-return-detail-prototype.html 브레이크포인트 구조 불일치</span> — <strong>확정(2026-09-28)</strong>: 다른 3개 화면과 동일하게 맞춤(<span class="mono">@container pf (max-width:1023.98px)</span>로 교체, 프리셋 프레임 추가, PC 1060px 캡핑 적용)</li>'+
     '<li class="done"><span class="strike">페이지네이션 컴포넌트 스펙 미확인</span> — <strong>확정(2026-09-23)</strong>: Figma 실측 완료, 3-6 참고</li>'+
     '<li class="done"><span class="strike">모바일 "함께 요청" 바텀시트 기획 확인</span> — <strong>확정(2026-09-23)</strong>: 노출 범위·탭 이동 동작 모두 현재 구현과 동일. 4-2 참고</li>'+
+    '</ul>' },
+
+  s9: { title:"9. 이로움케어 사업소 / 운영관리 화면군", html:
+    '<p><strong>배경</strong>: 대대여(플러스+) 운영관리 시스템은 현재 PC가 PHP, 모바일이 별도 React 앱으로 <strong>이중 관리</strong>되고 있음 — 이 반응형 정책 문서를 만드는 근본 이유. Figma 파일 <span class="mono">H8lqlZitePnf5dTDPB5GzR</span>에 운영관리 앱 3개: <strong>이로움케어 사업소</strong>(사업소 직원용) / <strong>입출고 창고</strong>(창고 직원용) / <strong>설치파트너</strong>(설치업체용). 1~8번은 전부 소비자용 화면 기준이었고, 9번부터 운영관리 화면군.</p>'+
+    '<p style="background:var(--accent-soft);border-radius:8px;padding:10px 12px;"><strong>⚠️ 중요 정정(2026-09-28)</strong>: 아래 셸(GNB+SideNav+Container)은 <strong>Figma에만 있는, 아직 서비스에 반영 안 된 리뉴얼 디자인</strong>이다. 실제 운영 중인 사업소 화면은 탭+이벤트배너+다중 링크의 무거운 GNB, 계정박스+장바구니위젯+공지사항까지 붙은 복잡한 SNB를 쓰는 <strong>구버전 셸</strong> — 사업소도 리뉴얼을 시도했지만 개발 반영이 안 끝난 상태. 반면 입출고 창고·설치파트너는 <strong>리뉴얼이 실제로 배포</strong>돼서 새 셸을 쓴다. → 템플릿 표준은 새 셸로 채택, 사업소 구버전은 별도 반응형 규칙화하지 않음(새 셸로 교체가 목표).</p>'+
+    '<h4>콘텐츠 컨테이너 · 셸</h4>'+
+    '<ul>'+
+    '<li>PC: GNB(56px, 미니멀) + SideNav(240px) + 콘텐츠 <span class="mono">1200px</span>(내부 패딩 32px → 실콘텐츠 <strong>1136px</strong>) — 14회 반복 확인. 소비자용 1060px과 다른 값</li>'+
+    '<li>모바일: 컨테이너 360px, 내부 패딩 20px → 실콘텐츠 <strong>320px</strong> — 1번 360px 규칙과 일치</li>'+
+    '<li><strong>SideNav→모바일 전환(확정)</strong>: PC SideNav는 사라지고 하단 <span class="mono">System_navigation</span>(48px, 탭 아님 — 햄버거/닫기/뒤로가기 아이콘만)으로 대체. 햄버거 탭 시 <strong>전체화면 <span class="mono">전체메뉴</span> 오버레이</strong>(프로필카드+로그아웃 → 구분선 8px → <span class="mono">Sidemenu_Items</span> 메뉴리스트, PC 42px→모바일 48px) — 입출고 창고·사업소 리뉴얼 목업 양쪽에서 레이어명까지 동일 확인, 설치파트너는 미확정</li>'+
+    '</ul>'+
+    '<h4>기존 규칙 재사용 확인됨 (이로움케어 사업소)</h4>'+
+    '<p>상세형(텍스트형+입력필드형+버튼), 주문신청폼(입력필드형), 이용현황(Tab+세그먼트+페이지네이션), 정산(텍스트형 테이블) — 전부 3-1~3-6 그대로. 모달은 <span class="mono">Modal_xl_800_계약서</span> — <strong>3번 "lg-600/xl-800 실제 사례 미확인" 항목의 첫 확인 사례</strong>.</p>'+
+    '<h4>신규 패턴 8개 발견</h4>'+
+    '<ul>'+
+    '<li><strong>상품 카드 그리드 리스트</strong>(이로움케어 사업소) — PC 자체가 카드 그리드(필터+정렬+Pagination). "적응형"과 다른 제3의 리스트 유형</li>'+
+    '<li><strong>배송 진행 스텝퍼</strong> <span class="mono">DeliveryProgress</span>(이로움케어 사업소) — 가로 4단계, 120×44px, 활성/비활성 점+브랜드 배지</li>'+
+    '<li><strong>3단계 프로세스 안내 일러스트</strong>(이로움케어 사업소) — 원형 아이콘+화살표로 절차 안내</li>'+
+    '<li><strong>Toast 알림</strong>(입출고 창고) — radius 8px, 아이콘24+텍스트16 SemiBold, 시맨틱별 색상 변경(danger 예시 확인, 나머지 variant 추후 실측)</li>'+
+    '<li><strong>좌측 컬럼 고정 + 가로 스크롤 테이블</strong>(입출고 창고) — 컬럼 8~9개 이상 넓은 테이블에서 앞쪽 컬럼군 고정, "표를 밀어보세요" 힌트</li>'+
+    '<li><strong>월간 캘린더</strong>(설치파트너) — 7열 그리드가 1136px을 정확히 7등분, 날짜별 이벤트 pill+건수 배지</li>'+
+    '<li><strong>지도+리스트 스플릿 뷰</strong>(설치파트너) — 지도 위 마커 + 우측 플로팅 리스트 패널(722px). 모바일: 지도 전체화면 위 <strong>드래그형 하단 리스트</strong>(<span class="mono">bottom_List</span>)로 전환 — 확인됨</li>'+
+    '<li><strong>사진 업로드 그리드</strong>(설치파트너) — 88×88px 썸네일, 최대 10장, 각 우상단 닫기버튼</li>'+
+    '</ul>'+
+    '<h4>아직 확인 안 된 것</h4>'+
+    '<ul class="checklist">'+
+    '<li>캘린더의 모바일 반응형 처리 — PC 전용으로만 확인됨</li>'+
+    '<li>Toast 색상 variant(success/warning 등), 노출 위치/스택 방식</li>'+
+    '<li>설치파트너 라벨 폭(160px)이 다른 화면에서도 일관된 값인지</li>'+
+    '<li>이로움케어 사업소 나머지(회수, 서비스 제공 안내), 반품/AS·수급자관리 화면(추후 Figma 추가 예정)</li>'+
     '</ul>' }
 };
 
-var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s36","s41","s42","s43","s44","s5","s6","s7"];
+var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s36","s41","s42","s43","s44","s5","s6","s7","s9"];
 
 /* ---------------- Category order (menu group order — edit here to reorder groups) ---------------- */
 var CATEGORY_ORDER = ["rental-system", "common-pattern"];
@@ -530,6 +609,41 @@ document.getElementById('toggleFullDoc').addEventListener('click', openDocModal)
 document.getElementById('docModalClose').addEventListener('click', closeDocModal);
 docModalOverlay.addEventListener('click', function(e){ if(e.target === docModalOverlay) closeDocModal(); });
 document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !docModalOverlay.hidden) closeDocModal(); });
+
+/* ---------------- 템플릿 갤러리 모달 ---------------- */
+var galleryModalOverlay = document.getElementById('galleryModalOverlay');
+function openGalleryModal(){
+  var html = '';
+  CATEGORY_ORDER.forEach(function(cat){
+    var items = PROTOS.filter(function(p){ return p.category === cat; });
+    if(!items.length) return;
+    html += '<div class="gallery-group-label">'+CATEGORY_LABEL[cat]+'</div><div class="gallery-grid">';
+    items.forEach(function(p){
+      html += '<button class="gallery-card" onclick="selectFromGallery(\''+p.id+'\')">'+
+        '<div class="gallery-thumb"><iframe src="prototypes/'+p.id+'" loading="lazy" tabindex="-1"></iframe></div>'+
+        '<div class="gallery-card-body">'+
+        '<div class="gallery-card-title">'+p.title+'</div>'+
+        '<div class="gallery-card-desc">'+p.desc+'</div>'+
+        '</div></button>';
+    });
+    html += '</div>';
+  });
+  document.getElementById('galleryModalBody').innerHTML = html;
+  galleryModalOverlay.hidden = false;
+}
+function closeGalleryModal(){
+  galleryModalOverlay.hidden = true;
+  /* iframe들 정리해서 숨겨진 상태에서도 타이머/스크립트가 계속 돌지 않게 함 */
+  document.getElementById('galleryModalBody').innerHTML = '';
+}
+function selectFromGallery(id){
+  closeGalleryModal();
+  selectProto(id);
+}
+document.getElementById('toggleGallery').addEventListener('click', openGalleryModal);
+document.getElementById('galleryModalClose').addEventListener('click', closeGalleryModal);
+galleryModalOverlay.addEventListener('click', function(e){ if(e.target === galleryModalOverlay) closeGalleryModal(); });
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !galleryModalOverlay.hidden) closeGalleryModal(); });
 
 /* ---------------- 우측 패널 드래그 리사이즈 ---------------- */
 (function(){
