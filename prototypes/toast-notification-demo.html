@@ -54,42 +54,43 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .mo-screen{position:relative;height:420px;overflow:hidden;border-radius:12px;background:var(--card);}
 .mo-body{padding:16px;}
 
-/* ---- Toast (사내 디자인시스템 문서 실측) ---- */
+/* ---- Toast — Figma 이로움Care 디자인시스템 Toast 컴포넌트(node 7987:8847) 실측 ---- */
 .toast-stack{position:absolute;left:0;right:0;bottom:48px;display:flex;flex-direction:column-reverse;
   align-items:center;gap:16px;pointer-events:none;z-index:10;}
 .mo-screen .toast-stack{bottom:28px;gap:12px;}
-.toast{width:520px;max-width:calc(100% - 32px);min-height:58px;border-radius:8px;display:flex;align-items:center;gap:8px;
-  box-shadow:0 8px 24px rgba(0,0,0,.2), 0 0 4px rgba(0,0,0,.12);
-  transition:bottom .3s, opacity .3s;}
+.toast{width:520px;max-width:calc(100% - 32px);min-height:62px;padding:8px 16px;border-radius:8px;border:1px solid;
+  display:flex;align-items:center;gap:4px;pointer-events:auto;
+  box-shadow:0 2px 4px rgba(0,0,0,.12), 0 0 2px rgba(0,0,0,.12);
+  transition:opacity .3s;}
 .mo-screen .toast{width:80%;}
-.toast.success{background:#e8f5e9;border:1px solid #43a047;padding:8px 16px 8px 44px;}
-.toast.error{background:#ffebee;border:1px solid #e53935;padding:8px 16px 8px 48px;}
-.toast .msg{font-size:16px;font-weight:600;color:var(--text-primary);}
-.toast .desc{font-size:14px;color:var(--text-secondary);margin-top:2px;}
-.toast .icon{flex:0 0 auto;}
-.toast.success .icon{width:20px;height:14px;}
-.toast.error .icon{width:24px;height:24px;}
-
+.toast.success{background:#e8f5e9;border-color:#43a047;}
+.toast.error{background:#ffebee;border-color:#e53935;}
+.toast .body{flex:1 0 0;min-width:0;display:flex;align-items:center;gap:8px;}
+.toast .icon{flex:0 0 auto;width:24px;height:24px;display:block;}
+.toast .msg{flex:1 0 0;min-width:0;font-size:16px;font-weight:600;line-height:24px;letter-spacing:-.24px;color:var(--text-primary);}
+.toast .close{flex:0 0 auto;width:24px;height:24px;padding:0;border:none;background:none;cursor:pointer;display:flex;}
 .trigger-row{display:flex;gap:8px;justify-content:center;margin-top:10px;}
 .trigger-btn{border-radius:4px;padding:8px 16px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid transparent;}
 .trigger-btn.success{background:#43a047;color:#fff;}
 .trigger-btn.error{background:#e53935;color:#fff;}
+.trigger-opt{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-secondary);cursor:pointer;}
+.trigger-opt input{width:16px;height:16px;margin:0;accent-color:var(--brand);background:#fff;}
 </style>
 </head>
 <body>
 <div id="wrap">
   <div class="banner">
-    <b>Toast 알림</b> — CLAUDE.md 9번(입출고 창고에서 발견) + 사내 디자인시스템 문서<span class="src-tag">실측 반영</span>:
+    <b>Toast 알림</b> — CLAUDE.md 9-5(입출고 창고에서 발견) · Figma 이로움Care 디자인시스템 <code>Toast</code> 컴포넌트<span class="src-tag">Figma 실측</span>:
     <ul>
-      <li><b>색상</b>: Success — 배경 <code>#e8f5e9</code> / 테두리 <code>#43a047</code>. Error — 배경 <code>#ffebee</code> / 테두리 <code>#e53935</code></li>
-      <li><b>크기</b>: PC <code>520px</code> 고정폭, 모바일 화면폭의 <code>80%</code>. 최소 높이 <code>58px</code>, radius <code>8px</code></li>
-      <li><b>패딩</b>: 아이콘 자리 확보 위해 좌측만 넓음 — Success <code>8px 16px 8px 44px</code>, Error <code>8px 16px 8px 48px</code></li>
-      <li><b>텍스트</b>: 본문 16px SemiBold, 설명 14px. <b>아이콘</b>: Success 20×14px, Error 24×24px</li>
-      <li><b>위치</b>: 화면 하단 중앙, PC는 하단에서 <code>48px</code>, 모바일은 <code>28px</code> 띄움. <code>z-index:900</code></li>
-      <li><b>동작</b>: 액션/닫기 버튼 없으면 <b>2초 후 자동 소멸</b>. 여러 개 쌓일 땐 <code>flex-direction:column-reverse</code>(새 토스트가 위로)</li>
-      <li><b>그림자</b>: <code>0 8px 24px rgba(0,0,0,.2), 0 0 4px rgba(0,0,0,.12)</code></li>
+      <li><b>실사용 variant</b>: <b>Success · Error만</b> 사용 — <code>Default</code>(흰 배경)는 실제로 쓴 적 없어 제외. <b>Description(보조 설명 줄)도 사용 안 함</b> — 본문 한 줄만</li>
+      <li><b>색상</b>: Success — 배경 <code>#e8f5e9</code> / 테두리 <code>#43a047</code> / 체크 아이콘 <code>#166534</code>. Error — 배경 <code>#ffebee</code> / 테두리 <code>#e53935</code> / 원형 X 아이콘 <code>#e53935</code></li>
+      <li><b>구조</b>: 패딩 <code>8px 16px</code>, 높이 <code>62px</code>, radius <code>8px</code>, 테두리 1px. 아이콘 24×24 + 간격 8px + 본문 16px SemiBold(<code>#1a1a1a</code>)</li>
+      <li><b>닫기(X) 버튼</b>: 실제 적용한 적 있음 — 우측 24×24 닫기 아이콘(<code>#333</code>). Action 텍스트 버튼은 사용 안 함</li>
+      <li><b>그림자</b>(elevation/shadow3): <code>0 2px 4px rgba(0,0,0,.12), 0 0 2px rgba(0,0,0,.12)</code></li>
+      <li><b>크기·위치</b>: PC <code>520px</code> 고정폭, 모바일 화면폭의 <code>80%</code>. 화면 하단 중앙, PC 하단 <code>48px</code> / 모바일 <code>28px</code>, <code>z-index:900</code></li>
+      <li><b>동작</b>: 닫기 버튼 없으면 <b>2초 후 자동 소멸</b>, 닫기 버튼 있으면 사용자가 X로 닫을 때까지 유지. 여러 개는 <code>flex-direction:column-reverse</code>(새 토스트가 위로)</li>
     </ul>
-    아래 버튼을 눌러보면 실제로 2초 뒤 사라지는 것과 스택 쌓임을 확인할 수 있습니다.
+    아래 버튼으로 실제 동작(자동 소멸·스택·X 닫기)을 확인할 수 있습니다.
   </div>
 
   <div class="compare-grid">
@@ -104,8 +105,9 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
         <div class="toast-stack" id="pcStack"></div>
       </div>
       <div class="trigger-row">
-        <div class="trigger-btn success" onclick="addToast('pcStack','success',false)">Success 추가</div>
-        <div class="trigger-btn error" onclick="addToast('pcStack','error',false)">Error 추가</div>
+        <div class="trigger-btn success" onclick="addToast('pcStack','success')">Success 추가</div>
+        <div class="trigger-btn error" onclick="addToast('pcStack','error')">Error 추가</div>
+        <label class="trigger-opt"><input type="checkbox" id="pcStackClose">닫기(X) 버튼 포함</label>
       </div>
       <div class="callout">
         폭이 넓어져도 토스트는 <b>520px 고정</b> — 화면 전체폭에 비례해서 늘어나지 않습니다.
@@ -124,8 +126,9 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
         </div>
       </div>
       <div class="trigger-row">
-        <div class="trigger-btn success" onclick="addToast('moStack','success',true)">Success 추가</div>
-        <div class="trigger-btn error" onclick="addToast('moStack','error',true)">Error 추가</div>
+        <div class="trigger-btn success" onclick="addToast('moStack','success')">Success 추가</div>
+        <div class="trigger-btn error" onclick="addToast('moStack','error')">Error 추가</div>
+        <label class="trigger-opt"><input type="checkbox" id="moStackClose">닫기(X) 버튼 포함</label>
       </div>
       <div class="callout">
         모바일은 화면폭의 <b>80%</b>로 축소되고, 하단 여백도 28px로 PC(48px)보다 좁아집니다.
@@ -134,18 +137,30 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
   </div>
 </div>
 <script>
-function addToast(stackId, type, isMobile){
+var TOAST_ICONS = {
+  success: '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M21.0303 5.71967C21.3232 6.01256 21.3232 6.48744 21.0303 6.78033L9.53033 18.2803C9.23744 18.5732 8.76256 18.5732 8.46967 18.2803L2.96967 12.7803C2.67678 12.4874 2.67678 12.0126 2.96967 11.7197C3.26256 11.4268 3.73744 11.4268 4.03033 11.7197L9 16.6893L19.9697 5.71967C20.2626 5.42678 20.7374 5.42678 21.0303 5.71967Z" fill="#166534"/></svg>',
+  error: '<svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.0024 8.9975C15.2927 9.2877 15.2927 9.75822 15.0024 10.0484L13.0509 12L15.0024 13.9516C15.2927 14.2419 15.2927 14.7123 15.0024 15.0025C14.7122 15.2927 14.2418 15.2927 13.9516 15.0025L12 13.051L10.0483 15.0025C9.75816 15.2927 9.28764 15.2927 8.99743 15.0025C8.70723 14.7123 8.70723 14.2419 8.99743 13.9516L10.949 12L8.99743 10.0484C8.70723 9.75822 8.70723 9.2877 8.99743 8.9975C9.28764 8.70729 9.75816 8.70729 10.0483 8.9975L12 10.949L13.9516 8.9975C14.2418 8.70729 14.7122 8.70729 15.0024 8.9975Z" fill="#E53935"/><path fill-rule="evenodd" clip-rule="evenodd" d="M3 12C3 7.02948 7.02942 3.00006 12 3.00006C16.9705 3.00006 21 7.02948 21 12C21 16.9706 16.9705 21.0001 12 21.0001C7.02942 21.0001 3 16.9706 3 12ZM12 4.4863C7.85025 4.4863 4.48623 7.85031 4.48623 12C4.48623 16.1498 7.85025 19.5138 12 19.5138C16.1497 19.5138 19.5138 16.1498 19.5138 12C19.5138 7.85031 16.1497 4.4863 12 4.4863Z" fill="#E53935"/></svg>',
+  close: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.7751 6.31089C19.075 6.01101 19.075 5.52482 18.7751 5.22494C18.4752 4.92506 17.989 4.92506 17.6891 5.22494L12 10.914L6.31086 5.22494C6.01098 4.92506 5.52479 4.92506 5.22491 5.22494C4.92503 5.52482 4.92503 6.01101 5.22491 6.31089L10.914 12L5.22491 17.6891C4.92503 17.989 4.92503 18.4752 5.22491 18.7751C5.52479 19.075 6.01098 19.075 6.31086 18.7751L12 13.086L17.6891 18.7751C17.989 19.075 18.4752 19.075 18.7751 18.7751C19.075 18.4752 19.075 17.989 18.7751 17.6891L13.086 12L18.7751 6.31089Z" fill="#333333"/></svg>'
+};
+function removeToast(el){
+  el.style.opacity = '0';
+  setTimeout(function(){ el.remove(); }, 300);
+}
+function addToast(stackId, type){
   var stack = document.getElementById(stackId);
+  var withClose = document.getElementById(stackId + 'Close').checked;
   var el = document.createElement('div');
   el.className = 'toast ' + type;
-  var iconColor = type === 'success' ? '#43a047' : '#e53935';
-  el.innerHTML = '<div class="icon" style="background:'+iconColor+';border-radius:3px;"></div>'+
-    '<div><div class="msg">'+(type==='success' ? '정상적으로 처리되었습니다.' : '처리 중 오류가 발생했습니다.')+'</div></div>';
+  el.setAttribute('role', type === 'error' ? 'alert' : 'status');
+  el.innerHTML = '<div class="body">' + TOAST_ICONS[type] +
+    '<div class="msg">' + (type === 'success' ? '정상적으로 처리되었습니다.' : '처리 중 오류가 발생했습니다.') + '</div></div>' +
+    (withClose ? '<button class="close" aria-label="닫기">' + TOAST_ICONS.close + '</button>' : '');
   stack.appendChild(el);
-  setTimeout(function(){
-    el.style.opacity = '0';
-    setTimeout(function(){ el.remove(); }, 300);
-  }, 2000);
+  if (withClose) {
+    el.querySelector('.close').onclick = function(){ removeToast(el); };
+  } else {
+    setTimeout(function(){ removeToast(el); }, 2000);
+  }
 }
 </script>
 </body>

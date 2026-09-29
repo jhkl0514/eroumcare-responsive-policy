@@ -24,8 +24,6 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .banner ul{margin:8px 0 0;padding-left:18px;}
 .banner li{margin-bottom:4px;}
 .banner code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
-.warn-tag{display:inline-block;font-size:14px;font-weight:700;color:#fff;background:#ff8f00;
-  border-radius:4px;padding:1px 8px;margin-left:6px;vertical-align:middle;}
 
 .stack-col{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
 .compare-label{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;}
@@ -36,33 +34,48 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .callout b{color:var(--text-primary);}
 .callout code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
 
-/* ---- PC 셸: GNB(56px, 미니멀) + SideNav(240px) + Content ---- */
+/* ---- PC 셸: GNB_로그인전(56px, Type=PC Mode=Dark) + SideNav(240px) + Content — Figma 입출고창고 실측 ---- */
 .pc-shell{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
   box-shadow:var(--shadow);overflow:hidden;}
-.pc-gnb{height:56px;background:var(--card);border-bottom:1px solid var(--border-secondary);
-  display:flex;align-items:center;padding:0 16px;gap:14px;}
-.pc-gnb .icon-btn{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;
-  color:var(--text-secondary);flex:0 0 auto;}
-.pc-gnb .logo{font-size:16px;font-weight:800;color:var(--brand);}
-.pc-gnb .spacer{flex:1;}
-.pc-body{display:flex;height:340px;}
+.pc-gnb{height:56px;background:var(--brand);display:flex;align-items:center;justify-content:space-between;padding:8px 20px;}
+.pc-gnb .left{display:flex;align-items:center;gap:12px;}
+.pc-gnb .menu-btn{width:40px;height:40px;border:none;background:none;padding:0;cursor:pointer;border-radius:4px;
+  display:flex;align-items:center;justify-content:center;}
+.pc-gnb .menu-btn:hover{background:rgba(255,255,255,.12);}
+/* SideNav 숨김 상태: 가운데 줄이 왼쪽 기준으로 짧아짐(실서비스 캡처 기준, Figma에 별도 variant 없음) */
+.pc-gnb .menu-btn .mid-line{transform-box:fill-box;transform-origin:left center;transition:transform .3s ease;}
+.pc-shell.nav-collapsed .menu-btn .mid-line{transform:scaleX(.5);}
+.pc-gnb .logo{display:flex;align-items:flex-end;gap:2.4px;width:94px;height:24px;padding-left:2.4px;}
+.pc-gnb .right{display:flex;align-items:center;gap:12px;}
+.pc-gnb .notice{height:40px;display:flex;align-items:center;padding:0 12px;font-size:14px;font-weight:600;line-height:20px;color:#fff;}
+.pc-gnb .avatar{width:32px;height:32px;margin:4px;border-radius:999px;background:var(--tertiary);border:1px solid var(--border-secondary);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.pc-body{display:flex;height:440px;overflow:hidden;}
+/* SideNav — 햄버거로 좌측 슬라이드 숨김/표시 */
 .pc-sidenav{width:240px;flex:0 0 240px;background:var(--tertiary);border-right:1px solid var(--border-secondary);
-  padding:16px 12px;display:flex;flex-direction:column;justify-content:space-between;overflow-y:auto;}
+  padding:24px 16px;display:flex;flex-direction:column;justify-content:space-between;overflow-y:auto;
+  transition:margin-left .3s ease;}
+.pc-body.nav-collapsed .pc-sidenav{margin-left:-240px;}
 .pc-sidenav .menu-list{display:flex;flex-direction:column;gap:4px;}
-.pc-sidenav .item{height:42px;border-radius:4px;display:flex;align-items:center;padding:0 8px;
-  font-size:14px;font-weight:700;color:var(--text-primary);}
-.pc-sidenav .item.active{background:#e3e5f5;color:var(--brand);}
-.pc-sidenav .footer{font-size:14px;color:var(--text-tertiary);}
-.pc-content{flex:1;padding:24px;overflow:hidden;}
+.pc-sidenav .group{display:flex;flex-direction:column;gap:4px;}
+.pc-sidenav .parent{height:42px;border-radius:4px;display:flex;align-items:center;gap:8px;padding:0 4px 0 8px;
+  font-size:16px;font-weight:700;line-height:24px;letter-spacing:-.24px;color:var(--text-primary);}
+.pc-sidenav .parent span{flex:1 0 0;min-width:0;}
+.pc-sidenav .child{height:40px;border-radius:4px;display:flex;align-items:center;gap:8px;padding:0 4px;
+  font-size:16px;font-weight:400;line-height:24px;letter-spacing:-.24px;color:var(--text-primary);}
+.pc-sidenav .child.active{background:#e3e5f5;color:var(--brand);}
+.pc-sidenav .footer{font-size:12px;font-weight:500;line-height:18px;letter-spacing:-.18px;color:var(--text-tertiary);white-space:nowrap;}
+.pc-content{flex:1;min-width:0;padding:24px;overflow:hidden;}
 .mock-line{height:14px;background:var(--tertiary);border-radius:4px;margin-bottom:10px;}
 .mock-line.w40{width:40%;}.mock-line.w60{width:60%;}.mock-line.w90{width:90%;}
 .mock-card{height:48px;background:var(--secondary-bg);border:1px solid var(--border-secondary);
   border-radius:8px;margin-bottom:10px;}
 
 /* ---- 모바일 셸 (인터랙티브) ---- */
-.mo-shell{width:320px;max-width:100%;margin:0 auto;background:var(--card);border:1px solid var(--border-secondary);
+.mo-shell{width:415px;max-width:100%;margin:0 auto;background:var(--card);border:1px solid var(--border-secondary);
   border-radius:20px;box-shadow:var(--shadow);overflow:hidden;padding:10px;}
-.mo-screen{position:relative;height:520px;overflow:hidden;border-radius:12px;background:var(--card);}
+/* Figma 전체메뉴 프레임 393×852 기준 */
+.mo-screen{position:relative;height:852px;max-height:80vh;overflow:hidden;border-radius:12px;background:var(--card);}
 .mo-gnb{height:56px;background:var(--brand);display:flex;align-items:center;padding:0 8px 0 16px;gap:8px;}
 .mo-gnb .title{flex:1;font-size:18px;font-weight:800;color:#fff;}
 .mo-gnb .icon-btn{width:48px;height:48px;flex:0 0 auto;border:none;background:none;color:#fff;
@@ -70,64 +83,85 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .mo-gnb .icon-btn:hover{background:rgba(255,255,255,.15);}
 .mo-body{padding:16px;}
 
-/* 전체메뉴 오버레이 */
+/* 전체메뉴 오버레이 — Figma node 4417:89360 실측 */
 .mo-fullmenu{position:absolute;inset:0;background:var(--card);transform:translateX(100%);
   transition:transform .25s ease;display:flex;flex-direction:column;z-index:5;}
 .mo-fullmenu.open{transform:translateX(0);}
-.fm-sysbar{height:28px;background:var(--tertiary);flex:0 0 auto;}
-.fm-nav{height:56px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
-  padding:0 16px;border-bottom:1px solid var(--border-secondary);}
-.fm-nav .title{font-size:16px;font-weight:800;}
-.fm-nav .close-btn{width:32px;height:32px;border:none;background:none;color:var(--text-secondary);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:6px;}
-.fm-nav .close-btn:hover{background:var(--tertiary);}
-.fm-profile{flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:24px 16px;}
-.fm-avatar{width:48px;height:48px;border-radius:999px;background:var(--tertiary);flex:0 0 auto;}
-.fm-profile .name{font-size:16px;font-weight:700;}
-.fm-profile .team{font-size:14px;color:var(--text-secondary);}
-.fm-profile .spacer{flex:1;}
-.fm-logout{font-size:14px;font-weight:600;color:#fff;background:var(--brand);border:none;
-  border-radius:4px;padding:8px 14px;cursor:pointer;}
+/* System_navigation(28px) — OS 상태바 목업 */
+.fm-sysbar{height:28px;flex:0 0 auto;background:#fff;display:flex;align-items:center;justify-content:space-between;
+  padding:8px 20px 4px;}
+.fm-sysbar .time{font-family:Roboto,-apple-system,sans-serif;font-weight:500;font-size:14px;color:#170e2b;letter-spacing:.014px;}
+/* Navigation(56px) — 타이틀 + 홈/닫기 48×48 */
+.fm-nav{flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:4px 0 4px 20px;
+  background:var(--card);border-bottom:1px solid var(--border-secondary);}
+.fm-nav .title{flex:1 0 0;min-width:0;font-size:20px;font-weight:700;line-height:30px;letter-spacing:-.4px;color:var(--text-primary);}
+.fm-nav .right{display:flex;align-items:center;}
+.fm-nav .nav-btn{width:48px;height:48px;border:none;background:none;padding:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;}
+/* 프로필 — 아바타 48 + 사업소명 + 로그아웃(Button/Filled secondary) */
+.fm-profile{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:24px 20px 16px;}
+.fm-profile .who{display:flex;align-items:center;gap:16px;min-width:0;}
+.fm-avatar{width:48px;height:48px;border-radius:999px;background:var(--tertiary);border:1px solid var(--border-secondary);
+  flex:0 0 auto;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.fm-profile .name{font-size:18px;font-weight:600;line-height:26px;letter-spacing:-.27px;color:var(--text-primary);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fm-logout{flex:0 0 auto;height:36px;padding:8px 16px;border:none;border-radius:4px;cursor:pointer;
+  background:#eee;color:#555;font-family:inherit;font-size:14px;font-weight:600;line-height:20px;}
 .fm-divider{height:8px;background:var(--tertiary);flex:0 0 auto;}
-.fm-menu{flex:1 1 auto;overflow-y:auto;padding:12px 16px;}
-.fm-menu .item{height:48px;border-radius:6px;display:flex;align-items:center;padding:0 8px;
-  font-size:16px;font-weight:700;color:var(--text-primary);}
-.fm-menu .item.active{background:#e3e5f5;color:var(--brand);}
-.fm-footer{flex:0 0 auto;padding:16px;font-size:14px;color:var(--text-tertiary);text-align:center;}
+/* 메뉴 + 바로가기 카드 + 카피라이트 (space-between) */
+.fm-container{flex:1 1 auto;overflow-y:auto;display:flex;flex-direction:column;justify-content:space-between;
+  align-items:center;padding:16px 20px 32px;}
+.fm-top{width:100%;display:flex;flex-direction:column;gap:20px;}
+.fm-menu{display:flex;flex-direction:column;gap:4px;}
+.fm-menu .item{height:48px;border-radius:4px;display:flex;align-items:center;gap:8px;padding:0;
+  font-size:16px;font-weight:700;line-height:24px;letter-spacing:-.24px;color:var(--text-primary);
+  text-decoration:none;cursor:pointer;}
+.fm-link{display:flex;align-items:center;gap:12px;padding:20px;border-radius:16px;background:#f2fde4;
+  text-decoration:none;cursor:pointer;}
+.fm-link .txt{flex:1 0 0;min-width:0;display:flex;flex-direction:column;gap:4px;}
+.fm-link .t1{font-size:18px;font-weight:700;line-height:26px;letter-spacing:-.27px;color:var(--text-primary);}
+.fm-link .t2{font-size:14px;font-weight:400;line-height:20px;color:var(--text-secondary);}
+.fm-link .logo{width:34.29px;height:34.29px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;}
+.fm-footer{margin-top:24px;font-size:14px;line-height:20px;color:var(--text-tertiary);text-align:center;white-space:nowrap;}
 </style>
 </head>
 <body>
 <div id="wrap">
   <div class="banner">
-    <b>운영관리 셸 — SideNav ↔ 모바일 전체메뉴 전환</b> — CLAUDE.md 9-1. <b>대상: 입출고 창고 · 설치파트너 전용</b>(이로움케어 사업소는 실제 서비스가 구버전 GNB/SNB/Footer를 그대로 쓰고 있어 이 구조에서 제외 — 9-1 참고):
+    <b>운영관리 셸 — SideNav ↔ 모바일 전체메뉴 전환</b> — CLAUDE.md 9-1. <b>PC 셸: 입출고 창고 · 설치파트너 전용</b>(이로움케어 사업소 PC는 구버전 GNB/SNB/Footer라 제외) / <b>모바일 셸: 사업소 · 입출고 창고 · 설치파트너 공통</b>:
     <ul>
-      <li><b>PC</b>: GNB 56px(미니멀 — 햄버거+로고+공지+계정아이콘만) + SideNav 240px + 콘텐츠(실제론 1136px, 이 데모는 축소 표현)</li>
-      <li><b>모바일</b>: SideNav가 사라지고 상단 <code>GNB_로그인전</code>(56px)이 브랜드색(<code>#323da3</code>) 배경 + 흰색 페이지 타이틀 + 우측 <b>햄버거(48×48)</b>로 바뀜 — 이 햄버거가 전체메뉴를 여는 실제 트리거</li>
-      <li>햄버거 탭 → <b>전체메뉴 전체화면 오버레이</b>: 상단 상태바(28px) + Navigation(56px, 흰 배경+"전체메뉴"+닫기) → 프로필 카드(아바타48px+이름/소속+로그아웃) → 두꺼운 구분선(8px) → 메뉴 리스트(<code>Sidemenu_Items</code>, PC 42px → 모바일 <b>48px</b>로 터치 영역 확대) → 카피라이트</li>
+      <li><b>PC</b>: <code>GNB_로그인전</code> 56px(브랜드색 <code>#323da3</code> 배경 — 햄버거+흰색 로고 / 공지사항+아바타) + SideNav 240px + 콘텐츠(실제론 1136px, 이 데모는 축소 표현). <b>GNB 햄버거를 누르면 SideNav가 왼쪽으로 슬라이드되며 숨겨지고, 다시 누르면 나타남</b></li>
+      <li><b>모바일</b>: SideNav가 사라지고 상단 <code>GNB_로그인전</code>(56px)이 브랜드색 배경 + 흰색 페이지 타이틀 + 우측 <b>햄버거(48×48)</b>로 바뀜 — 이 햄버거가 전체메뉴를 여는 트리거</li>
+      <li>햄버거 탭 → <b>전체메뉴 전체화면 오버레이</b>: 상단 상태바(28px) + Navigation(56px, 흰 배경+"전체메뉴"+홈/닫기) → 프로필(아바타48px+사업소명+로그아웃 — 회색 Filled 버튼) → 두꺼운 구분선(8px) → 메뉴 리스트(<code>Sidemenu_Items</code>, PC 42px → 모바일 <b>48px</b>로 터치 영역 확대, 활성 표시 없음) → <b>"이로움케어 메인 바로가기" 카드</b>(연두 <code>#f2fde4</code>, radius 16) → 하단 카피라이트</li>
     </ul>
-    <span class="warn-tag">정정(2026-09-28)</span> 이전 버전은 하단에 "햄버거/닫기/뒤로가기" 3아이콘 유틸리티 바를 앱 내비게이션으로 잘못 모델링했었음. Figma 재확인 결과 그 하단 <code>System_navigation</code>은 Android 3버튼 내비게이션(최근앱/홈/뒤로가기) 같은 <b>OS 레벨 시스템 chrome 목업</b>이었고, 우리 앱이 실제로 그리는 요소가 아님 — 실제 트리거는 상단 GNB의 햄버거였음이 확인되어 이번에 구조를 바로잡음. 아래 모바일 쪽 햄버거 버튼을 눌러보면 실제 전체메뉴 전환을 시뮬레이션할 수 있습니다.
   </div>
 
   <div class="stack-col">
-    <div class="compare-label"><span class="compare-tag">PC</span> 1024px 이상 — GNB + SideNav + 콘텐츠</div>
+    <div class="compare-label"><span class="compare-tag">PC</span> 1024px 이상 — GNB + SideNav + 콘텐츠 (예시: 입출고 창고)</div>
     <div class="pc-shell">
       <div class="pc-gnb">
-        <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div>
-        <div class="logo">이로움</div>
-        <div class="spacer"></div>
-        <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
-        <div class="icon-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
-      </div>
-      <div class="pc-body">
-        <div class="pc-sidenav">
-          <div class="menu-list">
-            <div class="item active">대여 주문</div>
-            <div class="item">대여 계약관리</div>
-            <div class="item">이용현황</div>
-            <div class="item">정산내역</div>
-          </div>
-          <div class="footer">©Eroumcare All rights reserved.</div>
+        <div class="left">
+          <button class="menu-btn" onclick="toggleSideNav()" aria-label="사이드 메뉴 접기/펼치기" aria-expanded="true" id="sideNavBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7C4 6.58579 4.33579 6.25 4.75 6.25H19.75C20.1642 6.25 20.5 6.58579 20.5 7C20.5 7.41421 20.1642 7.75 19.75 7.75H4.75C4.33579 7.75 4 7.41421 4 7Z" fill="white"/><rect class="mid-line" x="4" y="11.25" width="16.5" height="1.5" rx=".75" fill="white"/><path d="M4.75 16.25C4.33579 16.25 4 16.5858 4 17C4 17.4142 4.33579 17.75 4.75 17.75H19.75C20.1642 17.75 20.5 17.4142 20.5 17C20.5 16.5858 20.1642 16.25 19.75 16.25H4.75Z" fill="white"/></svg></button>
+          <div class="logo"><svg style="width:25.06px;height:23px" width="25.0619" height="23.0029" viewBox="0 0 25.0619 23.0029" fill="none" aria-hidden="true"> <path d="M23.375 13.9551C22.4347 13.5492 21.3408 13.9735 20.9288 14.905C19.7465 17.5889 17.0722 19.3206 14.1163 19.3206C13.6577 19.3206 13.276 19.2883 12.7686 19.1984C11.5188 18.977 10.6739 17.7711 10.9043 16.5214C11.1068 15.4238 12.0611 14.656 13.155 14.6376C13.3156 14.6353 13.5227 14.6376 13.6531 14.6376C14.4235 14.6376 15.0473 14.0196 15.0473 13.2564C15.0473 12.6546 14.6609 12.1496 14.1186 11.9514C13.9743 11.8983 13.8602 11.8637 13.6414 11.8153C12.7547 11.6147 11.7469 11.504 10.8112 11.5017C6.50302 11.4879 2.46016 13.5815 0 17.0286C2.97454 17.2016 4.54094 18.7095 6.06079 19.9846C8.14157 21.7301 11.0067 23.0029 14.1186 23.0029C18.5501 23.0029 22.5604 20.4043 24.334 16.3807C24.7436 15.4492 24.3153 14.3655 23.375 13.9574V13.9551Z" fill="white"/> <path d="M10.7693 10.5817H10.8136C11.8167 10.584 12.8943 10.7039 13.8463 10.9184C14.086 10.9714 14.242 11.0175 14.4398 11.089C15.3591 11.4256 15.9759 12.2972 15.9759 13.2587C15.9759 14.5269 14.9355 15.5599 13.6531 15.5599C13.6135 15.5599 13.5647 15.5599 13.5134 15.5599C13.4576 15.5599 13.3971 15.5599 13.3366 15.5599C13.2807 15.5599 13.2225 15.5599 13.1736 15.5599C12.4987 15.5714 11.9424 16.0372 11.8214 16.6897C11.7539 17.0517 11.8353 17.4206 12.0495 17.7273C12.2613 18.0293 12.5755 18.2323 12.9339 18.2945C13.3715 18.3706 13.7043 18.4006 14.1186 18.4006C16.7044 18.4006 19.0436 16.8834 20.0793 14.5361C20.5239 13.5308 21.5247 12.8806 22.6326 12.8806C23.0166 12.8806 23.3913 12.959 23.7474 13.1112C24.2874 13.344 24.7157 13.7291 25.002 14.1926C25.2626 12.3387 24.6738 10.3904 23.2331 8.96539C21.7388 7.48509 19.679 6.91556 17.7448 7.24759C18.0823 5.3315 17.5051 3.2886 16.0108 1.8106C13.574 -0.603534 9.62188 -0.603534 7.18266 1.8106C4.36174 4.60519 3.65651 8.79707 3.70306 12.4632C5.82341 11.2481 8.25564 10.5794 10.7693 10.5794V10.5817Z" fill="white"/> </svg><svg style="width:58.82px;height:21.78px;margin-bottom:.3px" width="58.8207" height="21.7756" viewBox="0 0 58.8207 21.7756" fill="none" aria-hidden="true"> <path d="M6.03752 3.06897C2.70455 3.06897 0 5.74596 0 9.05012C0 12.3543 2.70222 15.0313 6.03752 15.0313C9.37282 15.0313 12.075 12.3543 12.075 9.05012C12.075 5.74596 9.37282 3.06897 6.03752 3.06897ZM6.03752 12.5756C4.07079 12.5756 2.47645 10.9962 2.47645 9.04782C2.47645 7.09945 4.07079 5.52 6.03752 5.52C8.00425 5.52 9.59859 7.09945 9.59859 9.04782C9.59859 10.9962 8.00425 12.5756 6.03752 12.5756Z" fill="white"/> <path d="M49.5314 9.50897C52.1824 9.50897 54.3307 7.38075 54.3307 4.75449C54.3307 2.12822 52.1824 0 49.5314 0C46.8804 0 44.7321 2.12822 44.7321 4.75449C44.7321 7.38075 46.8804 9.50897 49.5314 9.50897ZM49.5314 2.45564C50.8139 2.45564 51.8542 3.48632 51.8542 4.75679C51.8542 6.02727 50.8139 7.05794 49.5314 7.05794C48.249 7.05794 47.2086 6.02727 47.2086 4.75679C47.2086 3.48632 48.249 2.45564 49.5314 2.45564Z" fill="white"/> <path d="M17.0256 0.61564H14.5492V21.1623H17.0256V0.61564Z" fill="white"/> <path d="M30.4925 16.869V14.3857C31.754 14.3234 32.9899 14.1689 34.1932 13.9268C35.1917 13.7193 35.8364 12.7532 35.6316 11.7594C35.6223 11.711 35.6083 11.6626 35.5944 11.6164L35.4431 11.0999C33.4763 11.6626 31.4002 11.9623 29.2519 11.9623C29.2147 11.9623 29.1751 11.9623 29.1379 11.9623C28.1091 11.9577 27.099 11.8816 26.1075 11.7433C26.0819 11.7386 26.0563 11.7363 26.0307 11.7317C25.7491 11.6741 25.5373 11.4274 25.5373 11.1322V9.50897H35.4431V2.45564H23.0608V4.90897H32.9666V7.05564H23.0608V11.1322C23.0608 12.6586 24.1873 13.9245 25.6606 14.1597C25.7002 14.1643 25.7374 14.1712 25.777 14.1758C26.5125 14.2773 27.2596 14.3488 28.0137 14.3857V16.869H20.1189V19.3223H38.3827V16.869H30.4878H30.4925Z" fill="white"/> <path d="M40.2449 10.429V12.8823H48.2934V14.7223H43.2637V18.709C43.2637 20.4037 44.6486 21.7756 46.3593 21.7756H52.7063C54.4171 21.7756 55.8019 20.4037 55.8019 18.709V14.7223H50.7722V12.8823H58.8207V10.429H40.2473H40.2449ZM53.3231 17.1756V18.709C53.3231 19.0479 53.0462 19.3223 52.704 19.3223H46.3569C46.0148 19.3223 45.7378 19.0479 45.7378 18.709V17.1756H53.3231Z" fill="white"/> </svg></div>
         </div>
+        <div class="right">
+          <div class="notice">공지사항</div>
+          <div class="avatar"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.9998 7.79999C7.9998 9.99999 9.7998 11.8 11.9998 11.8C14.1998 11.8 15.9998 9.99999 15.9998 7.79999C15.9998 5.59999 14.1998 3.79999 11.9998 3.79999C9.7998 3.79999 7.9998 5.59999 7.9998 7.79999ZM9.2998 7.79999C9.2998 6.29999 10.4998 5.09999 11.9998 5.09999C13.4998 5.09999 14.6998 6.29999 14.6998 7.79999C14.6998 9.29999 13.4998 10.5 11.9998 10.5C10.4998 10.5 9.2998 9.29999 9.2998 7.79999Z" fill="#333333"/><path d="M18.0998 19.5C18.0998 19.8 18.3998 20.1 18.6998 20.1C18.9998 20.1 19.2998 19.8 19.4998 19.5V17.8C19.4998 15.6 17.6998 13.8 15.4998 13.8H8.7998C6.5998 13.8 4.7998 15.6 4.7998 17.8V19.5C4.7998 19.8 5.0998 20.1 5.3998 20.1C5.6998 20.1 5.9998 19.8 5.9998 19.5V17.8C5.9998 16.3 7.1998 15.1 8.6998 15.1H15.3998C16.8998 15.1 18.0998 16.3 18.0998 17.8V19.5Z" fill="#333333"/></svg></div>
+        </div>
+      </div>
+      <div class="pc-body" id="pcBody">
+        <nav class="pc-sidenav">
+          <div class="menu-list">
+            <div class="group">
+              <div class="parent"><span>입/출고 처리</span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11.4697 8.46967C11.7626 8.17678 12.2374 8.17678 12.5303 8.46967L18.5303 14.4697C18.8232 14.7626 18.8232 15.2374 18.5303 15.5303C18.2374 15.8232 17.7626 15.8232 17.4697 15.5303L12 10.0607L6.53033 15.5303C6.23744 15.8232 5.76256 15.8232 5.46967 15.5303C5.17678 15.2374 5.17678 14.7626 5.46967 14.4697L11.4697 8.46967Z" fill="#333333"/></svg></div>
+              <div class="child active"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="1.5" fill="#323DA3"/></svg><span>입고 처리</span></div>
+              <div class="child"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="1.5" fill="#616161"/></svg><span>출고 처리</span></div>
+            </div>
+            <div class="group"><div class="parent"><span>재고 관리</span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.46967 5.46967C8.76256 5.17678 9.23744 5.17678 9.53033 5.46967L15.5303 11.4697C15.8232 11.7626 15.8232 12.2374 15.5303 12.5303L9.53033 18.5303C9.23744 18.8232 8.76256 18.8232 8.46967 18.5303C8.17678 18.2374 8.17678 17.7626 8.46967 17.4697L13.9393 12L8.46967 6.53033C8.17678 6.23744 8.17678 5.76256 8.46967 5.46967Z" fill="#333333"/></svg></div></div>
+            <div class="group"><div class="parent"><span>소독 일정 관리</span></div></div>
+          </div>
+          <div class="footer">ⓒEroumcare All rights reserved.</div>
+        </nav>
         <div class="pc-content">
           <div class="mock-line w40"></div>
           <div class="mock-card"></div>
@@ -137,16 +171,16 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
       </div>
     </div>
     <div class="callout">
-      SideNav는 항상 펼쳐진 상태로 고정 — 접기/펼치기 인터랙션 없음. 활성 메뉴는 연한 브랜드 틴트(<code>#e3e5f5</code>) 배경.
+      GNB 좌측 <b>햄버거(전체보기)</b>를 눌러보세요 — SideNav가 왼쪽으로 스르르 사라지고 콘텐츠가 전체폭으로 넓어집니다. 이때 햄버거 아이콘도 <b>가운데 줄이 짧아지는 모양</b>으로 애니메이션되며 바뀜(0.3s). 다시 누르면 SideNav가 나타나고 아이콘도 세 줄 같은 길이로 돌아감. 상위 메뉴(42px, Bold)와 하위 메뉴(40px, Regular+불릿), 선택된 하위 메뉴는 연한 브랜드 틴트(<code>#e3e5f5</code>) 배경 + 브랜드색 텍스트.
     </div>
   </div>
 
   <div class="stack-col">
-    <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 미만 — 하단 유틸바 + 전체메뉴 오버레이</div>
+    <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 미만 — 상단 GNB 햄버거 + 전체메뉴 오버레이 (예시: 사업소 — 3개 앱 공통 구조)</div>
     <div class="mo-shell">
       <div class="mo-screen">
         <div class="mo-gnb">
-          <div class="title">대여 주문</div>
+          <div class="title">이용 현황</div>
           <button class="icon-btn" onclick="toggleFullMenu(true)" aria-label="전체메뉴 열기">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
           </button>
@@ -159,39 +193,64 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
         </div>
 
         <div class="mo-fullmenu" id="fullMenu">
-          <div class="fm-sysbar"></div>
+          <div class="fm-sysbar">
+            <span class="time">12:30</span>
+            <svg width="70" height="12" viewBox="0 0 70 12" fill="none" aria-hidden="true"><path d="M2.11719 7.5C2.70196 7.5 3.17676 8.00368 3.17676 8.625V10.875C3.17676 11.4963 2.70196 12 2.11719 12H1.05859C0.473928 11.9999 1.45508e-06 11.4962 0 10.875V8.625C0 8.00376 0.473927 7.50013 1.05859 7.5H2.11719ZM7.05859 5.25C7.64337 5.25 8.11719 5.75368 8.11719 6.375V10.875C8.11719 11.4963 7.64337 12 7.05859 12H6C5.41524 12 4.94141 11.4963 4.94141 10.875V6.375C4.94141 5.75369 5.41524 5.25001 6 5.25H7.05859ZM12 2.625C12.5848 2.62501 13.0586 3.12869 13.0586 3.75V10.875C13.0586 11.4963 12.5848 12 12 12H10.9414C10.3566 12 9.88281 11.4963 9.88281 10.875V3.75C9.88281 3.12868 10.3566 2.625 10.9414 2.625H12ZM16.9414 0C17.5261 0.000132092 18 0.503761 18 1.125V10.875C18 11.4962 17.5261 11.9999 16.9414 12H15.8828C15.298 12 14.8232 11.4963 14.8232 10.875V1.125C14.8232 0.50368 15.298 0 15.8828 0H16.9414Z" fill="#170E2B"/><path d="M29.6856 9.19241C31.0218 8.012 32.9792 8.01196 34.3154 9.19241C34.3826 9.25588 34.4219 9.34586 34.4238 9.44046C34.4257 9.53513 34.3899 9.62707 34.3252 9.69339L32.2324 11.8985C32.1711 11.9633 32.0873 12 32 12C31.9129 11.9999 31.8298 11.9632 31.7686 11.8985L29.6758 9.69339C29.6111 9.62702 29.5752 9.53513 29.5772 9.44046C29.5791 9.34583 29.6183 9.25585 29.6856 9.19241ZM26.8936 6.25003C29.7727 3.45274 34.2313 3.45258 37.1104 6.25003C37.1753 6.31558 37.2119 6.40573 37.2129 6.50003C37.2138 6.59427 37.1787 6.68505 37.1152 6.75198L35.9053 8.02933C35.7806 8.15958 35.579 8.16207 35.4512 8.03519C34.5057 7.141 33.2754 6.64546 32 6.64554C30.7255 6.6462 29.4965 7.14158 28.5518 8.03519C28.4239 8.1621 28.2223 8.1597 28.0977 8.02933L26.8887 6.75198C26.825 6.68513 26.7892 6.59437 26.79 6.50003C26.791 6.40569 26.8286 6.31557 26.8936 6.25003ZM24.1006 3.31546C28.5165 -1.10515 35.4835 -1.10515 39.8994 3.31546C39.9633 3.38113 39.9995 3.47085 40 3.56448C40.0005 3.65805 39.9654 3.74807 39.9024 3.81448L38.6914 5.09085C38.5667 5.22185 38.364 5.22369 38.2373 5.09476C36.5549 3.42393 34.3215 2.49233 32 2.49222C29.6785 2.49233 27.4453 3.42393 25.7627 5.09476C25.6361 5.2238 25.4342 5.222 25.3096 5.09085L24.0977 3.81448C24.0346 3.74803 23.9995 3.65806 24 3.56448C24.0006 3.47089 24.0367 3.38108 24.1006 3.31546Z" fill="#170E2B"/><path opacity="0.4" d="M65.3096 0.0136719C66.6541 0.150332 67.7031 1.28635 67.7031 2.66699V9.33301C67.7031 10.7136 66.6541 11.8497 65.3096 11.9863L65.0371 12H48.667L48.3936 11.9863C47.0491 11.8496 46 10.7136 46 9.33301V2.66699C46 1.28643 47.0491 0.150438 48.3936 0.0136719L48.667 0H65.0371L65.3096 0.0136719ZM48.667 1C47.7465 1 47 1.74652 47 2.66699V9.33301C47 10.2535 47.7465 11 48.667 11H65.0371C65.9574 10.9998 66.7031 10.2533 66.7031 9.33301V2.66699C66.7031 1.74666 65.9574 1.00023 65.0371 1H48.667ZM68.6895 3.88281C69.4833 4.24152 70 5.07551 70 6C70 6.92449 69.4833 7.75848 68.6895 8.11719V3.88281Z" fill="#170E2B"/><rect x="47.973" y="2.11765" width="17.7573" height="7.76471" rx="1.33333" fill="#170E2B"/></svg>
+          </div>
           <div class="fm-nav">
             <div class="title">전체메뉴</div>
-            <button class="close-btn" onclick="toggleFullMenu(false)" aria-label="전체메뉴 닫기">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-            </button>
+            <div class="right">
+              <button class="nav-btn" onclick="toggleFullMenu(false)" aria-label="홈으로">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.02351 8.20456C2.6457 8.48783 2.42334 8.93248 2.42334 9.40469V18.9209C2.42334 19.7957 2.78436 20.6231 3.408 21.2242C4.02977 21.8236 4.86172 22.1511 5.71818 22.1511H18.2821C19.1385 22.1511 19.9705 21.8236 20.5922 21.2242C21.2159 20.6231 21.5769 19.7957 21.5769 18.9209V9.40469C21.5769 8.93248 21.3545 8.48783 20.9767 8.20456L12.8999 2.14881C12.3667 1.74898 11.6336 1.74898 11.1003 2.14881L3.02351 8.20456ZM3.92334 9.40469L12.0001 3.34894L20.0769 9.40469V18.9209C20.0769 19.3797 19.8878 19.8198 19.5512 20.1443C19.2146 20.4688 18.7581 20.6511 18.2821 20.6511H12.75V15C12.75 14.5858 12.4142 14.25 12 14.25C11.5858 14.25 11.25 14.5858 11.25 15V20.6511H5.71818C5.24216 20.6511 4.78563 20.4688 4.44904 20.1443C4.11244 19.8198 3.92334 19.3797 3.92334 18.9209V9.40469Z" fill="#333333"/></svg>
+              </button>
+              <button class="nav-btn" onclick="toggleFullMenu(false)" aria-label="전체메뉴 닫기">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.7751 6.31089C19.075 6.01101 19.075 5.52482 18.7751 5.22494C18.4752 4.92506 17.989 4.92506 17.6891 5.22494L12 10.914L6.31086 5.22494C6.01098 4.92506 5.52479 4.92506 5.22491 5.22494C4.92503 5.52482 4.92503 6.01101 5.22491 6.31089L10.914 12L5.22491 17.6891C4.92503 17.989 4.92503 18.4752 5.22491 18.7751C5.52479 19.075 6.01098 19.075 6.31086 18.7751L12 13.086L17.6891 18.7751C17.989 19.075 18.4752 19.075 18.7751 18.7751C19.075 18.4752 19.075 17.989 18.7751 17.6891L13.086 12L18.7751 6.31089Z" fill="#333333"/></svg>
+              </button>
+            </div>
           </div>
           <div class="fm-profile">
-            <div class="fm-avatar"></div>
-            <div>
-              <div class="name">케어플러스 사업소</div>
-              <div class="team">담당자 홍길동</div>
+            <div class="who">
+              <div class="fm-avatar">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.9997 11.7C11.9997 15 14.6997 17.7 17.9997 17.7C21.2997 17.7 23.9997 15 23.9997 11.7C23.9997 8.39998 21.2997 5.69998 17.9997 5.69998C14.6997 5.69998 11.9997 8.39998 11.9997 11.7ZM13.9497 11.7C13.9497 9.44998 15.7497 7.64998 17.9997 7.64998C20.2497 7.64998 22.0497 9.44998 22.0497 11.7C22.0497 13.95 20.2497 15.75 17.9997 15.75C15.7497 15.75 13.9497 13.95 13.9497 11.7Z" fill="#333333"/><path d="M27.1497 29.25C27.1497 29.7 27.5997 30.15 28.0497 30.15C28.4997 30.15 28.9497 29.7 29.2497 29.25V26.7C29.2497 23.4 26.5497 20.7 23.2497 20.7H13.1997C9.89971 20.7 7.19971 23.4 7.19971 26.7V29.25C7.19971 29.7 7.64971 30.15 8.09971 30.15C8.54971 30.15 8.99971 29.7 8.99971 29.25V26.7C8.99971 24.45 10.7997 22.65 13.0497 22.65H23.0997C25.3497 22.65 27.1497 24.45 27.1497 26.7V29.25Z" fill="#333333"/></svg>
+              </div>
+              <div class="name">사업소명{훌라테스트}</div>
             </div>
-            <div class="spacer"></div>
             <button class="fm-logout">로그아웃</button>
           </div>
           <div class="fm-divider"></div>
-          <div class="fm-menu">
-            <div class="item active">대여 주문</div>
-            <div class="item">대여 계약관리</div>
-            <div class="item">이용현황</div>
-            <div class="item">정산내역</div>
+          <div class="fm-container">
+            <div class="fm-top">
+              <nav class="fm-menu">
+                <a class="item">플러스+ (대대여) 이용 현황</a>
+                <a class="item">플러스+ (대대여) 계약 관리</a>
+                <a class="item">플러스+ (대대여) 정산 내역</a>
+              </nav>
+              <a class="fm-link">
+                <div class="txt">
+                  <div class="t1">이로움케어 메인 바로가기</div>
+                  <div class="t2">더 많은 복지용구를 확인해보세요.</div>
+                </div>
+                <div class="logo">
+                  <svg width="32.857" height="30.158" viewBox="0 0 32.8572 30.1577" fill="none" aria-hidden="true"><path d="M30.6456 18.2956C29.4128 17.7636 27.9786 18.3198 27.4385 19.5411C25.8884 23.0598 22.3823 25.33 18.507 25.33C17.9058 25.33 17.4054 25.2877 16.7402 25.1698C15.1016 24.8796 13.9939 23.2986 14.296 21.6602C14.5615 20.2212 15.8125 19.2146 17.2467 19.1904C17.4573 19.1874 17.7288 19.1904 17.8997 19.1904C18.9098 19.1904 19.7275 18.3803 19.7275 17.3797C19.7275 16.5907 19.221 15.9287 18.51 15.6687C18.3208 15.5992 18.1713 15.5538 17.8845 15.4903C16.7219 15.2273 15.4006 15.0822 14.1739 15.0792C8.52573 15.0611 3.22539 17.8059 2.09014e-05 22.3252C3.89975 22.5519 5.95337 24.5289 7.94595 26.2006C10.6739 28.489 14.4303 30.1577 18.51 30.1577C24.3199 30.1577 29.5776 26.7508 31.9028 21.4758C32.4398 20.2545 31.8783 18.8337 30.6456 18.2986V18.2956Z" fill="#8CCE00"/><path d="M14.119 13.873H14.177C15.4922 13.8761 16.905 14.0333 18.153 14.3144C18.4673 14.3839 18.6718 14.4444 18.9311 14.5381C20.1365 14.9794 20.9451 16.1221 20.9451 17.3827C20.9451 19.0453 19.5811 20.3996 17.8998 20.3996C17.8479 20.3996 17.7838 20.3996 17.7167 20.3996C17.6434 20.3996 17.5641 20.3996 17.4848 20.3996C17.4115 20.3996 17.3352 20.3996 17.2712 20.3996C16.3862 20.4147 15.6569 21.0253 15.4983 21.8808C15.4098 22.3554 15.5166 22.8391 15.7973 23.2412C16.075 23.6372 16.4869 23.9032 16.9569 23.9848C17.5305 24.0846 17.9669 24.1239 18.51 24.1239C21.9002 24.1239 24.9669 22.1348 26.3248 19.0574C26.9076 17.7394 28.2197 16.8869 29.6722 16.8869C30.1757 16.8869 30.667 16.9897 31.1338 17.1892C31.8418 17.4945 32.4032 17.9994 32.7785 18.607C33.1203 16.1765 32.3483 13.6221 30.4595 11.754C28.5004 9.81323 25.7999 9.06657 23.2642 9.50187C23.7066 6.9898 22.9499 4.31148 20.9909 2.37377C17.796 -0.791256 12.6147 -0.791256 9.41677 2.37377C5.71843 6.03758 4.79384 11.5333 4.85487 16.3398C7.63473 14.7467 10.8235 13.87 14.119 13.87V13.873Z" fill="#FF7700"/></svg>
+                </div>
+              </a>
+            </div>
+            <div class="fm-footer">ⓒEroumcare All rights reserved.</div>
           </div>
-          <div class="fm-footer">©Eroumcare All rights reserved.</div>
         </div>
       </div>
     </div>
     <div class="callout">
-      상단 GNB 우측 <b>햄버거 아이콘</b>을 눌러보세요 — 전체화면 <code>전체메뉴</code> 오버레이가 열립니다(PC SideNav와 같은 메뉴 항목 재사용, 터치 영역만 42px→48px로 커짐). 오버레이 안 ✕로 닫힘.
+      상단 GNB 우측 <b>햄버거 아이콘</b>을 눌러보세요 — 전체화면 <code>전체메뉴</code> 오버레이가 열립니다(메뉴 항목은 각 앱의 PC SideNav 메뉴를 그대로 재사용, 터치 영역만 42px→48px로 커짐). 오버레이 안 홈/닫기 아이콘으로 닫힘. 전체메뉴 화면은 Figma <code>전체메뉴</code>(node 4417:89360, 393×852) 그대로 반영 — 아이콘은 Figma SVG 원본 사용.
     </div>
   </div>
 </div>
 <script>
+function toggleSideNav(){
+  const collapsed=document.getElementById('pcBody').classList.toggle('nav-collapsed');
+  document.querySelector('.pc-shell').classList.toggle('nav-collapsed', collapsed);
+  document.getElementById('sideNavBtn').setAttribute('aria-expanded', String(!collapsed));
+}
 function toggleFullMenu(open){
   document.getElementById('fullMenu').classList.toggle('open', open);
 }
