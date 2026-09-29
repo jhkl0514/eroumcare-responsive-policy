@@ -406,6 +406,28 @@ var SECTIONS = {
     '<li>모바일에는 이 컴포넌트 없음(카드 리스트는 별도 스크롤 방식)</li>'+
     '</ul>' },
 
+  s37: { title:"3-7. 검색 영역 (리스트 전용 · 적응형)", html:
+    '<p><strong>확정(2026-09-29, Figma 입출고 창고 입고처리 실측)</strong> — 검색은 <strong>리스트 화면에만</strong> 있으므로 <strong>적응형</strong>: PC 검색 패널과 모바일 필터칩+바텀시트를 둘 다 준비해두고 1024px에서 표시만 전환. 상세 화면은 반응형.</p>'+
+    '<h4>PC — 검색 패널</h4>'+
+    '<ul>'+
+    '<li>패널 bg <span class="mono">#fafafa</span>, 테두리 <span class="mono">#bdbdbd</span>, radius 4, 패딩 16. 행 높이 44 + 하단 구분선 <span class="mono">#eee</span>, <strong>2열 배치</strong></li>'+
+    '<li><strong>날짜 행</strong>(첫 행): 기준 셀렉트 160 + 시작일~종료일(각 160, 달력 아이콘, yyyy-mm-dd) + 기간 세그먼트(오늘/어제/일주일/지난달/3개월, 선택 칸 bg <span class="mono">#e0e0e0</span>)</li>'+
+    '<li>라벨 <strong>120px 고정</strong>(4-2 검색 라벨과 동일, 3-2 입력 라벨 125px와 다름) + <strong>체크박스 복수 선택</strong>(20×20, 선택 시 <span class="mono">#323da3</span>) — 기본은 "전체"만 체크, <strong>"전체"를 누르면 같은 행 모두 체크</strong>(기획 합의)</li>'+
+    '<li>셀렉트·달력은 <strong>DS 컴포넌트</strong>: 옵션 패널(선택 bg <span class="mono">#eff1fd</span>+체크) / <span class="mono">calendar_Default</span> 팝오버(선택 <span class="mono">#90ee02</span>, 호버 <span class="mono">#f2fde4</span>) — 네이티브 select·date 금지</li>'+
+    '<li>검색어: 셀렉트 160×40 + 입력 264×40. 하단 가운데 초기화(아웃라인)/검색(필드) 각 130×36</li>'+
+    '<li>우상단 <strong>접기</strong> 버튼(bg <span class="mono">#eee</span>, ▲) — <strong>기본 펼침</strong>. 접으면 날짜 행+버튼만 남고 라벨이 <strong>"상세"</strong>로 바뀜</li>'+
+    '</ul>'+
+    '<h4>모바일 — 필터칩 + 적용 태그 + 바텀시트</h4>'+
+    '<ul>'+
+    '<li>① 필터칩 줄(56px, 가로 스크롤): 칩은 <strong>현재 값</strong> 표시 + chevron. 값 선택 시 bg <span class="mono">#f5f5f5</span>+테두리 <span class="mono">#999</span>+SemiBold. 우측 "검색" 칩 고정 + 28px 페이드</li>'+
+    '<li>② 적용 태그 줄(48px): 조건이 있을 때만 노출. <strong>초록 <span class="mono">#09af00</span></strong> 글씨 + X로 개별 해제, 우측 "초기화" 고정</li>'+
+    '<li>③ 건수(56px, 16px <span class="mono">#616161</span>)</li>'+
+    '<li>칩 탭 → <strong>단일 선택 시트</strong>(선택 행만 틴트 <span class="mono">#eff1fd</span>+체크, "선택완료"). "검색" 칩 탭 → <strong>검색 시트</strong>(섹션별 버튼 그리드 — 옵션 4개면 2열·3개면 3열, 선택 시 테두리 <span class="mono">#333</span>+SemiBold, 상세검색 입력, 하단 초기화 120px + 검색)</li>'+
+    '<li><strong>모바일은 모든 필터 단일 선택</strong> — PC 체크박스 복수 선택과 다름</li>'+
+    '<li>적용 범위: PC PHP 화면에 모바일 구조를 함께 넣어 1024px 미만에서 전환(사업소 방식). 회수 상태 옵션은 회수요청/회수준비중/회수완료/입고완료</li>'+
+    '<li>⚠️ Figma PC/모바일 옵션명 불일치(상품유형·입고경로), — 확인 필요. 모바일 날짜는 DS 정의대로 일주일/이번달/3개월/직접선택 + 직접선택 시 달력 바텀시트</li>'+
+    '</ul>' },
+
   s41: { title:"4-1. 대여 회수 상세보기", html:
     '<ul>'+
     '<li>상태별 액션 버튼:'+
@@ -519,7 +541,7 @@ var SECTIONS = {
     '</ul>' }
 };
 
-var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s36","s41","s42","s43","s44","s5","s6","s9"];
+var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s36","s37","s41","s42","s43","s44","s5","s6","s9"];
 
 /* ---------------- Category order (menu group order — edit here to reorder groups) ---------------- */
 var CATEGORY_ORDER = ["common-pattern", "rental-system", "ops-pattern"];
@@ -574,6 +596,9 @@ var PROTOS = [
   { id:"pagination-compare-demo.html", title:"페이지네이션 PC 전용 비교", category:"common-pattern",
     desc:"3-6 · PC 3분할 페이지네이션 vs 모바일 '컴포넌트 자체 없음'(더보기 카드)",
     primary:"s36", related:["s1","s6"] },
+  { id:"search-filter-compare-demo.html", title:"검색 영역 비교", category:"common-pattern",
+    desc:"3-7 · PC 검색 패널(체크박스 복수 선택, 접기) vs 모바일 필터칩+적용 태그+바텀시트(단일 선택) — 실제 동작",
+    primary:"s37", related:["s2","s35","s6"] },
 
   // --- 운영관리 화면군 패턴 (이로움케어 사업소/입출고 창고/설치파트너, 9번 — 공식 DS 문서 실측 반영) ---
   { id:"shell-sidenav-demo.html", title:"운영관리 셸 — SideNav↔전체메뉴 (입출고창고·설치파트너)", category:"ops-pattern",

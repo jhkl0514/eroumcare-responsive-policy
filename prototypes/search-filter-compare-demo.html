@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>검색 영역 — PC 패널 vs 모바일 필터칩</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999; --text-disabled:#bdbdbd;
+  --border-primary:#bdbdbd; --border-secondary:#eee;
+  --brand:#323da3; --brand-dark:#141e76; --selected:#eff1fd; --brandsub:#09af00;
+  --shadow:0 2px 4px rgba(0,0,0,0.12), 0 0 2px rgba(0,0,0,0.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+button,input,select{font-family:inherit;}
+#wrap{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+
+.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  padding:14px 18px;margin-bottom:20px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+.banner b{color:var(--text-primary);}
+.banner ul{margin:8px 0 0;padding-left:18px;}
+.banner li{margin-bottom:4px;}
+.banner code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+.warn-tag{display:inline-block;font-size:14px;font-weight:700;color:#fff;background:#ff8f00;
+  border-radius:4px;padding:1px 8px;margin-right:4px;vertical-align:middle;}
+
+.stack-col{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.compare-label{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;}
+.compare-tag{font-size:14px;font-weight:700;color:#fff;background:var(--brand);border-radius:4px;padding:2px 10px;}
+.callout{font-size:14px;color:var(--text-secondary);line-height:1.6;background:var(--card);
+  border:1px solid var(--border-secondary);border-radius:8px;padding:12px 14px;}
+.callout b{color:var(--text-primary);}
+.callout code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+
+/* =========================================================
+   PC 검색 패널 — Figma 입출고창고 `검색_펼친상태` 실측
+   ========================================================= */
+.pc-frame{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  box-shadow:var(--shadow);padding:12px;overflow:visible;}   /* 달력/옵션 팝오버가 잘리지 않도록 */
+.pc-search{position:relative;min-width:1136px;background:var(--secondary-bg);border:1px solid var(--border-primary);
+  border-radius:4px;padding:16px;}
+.ps-row{display:flex;border-bottom:1px solid var(--border-secondary);}
+.ps-cell{flex:1 1 50%;min-width:0;display:flex;align-items:center;padding:12px 0;}
+.ps-cell.full{flex-basis:100%;}
+.ps-label{flex:0 0 120px;font-size:14px;font-weight:600;line-height:20px;color:var(--text-primary);}
+.ps-opts{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:8px 16px;}
+.cb{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;line-height:20px;color:var(--text-primary);}
+.cb input{position:absolute;opacity:0;pointer-events:none;}
+.cb .box{width:20px;height:20px;flex:0 0 auto;border-radius:4px;background:#fff;border:1px solid #616161;
+  display:flex;align-items:center;justify-content:center;}
+.cb .box svg{display:none;}
+.cb input:checked + .box{background:var(--brand);border-color:var(--brand);}
+.cb input:checked + .box svg{display:block;}
+.cb input:focus-visible + .box{outline:2px solid var(--brand);outline-offset:2px;}
+.ps-fold{position:absolute;top:16px;right:16px;height:36px;padding:8px 16px;border:none;border-radius:4px;
+  background:#eee;color:#555;font-size:14px;font-weight:600;line-height:20px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:4px;}
+.ps-fold svg{transition:transform .2s ease;}
+.pc-search.folded .ps-fold svg{transform:rotate(180deg);}
+.pc-search.folded .ps-detail{display:none;}
+/* 날짜 행 — Figma 소독일정관리 `9865:63366` 실측 */
+.ps-date .ps-cell{padding:12px 0;}
+.ps-date-ctl{display:flex;align-items:center;gap:12px;}
+.ps-range{display:flex;align-items:center;gap:12px;font-size:14px;color:#000;}
+.ps-dt{position:relative;width:160px;height:40px;}
+/* 날짜 필드(트리거) — 네이티브 date input 대신 DS 달력 컴포넌트를 연다 */
+.dt-btn{position:relative;width:100%;height:100%;display:flex;align-items:center;gap:4px;padding:8px 12px;
+  border:1px solid #333;border-radius:4px;background:#fff;color:#333;font-size:14px;line-height:20px;text-align:left;cursor:pointer;}
+.dt-btn span{flex:1;min-width:0;}
+.dt-btn svg{flex:0 0 auto;}
+.ps-dt.open .dt-btn{border-color:transparent;box-shadow:inset 0 0 0 2px var(--brand);}
+.seg{display:inline-flex;align-items:center;padding:4px;border:1px solid #616161;border-radius:4px;background:#fff;}
+.seg button{position:relative;width:68px;height:32px;border:none;border-radius:4px;background:none;cursor:pointer;
+  font-size:14px;line-height:20px;color:var(--text-secondary);}
+.seg button + button::before{content:"";position:absolute;left:0;top:10px;width:1px;height:12px;background:#eee;}
+.seg button.on{background:#e0e0e0;color:var(--text-primary);font-weight:600;}
+.seg button.on::before, .seg button.on + button::before{display:none;}
+.ps-keyword .ps-cell{padding:12px 0;}
+.ps-kw{display:flex;gap:8px;}
+/* 셀렉트 — DS SelectField + 옵션 패널(퍼블 DDY_select 스펙) */
+.dsel{position:relative;width:160px;height:40px;}
+.dsel-btn{width:100%;height:100%;display:flex;align-items:center;gap:4px;padding:8px 12px;border:1px solid #333;border-radius:4px;
+  background:#fff;color:#333;font-size:14px;line-height:20px;text-align:left;cursor:pointer;}
+.dsel-btn span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dsel-btn svg{flex:0 0 auto;transition:transform .15s;}
+.dsel.open .dsel-btn{border-color:transparent;box-shadow:inset 0 0 0 2px var(--brand);}
+.dsel.open .dsel-btn svg{transform:rotate(180deg);}
+.dsel-panel{display:none;position:absolute;top:calc(100% + 8px);left:0;width:100%;z-index:30;padding:8px;background:#fff;
+  border:1px solid #616161;border-radius:4px;box-shadow:var(--shadow);max-height:210px;overflow-y:auto;}
+.dsel.open .dsel-panel{display:block;}
+.dsel-panel ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;}
+.dsel-panel button{width:100%;display:flex;align-items:center;gap:4px;padding:9px 8px;border:none;border-radius:4px;
+  background:#fff;color:var(--text-primary);font-size:14px;line-height:20px;text-align:left;cursor:pointer;transition:background .2s;}
+.dsel-panel button span{flex:1;}
+.dsel-panel button svg{display:none;}
+.dsel-panel button:hover{background:var(--selected);}
+.dsel-panel button.on{background:var(--selected);color:var(--brand);font-weight:700;}
+.dsel-panel button.on svg{display:block;}
+
+/* 달력 — DS calendar_Default(PC 팝오버) / 날짜 선택-달력(모바일 바텀시트) 공용 */
+.dcal-pop{display:none;position:absolute;top:calc(100% + 8px);left:0;z-index:30;width:382px;padding:16px;background:#fff;
+  border:1px solid #616161;border-radius:4px;box-shadow:var(--shadow);}
+.ps-dt.open .dcal-pop{display:block;}
+.cal{display:flex;flex-direction:column;gap:12px;width:100%;}
+.cal-head{display:flex;align-items:center;justify-content:space-between;}
+.cal-nav{width:40px;height:40px;padding:8px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cal-title{font-size:18px;font-weight:900;line-height:26px;letter-spacing:-.27px;color:var(--text-primary);}
+.cal-week{display:flex;background:var(--tertiary);border-radius:4px;}
+.cal-week span{flex:1;padding:2px 0;text-align:center;font-size:12px;font-weight:500;line-height:18px;letter-spacing:-.18px;color:var(--text-primary);}
+.cal-days{display:flex;flex-direction:column;gap:4px;}
+.cal-row{display:flex;height:40px;}
+.cal-cell{flex:1;display:flex;align-items:center;justify-content:center;padding:2px;}
+.cal-day{width:32px;height:32px;border:none;border-radius:999px;background:none;cursor:pointer;
+  font-size:14px;font-weight:600;line-height:20px;color:#555;}
+.cal-day:hover{background:#f2fde4;color:var(--text-primary);}
+.cal-day.out{color:var(--text-disabled);cursor:default;background:none;}
+.cal-day.on{background:#90ee02;color:var(--text-primary);}
+.ps-input{width:264px;height:40px;border:1px solid #616161;border-radius:4px;background:#fff;color:var(--text-primary);
+  font-size:14px;padding:0 12px;}
+.ps-input::placeholder{color:var(--text-disabled);}
+.ps-btns{display:flex;justify-content:center;gap:10px;padding-top:16px;}
+.ps-btn{width:130px;height:36px;border-radius:4px;font-size:14px;font-weight:600;line-height:20px;cursor:pointer;}
+.ps-btn.outline{background:#fff;border:1px solid var(--brand);color:var(--brand);}
+.ps-btn.filled{background:var(--brand);border:1px solid var(--brand);color:#fff;}
+.ps-result{margin-top:12px;font-size:14px;color:var(--text-secondary);}
+.ps-result code{background:var(--tertiary);padding:1px 5px;border-radius:4px;color:var(--text-primary);}
+
+/* =========================================================
+   모바일 — Figma 입출고창고 `입고대기` / `입고대기_검색` / `입고대기_상품유형` 실측
+   ========================================================= */
+.mo-shell{width:382px;max-width:100%;margin:0 auto;background:var(--card);border:1px solid var(--border-secondary);
+  border-radius:20px;box-shadow:var(--shadow);overflow:hidden;padding:10px;}
+.mo-screen{position:relative;height:760px;overflow:hidden;border-radius:12px;background:#fff;display:flex;flex-direction:column;}
+.mo-gnb{flex:0 0 56px;background:var(--brand);display:flex;align-items:center;padding:0 4px 0 20px;}
+.mo-gnb .title{flex:1;font-size:20px;font-weight:700;color:#fff;letter-spacing:-.4px;}
+.mo-gnb .ham{width:48px;height:48px;display:flex;align-items:center;justify-content:center;}
+.mo-scroll{flex:1;overflow-y:auto;}
+
+/* 필터칩 줄(검색필터_다중) */
+.fc-row{position:relative;height:56px;background:var(--secondary-bg);border-bottom:1px solid var(--border-secondary);}
+.fc-scroll{display:flex;gap:6px;align-items:center;height:100%;padding:12px 110px 12px 20px;overflow-x:auto;scrollbar-width:none;}
+.fc-scroll::-webkit-scrollbar{display:none;}
+.chip{flex:0 0 auto;height:32px;display:inline-flex;align-items:center;gap:4px;padding:4px 12px 4px 16px;border-radius:999px;
+  background:#fff;border:1px solid #e0e0e0;font-size:14px;font-weight:400;line-height:20px;color:var(--text-primary);
+  cursor:pointer;white-space:nowrap;}
+.chip.on{background:var(--tertiary);border-color:#999;font-weight:600;}
+.fc-fade{position:absolute;top:0;bottom:0;width:28px;pointer-events:none;
+  background:linear-gradient(to right, rgba(250,250,250,0) 2%, rgba(250,250,250,.8) 25%, #fafafa 50%);}
+.fc-row .fc-fade{right:83px;}
+.fc-search{position:absolute;right:12px;top:12px;height:32px;display:inline-flex;align-items:center;gap:4px;padding:4px 16px;
+  border-radius:999px;background:#fff;border:1px solid #e0e0e0;font-size:14px;line-height:20px;color:var(--text-primary);cursor:pointer;}
+
+/* 적용 태그 줄(검색필터_선택값) */
+.tag-row{position:relative;height:48px;background:var(--secondary-bg);border-bottom:1px solid var(--border-secondary);}
+.tag-row[hidden]{display:none;}
+.tag-scroll{display:flex;gap:4px;align-items:center;height:100%;padding:8px 100px 8px 20px;overflow-x:auto;scrollbar-width:none;}
+.tag-scroll::-webkit-scrollbar{display:none;}
+.tag{flex:0 0 auto;height:32px;display:inline-flex;align-items:center;gap:4px;padding:4px 4px 4px 8px;border:none;background:none;
+  font-size:14px;font-weight:600;line-height:20px;color:var(--brandsub);cursor:pointer;white-space:nowrap;}
+.tag-row .fc-fade{right:78px;}
+.tag-reset{position:absolute;right:12px;top:8px;height:32px;display:inline-flex;align-items:center;gap:4px;padding:4px 8px;
+  border:none;background:#fafafa;font-size:14px;line-height:20px;color:var(--text-primary);cursor:pointer;}
+
+/* 건수(Count_filter_header) */
+.count-row{height:56px;display:flex;align-items:center;padding:4px 4px 4px 20px;font-size:16px;line-height:24px;
+  letter-spacing:-.24px;color:var(--text-secondary);}
+
+/* 카드 리스트(목업) */
+.card-list{display:flex;flex-direction:column;gap:12px;padding:0 20px 24px;}
+.m-card{background:#fff;border:1px solid var(--border-secondary);border-radius:8px;box-shadow:var(--shadow);padding:24px 16px;}
+.m-card .l1{display:flex;align-items:center;gap:8px;font-size:16px;line-height:24px;color:var(--text-secondary);}
+.m-card .lt{font-size:14px;line-height:20px;padding:1px 6px;border-radius:4px;border:1px solid;}
+.lt.r{background:#ffebee;border-color:#ffcdd2;color:#c62828;}
+.lt.u{background:#e3e5f5;border-color:#ced2f4;color:#141e76;}
+.lt.c{background:#f2fde4;border-color:#c6f68d;color:#09af00;}
+.m-card .l2{margin-top:6px;font-size:16px;font-weight:600;line-height:24px;}
+.m-card .l3{margin-top:6px;font-size:16px;line-height:24px;color:var(--text-primary);}
+.empty{padding:40px 20px;text-align:center;font-size:16px;color:var(--text-tertiary);}
+
+/* 바텀시트 */
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.7);opacity:0;pointer-events:none;transition:opacity .2s;z-index:20;}
+.dim.show{opacity:1;pointer-events:auto;}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-height:92%;display:flex;flex-direction:column;background:#fff;
+  border-radius:40px 40px 0 0;padding-top:12px;box-shadow:0 8px 24px rgba(0,0,0,.2), 0 0 4px rgba(0,0,0,.12);
+  transform:translateY(100%);visibility:hidden;transition:transform .25s ease, visibility 0s linear .25s;z-index:21;}
+.sheet.show{transform:translateY(0);visibility:visible;transition:transform .25s ease;}
+.sh-inner{display:flex;flex-direction:column;min-height:0;padding:20px 20px 0;}
+.sh-head{display:flex;align-items:center;gap:12px;}
+.sh-title{flex:1;font-size:20px;font-weight:700;line-height:30px;letter-spacing:-.4px;}
+.sh-close{width:32px;height:32px;padding:0;border:none;background:none;cursor:pointer;}
+.sh-body{overflow-y:auto;min-height:0;}
+.sh-btns{display:flex;gap:8px;padding:32px 0 calc(32px + env(safe-area-inset-bottom));
+  background:linear-gradient(to bottom, rgba(255,255,255,0) 3%, rgba(255,255,255,.8) 8%, #fff 79%);}
+.sh-btn{height:54px;padding:14px 16px;border:none;border-radius:4px;font-size:18px;font-weight:600;line-height:26px;
+  letter-spacing:-.27px;cursor:pointer;}
+.sh-btn.gray{flex:0 0 120px;background:#eee;color:#555;}
+.sh-btn.primary{flex:1;background:var(--brand);color:#fff;}
+
+/* 단일 선택 시트(입고대기_상품유형) */
+.opt-list{display:flex;flex-direction:column;gap:6px;padding-top:24px;}
+.opt{display:flex;align-items:center;gap:8px;width:100%;padding:10px 8px 10px 12px;border:none;border-radius:4px;
+  background:#fff;text-align:left;font-size:16px;line-height:24px;letter-spacing:-.24px;color:var(--text-primary);cursor:pointer;}
+.opt span{flex:1;}
+.opt svg{display:none;}
+.opt.on{background:var(--selected);color:var(--brand-dark);}
+.opt.on svg{display:block;}
+
+/* 검색 시트(입고대기_검색) — 버튼 그리드, 단일 선택 */
+.ss-sections{display:flex;flex-direction:column;gap:24px;padding-top:24px;}
+.ss-sec h4{margin:0 0 12px;font-size:18px;font-weight:600;line-height:26px;letter-spacing:-.27px;}
+.ss-grid{display:grid;gap:8px;}
+.ss-grid.c2{grid-template-columns:1fr 1fr;}
+.ss-grid.c3{grid-template-columns:1fr 1fr 1fr;}
+.ss-opt{padding:12px 16px;border:1px solid var(--border-primary);border-radius:4px;background:#fff;
+  font-size:16px;font-weight:400;line-height:24px;letter-spacing:-.24px;color:var(--text-secondary);cursor:pointer;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ss-opt.on{border-color:#333;font-weight:600;color:#333;}
+.ss-input{width:100%;padding:12px;border:1px solid var(--border-primary);border-radius:4px;background:#fff;
+  font-size:16px;line-height:24px;letter-spacing:-.24px;color:var(--text-primary);}
+.ss-input::placeholder{color:var(--text-disabled);}
+.ss-grid.c4{grid-template-columns:1fr 1fr 1fr 1fr;}
+.ss-grid.c4 .ss-opt{padding:12px 4px;}
+.ss-range{display:flex;align-items:center;gap:4px;margin-top:8px;font-size:16px;color:var(--text-primary);}
+.ss-range .dt-btn{flex:1;min-width:0;height:auto;padding:12px;border-color:var(--border-primary);font-size:16px;line-height:24px;
+  letter-spacing:-.24px;color:var(--text-primary);}
+.ss-range .dt-btn:disabled{color:var(--text-disabled);cursor:default;}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="banner">
+    <b>검색 영역 — PC 검색 패널 ↔ 모바일 필터칩+바텀시트</b> — CLAUDE.md 3-7. <b>검색은 리스트 화면에만 있으므로 적응형</b>(PC 패널 / 모바일 칩+시트를 둘 다 준비해두고 1024px에서 표시만 전환). 상세 화면은 반응형. Figma 입출고 창고 <code>입고처리</code> 실측:
+    <ul>
+      <li><b>PC</b>: 회색 패널(<code>#fafafa</code>, 테두리 <code>#bdbdbd</code>, radius 4, 패딩 16) 안에 <b>라벨 120px + 체크박스 그룹</b> 행을 2열로 나열(행 높이 44, 하단 구분선 <code>#eee</code>). 첫 행은 <b>날짜</b>(기준 셀렉트 160 + 시작일/종료일 각 160 + 기간 세그먼트 오늘/어제/일주일/지난달/3개월). 체크박스는 <b>복수 선택</b> — 기본은 "전체"만 체크, "전체"를 누르면 같은 행 모두 체크. 셀렉트·달력은 <b>DS 컴포넌트</b>(옵션 패널 / <code>calendar_Default</code> 팝오버). 검색어는 셀렉트(160) + 입력(264). 하단 가운데 초기화(아웃라인)/검색(필드) 각 130×36. 우상단 <b>접기</b> 버튼 — <b>기본 펼침</b>, 접으면 라벨이 <b>"상세"</b>로 바뀜</li>
+      <li><b>모바일</b>: 패널이 사라지고 ① <b>필터칩 줄</b>(값이 들어간 칩 + 우측 고정 "검색" 칩) ② <b>적용 태그 줄</b>(초록 <code>#09af00</code> 글씨 + X, 우측 고정 "초기화" — 적용된 조건이 있을 때만) ③ <b>건수</b> 순으로 쌓임</li>
+      <li>칩 탭 → <b>단일 선택 시트</b>(선택 행만 틴트 <code>#eff1fd</code>+체크, "선택완료"). "검색" 칩 탭 → <b>검색 시트</b>(필터별 버튼 그리드 2/3열 + 상세검색 입력, 하단 초기화 120px + 검색). 모바일은 <b>모든 필터 한 개만 선택</b></li>
+    </ul>
+  </div>
+
+  <!-- ================= PC ================= -->
+  <div class="stack-col">
+    <div class="compare-label"><span class="compare-tag">PC</span> 1024px 이상 — 검색 패널(체크박스 복수 선택, 기본 펼침)</div>
+    <div class="pc-frame">
+      <div class="pc-search" id="pcSearch">
+        <button class="ps-fold" id="psFold" type="button" onclick="togglePcFold()" aria-expanded="true">
+          <span id="psFoldLabel">접기</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M7.68781 4.93699C7.84794 4.73682 8.15238 4.73682 8.31251 4.93699L12.8136 10.5633C13.0231 10.8252 12.8366 11.2132 12.5012 11.2132L3.49908 11.2132C3.16368 11.2132 2.97721 10.8252 3.18673 10.5633L7.68781 4.93699Z" fill="#333333"/></svg>
+        </button>
+        <div class="ps-row ps-date">
+          <div class="ps-cell full">
+            <div class="ps-label">날짜</div>
+            <div class="ps-date-ctl">
+              <div class="dsel" id="dselDate"></div>
+              <div class="ps-range">
+                <div class="ps-dt" id="psFromBox"></div>
+                ~
+                <div class="ps-dt" id="psToBox"></div>
+              </div>
+              <div class="seg" id="psSeg" role="group" aria-label="기간"></div>
+            </div>
+          </div>
+        </div>
+        <div id="psRows"></div>
+        <div class="ps-row ps-keyword ps-detail">
+          <div class="ps-cell">
+            <div class="ps-label">검색어</div>
+            <div class="ps-kw">
+              <div class="dsel" id="dselKw"></div>
+              <input class="ps-input" id="psKw" placeholder="검색어 입력">
+            </div>
+          </div>
+        </div>
+        <div class="ps-btns">
+          <button class="ps-btn outline" type="button" onclick="resetPc()">초기화</button>
+          <button class="ps-btn filled" type="button" onclick="submitPc()">검색</button>
+        </div>
+      </div>
+      <div class="ps-result" id="psResult">검색 버튼을 누르면 적용된 조건이 여기 표시됩니다.</div>
+    </div>
+    <div class="callout">
+      체크박스는 <b>복수 선택</b> — <b>처음엔 "전체"만 체크</b>. 다른 항목을 누르면 "전체"가 풀리고, 그 뒤 <b>"전체"를 누르면 같은 행 항목이 모두 체크</b>됨(다시 누르면 모두 해제). 개별 항목을 전부 체크해도 "전체"가 체크됨 — 기획 합의 사항(퍼블 동작과 동일). 셀렉트를 누르면 <b>DS 옵션 패널</b>(선택 항목 틴트 <code>#eff1fd</code>+브랜드색 굵게+체크), 날짜 필드를 누르면 <b>DS 달력</b>(<code>calendar_Default</code>, 선택일 <code>#90ee02</code>, 호버 <code>#f2fde4</code>, 이전/다음 달 <code>#bdbdbd</code>)이 열림. 세그먼트를 누르면 날짜가 자동으로 채워지고, 달력에서 날짜를 직접 고르면 세그먼트 선택이 풀림. 우상단 <b>접기</b>를 누르면 <b>날짜 행과 버튼만 남고</b> 버튼 라벨이 <b>"상세"</b>로 바뀜(검색·초기화 버튼은 유지).
+    </div>
+  </div>
+
+  <!-- ================= Mobile ================= -->
+  <div class="stack-col">
+    <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 미만 — 필터칩 + 적용 태그 + 바텀시트(단일 선택)</div>
+    <div class="mo-shell">
+      <div class="mo-screen" id="moScreen">
+        <div class="mo-gnb">
+          <div class="title">입고처리</div>
+          <div class="ham"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7C4 6.58579 4.33579 6.25 4.75 6.25H19.75C20.1642 6.25 20.5 6.58579 20.5 7C20.5 7.41421 20.1642 7.75 19.75 7.75H4.75C4.33579 7.75 4 7.41421 4 7Z" fill="white"/><path d="M4 12C4 11.5858 4.33579 11.25 4.75 11.25H19.75C20.1642 11.25 20.5 11.5858 20.5 12C20.5 12.4142 20.1642 12.75 19.75 12.75H4.75C4.33579 12.75 4 12.4142 4 12Z" fill="white"/><path d="M4.75 16.25C4.33579 16.25 4 16.5858 4 17C4 17.4142 4.33579 17.75 4.75 17.75H19.75C20.1642 17.75 20.5 17.4142 20.5 17C20.5 16.5858 20.1642 16.25 19.75 16.25H4.75Z" fill="white"/></svg></div>
+        </div>
+        <div class="mo-scroll">
+          <div class="fc-row">
+            <div class="fc-scroll" id="chipRow"></div>
+            <div class="fc-fade"></div>
+            <button class="fc-search" type="button" onclick="openSearchSheet()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><g transform="translate(3 3.5)"><path fill-rule="evenodd" clip-rule="evenodd" d="M18 4.25H0V2.75H18V4.25Z" fill="#333333"/><path d="M14 3.5C14 4.60457 13.1046 5.5 12 5.5C10.8954 5.5 10 4.60457 10 3.5C10 2.39543 10.8954 1.5 12 1.5C13.1046 1.5 14 2.39543 14 3.5Z" fill="white"/><path fill-rule="evenodd" clip-rule="evenodd" d="M15.5 3.5C15.5 5.433 13.933 7 12 7C10.067 7 8.5 5.433 8.5 3.5C8.5 1.567 10.067 0 12 0C13.933 0 15.5 1.567 15.5 3.5ZM12 5.5C13.1046 5.5 14 4.60457 14 3.5C14 2.39543 13.1046 1.5 12 1.5C10.8954 1.5 10 2.39543 10 3.5C10 4.60457 10.8954 5.5 12 5.5Z" fill="#333333"/></g><g transform="translate(3 12.5)"><path fill-rule="evenodd" clip-rule="evenodd" d="M18 4.25H0V2.75H18V4.25Z" fill="#333333"/><path d="M8 3.5C8 4.60457 7.10457 5.5 6 5.5C4.89543 5.5 4 4.60457 4 3.5C4 2.39543 4.89543 1.5 6 1.5C7.10457 1.5 8 2.39543 8 3.5Z" fill="white"/><path fill-rule="evenodd" clip-rule="evenodd" d="M9.5 3.5C9.5 5.433 7.933 7 6 7C4.067 7 2.5 5.433 2.5 3.5C2.5 1.567 4.067 0 6 0C7.933 0 9.5 1.567 9.5 3.5ZM6 5.5C7.10457 5.5 8 4.60457 8 3.5C8 2.39543 7.10457 1.5 6 1.5C4.89543 1.5 4 2.39543 4 3.5C4 4.60457 4.89543 5.5 6 5.5Z" fill="#333333"/></g></svg>
+              검색
+            </button>
+          </div>
+          <div class="tag-row" id="tagRowWrap" hidden>
+            <div class="tag-scroll" id="tagRow"></div>
+            <div class="fc-fade"></div>
+            <button class="tag-reset" type="button" onclick="resetMobile()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.74806 6.07377C10.0333 5.36509 11.5141 5.09333 12.9672 5.29945C14.4204 5.50557 15.7672 6.17839 16.8047 7.21654L16.8181 7.22954L19.4878 9.74359H16.1159C15.776 9.74359 15.5005 10.0191 15.5005 10.359C15.5005 10.6988 15.776 10.9744 16.1159 10.9744H21.0389C21.131 10.9744 21.2183 10.9542 21.2967 10.918C21.3565 10.8904 21.4126 10.8528 21.4627 10.8053C21.4867 10.7824 21.5089 10.7577 21.5289 10.7313C21.5572 10.6942 21.5807 10.6547 21.5993 10.6136C21.6347 10.536 21.6543 10.4498 21.6543 10.359V5.4359C21.6543 5.09603 21.3788 4.82052 21.0389 4.82052C20.6991 4.82052 20.4236 5.09603 20.4236 5.4359V8.93419L17.6685 6.33979C16.4433 5.11672 14.8543 4.32403 13.1401 4.08088C11.4227 3.83729 9.67272 4.15845 8.15378 4.99599C6.63483 5.83352 5.42924 7.14204 4.71868 8.72436C4.00811 10.3067 3.83107 12.0771 4.21424 13.7688C4.5974 15.4605 5.52 16.9818 6.84302 18.1036C8.16605 19.2253 9.8178 19.8866 11.5494 19.9879C13.281 20.0892 14.9986 19.625 16.4434 18.6652C17.8882 17.7054 18.9819 16.302 19.5597 14.6665C19.6729 14.3461 19.5049 13.9945 19.1844 13.8813C18.864 13.7681 18.5124 13.9361 18.3992 14.2565C17.9103 15.6404 16.9848 16.8279 15.7623 17.64C14.5398 18.4522 13.0865 18.845 11.6213 18.7593C10.1561 18.6735 8.75844 18.1139 7.63896 17.1648C6.51948 16.2156 5.73881 14.9284 5.4146 13.4969C5.09039 12.0655 5.24019 10.5674 5.84143 9.22855C6.44268 7.88966 7.4628 6.78245 8.74806 6.07377Z" fill="#333333"/></svg>
+              초기화
+            </button>
+          </div>
+          <div class="count-row" id="countRow">0건</div>
+          <div class="card-list" id="cardList"></div>
+        </div>
+
+        <div class="dim" id="dim" onclick="closeSheets()"></div>
+
+        <!-- 단일 선택 시트 -->
+        <div class="sheet" id="pickSheet" role="dialog" aria-modal="true" aria-labelledby="pickTitle">
+          <div class="sh-inner">
+            <div class="sh-head">
+              <div class="sh-title" id="pickTitle">상품유형</div>
+              <button class="sh-close" type="button" onclick="closeSheets()" aria-label="닫기"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M25.0335 8.41452C25.4333 8.01469 25.4333 7.36643 25.0335 6.96658C24.6336 6.56675 23.9853 6.56675 23.5855 6.96658L16 14.552L8.41448 6.96658C8.01465 6.56675 7.36639 6.56675 6.96654 6.96658C6.56671 7.36643 6.56671 8.01469 6.96654 8.41452L14.552 16L6.96654 23.5855C6.56671 23.9853 6.56671 24.6336 6.96654 25.0335C7.36639 25.4333 8.01465 25.4333 8.41448 25.0335L16 17.448L23.5855 25.0335C23.9853 25.4333 24.6336 25.4333 25.0335 25.0335C25.4333 24.6336 25.4333 23.9853 25.0335 23.5855L17.448 16L25.0335 8.41452Z" fill="#333333"/></svg></button>
+            </div>
+            <div class="sh-body"><div class="opt-list" id="pickList"></div></div>
+            <div class="sh-btns"><button class="sh-btn primary" type="button" onclick="confirmPick()">선택완료</button></div>
+          </div>
+        </div>
+
+        <!-- 검색 시트 -->
+        <div class="sheet" id="searchSheet" role="dialog" aria-modal="true" aria-labelledby="searchTitle">
+          <div class="sh-inner">
+            <div class="sh-head">
+              <div class="sh-title" id="searchTitle">검색</div>
+              <button class="sh-close" type="button" onclick="closeSheets()" aria-label="닫기"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M25.0335 8.41452C25.4333 8.01469 25.4333 7.36643 25.0335 6.96658C24.6336 6.56675 23.9853 6.56675 23.5855 6.96658L16 14.552L8.41448 6.96658C8.01465 6.56675 7.36639 6.56675 6.96654 6.96658C6.56671 7.36643 6.56671 8.01469 6.96654 8.41452L14.552 16L6.96654 23.5855C6.56671 23.9853 6.56671 24.6336 6.96654 25.0335C7.36639 25.4333 8.01465 25.4333 8.41448 25.0335L16 17.448L23.5855 25.0335C23.9853 25.4333 24.6336 25.4333 25.0335 25.0335C25.4333 24.6336 25.4333 23.9853 25.0335 23.5855L17.448 16L25.0335 8.41452Z" fill="#333333"/></svg></button>
+            </div>
+            <div class="sh-body">
+              <div class="ss-sections" id="ssSections"></div>
+            </div>
+            <div class="sh-btns">
+              <button class="sh-btn gray" type="button" onclick="resetDraft()">초기화</button>
+              <button class="sh-btn primary" type="button" onclick="applyDraft()">검색</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 달력 시트(DS 날짜 선택-달력) — 검색 시트의 날짜 필드를 누르면 검색 시트 대신 열림 -->
+        <div class="sheet" id="calSheet" role="dialog" aria-modal="true" aria-labelledby="calTitle">
+          <div class="sh-inner">
+            <div class="sh-head">
+              <div class="sh-title" id="calTitle">시작일</div>
+              <button class="sh-close" type="button" onclick="closeCalSheet(false)" aria-label="닫기"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M25.0335 8.41452C25.4333 8.01469 25.4333 7.36643 25.0335 6.96658C24.6336 6.56675 23.9853 6.56675 23.5855 6.96658L16 14.552L8.41448 6.96658C8.01465 6.56675 7.36639 6.56675 6.96654 6.96658C6.56671 7.36643 6.56671 8.01469 6.96654 8.41452L14.552 16L6.96654 23.5855C6.56671 23.9853 6.56671 24.6336 6.96654 25.0335C7.36639 25.4333 8.01465 25.4333 8.41448 25.0335L16 17.448L23.5855 25.0335C23.9853 25.4333 24.6336 25.4333 25.0335 25.0335C25.4333 24.6336 25.4333 23.9853 25.0335 23.5855L17.448 16L25.0335 8.41452Z" fill="#333333"/></svg></button>
+            </div>
+            <div class="sh-body" style="padding-top:24px"><div id="moCal"></div></div>
+            <div class="sh-btns"><button class="sh-btn primary" type="button" onclick="closeCalSheet(true)">선택완료</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="callout">
+      칩(값 표시)을 누르면 해당 필터만 고르는 <b>단일 선택 시트</b>, 우측 "검색" 칩을 누르면 날짜 포함 모든 필터를 한 번에 고르는 <b>검색 시트</b>가 열립니다(날짜는 DS 모바일 정의대로 <b>일주일/이번달/3개월/직접선택</b> 4개 버튼 + 시작일~종료일 — <b>직접선택일 때만 날짜 필드 활성</b>, 누르면 검색 시트 대신 <b>DS 달력 바텀시트</b>가 열리고 "선택완료"로 복귀). 조건을 적용하면 <b>적용 태그 줄</b>이 나타나고 태그의 X로 하나씩, "초기화"로 전부 해제. 칩 줄·태그 줄은 가로 스크롤, 우측 고정 버튼 앞은 흰색 페이드(28px). 오버레이는 한 번에 하나만(6-4).
+    </div>
+  </div>
+</div>
+
+<script>
+/* 필터 정의 — PC/모바일 공통 데이터, UI만 다름(적응형) */
+var FILTERS = [
+  {key:'type',   label:'상품 유형',      sheet:'상품유형',   opts:['침대','휠체어','경사로'], chip:true},
+  {key:'barcode',label:'바코드 해지 여부', sheet:'바코드 해지 여부', opts:['Y','N']},
+  {key:'route',  label:'입고 경로',      sheet:'입고경로',   opts:['설치업체','택배'], chip:true},
+  {key:'reason', label:'입고 사유',      sheet:'입고사유',   opts:['회수','미처리','취소요청'], chip:true},
+  {key:'status', label:'회수 상태',      sheet:'회수상태',   opts:['회수요청','회수준비중','회수완료','입고완료']}
+];
+var ITEMS = [
+  {type:'침대',reason:'회수',route:'설치업체',barcode:'N',status:'입고완료',model:'MIRAGE7(22D)-B',code:'M18030043104-190300000262',info:'설치업체 : CMK파주',date:'2026-09-29'},
+  {type:'침대',reason:'미처리',route:'설치업체',barcode:'Y',status:'회수준비중',model:'천연BED ST-3',code:'S03091310-16040444',info:'설치업체 : CMK 1팀',date:'2026-09-28'},
+  {type:'경사로',reason:'취소요청',route:'택배',barcode:'N',status:'회수완료',model:'R-125SL',code:'S03091004118-220700008000',info:'택배 : 천일택배',date:'2026-09-24'},
+  {type:'휠체어',reason:'회수',route:'택배',barcode:'Y',status:'회수요청',model:'KM-8520',code:'S03091004118-220700000253',info:'택배 : 천일택배',date:'2026-08-14'},
+  {type:'침대',reason:'회수',route:'설치업체',barcode:'N',status:'회수완료',model:'MIRAGE7(22D)-B',code:'S03091004118-220700000254',info:'설치업체 : 효드림 A팀',date:'2026-07-20'},
+  {type:'휠체어',reason:'미처리',route:'설치업체',barcode:'N',status:'회수준비중',model:'KM-1000',code:'S03091004118-220700000255',info:'설치업체 : CMK 2팀',date:'2026-09-29'}
+];
+var CHECK_W = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.8047 3.5286C14.0651 3.78895 14.0651 4.21106 13.8047 4.4714L6.4714 11.8047C6.21106 12.0651 5.78894 12.0651 5.5286 11.8047L2.19526 8.4714C1.93491 8.21106 1.93491 7.78895 2.19526 7.5286C2.45561 7.26825 2.87772 7.26825 3.13807 7.5286L6 10.3905L12.8619 3.5286C13.1223 3.26825 13.5444 3.26825 13.8047 3.5286Z" fill="white"/></svg>';
+var CHEV = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4.55806 7.05806C4.80214 6.81398 5.19786 6.81398 5.44194 7.05806L10 11.6161L14.5581 7.05806C14.8021 6.81398 15.1979 6.81398 15.4419 7.05806C15.686 7.30214 15.686 7.69786 15.4419 7.94194L10.4419 12.9419C10.1979 13.186 9.80214 13.186 9.55806 12.9419L4.55806 7.94194C4.31398 7.69786 4.31398 7.30214 4.55806 7.05806Z" fill="#333333"/></svg>';
+var TAG_X = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M15.6459 5.25907C15.8958 5.00918 15.8958 4.60402 15.6459 4.35411C15.396 4.10422 14.9908 4.10422 14.7409 4.35411L9.99999 9.09502L5.25905 4.35411C5.00915 4.10422 4.60399 4.10422 4.35409 4.35411C4.10419 4.60402 4.10419 5.00918 4.35409 5.25907L9.095 10L4.35409 14.7409C4.10419 14.9908 4.10419 15.396 4.35409 15.6459C4.60399 15.8958 5.00915 15.8958 5.25905 15.6459L9.99999 10.905L14.7409 15.6459C14.9908 15.8958 15.396 15.8958 15.6459 15.6459C15.8958 15.396 15.8958 14.9908 15.6459 14.7409L10.905 10L15.6459 5.25907Z" fill="#999999"/></svg>';
+var CHECK_D = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path transform="translate(2.75 5.5)" d="M18.2803 0.21967C18.5732 0.512563 18.5732 0.987437 18.2803 1.28033L6.78033 12.7803C6.48744 13.0732 6.01256 13.0732 5.71967 12.7803L0.21967 7.28033C-0.0732233 6.98744 -0.0732233 6.51256 0.21967 6.21967C0.512563 5.92678 0.987437 5.92678 1.28033 6.21967L6.25 11.1893L17.2197 0.21967C17.5126 -0.0732233 17.9874 -0.0732233 18.2803 0.21967Z" fill="#333333"/></svg>';
+
+/* 날짜 — 오늘 기준(데모 고정일) */
+var TODAY = new Date(2026, 8, 29);
+var PRESETS = ['오늘','어제','일주일','지난달','3개월'];
+function fmt(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function addDays(d,n){ var x = new Date(d); x.setDate(x.getDate()+n); return x; }
+function presetRange(p){
+  var t = TODAY;
+  if (p === '오늘') return [fmt(t), fmt(t)];
+  if (p === '어제') return [fmt(addDays(t,-1)), fmt(addDays(t,-1))];
+  if (p === '일주일') return [fmt(addDays(t,-7)), fmt(t)];
+  if (p === '이번달') return [fmt(new Date(t.getFullYear(), t.getMonth(), 1)), fmt(t)];
+  if (p === '지난달') return [fmt(new Date(t.getFullYear(), t.getMonth()-1, 1)), fmt(new Date(t.getFullYear(), t.getMonth(), 0))];
+  var f = new Date(t); f.setMonth(f.getMonth()-3); return [fmt(f), fmt(t)];   // 3개월
+}
+var DEFAULT_PRESET = '3개월';
+var MO_PRESETS = ['일주일','이번달','3개월','직접선택'];   // DS 모바일 정의(검색 필터) 기준
+var CAL_ICON = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M17.6 4.60002H16.1V3.70002C16.1 3.30002 15.8 2.90002 15.3 2.90002C14.8 2.90002 14.5 3.20002 14.5 3.70002V4.60002H9.3V3.70002C9.3 3.30002 9 2.90002 8.5 2.90002C8 2.90002 7.7 3.20002 7.7 3.70002V4.60002H5.9C4.6 4.60002 3.5 5.70002 3.5 7.00002V18.7C3.5 20 4.6 21.1 5.9 21.1H17.6C18.9 21.1 20 20 20 18.7V7.00002C20 5.70002 18.9 4.60002 17.6 4.60002ZM18.7 18.7C18.7 19.2 18.3 19.6 17.8 19.6H5.9C5.4 19.6 5 19.2 5 18.7V11.1H18.7V18.7ZM18.8 9.60002H5V7.00002C5 6.50002 5.4 6.10002 5.9 6.10002H7.7V7.00002C7.7 7.50002 8 7.80002 8.5 7.80002C9 7.80002 9.3 7.40002 9.3 7.00002V6.10002H14.5V7.00002C14.5 7.50002 14.8 7.80002 15.3 7.80002C15.8 7.80002 16.1 7.40002 16.1 7.00002V6.10002H17.9C18.4 6.10002 18.8 6.50002 18.8 7.00002V9.60002Z" fill="#333333"/></svg>';
+var ARROW = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z" fill="#333333"/></svg>';
+var OPT_CHECK = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.7071 5.29289C21.0976 5.68342 21.0976 6.31658 20.7071 6.70711L9.70711 17.7071C9.31658 18.0976 8.68342 18.0976 8.29289 17.7071L3.29289 12.7071C2.90237 12.3166 2.90237 11.6834 3.29289 11.2929C3.68342 10.9024 4.31658 10.9024 4.70711 11.2929L9 15.5858L19.2929 5.29289C19.6834 4.90237 20.3166 4.90237 20.7071 5.29289Z" fill="#323DA3"/></svg>';
+var NAV_PREV = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.7071 5.29289C16.0976 5.68342 16.0976 6.31658 15.7071 6.70711L10.4142 12L15.7071 17.2929C16.0976 17.6834 16.0976 18.3166 15.7071 18.7071C15.3166 19.0976 14.6834 19.0976 14.2929 18.7071L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929L14.2929 5.29289C14.6834 4.90237 15.3166 4.90237 15.7071 5.29289Z" fill="#333333"/></svg>';
+var NAV_NEXT = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.29289 5.29289C8.68342 4.90237 9.31658 4.90237 9.70711 5.29289L15.7071 11.2929C16.0976 11.6834 16.0976 12.3166 15.7071 12.7071L9.70711 18.7071C9.31658 19.0976 8.68342 19.0976 8.29289 18.7071C7.90237 18.3166 7.90237 17.6834 8.29289 17.2929L13.5858 12L8.29289 6.70711C7.90237 6.31658 7.90237 5.68342 8.29289 5.29289Z" fill="#333333"/></svg>';
+
+/* ---- 셀렉트 컴포넌트(DS SelectField + 옵션 패널) ---- */
+var SELECTS = {};   // id -> {options, value, onchange}
+function mountSelect(id, options, value, label, onchange){
+  SELECTS[id] = {options:options, value:value, onchange:onchange};
+  document.getElementById(id).innerHTML =
+    '<button type="button" class="dsel-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="' + label + '" onclick="toggleSelect(\'' + id + '\', event)"><span></span>' + ARROW + '</button>' +
+    '<div class="dsel-panel" role="listbox"><ul></ul></div>';
+  renderSelect(id);
+}
+function renderSelect(id){
+  var c = SELECTS[id], el = document.getElementById(id);
+  el.querySelector('.dsel-btn span').textContent = c.value;
+  el.querySelector('ul').innerHTML = c.options.map(function(o){
+    return '<li><button type="button" role="option" aria-selected="' + (o === c.value) + '" class="' + (o === c.value ? 'on' : '') + '" onclick="chooseSelect(\'' + id + '\', \'' + esc(o) + '\', event)"><span>' + esc(o) + '</span>' + OPT_CHECK + '</button></li>';
+  }).join('');
+}
+function toggleSelect(id, e){
+  e.stopPropagation();
+  var el = document.getElementById(id), willOpen = !el.classList.contains('open');
+  closePcPopovers();   // 오버레이는 항상 하나만(6-4)
+  el.classList.toggle('open', willOpen);
+  el.querySelector('.dsel-btn').setAttribute('aria-expanded', String(willOpen));
+}
+function chooseSelect(id, val, e){
+  e.stopPropagation();
+  SELECTS[id].value = val; renderSelect(id); closePcPopovers();
+  if (SELECTS[id].onchange) SELECTS[id].onchange(val);
+}
+function closePcPopovers(){
+  if (pcCal.which) { pcCal.which = null; renderPcDates(); }
+  document.querySelectorAll('.dsel.open').forEach(function(x){
+    x.classList.remove('open');
+    x.querySelector('.dsel-btn').setAttribute('aria-expanded', 'false');
+  });
+}
+document.addEventListener('click', function(e){ if (!e.target.closest('.dsel, .ps-dt')) closePcPopovers(); });
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closePcPopovers(); });
+
+/* ---- 달력 컴포넌트(PC 팝오버·모바일 시트 공용) — DS calendar_Default ---- */
+function parse(v){ var a = v.split('-'); return new Date(+a[0], +a[1]-1, +a[2]); }
+function calHtml(viewY, viewM, selected, titleFmt, onNav, onPick){
+  var first = new Date(viewY, viewM, 1), start = addDays(first, -first.getDay());
+  var title = titleFmt === 'month' ? (viewM + 1) + '월' : viewY + '-' + String(viewM + 1).padStart(2, '0');
+  var html = '<div class="cal"><div class="cal-head">' +
+    '<button type="button" class="cal-nav" aria-label="이전 달" onclick="' + onNav + '(-1, event)">' + NAV_PREV + '</button>' +
+    '<div class="cal-title">' + title + '</div>' +
+    '<button type="button" class="cal-nav" aria-label="다음 달" onclick="' + onNav + '(1, event)">' + NAV_NEXT + '</button></div>' +
+    '<div><div class="cal-week">' + ['일','월','화','수','목','금','토'].map(function(d){ return '<span>' + d + '</span>'; }).join('') + '</div><div class="cal-days">';
+  for (var w = 0; w < 6; w++) {
+    html += '<div class="cal-row">';
+    for (var d = 0; d < 7; d++) {
+      var day = addDays(start, w * 7 + d), v = fmt(day), inMonth = day.getMonth() === viewM;
+      html += '<div class="cal-cell"><button type="button" class="cal-day' + (inMonth ? '' : ' out') + (v === selected ? ' on' : '') + '"' +
+        (inMonth ? ' onclick="' + onPick + '(\'' + v + '\', event)"' : ' disabled') + ' aria-label="' + v + '">' + day.getDate() + '</button></div>';
+    }
+    html += '</div>';
+  }
+  return html + '</div></div></div>';
+}
+
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+/* ---------------- PC ---------------- */
+function renderPc(){
+  var html = '';
+  var rows = [[FILTERS[0], FILTERS[1]], [FILTERS[2], FILTERS[3]], [FILTERS[4]]];
+  rows.forEach(function(row, ri){
+    html += '<div class="ps-row ps-detail">';
+    row.forEach(function(f){
+      html += '<div class="ps-cell' + (row.length === 1 ? ' full' : '') + '"><div class="ps-label">' + f.label + '</div><div class="ps-opts" data-key="' + f.key + '">';
+      ['전체'].concat(f.opts).forEach(function(o, i){
+        html += '<label class="cb"><input type="checkbox" value="' + esc(o) + '"' + (i === 0 ? ' data-all="1" checked' : '') + '><span class="box">' + CHECK_W + '</span>' + esc(o) + '</label>';
+      });
+      html += '</div></div>';
+    });
+    html += '</div>';
+  });
+  document.getElementById('psRows').innerHTML = html;
+  document.querySelectorAll('#psRows .ps-opts').forEach(function(group){
+    group.addEventListener('change', function(e){
+      var all = group.querySelector('[data-all]');
+      var others = group.querySelectorAll('input:not([data-all])');
+      // 기본은 "전체"만 체크. "전체"를 누르면 같은 행 항목이 모두 체크/해제, 개별 항목이 전부 체크되면 "전체"도 체크
+      // (기획 합의 2026-09-29 — 퍼블 동작과 동일)
+      if (e.target === all) {
+        others.forEach(function(c){ c.checked = all.checked; });
+      } else {
+        all.checked = Array.prototype.every.call(others, function(c){ return c.checked; });
+      }
+    });
+  });
+}
+function renderPcSeg(active){
+  document.getElementById('psSeg').innerHTML = PRESETS.map(function(p){
+    return '<button type="button" class="' + (p === active ? 'on' : '') + '" aria-pressed="' + (p === active) + '" onclick="setPcPreset(\'' + p + '\')">' + p + '</button>';
+  }).join('');
+}
+var pcFrom = '', pcTo = '', pcCal = {which:null, y:0, m:0};
+function renderPcDates(){
+  [['psFromBox','from','시작일',pcFrom],['psToBox','to','종료일',pcTo]].forEach(function(x){
+    var box = document.getElementById(x[0]), open = pcCal.which === x[1];
+    box.classList.toggle('open', open);
+    box.innerHTML = '<button type="button" class="dt-btn" aria-haspopup="dialog" aria-expanded="' + open + '" aria-label="' + x[2] + ' ' + x[3] + '" onclick="togglePcCal(\'' + x[1] + '\', event)"><span>' + x[3] + '</span>' + CAL_ICON + '</button>' +
+      '<div class="dcal-pop" role="dialog" aria-label="' + x[2] + ' 선택" onclick="event.stopPropagation()">' +
+      (open ? calHtml(pcCal.y, pcCal.m, x[3], 'month', 'navPcCal', 'pickPcDate') : '') + '</div>';
+  });
+}
+function togglePcCal(which, e){
+  e.stopPropagation();
+  var willOpen = pcCal.which !== which;
+  closePcPopovers();
+  pcCal.which = willOpen ? which : null;
+  if (willOpen) { var d = parse(which === 'from' ? pcFrom : pcTo); pcCal.y = d.getFullYear(); pcCal.m = d.getMonth(); }
+  renderPcDates();
+}
+function navPcCal(dir, e){ e.stopPropagation(); var d = new Date(pcCal.y, pcCal.m + dir, 1); pcCal.y = d.getFullYear(); pcCal.m = d.getMonth(); renderPcDates(); }
+function pickPcDate(v, e){
+  e.stopPropagation();
+  if (pcCal.which === 'from') pcFrom = v; else pcTo = v;
+  pcCal.which = null; renderPcDates(); renderPcSeg(null);   // 날짜를 직접 고르면 세그먼트 선택 해제
+}
+function setPcPreset(p){
+  var r = presetRange(p);
+  pcFrom = r[0]; pcTo = r[1];
+  renderPcDates();
+  renderPcSeg(p);
+}   // 날짜를 직접 고치면 세그먼트 선택 해제
+function togglePcFold(){
+  var box = document.getElementById('pcSearch');
+  var folded = box.classList.toggle('folded');
+  document.getElementById('psFoldLabel').textContent = folded ? '상세' : '접기';
+  document.getElementById('psFold').setAttribute('aria-expanded', String(!folded));
+}
+function resetPc(){
+  renderPc();
+  setPcPreset(DEFAULT_PRESET);
+  SELECTS.dselDate.value = '회수 완료일'; renderSelect('dselDate');
+  SELECTS.dselKw.value = '전체'; renderSelect('dselKw');
+  document.getElementById('psKw').value = '';
+  document.getElementById('psResult').textContent = '조건을 초기화했습니다.';
+}
+function submitPc(){
+  var parts = [SELECTS.dselDate.value + ': ' + pcFrom + ' ~ ' + pcTo];
+  document.querySelectorAll('#psRows .ps-opts').forEach(function(group){
+    var f = FILTERS.filter(function(x){ return x.key === group.dataset.key; })[0];
+    if (group.querySelector('[data-all]').checked) return;   // 전체 = 조건 없음
+    var vals = Array.prototype.filter.call(group.querySelectorAll('input:checked'), function(c){ return !c.dataset.all; })
+      .map(function(c){ return c.value; });
+    parts.push(f.label + ': ' + (vals.length ? vals.join(', ') : '(선택 없음)'));
+  });
+  var kw = document.getElementById('psKw').value.trim();
+  if (kw) parts.push('검색어(' + SELECTS.dselKw.value + '): ' + kw);
+  document.getElementById('psResult').innerHTML = parts.length
+    ? '적용된 조건 — ' + parts.map(function(p){ return '<code>' + esc(p) + '</code>'; }).join(' ')
+    : '적용된 조건 없음.';
+}
+
+/* ---------------- Mobile ---------------- */
+var state = {};   // 적용된 값(단일 선택): key -> 값, 없으면 '전체'
+var draft = {};   // 검색 시트 편집 중 값
+var pickKey = null, pickVal = null;
+function emptyState(){ var r = presetRange(DEFAULT_PRESET); var s = {kw:'', preset:DEFAULT_PRESET, from:r[0], to:r[1]}; FILTERS.forEach(function(f){ s[f.key] = '전체'; }); return s; }
+state = emptyState();
+
+function renderMobile(){
+  var chips = '';
+  FILTERS.filter(function(f){ return f.chip; }).forEach(function(f){
+    var v = state[f.key];
+    chips += '<button type="button" class="chip' + (v !== '전체' ? ' on' : '') + '" onclick="openPick(\'' + f.key + '\')" aria-label="' + f.sheet + ': ' + esc(v) + '">' + esc(v) + CHEV + '</button>';
+  });
+  document.getElementById('chipRow').innerHTML = chips;
+
+  var tags = [];
+  if (state.preset !== DEFAULT_PRESET) tags.push({key:'date', text: state.preset === '직접선택' ? state.from.slice(5) + '~' + state.to.slice(5) : state.preset});
+  FILTERS.forEach(function(f){ if (state[f.key] !== '전체') tags.push({key:f.key, text:state[f.key]}); });
+  if (state.kw) tags.push({key:'kw', text:state.kw});
+  document.getElementById('tagRow').innerHTML = tags.map(function(t){
+    return '<button type="button" class="tag" onclick="removeTag(\'' + t.key + '\')" aria-label="' + esc(t.text) + ' 조건 해제">' + esc(t.text) + TAG_X + '</button>';
+  }).join('');
+  document.getElementById('tagRowWrap').hidden = tags.length === 0;
+
+  var list = ITEMS.filter(function(it){
+    var ok = FILTERS.every(function(f){ return state[f.key] === '전체' || it[f.key] === state[f.key]; });
+    if (ok) ok = it.date >= state.from && it.date <= state.to;
+    if (ok && state.kw) ok = (it.code + it.model + it.info).toLowerCase().indexOf(state.kw.toLowerCase()) > -1;
+    return ok;
+  });
+  document.getElementById('countRow').textContent = list.length + '건';
+  var LT = {'회수':'r','미처리':'u','취소요청':'c'};
+  document.getElementById('cardList').innerHTML = list.length ? list.map(function(it){
+    return '<div class="m-card"><div class="l1"><span class="lt ' + LT[it.reason] + '">' + it.reason + '</span>' + it.type + ' ' + esc(it.model) + '</div>' +
+      '<div class="l2">' + esc(it.code) + '</div><div class="l3">' + esc(it.info) + '</div></div>';
+  }).join('') : '<div class="empty">조건에 맞는 항목이 없습니다.</div>';
+}
+function removeTag(key){
+  if (key === 'kw') state.kw = '';
+  else if (key === 'date') { var r = presetRange(DEFAULT_PRESET); state.preset = DEFAULT_PRESET; state.from = r[0]; state.to = r[1]; }
+  else state[key] = '전체';
+  renderMobile();
+}
+function resetMobile(){ state = emptyState(); renderMobile(); }
+
+function showSheet(id){
+  closeSheets();   // 오버레이는 항상 하나만
+  document.getElementById('dim').classList.add('show');
+  document.getElementById(id).classList.add('show');
+}
+function closeSheets(){
+  document.getElementById('dim').classList.remove('show');
+  document.querySelectorAll('.sheet.show').forEach(function(s){ s.classList.remove('show'); });
+}
+
+function openPick(key){
+  var f = FILTERS.filter(function(x){ return x.key === key; })[0];
+  pickKey = key; pickVal = state[key];
+  document.getElementById('pickTitle').textContent = f.sheet;
+  renderPick(f);
+  showSheet('pickSheet');
+}
+function renderPick(f){
+  document.getElementById('pickList').innerHTML = ['전체'].concat(f.opts).map(function(o){
+    return '<button type="button" class="opt' + (o === pickVal ? ' on' : '') + '" onclick="pickVal=\'' + esc(o) + '\';renderPick(FILTERS.filter(function(x){return x.key===pickKey;})[0])" aria-pressed="' + (o === pickVal) + '"><span>' + esc(o) + '</span>' + CHECK_D + '</button>';
+  }).join('');
+}
+function confirmPick(){ state[pickKey] = pickVal; closeSheets(); renderMobile(); }
+
+function openSearchSheet(){
+  draft = JSON.parse(JSON.stringify(state));
+  renderDraft();
+  showSheet('searchSheet');
+}
+function setDraftPreset(p){
+  draft.preset = p;
+  if (p !== '직접선택') { var r = presetRange(p); draft.from = r[0]; draft.to = r[1]; }
+  renderDraft();
+}
+function renderDraft(){
+  var manual = draft.preset === '직접선택';   // 직접선택일 때만 날짜 필드 활성(DS 모바일 정의)
+  var html = '<div class="ss-sec"><h4>날짜</h4><div class="ss-grid c4">' + MO_PRESETS.map(function(p){
+      return '<button type="button" class="ss-opt' + (draft.preset === p ? ' on' : '') + '" aria-pressed="' + (draft.preset === p) + '" onclick="setDraftPreset(\'' + p + '\')">' + p + '</button>';
+    }).join('') + '</div><div class="ss-range">' +
+    '<button type="button" class="dt-btn"' + (manual ? '' : ' disabled') + ' aria-label="시작일 ' + draft.from + '" onclick="openCalSheet(\'from\')"><span>' + draft.from + '</span>' + CAL_ICON + '</button> ~ ' +
+    '<button type="button" class="dt-btn"' + (manual ? '' : ' disabled') + ' aria-label="종료일 ' + draft.to + '" onclick="openCalSheet(\'to\')"><span>' + draft.to + '</span>' + CAL_ICON + '</button></div></div>';
+  html += FILTERS.map(function(f){
+    var opts = ['전체'].concat(f.opts);
+    var cols = opts.length === 3 ? 'c3' : 'c2';
+    return '<div class="ss-sec"><h4>' + f.sheet + '</h4><div class="ss-grid ' + cols + '">' + opts.map(function(o){
+      return '<button type="button" class="ss-opt' + (draft[f.key] === o ? ' on' : '') + '" onclick="draft[\'' + f.key + '\']=\'' + esc(o) + '\';renderDraft()" aria-pressed="' + (draft[f.key] === o) + '">' + esc(o) + '</button>';
+    }).join('') + '</div></div>';
+  }).join('');
+  html += '<div class="ss-sec"><h4>상세검색</h4><input class="ss-input" id="ssKw" placeholder="바코드, 상품명, 사업소명으로 검색" value="' + esc(draft.kw) + '" oninput="draft.kw=this.value"></div>';
+  document.getElementById('ssSections').innerHTML = html;
+}
+/* 모바일 달력 시트 — 검색 시트를 잠시 내리고 달력 시트를 올림(오버레이 하나 원칙), 닫으면 검색 시트로 복귀 */
+var moCal = {which:null, y:0, m:0, val:''};
+function openCalSheet(which){
+  moCal.which = which; moCal.val = draft[which];
+  var d = parse(moCal.val); moCal.y = d.getFullYear(); moCal.m = d.getMonth();
+  document.getElementById('calTitle').textContent = which === 'from' ? '시작일' : '종료일';
+  renderMoCal();
+  document.getElementById('searchSheet').classList.remove('show');
+  document.getElementById('calSheet').classList.add('show');
+}
+function renderMoCal(){ document.getElementById('moCal').innerHTML = calHtml(moCal.y, moCal.m, moCal.val, 'ym', 'navMoCal', 'pickMoDate'); }
+function navMoCal(dir){ var d = new Date(moCal.y, moCal.m + dir, 1); moCal.y = d.getFullYear(); moCal.m = d.getMonth(); renderMoCal(); }
+function pickMoDate(v){ moCal.val = v; renderMoCal(); }
+function closeCalSheet(apply){
+  if (apply) draft[moCal.which] = moCal.val;
+  document.getElementById('calSheet').classList.remove('show');
+  document.getElementById('searchSheet').classList.add('show');
+  renderDraft();
+}
+function resetDraft(){ draft = emptyState(); renderDraft(); }
+function applyDraft(){ draft.kw = draft.kw.trim(); state = draft; closeSheets(); renderMobile(); }
+
+renderPc();
+mountSelect('dselDate', ['회수 완료일','회수 요청일'], '회수 완료일', '날짜 기준');
+mountSelect('dselKw', ['전체','바코드','상품명','사업소명'], '전체', '검색 기준');
+setPcPreset(DEFAULT_PRESET);
+renderMobile();
+</script>
+</body>
+</html>
