@@ -539,6 +539,18 @@ var SECTIONS = {
     '<li>카드 3줄: 상태 배지+품목+모델 / <strong>바코드 굵게</strong> / 보조 정보 1줄 — 나머지 컬럼은 상세에서</li>'+
     '<li><strong>체크박스·일괄 처리 없음</strong> — 카드를 누르면 <strong>상세 화면</strong>(누른 카드 bg <span class="mono">#eff1fd</span>+테두리 <span class="mono">#141e76</span>). 페이지네이션 없음</li></ul>' },
 
+  s310: { title:"3-10. 카드 목록형 (PC·모바일 모두 카드 — 반응형)", html:
+    '<p><strong>확정(2026-09-29, 운영 디자인 Figma \"260824_수급자관리 목록 필터\" To-Be — PC 1920 / 768 / 360)</strong> — 기준 화면: 사업소 수급자 통합관리 목록. 정책은 디자인 기준(퍼블 모바일 페이지는 다른 설계라 근거 아님).</p>'+
+    '<p>3-9(테이블↔카드 적응형)와 다른 세 번째 목록 유형 — 한 건의 정보·행동이 많아 PC도 카드, <strong>같은 카드를 폭에 따라 재배치</strong>.</p>'+
+    '<ul>'+
+    '<li>구성: 조회 폼(공단 조회) → 구분선 → 목록 헤더 → 키워드 검색 + <strong>상세 조건 패널(기본 접힘, 슬라이드)</strong> → <strong>필터 태그</strong>(bg <span class="mono">#eff6ff</span>, 테두리 <span class="mono">#dbeafe</span>, 글자 <span class="mono">#1e40af</span>, X로 개별 해제+즉시 재조회) → 결과 정보 → 카드 → 페이지네이션</li>'+
+    '<li>카드: 테두리 <span class="mono">#bdbdbd</span> radius 4, 사이 8px, 헤더 bg <span class="mono">#fafafa</span>(이름+상태 배지 인라인), 본문 패딩 16, 하단 버튼 영역</li>'+
+    '<li>모바일(1024 이하): 정보 한 줄씩(등급 → 급여 잔액 → 유효기간 → 적용구간) → 대여종료 예정 박스 → <strong>메모는 아래로</strong>, 버튼 보조 2개 + 주 버튼 전체폭</li>'+
+    '<li><strong>입력·버튼 크기 분리</strong>: PC 36~40 / 14px → 모바일 48 / 16px</li>'+
+    '<li><strong>모바일에도 페이지네이션</strong>(3-6 예외)</li>'+
+    '<li>⚠️ 디자인 간 불일치 확인 필요: 카드 간격 8 vs 12, 카드 패딩 16 vs 24/16, 적용 조건 태그 파란 알약 vs 초록 글씨, 모바일 페이지네이션</li>'+
+    '</ul>' },
+
   s9: { title:"9. 이로움케어 사업소 / 운영관리 화면군", html:
     '<p><strong>배경</strong>: 대대여(플러스+) 운영관리 시스템은 현재 PC가 PHP, 모바일이 별도 React 앱으로 <strong>이중 관리</strong>되고 있음 — 이 반응형 정책 문서를 만드는 근본 이유. Figma 파일 <span class="mono">H8lqlZitePnf5dTDPB5GzR</span>에 운영관리 앱 3개: <strong>이로움케어 사업소</strong>(사업소 직원용) / <strong>입출고 창고</strong>(창고 직원용) / <strong>설치파트너</strong>(설치업체용). 1~8번은 전부 소비자용 화면 기준이었고, 9번부터 운영관리 화면군.</p>'+
     '<p style="background:var(--accent-soft);border-radius:8px;padding:10px 12px;"><strong>⚠️ 중요 정정(2026-09-28)</strong>: 9-1의 셸(GNB+SideNav+Container)은 <strong>Figma에만 있는, 아직 서비스에 반영 안 된 리뉴얼 디자인</strong>이다. 실제 운영 중인 사업소 화면은 탭+이벤트배너+다중 링크의 무거운 GNB, 계정박스+장바구니위젯+공지사항까지 붙은 복잡한 SNB를 쓰는 <strong>구버전 셸</strong> — 사업소도 리뉴얼을 시도했지만 개발 반영이 안 끝난 상태. 반면 입출고 창고·설치파트너는 <strong>리뉴얼이 실제로 배포</strong>돼서 새 셸을 쓴다. → 템플릿 표준은 새 셸로 채택, 사업소 구버전은 별도 반응형 규칙화하지 않음(새 셸로 교체가 목표) — 즉 9-1의 <strong>PC 셸은 입출고 창고·설치파트너 전용</strong>(사업소 PC 제외). 단 <strong>모바일 셸은 사업소도 같은 구조</strong>(2026-09-29 재정정).</p>'+
@@ -568,14 +580,15 @@ var SECTIONS = {
     '</ul>' }
 };
 
-var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s36","s37","s38","s39","s41","s42","s43","s44","s5","s6","s9"];
+var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s36","s37","s38","s39","s310","s41","s42","s43","s44","s5","s6","s9"];
 
 /* ---------------- Category order (menu group order — edit here to reorder groups) ---------------- */
-var CATEGORY_ORDER = ["common-pattern", "rental-system", "ops-pattern"];
+var CATEGORY_ORDER = ["common-pattern", "rental-system", "ops-pattern", "shared-docs"];
 var CATEGORY_LABEL = {
   "rental-system": "대여 시스템 화면",
   "common-pattern": "공통 컴포넌트 패턴",
-  "ops-pattern": "운영관리 화면군 패턴"
+  "ops-pattern": "운영관리 화면군 패턴",
+  "shared-docs": "공유 문서 (퍼블·개발 전달용)"
 };
 
 /* ---------------- Prototype ↔ policy section map ----------------
@@ -632,6 +645,9 @@ var PROTOS = [
   { id:"list-body-compare-demo.html", title:"리스트 본문 비교", category:"common-pattern",
     desc:"3-9 · PC 좌측 440px 고정 가로 스크롤 테이블+일괄 처리 vs 모바일 카드(누르면 상세) — 실제 동작",
     primary:"s39", related:["s2","s36","s37","s38"] },
+  { id:"card-list-responsive-demo.html", title:"카드 목록형 (수급자 목록)", category:"common-pattern",
+    desc:"3-10 · PC도 카드, 같은 카드를 폭에 따라 재배치 — 상세 조건 슬라이드, 필터 태그 X 해제, 모바일 48px 컨트롤·페이지네이션",
+    primary:"s310", related:["s2","s36","s37","s38"] },
 
   // --- 운영관리 화면군 패턴 (이로움케어 사업소/입출고 창고/설치파트너, 9번 — 공식 DS 문서 실측 반영) ---
   { id:"shell-sidenav-demo.html", title:"운영관리 셸 — SideNav↔전체메뉴 (입출고창고·설치파트너)", category:"ops-pattern",
@@ -645,7 +661,12 @@ var PROTOS = [
     primary:"s9", related:["s2","s36"] },
   { id:"calendar-compare-demo.html", title:"월간 캘린더 비교 (설치파트너)", category:"ops-pattern",
     desc:"9-7 · 같은 7열 표를 쓰는 반응형 — PC 월 이동 왼쪽+팀 필터 vs 모바일 월 이동 가운데+범례 아래 줄, 날짜 탭 시 배정 리스트",
-    primary:"s9", related:["s2","s35"] }
+    primary:"s9", related:["s2","s35"] },
+
+  // --- 공유 문서 (퍼블·개발에 전달하는 정책 안내 — 디자인 기준) ---
+  { id:"share-recipient-list.html", title:"수급자 목록 반응형 안내", category:"shared-docs",
+    desc:"3-10 기준 · 퍼블·개발 전달용 — 구현 규칙 + 현재 퍼블에서 바뀌어야 할 점 9가지 + 미확정 항목",
+    primary:"s310", related:["s1","s38"] }
   // 2026-09-28: 배송 진행 스텝퍼 / 3단계 프로세스 안내 데모는 정책 범위에서 제외(hidden) 처리 —
   // 파일은 prototypes/에 그대로 남겨뒀으나 메뉴·정책 문서 어디에도 노출하지 않음
 ];
