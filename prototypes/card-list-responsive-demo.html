@@ -86,17 +86,17 @@ code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
 .fbody-foot .btn{min-width:80px;}
 /* ---- 필터 태그 ---- */
 .tags{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;margin-top:12px;min-height:0;}
-.ftag{display:inline-flex;align-items:center;gap:4px;height:32px;padding:6px 12px;border:1px solid #dbeafe;border-radius:999px;background:#eff6ff;color:#1e40af;font-size:14px;font-weight:600;}
+.ftag{display:inline-flex;align-items:center;gap:4px;height:32px;padding:6px 12px;border:none;border-radius:999px;background:#eff1fd;color:#141e76;font-size:14px;font-weight:600;}
 .ftag button{display:flex;align-items:center;justify-content:center;width:20px;height:20px;padding:0;border:none;border-radius:999px;background:none;cursor:pointer;}
-.ftag button:hover{background:#dbeafe;}
-.ftag button:hover svg path{fill:#1e40af;}
+.ftag button:hover{background:#dfe2fb;}
+.ftag button:hover svg path{fill:#141e76;}
 /* ---- 결과 정보 ---- */
 .result{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 16px;padding:32px 6px 12px;font-size:20px;font-weight:700;}
 .result em{font-style:normal;color:#09af00;background:#f2fde4;padding:0 6px;border-radius:4px;}
 .result small{font-size:16px;font-weight:400;color:var(--text-secondary);}
 .result .sal b{color:var(--brand);}
 /* ---- 카드 ---- */
-.cards{display:flex;flex-direction:column;gap:8px;}
+.cards{display:flex;flex-direction:column;gap:12px;}
 .rc{border:1px solid var(--border-primary);border-radius:4px;background:#fff;}
 .rc-head{display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--secondary-bg);border-bottom:1px solid #eee;flex-wrap:wrap;}
 .rc-head .nm{font-size:18px;font-weight:600;color:var(--brand);}
@@ -107,7 +107,7 @@ code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
 .rc-head .spacer{flex:1;}
 .rc-head .when{font-size:14px;color:var(--text-tertiary);}
 .rc-head .upd{display:inline-flex;align-items:center;gap:4px;border:none;background:none;color:var(--brand);font-size:16px;font-weight:600;cursor:pointer;padding:12px 8px;}
-.rc-body{display:flex;gap:16px;padding:16px;}
+.rc-body{display:flex;gap:16px;padding:16px 16px 24px 16px;}
 .rc-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;}
 .rc-id{display:flex;gap:12px;font-size:18px;}
 .rc-id span+span{padding-left:12px;border-left:1px solid #eee;}
@@ -251,7 +251,7 @@ var REC = [
    ends:[['욕창예방매트리스 대여종료 예정',25,'2026-10-24']], memo:''}
 ];
 var applied = {bal:'all', apply:false, rent:false, lost:false, kw:''};
-var TAG_X_ICON = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M15.6459 5.25907C15.8958 5.00918 15.8958 4.60402 15.6459 4.35411C15.396 4.10422 14.9908 4.10422 14.7409 4.35411L9.99999 9.09502L5.25905 4.35411C5.00915 4.10422 4.60399 4.10422 4.35409 4.35411C4.10419 4.60402 4.10419 5.00918 4.35409 5.25907L9.095 10L4.35409 14.7409C4.10419 14.9908 4.10419 15.396 4.35409 15.6459C4.60399 15.8958 5.00915 15.8958 5.25905 15.6459L9.99999 10.905L14.7409 15.6459C14.9908 15.8958 15.396 15.8958 15.6459 15.6459C15.8958 15.396 15.8958 14.9908 15.6459 14.7409L10.905 10L15.6459 5.25907Z" fill="#1e40af"/></svg>';
+var TAG_X_ICON = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M15.6459 5.25907C15.8958 5.00918 15.8958 4.60402 15.6459 4.35411C15.396 4.10422 14.9908 4.10422 14.7409 4.35411L9.99999 9.09502L5.25905 4.35411C5.00915 4.10422 4.60399 4.10422 4.35409 4.35411C4.10419 4.60402 4.10419 5.00918 4.35409 5.25907L9.095 10L4.35409 14.7409C4.10419 14.9908 4.10419 15.396 4.35409 15.6459C4.60399 15.8958 5.00915 15.8958 5.25905 15.6459L9.99999 10.905L14.7409 15.6459C14.9908 15.8958 15.396 15.8958 15.6459 15.6459C15.8958 15.396 15.8958 14.9908 15.6459 14.7409L10.905 10L15.6459 5.25907Z" fill="#141e76"/></svg>';
 function won(n){ return n.toLocaleString('ko-KR') + '원'; }
 
 function toggleFold(){
