@@ -537,8 +537,7 @@ var SECTIONS = {
     '<h4>모바일</h4><ul>'+
     '<li>풀폭 탭 → 검색(3-7) → 건수 → 카드(사이 12px)</li>'+
     '<li>카드 3줄: 상태 배지+품목+모델 / <strong>바코드 굵게</strong> / 보조 정보 1줄 — 나머지 컬럼은 상세에서</li>'+
-    '<li><strong>체크박스·일괄 처리 없음</strong> — 카드를 누르면 1건 처리 화면(누른 카드 bg <span class="mono">#eff1fd</span>+테두리 <span class="mono">#141e76</span>). 페이지네이션 없음</li>'+
-    '<li>⚠️ 카드 탭 목적지(처리 vs 상세) 확인 필요</li></ul>' },
+    '<li><strong>체크박스·일괄 처리 없음</strong> — 카드를 누르면 <strong>상세 화면</strong>(누른 카드 bg <span class="mono">#eff1fd</span>+테두리 <span class="mono">#141e76</span>). 페이지네이션 없음</li></ul>' },
 
   s9: { title:"9. 이로움케어 사업소 / 운영관리 화면군", html:
     '<p><strong>배경</strong>: 대대여(플러스+) 운영관리 시스템은 현재 PC가 PHP, 모바일이 별도 React 앱으로 <strong>이중 관리</strong>되고 있음 — 이 반응형 정책 문서를 만드는 근본 이유. Figma 파일 <span class="mono">H8lqlZitePnf5dTDPB5GzR</span>에 운영관리 앱 3개: <strong>이로움케어 사업소</strong>(사업소 직원용) / <strong>입출고 창고</strong>(창고 직원용) / <strong>설치파트너</strong>(설치업체용). 1~8번은 전부 소비자용 화면 기준이었고, 9번부터 운영관리 화면군.</p>'+
@@ -558,13 +557,12 @@ var SECTIONS = {
     '<li><strong>상품 카드 그리드 리스트</strong>(이로움케어 사업소) — PC 자체가 카드 그리드(필터+정렬+Pagination). "적응형"과 다른 제3의 리스트 유형</li>'+
     '<li><strong>Toast 알림</strong>(입출고 창고) — Figma DS <span class="mono">Toast</span> 실측: <strong>Success·Error만 실사용</strong>(Default·Description 미사용), 패딩 8/16·높이 62·radius 8, 아이콘 24+본문 16 SemiBold, 닫기(X) 버튼 사용 사례 있음. PC 520px / 모바일 80%, 닫기 없으면 2초 자동 소멸</li>'+
     '<li><strong>좌측 컬럼 고정 + 가로 스크롤 테이블</strong>(입출고 창고) — 컬럼 8~9개 이상 넓은 테이블에서 앞쪽 컬럼군 고정, "표를 밀어보세요" 힌트</li>'+
-    '<li><strong>월간 캘린더</strong>(설치파트너) — 7열 그리드가 1136px을 정확히 7등분, 날짜별 이벤트 pill+건수 배지</li>'+
+    '<li><strong>월간 캘린더</strong>(설치파트너) — 7열 그리드가 1136px을 정확히 7등분, 날짜별 이벤트 pill+건수 배지. <strong>모바일(2026-09-29 확정)</strong>: 같은 7열 표를 쓰는 반응형 — 월 이동 가운데, 범례 아래 줄 오른쪽, 팀 필터 PC 전용, 칸 아래 테두리만, 날짜 탭 시 배정 리스트</li>'+
     '<li><strong>지도+리스트 스플릿 뷰</strong>(설치파트너) — 지도 위 마커 + 우측 플로팅 리스트 패널(722px). 모바일: 지도 전체화면 위 <strong>드래그형 하단 리스트</strong>(<span class="mono">bottom_List</span>)로 전환 — 확인됨</li>'+
     '<li><strong>사진 업로드 그리드</strong>(설치파트너) — 88×88px 썸네일, 최대 10장, 각 우상단 닫기버튼</li>'+
     '</ul>'+
     '<h4>아직 확인 안 된 것</h4>'+
     '<ul class="checklist">'+
-    '<li>캘린더의 모바일 반응형 처리 — PC 전용으로만 확인됨</li>'+
     '<li>설치파트너 라벨 폭(160px)이 다른 화면에서도 일관된 값인지</li>'+
     '<li>이로움케어 사업소 나머지(회수, 서비스 제공 안내), 반품/AS·수급자관리 화면(추후 Figma 추가 예정)</li>'+
     '</ul>' }
@@ -632,7 +630,7 @@ var PROTOS = [
     desc:"3-7 · PC 검색 패널(체크박스 복수 선택, 접기) vs 모바일 필터칩+적용 태그+바텀시트(단일 선택) — 실제 동작",
     primary:"s37", related:["s2","s35","s6"] },
   { id:"list-body-compare-demo.html", title:"리스트 본문 비교", category:"common-pattern",
-    desc:"3-9 · PC 좌측 440px 고정 가로 스크롤 테이블+일괄 처리 vs 모바일 카드(누르면 1건 처리) — 실제 동작",
+    desc:"3-9 · PC 좌측 440px 고정 가로 스크롤 테이블+일괄 처리 vs 모바일 카드(누르면 상세) — 실제 동작",
     primary:"s39", related:["s2","s36","s37","s38"] },
 
   // --- 운영관리 화면군 패턴 (이로움케어 사업소/입출고 창고/설치파트너, 9번 — 공식 DS 문서 실측 반영) ---
@@ -644,7 +642,10 @@ var PROTOS = [
     primary:"s9", related:["s6"] },
   { id:"card-grid-list-demo.html", title:"상품 카드 그리드 리스트", category:"ops-pattern",
     desc:"9 · PC 4×3+페이지네이션 vs 모바일 2×2+무한스크롤 — 제3의 리스트 유형",
-    primary:"s9", related:["s2","s36"] }
+    primary:"s9", related:["s2","s36"] },
+  { id:"calendar-compare-demo.html", title:"월간 캘린더 비교 (설치파트너)", category:"ops-pattern",
+    desc:"9-7 · 같은 7열 표를 쓰는 반응형 — PC 월 이동 왼쪽+팀 필터 vs 모바일 월 이동 가운데+범례 아래 줄, 날짜 탭 시 배정 리스트",
+    primary:"s9", related:["s2","s35"] }
   // 2026-09-28: 배송 진행 스텝퍼 / 3단계 프로세스 안내 데모는 정책 범위에서 제외(hidden) 처리 —
   // 파일은 prototypes/에 그대로 남겨뒀으나 메뉴·정책 문서 어디에도 노출하지 않음
 ];

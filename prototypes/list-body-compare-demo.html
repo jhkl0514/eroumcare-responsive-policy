@@ -96,25 +96,19 @@ table.lt{border-collapse:separate;border-spacing:0;table-layout:fixed;width:1440
 .m-card .l1 .model{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .m-card .l2{font-size:16px;font-weight:700;line-height:24px;letter-spacing:-.24px;color:var(--text-primary);}
 .m-card .l3{font-size:16px;line-height:24px;letter-spacing:-.24px;color:var(--text-primary);}
-/* 1건 처리 화면(입고처리) */
+/* 상세 화면(입고대기 상세) — 3-1 텍스트형(배경 없는 라벨) + 3-8 View 24/20 */
 .proc{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s ease;z-index:10;}
 .proc.open{transform:translateX(0);}
 .proc-head{flex:0 0 56px;display:flex;align-items:center;gap:4px;padding:0 20px 0 4px;border-bottom:1px solid var(--border-secondary);}
 .proc-head button{width:48px;height:48px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .proc-head .t{font-size:20px;font-weight:700;letter-spacing:-.4px;}
 .proc-body{flex:1;overflow-y:auto;}
-.proc-sum{margin:20px;padding:16px;border-radius:8px;box-shadow:0 0 1px rgba(0,0,0,.2), 0 2px 16px rgba(0,0,0,.08);}
-.proc-sum .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.proc-sum .st{font-size:18px;font-weight:700;color:var(--brand);}
-.proc-sum .more{display:inline-flex;align-items:center;font-size:16px;color:var(--text-primary);}
-.proc-sum dl{display:grid;grid-template-columns:72px 1fr;gap:8px 12px;margin:0;font-size:16px;line-height:24px;}
-.proc-sum dt{color:var(--text-secondary);}
-.proc-sum dd{margin:0;word-break:break-all;}
-.proc-sum dd.code{color:#09af00;font-weight:700;}
-.proc-sec{padding:24px 20px;border-top:8px solid var(--tertiary);font-size:16px;color:var(--text-tertiary);}
-.proc-sec h4{margin:0 0 12px;font-size:18px;font-weight:700;color:var(--text-primary);}
-.proc-foot{flex:0 0 auto;padding:16px 20px calc(16px + env(safe-area-inset-bottom));}
-.proc-foot button{width:100%;height:54px;border:none;border-radius:4px;background:var(--brand);color:#fff;font-size:18px;font-weight:600;cursor:pointer;}
+.dt-status{padding:24px 20px;font-size:20px;font-weight:700;color:var(--brand);}
+.dt-sec{padding:24px 20px;border-top:8px solid var(--tertiary);}
+.dt-sec h4{margin:0 0 16px;font-size:18px;font-weight:700;color:var(--text-primary);}
+.dt-sec dl{display:grid;grid-template-columns:92px 1fr;gap:12px;margin:0;font-size:16px;line-height:24px;}
+.dt-sec dt{color:var(--text-secondary);}
+.dt-sec dd{margin:0;color:var(--text-primary);word-break:break-all;}
 </style>
 </head>
 <body>
@@ -123,7 +117,7 @@ table.lt{border-collapse:separate;border-spacing:0;table-layout:fixed;width:1440
     <b>리스트 본문 — PC 테이블 ↔ 모바일 카드</b> — CLAUDE.md 3-9. 리스트는 <b>적응형</b>(2번): PC 테이블과 모바일 카드를 둘 다 두고 1024/1025px 경계에서 표시만 전환. Figma 입출고 창고 <code>입고처리</code>(PC <code>입고대기_테이블 일부 고정값</code>, 모바일 <code>입고대기</code>·<code>입고처리</code>) + 퍼블 <code>warehouse/201_income</code> 실측:
     <ul>
       <li><b>PC</b>: 밑줄 탭 + 우측 <b>일괄 처리 버튼</b>(체크한 행 대상) → 테이블(헤더 52 <code>#f5f5f5</code>, 행 52, 구분선 <code>#eee</code>). 컬럼 합이 콘텐츠 폭을 넘으면 <b>좌측 식별 컬럼(체크박스 44 + 바코드 234 + 상품명 162 = 440) 고정</b>, 나머지는 가로 스크롤 + 표 아래 "표를 밀어보세요." 힌트. 선택 행 <code>#eff1fd</code>. 날짜 컬럼은 정렬 가능. 아래 페이지네이션(3-6)</li>
-      <li><b>모바일</b>: 탭은 풀폭(2개면 반반), 건수 → 카드 목록(카드 사이 12px). 카드는 <b>상태 배지 + 품목·모델 / 바코드(굵게) / 보조 정보 1줄</b> — 나머지 컬럼은 카드에 넣지 않음. <b>체크박스·일괄 처리 없음</b> — 카드를 누르면 <b>1건 처리 화면</b>으로 이동. 페이지네이션 없음(스크롤)</li>
+      <li><b>모바일</b>: 탭은 풀폭(2개면 반반), 건수 → 카드 목록(카드 사이 12px). 카드는 <b>상태 배지 + 품목·모델 / 바코드(굵게) / 보조 정보 1줄</b> — 나머지 컬럼은 카드에 넣지 않음. <b>체크박스·일괄 처리 없음</b> — 카드를 누르면 <b>상세 화면</b>으로 이동. 페이지네이션 없음(스크롤)</li>
     </ul>
   </div>
 
@@ -171,7 +165,7 @@ table.lt{border-collapse:separate;border-spacing:0;table-layout:fixed;width:1440
 
   <!-- ================= Mobile ================= -->
   <div class="stack-col">
-    <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 이하 — 풀폭 탭 + 카드 목록 + 카드 탭하면 1건 처리</div>
+    <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 이하 — 풀폭 탭 + 카드 목록 + 카드 탭하면 상세</div>
     <div class="mo-shell">
       <div class="mo-screen">
         <div class="mo-gnb">
@@ -187,27 +181,17 @@ table.lt{border-collapse:separate;border-spacing:0;table-layout:fixed;width:1440
           <div class="cards" id="cards"></div>
         </div>
 
-        <div class="proc" id="proc" role="dialog" aria-label="입고처리">
+        <div class="proc" id="proc" role="dialog" aria-label="입고대기 상세">
           <div class="proc-head">
             <button type="button" aria-label="뒤로" onclick="closeProc()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.7071 5.29289C16.0976 5.68342 16.0976 6.31658 15.7071 6.70711L10.4142 12L15.7071 17.2929C16.0976 17.6834 16.0976 18.3166 15.7071 18.7071C15.3166 19.0976 14.6834 19.0976 14.2929 18.7071L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929L14.2929 5.29289C14.6834 4.90237 15.3166 4.90237 15.7071 5.29289Z" fill="#333333"/></svg></button>
-            <div class="t">입고처리</div>
+            <div class="t">입고대기 상세</div>
           </div>
-          <div class="proc-body">
-            <div class="proc-sum">
-              <div class="top"><span class="st">입고대기</span><span class="more">상세<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.29289 5.29289C8.68342 4.90237 9.31658 4.90237 9.70711 5.29289L15.7071 11.2929C16.0976 11.6834 16.0976 12.3166 15.7071 12.7071L9.70711 18.7071C9.31658 19.0976 8.68342 19.0976 8.29289 18.7071C7.90237 18.3166 7.90237 17.6834 8.29289 17.2929L13.5858 12L8.29289 6.70711C7.90237 6.31658 7.90237 5.68342 8.29289 5.29289Z" fill="#333333"/></svg></span></div>
-              <dl><dt>상품명</dt><dd id="pName"></dd><dt>바코드</dt><dd class="code" id="pCode"></dd></dl>
-            </div>
-            <div class="proc-sec"><h4>하자 체크</h4>작동여부 · 부품누락</div>
-            <div class="proc-sec"><h4>창고 위치</h4>가상창고명 · 랙</div>
-            <div class="proc-sec"><h4>상품 이미지 등록</h4>최소 2건 이상 등록 필수</div>
-            <div class="proc-sec"><h4>메모</h4>하자 체크 비정상일 때 필수</div>
-          </div>
-          <div class="proc-foot"><button type="button" onclick="closeProc()">저장</button></div>
+          <div class="proc-body" id="detailBody"></div>
         </div>
       </div>
     </div>
     <div class="callout">
-      카드를 누르면 <b>누른 카드가 선택 스타일</b>(배경 <code>#eff1fd</code> + 테두리 <code>#141e76</code>)로 바뀐 뒤 <b>1건 입고처리 화면</b>이 열립니다(요약 카드 + 하자 체크 · 창고 위치 · 이미지 · 메모 + 하단 저장). PC처럼 여러 건을 체크해서 한 번에 처리하는 기능은 모바일에 없음. 요약 카드의 "상세"는 입고대기 상세(읽기 전용, 3-1 텍스트형)로 이동 — <span class="warn-tag">확인 필요</span>카드 탭의 목적지가 처리 화면인지 상세 화면인지 Figma에 연결선이 없어 화면 구성으로 추정.
+      카드를 누르면 <b>누른 카드가 선택 스타일</b>(배경 <code>#eff1fd</code> + 테두리 <code>#141e76</code>)로 바뀐 뒤 <b>상세 화면</b>(Figma <code>입고대기 상세</code> — 상태 + 상품정보 + 입고정보, 읽기 전용 3-1 텍스트형)이 열립니다(사용자 확인 2026-09-29). 카드에 없던 나머지 컬럼(계약 사업소, 회수요청일, 운송장번호 등)은 여기서 보여줌. PC처럼 여러 건을 체크해서 한 번에 처리하는 기능은 모바일에 없음.
     </div>
   </div>
 </div>
@@ -276,8 +260,13 @@ function openProc(id){
   var r = ROWS.filter(function(x){ return x.id === id; })[0];
   document.querySelectorAll('.m-card.pressed').forEach(function(c){ c.classList.remove('pressed'); });
   document.getElementById('card' + id).classList.add('pressed');
-  document.getElementById('pName').textContent = r.name;
-  document.getElementById('pCode').textContent = r.code;
+  var dl = function(pairs){ return '<dl>' + pairs.map(function(p){ return '<dt>' + p[0] + '</dt><dd>' + p[1] + '</dd>'; }).join('') + '</dl>'; };
+  var carrier = r.carrier.split('<br>');
+  document.getElementById('detailBody').innerHTML = '<div class="dt-status">입고대기</div>' +
+    '<div class="dt-sec"><h4>상품정보</h4>' + dl([['바코드', r.code], ['상품명', r.name], ['계약 사업소', r.office], ['회수요청일', r.req || '-'], ['상품유형', r.type], ['바코드해지', r.bc]]) + '</div>' +
+    '<div class="dt-sec"><h4>입고정보</h4>' + dl(r.route === '택배'
+      ? [['입고경로', r.route], ['택배사', carrier[0]], ['운송장번호', carrier[1] || '-'], ['입고사유', r.reason]]
+      : [['입고경로', r.route], ['설치업체', carrier[0]], ['연락처', carrier[1] || '-'], ['입고사유', r.reason]]) + '</div>';
   setTimeout(function(){ document.getElementById('proc').classList.add('open'); }, 150);
 }
 function closeProc(){ document.getElementById('proc').classList.remove('open'); }

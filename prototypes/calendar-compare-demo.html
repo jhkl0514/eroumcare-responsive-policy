@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>월간 캘린더 비교</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999; --text-disabled:#bdbdbd;
+  --border-secondary:#eee; --brand:#323da3;
+  --shadow:0 2px 4px rgba(0,0,0,0.12), 0 0 2px rgba(0,0,0,0.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+button{font-family:inherit;}
+#wrap{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+.banner b{color:var(--text-primary);}
+.banner ul{margin:8px 0 0;padding-left:18px;}
+.banner li{margin-bottom:4px;}
+.stack-col{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.compare-label{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;}
+.compare-tag{font-size:14px;font-weight:700;color:#fff;background:var(--brand);border-radius:4px;padding:2px 10px;}
+.callout{font-size:14px;color:var(--text-secondary);line-height:1.6;background:var(--card);border:1px solid var(--border-secondary);border-radius:8px;padding:12px 14px;}
+.callout b{color:var(--text-primary);}
+.pc-frame{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;box-shadow:var(--shadow);padding:24px;}
+.mo-shell{width:382px;max-width:100%;margin:0 auto;background:var(--card);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;padding:10px;}
+.mo-screen{height:820px;overflow-y:auto;border-radius:12px;background:#fff;}
+.mo-head{height:56px;display:flex;align-items:center;gap:4px;padding:0 20px 0 4px;border-bottom:1px solid var(--border-secondary);}
+.mo-head .back{width:48px;height:48px;display:flex;align-items:center;justify-content:center;}
+.mo-head .t{font-size:20px;font-weight:700;letter-spacing:-.4px;}
+.picked{margin-top:12px;font-size:14px;color:var(--text-secondary);min-height:20px;}
+.picked b{color:var(--brand);}
+
+/* ===== 캘린더 공통(같은 DOM) — 퍼블 partner/101_calendar · mobile02_calendar + Figma `252:13805` ===== */
+.cal .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.cal .nav{display:flex;align-items:center;gap:12px;}
+.cal .nav button{width:40px;height:40px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
+.cal .nav .ym{font-size:20px;font-weight:900;line-height:28px;}
+.cal .sum{display:flex;align-items:center;gap:16px;}
+.cal .sum span{position:relative;padding-left:20px;font-size:14px;font-weight:600;color:var(--text-secondary);}
+.cal .sum span::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:14px;height:14px;border-radius:4px;}
+.cal .sum .in::before{background:#323da3;} .cal .sum .out::before{background:#e53935;}
+/* 팀 필터 셀렉트(PC 전용) — DS SelectField */
+.team{display:flex;align-items:center;gap:4px;width:140px;height:40px;padding:8px 12px;border:1px solid #333;border-radius:4px;background:#fff;color:#333;font-size:14px;cursor:pointer;}
+.team span{flex:1;text-align:left;}
+.cal table{width:100%;table-layout:fixed;border-collapse:collapse;}
+.cal thead th{height:32px;background:var(--tertiary);border:1px solid var(--tertiary);font-size:12px;font-weight:500;color:var(--text-primary);}
+.cal tbody td{border:1px solid var(--tertiary);vertical-align:top;text-align:center;padding:0;}
+.cal .cell{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;width:100%;min-height:130px;padding:2px;border:none;background:none;cursor:pointer;font:inherit;text-align:center;}
+.cal .cell em{align-self:center;}
+.cal .cell:hover{background:var(--secondary-bg);}
+.cal .cell.sel{background:#eff1fd;}
+.cal em{display:inline-block;width:32px;height:32px;margin-bottom:12px;border-radius:999px;font-style:normal;font-size:14px;font-weight:600;line-height:32px;color:var(--text-secondary);}
+.cal .out-month em{color:var(--text-disabled);}
+.cal .today em{background:#90ee02;color:var(--text-primary);}
+.cal .pill{display:flex;align-items:center;justify-content:space-between;height:22px;margin-bottom:2px;padding:2px 4px;border-radius:2px;font-size:12px;font-weight:500;}
+.cal .pill i{font-style:normal;min-width:14px;height:14px;padding:0 3px;border-radius:2px;font-size:10px;line-height:14px;color:#fff;}
+.cal .pill.in{background:#e3e5f5;color:#323da3;} .cal .pill.in i{background:#323da3;}
+.cal .pill.out{background:#ffebee;color:#e53935;} .cal .pill.out i{background:#e53935;}
+
+/* ===== 모바일(1024px 이하) — 같은 DOM, CSS만 조정 ===== */
+.cal.mo{padding:24px 0 20px;}
+.cal.mo .top{flex-direction:column;align-items:stretch;gap:20px;padding:0 20px;}
+.cal.mo .nav{justify-content:center;gap:48px;}
+.cal.mo .nav button{width:48px;height:48px;}
+.cal.mo .nav .ym{font-weight:700;}
+.cal.mo .sum{justify-content:flex-end;gap:12px;}
+.cal.mo .sum span{padding-left:18px;}
+.cal.mo .team{display:none;}              /* 팀 필터는 모바일에서 노출하지 않음 */
+.cal.mo thead th{height:22px;}
+.cal.mo tbody td{border-left:none;border-right:none;border-top:none;}   /* 아래 테두리만 */
+.cal.mo tbody tr:last-child td{border-bottom:none;}
+.cal.mo .cell{min-height:94px;}
+.cal.mo em{margin-bottom:8px;}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="banner">
+    <b>월간 캘린더 — PC ↔ 모바일</b> — CLAUDE.md 9-7의 6번. 설치파트너 캘린더. Figma 모바일 <code>252:13805</code> + 퍼블 <code>partner/101_calendar</code>·<code>mobile02_calendar</code> 실측:
+    <ul>
+      <li><b>반응형</b>(2번) — PC와 모바일이 <b>같은 7열 월간 표</b>. 모바일은 칸이 좁아질 뿐(360 기준 약 51px) 구조는 같아서 적응형(표→카드 전환)이 아님</li>
+      <li>칸: 날짜(32 원, 이번 달 <code>#616161</code> / 다른 달 <code>#bdbdbd</code> / 오늘 <code>#90ee02</code>) + <b>설치</b>(bg <code>#e3e5f5</code>, 글자 <code>#323da3</code>) · <b>회수</b>(bg <code>#ffebee</code>, 글자 <code>#e53935</code>) 알약(높이 22, radius 2, 건수 배지) — 알약 12px·배지 10px은 Figma·퍼블 명시값(6-6 예외)</li>
+      <li>칸을 누르면 <b>그 날짜의 배정 리스트</b>로 이동</li>
+    </ul>
+  </div>
+
+  <div class="stack-col">
+    <div class="compare-label"><span class="compare-tag">PC</span> 1025px 이상 — 월 이동 왼쪽 + 범례·팀 필터 오른쪽, 칸 테두리 사방</div>
+    <div class="pc-frame"><div class="cal" id="calPc"></div><div class="picked" id="pickedPc"></div></div>
+    <div class="callout">상단 왼쪽 월 이동(40×40 버튼, <b>20px Heavy</b>), 같은 줄 오른쪽에 설치·회수 요청 합계 범례와 <b>팀 필터 셀렉트</b>(DS 셀렉트). 요일 줄 높이 32, 칸 테두리 사방 1px <code>#f5f5f5</code>, 날짜 아래 간격 12.</div>
+  </div>
+
+  <div class="stack-col">
+    <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 이하 — 같은 표, 월 이동 가운데 + 범례 아래 줄, 팀 필터 없음</div>
+    <div class="mo-shell"><div class="mo-screen">
+      <div class="mo-head"><div class="back"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.7071 5.29289C16.0976 5.68342 16.0976 6.31658 15.7071 6.70711L10.4142 12L15.7071 17.2929C16.0976 17.6834 16.0976 18.3166 15.7071 18.7071C15.3166 19.0976 14.6834 19.0976 14.2929 18.7071L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929L14.2929 5.29289C14.6834 4.90237 15.3166 4.90237 15.7071 5.29289Z" fill="#333333"/></svg></div><div class="t">캘린더</div></div>
+      <div class="cal mo" id="calMo"></div>
+      <div class="picked" id="pickedMo" style="padding:0 20px 20px"></div>
+    </div></div>
+    <div class="callout">월 이동은 <b>가운데 정렬</b>(48×48 버튼, 사이 48px, 20px Bold), 그 아래 줄 <b>오른쪽</b>에 범례. <b>팀 필터는 모바일에 없음</b>. 요일 줄 높이 22, 칸은 <b>아래 테두리만</b>, 날짜 아래 간격 8. 알약·배지 크기는 PC와 같고 칸 폭에 맞춰 줄어듦. 캘린더는 배정 리스트에서 들어오는 하위 화면(상단 뒤로가기 + "캘린더").</div>
+  </div>
+</div>
+<script>
+var PREV = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.7071 5.29289C16.0976 5.68342 16.0976 6.31658 15.7071 6.70711L10.4142 12L15.7071 17.2929C16.0976 17.6834 16.0976 18.3166 15.7071 18.7071C15.3166 19.0976 14.6834 19.0976 14.2929 18.7071L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929L14.2929 5.29289C14.6834 4.90237 15.3166 4.90237 15.7071 5.29289Z" fill="#333333"/></svg>';
+var NEXT = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.29289 5.29289C8.68342 4.90237 9.31658 4.90237 9.70711 5.29289L15.7071 11.2929C16.0976 11.6834 16.0976 12.3166 15.7071 12.7071L9.70711 18.7071C9.31658 19.0976 8.68342 19.0976 8.29289 18.7071C7.90237 18.3166 7.90237 17.6834 8.29289 17.2929L13.5858 12L8.29289 6.70711C7.90237 6.31658 7.90237 5.68342 8.29289 5.29289Z" fill="#333333"/></svg>';
+var ARROW = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z" fill="#333333"/></svg>';
+/* 2024-03 Figma 데이터(설치/회수 건수) */
+var EVENTS = {1:[4,0],4:[6,0],6:[3,2],7:[2,2],8:[1,3],15:[6,0],20:[4,2],22:[6,2],25:[1,0],26:[2,2],27:[2,2],28:[1,2],29:[2,0]};
+var TODAY = 27, view = {y:2024, m:2}, sel = {pc:null, mo:null};
+function render(id, mode){
+  var y = view.y, m = view.m, first = new Date(y, m, 1), start = new Date(y, m, 1 - first.getDay());
+  var sumIn = 0, sumOut = 0; Object.keys(EVENTS).forEach(function(k){ sumIn += EVENTS[k][0]; sumOut += EVENTS[k][1]; });
+  var cur = y === 2024 && m === 2;
+  var html = '<div class="top"><div class="nav"><button type="button" aria-label="이전 달" onclick="nav(-1)">' + PREV + '</button><span class="ym">' + y + '-' + String(m + 1).padStart(2, '0') + '</span><button type="button" aria-label="다음 달" onclick="nav(1)">' + NEXT + '</button></div>' +
+    '<div class="sum"><span class="in">설치요청 ' + (cur ? sumIn : 0) + '</span><span class="out">회수요청 ' + (cur ? sumOut : 0) + '</span><button type="button" class="team"><span>전체</span>' + ARROW + '</button></div></div>' +
+    '<table><thead><tr>' + ['일','월','화','수','목','금','토'].map(function(d){ return '<th>' + d + '</th>'; }).join('') + '</tr></thead><tbody>';
+  var weeks = Math.ceil((first.getDay() + new Date(y, m + 1, 0).getDate()) / 7);
+  for (var w = 0; w < weeks; w++) {
+    html += '<tr>';
+    for (var d = 0; d < 7; d++) {
+      var day = new Date(start); day.setDate(start.getDate() + w * 7 + d);
+      var inM = day.getMonth() === m, n = day.getDate(), ev = inM && cur ? EVENTS[n] : null;
+      var cls = 'cell' + (inM ? '' : ' out-month') + (inM && cur && n === TODAY ? ' today' : '') + (inM && sel[mode] === n ? ' sel' : '');
+      html += '<td><button type="button" class="' + cls + '"' + (inM ? ' onclick="pick(\'' + mode + '\',' + n + ')"' : ' disabled') + ' aria-label="' + (m + 1) + '월 ' + n + '일">' +
+        '<em>' + n + '</em>' +
+        (ev && ev[0] ? '<span class="pill in">설치<i>' + ev[0] + '</i></span>' : '') +
+        (ev && ev[1] ? '<span class="pill out">회수<i>' + ev[1] + '</i></span>' : '') + '</button></td>';
+    }
+    html += '</tr>';
+  }
+  document.getElementById(id).innerHTML = html + '</tbody></table>';
+}
+function all(){ render('calPc', 'pc'); render('calMo', 'mo'); }
+function nav(dir){ var d = new Date(view.y, view.m + dir, 1); view.y = d.getFullYear(); view.m = d.getMonth(); sel = {pc:null, mo:null}; all(); }
+function pick(mode, n){
+  sel[mode] = n; all();
+  document.getElementById(mode === 'pc' ? 'pickedPc' : 'pickedMo').innerHTML = '<b>' + (view.m + 1) + '월 ' + n + '일</b> 배정 리스트로 이동(데모)';
+}
+all();
+</script>
+</body>
+</html>
