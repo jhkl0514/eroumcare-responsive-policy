@@ -37,10 +37,10 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .breadcrumb{display:none;font-size:14px;color:var(--text-tertiary);padding:14px 20px 0;}
 .title-action-wrap{display:block;}
 
-/* 1024px 이상: PC 레이아웃 */
+/* 1025px 이상: PC 레이아웃 */
 /* PC 콘텐츠 상한 1060px — Figma 전 PC 화면 공통 contents_wrapper 폭(2026-09-23 확인, 기존 1400px는
    좌측 "공단 자동등록" aside(302px)까지 포함한 Content Wrapper 폭을 콘텐츠 폭으로 착각한 값이었음) */
-@container pf (min-width: 1024px){
+@container pf (min-width: 1024.02px){
   #phone{max-width:1060px;box-shadow:var(--shadow);border-radius:8px;overflow:hidden;}
   .back{display:none;}
   .breadcrumb{display:block;}
@@ -155,7 +155,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .date-wrap{position:relative;}
 .calendar-popup{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #333;
   border-radius:4px;box-shadow:0 2px 4px rgba(0,0,0,0.12),0 0 2px rgba(0,0,0,0.12);padding:12px;z-index:20;}
-@container pf (min-width: 1024px){
+@container pf (min-width: 1024.02px){
   .calendar-popup{right:auto;width:320px;}
 }
 .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
@@ -173,7 +173,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .cal-day.selected{background:#f2fde4;color:var(--text-primary);}
 .lock-toggle{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-secondary);
   margin:6px 0 4px;}
-@container pf (min-width: 1024px){
+@container pf (min-width: 1024.02px){
   .delivery-wrap{flex-direction:row;align-items:center;gap:8px;}
   .delivery-left{flex:0 0 auto;}
   .delivery-region{margin-top:2px;}
@@ -220,8 +220,8 @@ select.dv-input{background-color:var(--card);color:var(--input-text-active);
     <button class="preset-btn" data-w="359">359px</button>
     <button class="preset-btn" data-w="360">360px</button>
     <button class="preset-btn" data-w="768">768px</button>
-    <button class="preset-btn" data-w="1023">1023px</button>
-    <button class="preset-btn active" data-w="1024">1024px</button>
+    <button class="preset-btn" data-w="1024">1024px</button>
+    <button class="preset-btn active" data-w="1025">1025px</button>
     <button class="preset-btn" data-w="1440">1440px</button>
   </div>
   <div class="w-readout" id="w-readout"></div>
@@ -527,14 +527,16 @@ function setWidth(w){
   frameEl.style.width = w + 'px';
   requestAnimationFrame(updateReadout);
 }
+// 폭 전환 애니메이션이 끝난 실제 폭으로 표시 갱신(rAF 한 번으로는 전환 전 폭을 읽음)
+if (window.ResizeObserver) new ResizeObserver(function(){ updateReadout(); }).observe(frameEl);
 presetButtons.forEach(function(b){
   b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
 });
 function updateReadout(){
   var w = Math.round(frameEl.getBoundingClientRect().width);
-  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px' + (w >= 1024 ? ' (PC)' : ' (모바일)');
+  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px' + (w > 1024 ? ' (PC)' : ' (모바일)');
 }
-setWidth('1024');
+setWidth('1025');
 </script>
 </body>
 </html>

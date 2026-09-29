@@ -45,13 +45,13 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
   max-width:100%;overflow:hidden;margin:auto;}
 .modal-box[data-size="md"]{width:480px;}
 .modal-box[data-size="lg"]{width:600px;}
-@container pf (min-width: 1024px){
+@container pf (min-width: 1024.02px){
   .modal-box[data-size="md"] .modal-actions,
   .modal-box[data-size="lg"] .modal-actions{justify-content:center;}
   .modal-box[data-size="md"] .modal-actions .btn,
   .modal-box[data-size="lg"] .modal-actions .btn{flex:0 0 150px;}
 }
-@container pf (max-width: 1023.98px){
+@container pf (max-width: 1024px){
   .modal-box[data-size="sm"]{width:340px;}
   .modal-box[data-size="md"]{width:340px;}
   .modal-box[data-size="lg"]{width:100%;}
@@ -110,8 +110,8 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
     <button class="preset-btn" data-w="320">320px</button>
     <button class="preset-btn" data-w="359">359px</button>
     <button class="preset-btn active" data-w="360">360px</button>
-    <button class="preset-btn" data-w="1023">1023px</button>
     <button class="preset-btn" data-w="1024">1024px</button>
+    <button class="preset-btn" data-w="1025">1025px</button>
     <button class="preset-btn" data-w="1440">1440px</button>
   </div>
   <div class="w-readout" id="w-readout"></div>
@@ -217,6 +217,8 @@ function setWidth(w){
   frameEl.style.width = w + 'px';
   requestAnimationFrame(updateReadout);
 }
+// 폭 전환 애니메이션이 끝난 실제 폭으로 표시 갱신(rAF 한 번으로는 전환 전 폭을 읽음)
+if (window.ResizeObserver) new ResizeObserver(function(){ updateReadout(); }).observe(frameEl);
 presetButtons.forEach(function(b){
   b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
 });

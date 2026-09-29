@@ -233,7 +233,7 @@ button,input,select{font-family:inherit;}
 <body>
 <div id="wrap">
   <div class="banner">
-    <b>검색 영역 — PC 검색 패널 ↔ 모바일 필터칩+바텀시트</b> — CLAUDE.md 3-7. <b>검색은 리스트 화면에만 있으므로 적응형</b>(PC 패널 / 모바일 칩+시트를 둘 다 준비해두고 1024px에서 표시만 전환). 상세 화면은 반응형. Figma 입출고 창고 <code>입고처리</code> 실측:
+    <b>검색 영역 — PC 검색 패널 ↔ 모바일 필터칩+바텀시트</b> — CLAUDE.md 3-7. <b>검색은 리스트 화면에만 있으므로 적응형</b>(PC 패널 / 모바일 칩+시트를 둘 다 준비해두고 1024/1025px 경계에서 표시만 전환). 상세 화면은 반응형. Figma 입출고 창고 <code>입고처리</code> 실측:
     <ul>
       <li><b>PC</b>: 회색 패널(<code>#fafafa</code>, 테두리 <code>#bdbdbd</code>, radius 4, 패딩 16) 안에 <b>라벨 120px + 체크박스 그룹</b> 행을 2열로 나열(행 높이 44, 하단 구분선 <code>#eee</code>). 첫 행은 <b>날짜</b>(기준 셀렉트 160 + 시작일/종료일 각 160 + 기간 세그먼트 오늘/어제/일주일/지난달/3개월). 체크박스는 <b>복수 선택</b> — 기본은 "전체"만 체크, "전체"를 누르면 같은 행 모두 체크. 셀렉트·달력은 <b>DS 컴포넌트</b>(옵션 패널 / <code>calendar_Default</code> 팝오버). 검색어는 셀렉트(160) + 입력(264). 하단 가운데 초기화(아웃라인)/검색(필드) 각 130×36. 우상단 <b>접기</b> 버튼 — <b>기본 펼침</b>, 접으면 라벨이 <b>"상세"</b>로 바뀜</li>
       <li><b>모바일</b>: 패널이 사라지고 ① <b>필터칩 줄</b>(값이 들어간 칩 + 우측 고정 "검색" 칩) ② <b>적용 태그 줄</b>(초록 <code>#09af00</code> 글씨 + X, 우측 고정 "초기화" — 적용된 조건이 있을 때만) ③ <b>건수</b> 순으로 쌓임</li>
@@ -243,7 +243,7 @@ button,input,select{font-family:inherit;}
 
   <!-- ================= PC ================= -->
   <div class="stack-col">
-    <div class="compare-label"><span class="compare-tag">PC</span> 1024px 이상 — 검색 패널(체크박스 복수 선택, 기본 펼침)</div>
+    <div class="compare-label"><span class="compare-tag">PC</span> 1025px 이상 — 검색 패널(체크박스 복수 선택, 기본 펼침)</div>
     <div class="pc-frame">
       <div class="pc-search" id="pcSearch">
         <button class="ps-fold" id="psFold" type="button" onclick="togglePcFold()" aria-expanded="true">
@@ -288,7 +288,7 @@ button,input,select{font-family:inherit;}
 
   <!-- ================= Mobile ================= -->
   <div class="stack-col">
-    <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 미만 — 필터칩 + 적용 태그 + 바텀시트(단일 선택)</div>
+    <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 이하 — 필터칩 + 적용 태그 + 바텀시트(단일 선택)</div>
     <div class="mo-shell">
       <div class="mo-screen" id="moScreen">
         <div class="mo-gnb">

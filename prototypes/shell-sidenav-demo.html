@@ -56,6 +56,17 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
   padding:24px 16px;display:flex;flex-direction:column;justify-content:space-between;overflow-y:auto;
   transition:margin-left .3s ease;}
 .pc-body.nav-collapsed .pc-sidenav{margin-left:-240px;}
+/* 1025~1439px: SideNav는 숨김 → 햄버거로 콘텐츠 위 오버레이, 콘텐츠는 최소 1440 유지 + 가로 스크롤(CLAUDE.md 1번 PC 축소 구간) */
+.pc-body.narrow{position:relative;}
+.pc-body.narrow .pc-sidenav{position:absolute;top:0;bottom:0;left:0;z-index:5;margin-left:-240px;box-shadow:4px 0 12px rgba(0,0,0,.12);}
+.pc-body.narrow.nav-open .pc-sidenav{margin-left:0;}
+.pc-body.narrow .pc-content{overflow-x:auto;}
+.pc-body.narrow .pc-inner{min-width:1440px;}
+.pc-body.narrow .scroll-hint{display:block;}
+.scroll-hint{display:none;margin-top:16px;font-size:14px;color:var(--text-secondary);}
+.mode-seg{display:inline-flex;gap:0;border:1px solid #616161;border-radius:4px;padding:4px;background:#fff;align-self:flex-start;}
+.mode-seg button{height:32px;padding:0 14px;border:none;border-radius:4px;background:none;font-size:14px;color:var(--text-secondary);cursor:pointer;font-family:inherit;}
+.mode-seg button.on{background:#e0e0e0;color:var(--text-primary);font-weight:600;}
 .pc-sidenav .menu-list{display:flex;flex-direction:column;gap:4px;}
 .pc-sidenav .group{display:flex;flex-direction:column;gap:4px;}
 .pc-sidenav .parent{height:42px;border-radius:4px;display:flex;align-items:center;gap:8px;padding:0 4px 0 8px;
@@ -137,7 +148,11 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
   </div>
 
   <div class="stack-col">
-    <div class="compare-label"><span class="compare-tag">PC</span> 1024px 이상 — GNB + SideNav + 콘텐츠 (예시: 입출고 창고)</div>
+    <div class="compare-label"><span class="compare-tag">PC</span> 1025px 이상 — GNB + SideNav + 콘텐츠 (예시: 입출고 창고)</div>
+    <div class="mode-seg" role="group" aria-label="화면 폭">
+      <button type="button" class="on" id="modeWide" onclick="setPcMode('wide')">1440px 이상</button>
+      <button type="button" id="modeNarrow" onclick="setPcMode('narrow')">1025~1439px</button>
+    </div>
     <div class="pc-shell">
       <div class="pc-gnb">
         <div class="left">
@@ -162,21 +177,23 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
           </div>
           <div class="footer">ⓒEroumcare All rights reserved.</div>
         </nav>
-        <div class="pc-content">
+        <div class="pc-content"><div class="pc-inner">
           <div class="mock-line w40"></div>
           <div class="mock-card"></div>
           <div class="mock-line w90"></div>
           <div class="mock-line w60"></div>
-        </div>
+          <div class="scroll-hint">콘텐츠 최소 폭 1440px 유지 — 창이 좁으면 가로 스크롤</div>
+          </div></div>
       </div>
     </div>
     <div class="callout">
-      GNB 좌측 <b>햄버거(전체보기)</b>를 눌러보세요 — SideNav가 왼쪽으로 스르르 사라지고 콘텐츠가 전체폭으로 넓어집니다. 이때 햄버거 아이콘도 <b>가운데 줄이 짧아지는 모양</b>으로 애니메이션되며 바뀜(0.3s). 다시 누르면 SideNav가 나타나고 아이콘도 세 줄 같은 길이로 돌아감. 상위 메뉴(42px, Bold)와 하위 메뉴(40px, Regular+불릿), 선택된 하위 메뉴는 연한 브랜드 틴트(<code>#e3e5f5</code>) 배경 + 브랜드색 텍스트.
+      <b>1440px 이상</b>: GNB 좌측 <b>햄버거(전체보기)</b>를 눌러보세요 — SideNav가 왼쪽으로 스르르 사라지고 콘텐츠가 전체폭으로 넓어집니다. 이때 햄버거 아이콘도 <b>가운데 줄이 짧아지는 모양</b>으로 애니메이션되며 바뀜(0.3s). 다시 누르면 SideNav가 나타나고 아이콘도 세 줄 같은 길이로 돌아감. 상위 메뉴(42px, Bold)와 하위 메뉴(40px, Regular+불릿), 선택된 하위 메뉴는 연한 브랜드 틴트(<code>#e3e5f5</code>) 배경 + 브랜드색 텍스트.
+      <br><b>1025~1439px</b>(위 버튼으로 전환): SideNav가 처음부터 숨겨져 있고, 햄버거를 누르면 <b>콘텐츠 위에 겹쳐 열림</b>(오버레이). 콘텐츠는 <b>최소 폭 1440px을 유지하고 가로 스크롤</b> — 퍼블 CSS(<code>max-width:1439px</code>) 구현을 규칙으로 채택(CLAUDE.md 1번 "PC 축소 구간").
     </div>
   </div>
 
   <div class="stack-col">
-    <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 미만 — 상단 GNB 햄버거 + 전체메뉴 오버레이 (예시: 사업소 — 3개 앱 공통 구조)</div>
+    <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 이하 — 상단 GNB 햄버거 + 전체메뉴 오버레이 (예시: 사업소 — 3개 앱 공통 구조)</div>
     <div class="mo-shell">
       <div class="mo-screen">
         <div class="mo-gnb">
@@ -246,10 +263,27 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
   </div>
 </div>
 <script>
+var pcMode = 'wide';
+function syncNavIcon(){
+  const body = document.getElementById('pcBody');
+  const hidden = pcMode === 'wide' ? body.classList.contains('nav-collapsed') : !body.classList.contains('nav-open');
+  document.querySelector('.pc-shell').classList.toggle('nav-collapsed', hidden);   // 숨김 상태면 햄버거 가운데 줄 짧게
+  document.getElementById('sideNavBtn').setAttribute('aria-expanded', String(!hidden));
+}
 function toggleSideNav(){
-  const collapsed=document.getElementById('pcBody').classList.toggle('nav-collapsed');
-  document.querySelector('.pc-shell').classList.toggle('nav-collapsed', collapsed);
-  document.getElementById('sideNavBtn').setAttribute('aria-expanded', String(!collapsed));
+  const body = document.getElementById('pcBody');
+  if (pcMode === 'wide') body.classList.toggle('nav-collapsed');
+  else body.classList.toggle('nav-open');
+  syncNavIcon();
+}
+function setPcMode(mode){
+  pcMode = mode;
+  const body = document.getElementById('pcBody');
+  body.classList.remove('nav-collapsed', 'nav-open');
+  body.classList.toggle('narrow', mode === 'narrow');
+  document.getElementById('modeWide').classList.toggle('on', mode === 'wide');
+  document.getElementById('modeNarrow').classList.toggle('on', mode === 'narrow');
+  syncNavIcon();
 }
 function toggleFullMenu(open){
   document.getElementById('fullMenu').classList.toggle('open', open);

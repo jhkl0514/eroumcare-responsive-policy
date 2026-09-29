@@ -41,8 +41,8 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .pc-view, .mo-view{display:none;}
 /* PC 콘텐츠 상한 1060px — Figma 전 PC 화면 공통 contents_wrapper 폭(2026-09-23 확인).
    1440px 프리셋은 "뷰포트를 넓혀도 콘텐츠는 안 늘어난다"를 보여주기 위한 것 — 1060 넘는 폭은 여백으로 남는다. */
-@container pf (min-width:1024px){ .pc-view{display:block;max-width:1060px;margin:0 auto;} }
-@container pf (max-width:1023.98px){ .mo-view{display:block;} }
+@container pf (min-width:1024.02px){ .pc-view{display:block;max-width:1060px;margin:0 auto;} }
+@container pf (max-width:1024px){ .mo-view{display:block;} }
 
 /* ---- PC ---- */
 .pc-titlebar{padding:24px 24px 0;font-size:24px;font-weight:700;}
@@ -140,19 +140,19 @@ table.pc-table tr.group2{background:var(--group2);}
 .mo-logo{font-weight:800;color:var(--brand);}
 .mo-search{margin:0 16px 10px;background:var(--tertiary);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--text-tertiary);}
 /* 구입주문/대여주문 전환: filled segmented toggle (풀와이드) — Figma 가이드 메모 1번 */
-.mo-seg-wrap{background:#fafafa;padding:12px 16px 0;}
+.mo-seg-wrap{background:#fafafa;padding:12px 20px 0;}
 .mo-seg{background:#eee;padding:4px;border-radius:999px;display:flex;gap:0;}
 .mo-seg-item{flex:1;text-align:center;padding:10px;font-size:16px;font-weight:600;color:var(--text-secondary);
   border-radius:999px;cursor:pointer;}
 .mo-seg-item.active{background:var(--brand);color:#fff;font-weight:700;}
 /* 토글 영역과 필터칩 영역은 동일 배경, 사이 구분선 없음 */
-.mo-filter-row{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;background:#fafafa;}
+.mo-filter-row{display:flex;gap:8px;padding:12px 20px;overflow-x:auto;background:#fafafa;}
 .mo-filter-row.hidden-chip [data-chip="item"]{display:none;}
 .mo-filter-chip{border:1px solid var(--border-primary);border-radius:999px;padding:6px 12px;font-size:14px;
   white-space:nowrap;color:var(--text-secondary);cursor:pointer;background:#fff;
   display:inline-flex;align-items:center;gap:4px;}
-.mo-count{padding:0 16px 10px;font-size:14px;color:var(--text-tertiary);}
-.mo-card-list{padding:0 16px;display:flex;flex-direction:column;gap:12px;}
+.mo-count{padding:0 20px 10px;font-size:14px;color:var(--text-tertiary);}
+.mo-card-list{padding:0 20px;display:flex;flex-direction:column;gap:12px;}
 .mo-card{border:none;border-radius:8px;padding:16px 16px 24px;cursor:pointer;background:#fff;
   box-shadow:0 2px 8px rgba(0,0,0,.08), 0 0 0.5px rgba(0,0,0,.2);}
 .mo-card.group1{background:var(--group1);}
@@ -224,8 +224,8 @@ table.pc-table tr.group2{background:var(--group2);}
   <div class="preset-row" id="preset-row">
     <button class="preset-btn" data-w="360">360px</button>
     <button class="preset-btn" data-w="768">768px</button>
-    <button class="preset-btn" data-w="1023">1023px</button>
-    <button class="preset-btn active" data-w="1024">1024px</button>
+    <button class="preset-btn" data-w="1024">1024px</button>
+    <button class="preset-btn active" data-w="1025">1025px</button>
     <button class="preset-btn" data-w="1440">1440px</button>
   </div>
   <div class="w-readout" id="w-readout"></div>
@@ -438,7 +438,7 @@ table.pc-table tr.group2{background:var(--group2);}
           <div class="sheet-overlay" id="sheet-status">
             <div class="sheet-box">
               <div class="sheet-header">주문상태 선택<span class="close-btn" onclick="closeSheet('status')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
-              <div class="sheet-body" style="max-height:340px;">
+              <div class="sheet-body">
                 <div class="sheet-select-list">
                   <div class="sheet-select-row selected" onclick="selectRow(this)"><span>전체</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                   <div class="sheet-select-row" onclick="selectRow(this)"><span>신규배정</span><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -546,14 +546,16 @@ function setWidth(w){
   frameEl.style.width = w + 'px';
   requestAnimationFrame(updateReadout);
 }
+// 폭 전환 애니메이션이 끝난 실제 폭으로 표시 갱신(rAF 한 번으로는 전환 전 폭을 읽음)
+if (window.ResizeObserver) new ResizeObserver(function(){ updateReadout(); }).observe(frameEl);
 presetButtons.forEach(function(b){
   b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
 });
 function updateReadout(){
   var w = Math.round(frameEl.getBoundingClientRect().width);
-  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px' + (w>=1024?' (PC 테이블)':' (모바일 카드)');
+  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px' + (w>1024?' (PC 테이블)':' (모바일 카드)');
 }
-setWidth('1024');
+setWidth('1025');
 </script>
 </body>
 </html>

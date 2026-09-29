@@ -50,9 +50,9 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 #frame{width:100%;max-width:1440px;margin:0 auto;transition:width .2s;box-sizing:border-box;}
 #frame-chrome{border:1px dashed var(--border-primary);border-radius:10px;padding:16px;background:var(--bg);}
 
-/* PC 콘텐츠 상한 1060px — Figma 전 PC 화면 공통값(CLAUDE.md 1번). 1024 미만은 자유폭. */
+/* PC 콘텐츠 상한 1060px — Figma 전 PC 화면 공통값(CLAUDE.md 1번). 1024 이하는 자유폭. */
 #app{margin:0 auto;padding:20px 16px 80px;}
-@container pf (min-width:1024px){ #app{max-width:1060px;} }
+@container pf (min-width:1024.02px){ #app{max-width:1060px;} }
 .proto-banner{background:var(--card);border:1px solid var(--border-tertiary);border-radius:10px;
   padding:14px 18px;margin-bottom:16px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
 .proto-banner b{color:var(--text-primary);}
@@ -73,7 +73,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
   position:relative;}
 .breadcrumb{font-size:14px;color:var(--text-tertiary);margin-bottom:8px;}
 .back-chevron{display:none;font-size:20px;margin-right:4px;color:var(--text-primary);}
-@container pf (max-width:1023.98px){
+@container pf (max-width:1024px){
   .breadcrumb{display:none;}
   .back-chevron{display:inline;}
 }
@@ -83,7 +83,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .page-title{font-size:20px;font-weight:700;}
 .actions-top{display:flex;gap:8px;flex-wrap:wrap;}
 .actions-bottom{display:none;gap:8px;padding:20px 0;flex-wrap:wrap;}
-@container pf (max-width:1023.98px){
+@container pf (max-width:1024px){
   .actions-top{display:none;}
   .actions-bottom.has-buttons{
     display:flex;
@@ -111,7 +111,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .section-title{font-size:20px;font-weight:700;}
 .section-toggle{display:none;background:none;border:none;font-size:18px;color:var(--text-secondary);
   cursor:pointer;margin-left:auto;padding:4px;}
-@container pf (max-width:1023.98px){
+@container pf (max-width:1024px){
   .section-toggle{display:block;}
   .collapsed-mobile{display:none;}
 }
@@ -214,13 +214,13 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
 .agree-row input{margin-top:2px;}
 .info-icon-circle{width:40px;height:40px;border-radius:999px;background:var(--info-bg);color:var(--info-text);
   display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-style:italic;font-size:16px;}
-@container pf (max-width:1023.98px){
+@container pf (max-width:1024px){
   table.info-table{display:grid;grid-template-columns:110px 1fr;width:100%;}
   table.info-table tbody, table.info-table tr{display:contents;}
   table.info-table th{display:block;background:none;border:none;border-bottom:1px solid var(--border-tertiary);
     font-weight:700;padding:14px 8px 14px 0;}
   table.info-table td{display:block;border:none;border-bottom:1px solid var(--border-tertiary);padding:14px 0;}
-  .card{padding:18px 16px 4px;}
+  .card{padding:24px 20px;}   /* 3-8 View(상세) 화면 컨테이너 24/20 */
   .product-side{align-items:flex-start;width:100%;min-width:0;}
   .barcode-pill{width:100%;box-sizing:border-box;}
 }
@@ -231,8 +231,8 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
 <div class="preset-row" id="preset-row">
   <button class="preset-btn" data-w="360">360px</button>
   <button class="preset-btn" data-w="768">768px</button>
-  <button class="preset-btn" data-w="1023">1023px</button>
-  <button class="preset-btn active" data-w="1024">1024px</button>
+  <button class="preset-btn" data-w="1024">1024px</button>
+  <button class="preset-btn active" data-w="1025">1025px</button>
   <button class="preset-btn" data-w="1440">1440px</button>
 </div>
 <div class="w-readout" id="w-readout"></div>
@@ -740,14 +740,16 @@ function setWidth(w){
   frameEl.style.width = w + 'px';
   requestAnimationFrame(updateReadout);
 }
+// 폭 전환 애니메이션이 끝난 실제 폭으로 표시 갱신(rAF 한 번으로는 전환 전 폭을 읽음)
+if (window.ResizeObserver) new ResizeObserver(function(){ updateReadout(); }).observe(frameEl);
 presetButtons.forEach(function(b){
   b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
 });
 function updateReadout(){
   var w = Math.round(frameEl.getBoundingClientRect().width);
-  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px' + (w>=1024?' (PC 레이아웃)':' (모바일 레이아웃)');
+  document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px' + (w>1024?' (PC 레이아웃)':' (모바일 레이아웃)');
 }
-setWidth('1024');
+setWidth('1025');
 </script>
 </body>
 </html>

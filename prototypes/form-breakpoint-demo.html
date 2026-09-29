@@ -105,8 +105,8 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
     <button class="preset-btn active" data-w="360">360px</button>
     <button class="preset-btn" data-w="408">408px</button>
     <button class="preset-btn key-edit" data-w="409">409px (125+4+280)</button>
-    <button class="preset-btn" data-w="1023">1023px</button>
     <button class="preset-btn" data-w="1024">1024px</button>
+    <button class="preset-btn" data-w="1025">1025px</button>
   </div>
   <div class="width-readout" id="w-readout"></div>
 
@@ -191,6 +191,8 @@ function setWidth(w){
   frame.style.width = w + 'px';
   requestAnimationFrame(updateReadout);
 }
+// 폭 전환 애니메이션이 끝난 실제 폭으로 표시 갱신(rAF 한 번으로는 전환 전 폭을 읽음)
+if (window.ResizeObserver) new ResizeObserver(function(){ updateReadout(); }).observe(frame);
 buttons.forEach(function(b){
   b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
 });
