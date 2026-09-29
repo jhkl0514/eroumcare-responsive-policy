@@ -551,6 +551,13 @@ var SECTIONS = {
     '<li>⚠️ 디자인 간 불일치 확인 필요: 카드 간격 8 vs 12, 카드 패딩 16 vs 24/16, 적용 조건 태그 파란 알약 vs 초록 글씨, 모바일 페이지네이션</li>'+
     '</ul>' },
 
+  s311: { title:"3-11. 상세 화면 공통 요소", html:
+    '<ul><li>정보 표: PC 라벨 배경 2쌍/행 → 모바일 1쌍/행(라벨 배경 없음)</li>'+
+    '<li>아코디언 섹션: PC·모바일 모두 접기, 헤더 배경으로 구분(강조 <span class="mono">#eff1fd</span>), 제목 좌우 패딩 0</li>'+
+    '<li>첨부 이미지: 모바일 가로 스크롤 썸네일 100px, 텍스트 간격 6, 확대 아이콘</li>'+
+    '<li>목록 돌아가기: PC 맨 아래 오른쪽 버튼 / 모바일 상단 뒤로가기</li>'+
+    '<li>모바일: 뒤로가기 터치 48×48, 연락처 tel 링크, 하단 고정 버튼 LG 54 + 흰색 그라데이션 동일, 키보드가 입력칸을 가리지 않게</li></ul>' },
+
   s9: { title:"9. 이로움케어 사업소 / 운영관리 화면군", html:
     '<p><strong>배경</strong>: 대대여(플러스+) 운영관리 시스템은 현재 PC가 PHP, 모바일이 별도 React 앱으로 <strong>이중 관리</strong>되고 있음 — 이 반응형 정책 문서를 만드는 근본 이유. Figma 파일 <span class="mono">H8lqlZitePnf5dTDPB5GzR</span>에 운영관리 앱 3개: <strong>이로움케어 사업소</strong>(사업소 직원용) / <strong>입출고 창고</strong>(창고 직원용) / <strong>설치파트너</strong>(설치업체용). 1~8번은 전부 소비자용 화면 기준이었고, 9번부터 운영관리 화면군.</p>'+
     '<p style="background:var(--accent-soft);border-radius:8px;padding:10px 12px;"><strong>⚠️ 중요 정정(2026-09-28)</strong>: 9-1의 셸(GNB+SideNav+Container)은 <strong>Figma에만 있는, 아직 서비스에 반영 안 된 리뉴얼 디자인</strong>이다. 실제 운영 중인 사업소 화면은 탭+이벤트배너+다중 링크의 무거운 GNB, 계정박스+장바구니위젯+공지사항까지 붙은 복잡한 SNB를 쓰는 <strong>구버전 셸</strong> — 사업소도 리뉴얼을 시도했지만 개발 반영이 안 끝난 상태. 반면 입출고 창고·설치파트너는 <strong>리뉴얼이 실제로 배포</strong>돼서 새 셸을 쓴다. → 템플릿 표준은 새 셸로 채택, 사업소 구버전은 별도 반응형 규칙화하지 않음(새 셸로 교체가 목표) — 즉 9-1의 <strong>PC 셸은 입출고 창고·설치파트너 전용</strong>(사업소 PC 제외). 단 <strong>모바일 셸은 사업소도 같은 구조</strong>(2026-09-29 재정정).</p>'+
@@ -587,7 +594,7 @@ var SECTIONS = {
     '</ul>' }
 };
 
-var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s36","s37","s38","s39","s310","s41","s42","s43","s44","s5","s6","s9"];
+var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s36","s37","s38","s39","s310","s311","s41","s42","s43","s44","s5","s6","s9"];
 
 /* ---------------- Category order (menu group order — edit here to reorder groups) ---------------- */
 var CATEGORY_ORDER = ["common-pattern", "rental-system", "ops-pattern", "shared-docs"];
