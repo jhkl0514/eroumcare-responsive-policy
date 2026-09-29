@@ -528,6 +528,18 @@ var SECTIONS = {
     '<ul><li>화면 좌우 여백 20px — 소비자용 리스트·회수 상세 프로토타입도 반영 완료(2026-09-29)</li>'+
     '<li>건수 영역 우측에 정렬 셀렉트 노출/비노출 가능</li></ul>' },
 
+  s39: { title:"3-9. 리스트 본문 — 테이블 ↔ 카드 (적응형)", html:
+    '<p><strong>확정(2026-09-29, Figma 입출고 창고 입고처리 + 퍼블 실측)</strong> — 3-7 검색 영역 아래 목록. PC 테이블과 모바일 카드를 둘 다 두고 1024/1025px 경계에서 표시만 전환.</p>'+
+    '<h4>PC</h4><ul>'+
+    '<li>밑줄 탭(활성 하단 2px <span class="mono">#333</span>) + 우측 <strong>일괄 처리 버튼</strong>(체크한 행 대상, 0건이면 비활성)</li>'+
+    '<li>헤더 52 bg <span class="mono">#f5f5f5</span> / 행 52 구분선 <span class="mono">#eee</span>, 체크박스 44(헤더 = 전체 선택), <strong>선택 행 <span class="mono">#eff1fd</span></strong>, 날짜 컬럼 정렬(기본→오름→내림)</li>'+
+    '<li>컬럼 합이 1136px 초과 시 <strong>좌측 440px(체크박스+바코드+상품명) 고정 + 나머지 가로 스크롤</strong>, 표 아래 "표를 밀어보세요." 힌트. 아래 페이지네이션(3-6)</li></ul>'+
+    '<h4>모바일</h4><ul>'+
+    '<li>풀폭 탭 → 검색(3-7) → 건수 → 카드(사이 12px)</li>'+
+    '<li>카드 3줄: 상태 배지+품목+모델 / <strong>바코드 굵게</strong> / 보조 정보 1줄 — 나머지 컬럼은 상세에서</li>'+
+    '<li><strong>체크박스·일괄 처리 없음</strong> — 카드를 누르면 1건 처리 화면(누른 카드 bg <span class="mono">#eff1fd</span>+테두리 <span class="mono">#141e76</span>). 페이지네이션 없음</li>'+
+    '<li>⚠️ 카드 탭 목적지(처리 vs 상세) 확인 필요</li></ul>' },
+
   s9: { title:"9. 이로움케어 사업소 / 운영관리 화면군", html:
     '<p><strong>배경</strong>: 대대여(플러스+) 운영관리 시스템은 현재 PC가 PHP, 모바일이 별도 React 앱으로 <strong>이중 관리</strong>되고 있음 — 이 반응형 정책 문서를 만드는 근본 이유. Figma 파일 <span class="mono">H8lqlZitePnf5dTDPB5GzR</span>에 운영관리 앱 3개: <strong>이로움케어 사업소</strong>(사업소 직원용) / <strong>입출고 창고</strong>(창고 직원용) / <strong>설치파트너</strong>(설치업체용). 1~8번은 전부 소비자용 화면 기준이었고, 9번부터 운영관리 화면군.</p>'+
     '<p style="background:var(--accent-soft);border-radius:8px;padding:10px 12px;"><strong>⚠️ 중요 정정(2026-09-28)</strong>: 9-1의 셸(GNB+SideNav+Container)은 <strong>Figma에만 있는, 아직 서비스에 반영 안 된 리뉴얼 디자인</strong>이다. 실제 운영 중인 사업소 화면은 탭+이벤트배너+다중 링크의 무거운 GNB, 계정박스+장바구니위젯+공지사항까지 붙은 복잡한 SNB를 쓰는 <strong>구버전 셸</strong> — 사업소도 리뉴얼을 시도했지만 개발 반영이 안 끝난 상태. 반면 입출고 창고·설치파트너는 <strong>리뉴얼이 실제로 배포</strong>돼서 새 셸을 쓴다. → 템플릿 표준은 새 셸로 채택, 사업소 구버전은 별도 반응형 규칙화하지 않음(새 셸로 교체가 목표) — 즉 9-1의 <strong>PC 셸은 입출고 창고·설치파트너 전용</strong>(사업소 PC 제외). 단 <strong>모바일 셸은 사업소도 같은 구조</strong>(2026-09-29 재정정).</p>'+
@@ -558,7 +570,7 @@ var SECTIONS = {
     '</ul>' }
 };
 
-var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s36","s37","s38","s41","s42","s43","s44","s5","s6","s9"];
+var FULL_DOC_ORDER = ["s1","s2","s31","s32","s33","s34","s35","s36","s37","s38","s39","s41","s42","s43","s44","s5","s6","s9"];
 
 /* ---------------- Category order (menu group order — edit here to reorder groups) ---------------- */
 var CATEGORY_ORDER = ["common-pattern", "rental-system", "ops-pattern"];
@@ -592,7 +604,10 @@ var PROTOS = [
     primary:"s41", related:["s31","s5","s7","s1","s2","s6"] },
 
   // --- 공통 컴포넌트 패턴 (특정 화면에 종속되지 않는 재사용 가능한 반응형 패턴) ---
-  { id:"form-breakpoint-demo.html", title:"입력폼 브레이크포인트", category:"common-pattern",
+  { id:"breakpoint-map.html", title:"브레이크포인트 맵", category:"common-pattern",
+    desc:"1 · 1024 이하 모바일 / 1025 PC, 앱별 사이드바 숨김(사업소 1199 · 대대여 1439) — 폭 슬라이더로 앱별 상태 확인, 개발용 CSS",
+    primary:"s1", related:["s2","s9"] },
+  { id:"form-breakpoint-demo.html", title:"입력필드 줄바꿈 기준", category:"common-pattern",
     desc:"3-2 · 라벨/필드 flex-wrap 구조 — 수정/조회 모드 × 4가지 콘텐츠 타입",
     primary:"s32", related:["s1","s6"] },
   { id:"text-table-compare-demo.html", title:"텍스트형 정보 테이블 비교", category:"common-pattern",
@@ -616,6 +631,9 @@ var PROTOS = [
   { id:"search-filter-compare-demo.html", title:"검색 영역 비교", category:"common-pattern",
     desc:"3-7 · PC 검색 패널(체크박스 복수 선택, 접기) vs 모바일 필터칩+적용 태그+바텀시트(단일 선택) — 실제 동작",
     primary:"s37", related:["s2","s35","s6"] },
+  { id:"list-body-compare-demo.html", title:"리스트 본문 비교", category:"common-pattern",
+    desc:"3-9 · PC 좌측 440px 고정 가로 스크롤 테이블+일괄 처리 vs 모바일 카드(누르면 1건 처리) — 실제 동작",
+    primary:"s39", related:["s2","s36","s37","s38"] },
 
   // --- 운영관리 화면군 패턴 (이로움케어 사업소/입출고 창고/설치파트너, 9번 — 공식 DS 문서 실측 반영) ---
   { id:"shell-sidenav-demo.html", title:"운영관리 셸 — SideNav↔전체메뉴 (입출고창고·설치파트너)", category:"ops-pattern",

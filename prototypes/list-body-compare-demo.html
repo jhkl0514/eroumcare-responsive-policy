@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>리스트 본문 — 테이블 vs 카드</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999; --text-disabled:#bdbdbd;
+  --border-primary:#bdbdbd; --border-secondary:#eee;
+  --brand:#323da3; --brand-dark:#141e76; --selected:#eff1fd;
+  --shadow:0 2px 4px rgba(0,0,0,0.12), 0 0 2px rgba(0,0,0,0.12);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+button{font-family:inherit;}
+#wrap{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  padding:14px 18px;margin-bottom:20px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+.banner b{color:var(--text-primary);}
+.banner ul{margin:8px 0 0;padding-left:18px;}
+.banner li{margin-bottom:4px;}
+.warn-tag{display:inline-block;font-size:14px;font-weight:700;color:#fff;background:#ff8f00;border-radius:4px;padding:1px 8px;margin-right:4px;}
+.stack-col{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.compare-label{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;}
+.compare-tag{font-size:14px;font-weight:700;color:#fff;background:var(--brand);border-radius:4px;padding:2px 10px;}
+.callout{font-size:14px;color:var(--text-secondary);line-height:1.6;background:var(--card);
+  border:1px solid var(--border-secondary);border-radius:8px;padding:12px 14px;}
+.callout b{color:var(--text-primary);}
+
+/* ================= PC — Figma 입출고창고 `PC_입고 처리>입고대기_테이블 일부 고정값` 실측 ================= */
+.pc-frame{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;box-shadow:var(--shadow);padding:24px 16px;}
+/* 탭 줄(Page_Content) — 밑줄 탭 + 우측 일괄 처리 버튼 */
+.pc-tabbar{display:flex;align-items:center;border-bottom:1px solid #616161;}
+.pc-tabs{display:flex;flex:1;}
+.tab{padding:16px 20px;border:none;background:none;cursor:pointer;font-size:16px;font-weight:600;line-height:24px;letter-spacing:-.24px;color:var(--text-tertiary);
+  border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab.on{color:var(--text-primary);border-bottom-color:#333;}
+.btn-filled{height:36px;padding:8px 16px;border:none;border-radius:4px;background:var(--brand);color:#fff;font-size:14px;font-weight:600;line-height:20px;cursor:pointer;}
+.btn-filled:disabled{background:#eee;color:var(--text-disabled);cursor:default;}
+.sel-count{margin-right:12px;font-size:14px;color:var(--text-secondary);}
+/* 테이블 — 좌측 식별 컬럼 고정 + 나머지 가로 스크롤 */
+.tbl-scroll{overflow-x:auto;scrollbar-width:thin;}
+.tbl-scroll::-webkit-scrollbar{height:2px;}
+.tbl-scroll::-webkit-scrollbar-track{background:#eee;}
+.tbl-scroll::-webkit-scrollbar-thumb{background:#333;}
+table.lt{border-collapse:separate;border-spacing:0;table-layout:fixed;width:1440px;font-size:14px;line-height:20px;}
+.lt th, .lt td{height:52px;padding:0 8px 0 12px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lt th{background:var(--tertiary);border-bottom:1px solid var(--border-primary);font-weight:600;color:var(--text-primary);white-space:normal;}
+.lt td{background:#fff;border-bottom:1px solid var(--border-secondary);color:var(--text-primary);}
+.lt td.multi{white-space:nowrap;line-height:20px;}   /* <br>로 나눈 두 줄까지만, 각 줄은 말줄임 */
+.lt .c{text-align:center;}
+.lt tr.sel td{background:var(--selected);}
+.lt tbody tr{cursor:pointer;}
+.lt tbody tr:hover td{background:#fafafa;}
+.lt tbody tr.sel:hover td{background:var(--selected);}
+/* 고정 컬럼: 체크박스 44 + 바코드 234 + 상품명 162 = 440 */
+.lt .fx{position:sticky;z-index:1;}
+.lt .fx1{left:0;} .lt .fx2{left:44px;} .lt .fx3{left:278px;box-shadow:inset -1px 0 0 var(--border-secondary);}
+.lt th.fx{z-index:2;}
+.sort{display:inline-flex;align-items:center;gap:8px;border:none;background:none;padding:0;cursor:pointer;font:inherit;font-weight:600;color:inherit;}
+.cb{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:4px;border:1px solid #616161;background:#fff;cursor:pointer;padding:0;}
+.cb svg{display:none;}
+.cb.on{background:var(--brand);border-color:var(--brand);}
+.cb.on svg{display:block;}
+.badge{display:inline-flex;align-items:center;height:24px;padding:2px 8px;border-radius:4px;border:1px solid;font-size:12px;font-weight:500;line-height:18px;}
+.badge.r{background:#ffebee;border-color:#ffcdd2;color:#e53935;}
+.badge.u{background:#e3e5f5;border-color:#ced2f4;color:#141e76;}
+.badge.g{background:#f2fde4;border-color:#09af00;color:#09af00;}
+.table-ref{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:10px;font-size:14px;color:var(--text-secondary);}
+/* 페이지네이션(3-6) */
+.pager{display:flex;justify-content:center;align-items:center;gap:4px;margin-top:24px;}
+.pager button{width:32px;height:32px;border:none;border-radius:4px;background:none;font-size:14px;color:var(--text-primary);cursor:pointer;}
+.pager button.on{background:var(--selected);color:var(--brand-dark);font-weight:600;}
+
+/* ================= 모바일 — Figma `입고대기` / `입고처리` 실측 ================= */
+.mo-shell{width:382px;max-width:100%;margin:0 auto;background:var(--card);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;padding:10px;}
+.mo-screen{position:relative;height:760px;overflow:hidden;border-radius:12px;background:#fff;display:flex;flex-direction:column;}
+.mo-gnb{flex:0 0 56px;background:var(--brand);display:flex;align-items:center;padding:0 4px 0 20px;}
+.mo-gnb .title{flex:1;font-size:20px;font-weight:700;color:#fff;letter-spacing:-.4px;}
+.mo-gnb .ham{width:48px;height:48px;display:flex;align-items:center;justify-content:center;}
+.mo-scroll{flex:1;overflow-y:auto;}
+.mo-tabs{display:flex;border-bottom:1px solid var(--border-secondary);background:#fff;}
+.mo-tabs .tab{flex:1;text-align:center;}
+.count-row{height:56px;display:flex;align-items:center;padding:4px 20px;font-size:16px;line-height:24px;letter-spacing:-.24px;color:var(--text-secondary);}
+.cards{display:flex;flex-direction:column;gap:12px;padding:0 20px 24px;}
+/* 카드(Table_listFrom) — 3-8 카드 UI 24/16 */
+.m-card{display:flex;flex-direction:column;gap:6px;width:100%;padding:24px 16px;border:1px solid transparent;border-radius:8px;background:#fff;text-align:left;cursor:pointer;
+  box-shadow:0 0 1px rgba(0,0,0,.2), 0 2px 16px rgba(0,0,0,.08);font-family:inherit;}
+.m-card:active, .m-card.pressed{background:var(--selected);border-color:var(--brand-dark);box-shadow:0 2px 8px rgba(0,0,0,.08), 0 0 .5px rgba(0,0,0,.2);}
+.m-card .l1{display:flex;align-items:center;gap:8px;font-size:16px;line-height:24px;letter-spacing:-.24px;color:#555;}
+.m-card .l1 .model{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.m-card .l2{font-size:16px;font-weight:700;line-height:24px;letter-spacing:-.24px;color:var(--text-primary);}
+.m-card .l3{font-size:16px;line-height:24px;letter-spacing:-.24px;color:var(--text-primary);}
+/* 1건 처리 화면(입고처리) */
+.proc{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s ease;z-index:10;}
+.proc.open{transform:translateX(0);}
+.proc-head{flex:0 0 56px;display:flex;align-items:center;gap:4px;padding:0 20px 0 4px;border-bottom:1px solid var(--border-secondary);}
+.proc-head button{width:48px;height:48px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.proc-head .t{font-size:20px;font-weight:700;letter-spacing:-.4px;}
+.proc-body{flex:1;overflow-y:auto;}
+.proc-sum{margin:20px;padding:16px;border-radius:8px;box-shadow:0 0 1px rgba(0,0,0,.2), 0 2px 16px rgba(0,0,0,.08);}
+.proc-sum .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.proc-sum .st{font-size:18px;font-weight:700;color:var(--brand);}
+.proc-sum .more{display:inline-flex;align-items:center;font-size:16px;color:var(--text-primary);}
+.proc-sum dl{display:grid;grid-template-columns:72px 1fr;gap:8px 12px;margin:0;font-size:16px;line-height:24px;}
+.proc-sum dt{color:var(--text-secondary);}
+.proc-sum dd{margin:0;word-break:break-all;}
+.proc-sum dd.code{color:#09af00;font-weight:700;}
+.proc-sec{padding:24px 20px;border-top:8px solid var(--tertiary);font-size:16px;color:var(--text-tertiary);}
+.proc-sec h4{margin:0 0 12px;font-size:18px;font-weight:700;color:var(--text-primary);}
+.proc-foot{flex:0 0 auto;padding:16px 20px calc(16px + env(safe-area-inset-bottom));}
+.proc-foot button{width:100%;height:54px;border:none;border-radius:4px;background:var(--brand);color:#fff;font-size:18px;font-weight:600;cursor:pointer;}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="banner">
+    <b>리스트 본문 — PC 테이블 ↔ 모바일 카드</b> — CLAUDE.md 3-9. 리스트는 <b>적응형</b>(2번): PC 테이블과 모바일 카드를 둘 다 두고 1024/1025px 경계에서 표시만 전환. Figma 입출고 창고 <code>입고처리</code>(PC <code>입고대기_테이블 일부 고정값</code>, 모바일 <code>입고대기</code>·<code>입고처리</code>) + 퍼블 <code>warehouse/201_income</code> 실측:
+    <ul>
+      <li><b>PC</b>: 밑줄 탭 + 우측 <b>일괄 처리 버튼</b>(체크한 행 대상) → 테이블(헤더 52 <code>#f5f5f5</code>, 행 52, 구분선 <code>#eee</code>). 컬럼 합이 콘텐츠 폭을 넘으면 <b>좌측 식별 컬럼(체크박스 44 + 바코드 234 + 상품명 162 = 440) 고정</b>, 나머지는 가로 스크롤 + 표 아래 "표를 밀어보세요." 힌트. 선택 행 <code>#eff1fd</code>. 날짜 컬럼은 정렬 가능. 아래 페이지네이션(3-6)</li>
+      <li><b>모바일</b>: 탭은 풀폭(2개면 반반), 건수 → 카드 목록(카드 사이 12px). 카드는 <b>상태 배지 + 품목·모델 / 바코드(굵게) / 보조 정보 1줄</b> — 나머지 컬럼은 카드에 넣지 않음. <b>체크박스·일괄 처리 없음</b> — 카드를 누르면 <b>1건 처리 화면</b>으로 이동. 페이지네이션 없음(스크롤)</li>
+    </ul>
+  </div>
+
+  <!-- ================= PC ================= -->
+  <div class="stack-col">
+    <div class="compare-label"><span class="compare-tag">PC</span> 1025px 이상 — 탭 + 일괄 처리 + 좌측 고정 테이블</div>
+    <div class="pc-frame">
+      <div class="pc-tabbar">
+        <div class="pc-tabs" role="tablist">
+          <button type="button" class="tab on" role="tab" aria-selected="true">입고대기</button>
+          <button type="button" class="tab" role="tab" aria-selected="false">입고완료</button>
+        </div>
+        <span class="sel-count" id="selCount">0건 선택</span>
+        <button type="button" class="btn-filled" id="bulkBtn" disabled onclick="bulk()">입고처리</button>
+      </div>
+      <div class="tbl-scroll" id="tblScroll">
+        <table class="lt" aria-label="입고대기 목록">
+          <colgroup>
+            <col style="width:44px"><col style="width:234px"><col style="width:162px">
+            <col style="width:200px"><col style="width:114px"><col style="width:114px"><col style="width:114px"><col style="width:114px"><col style="width:114px"><col style="width:115px"><col style="width:115px">
+          </colgroup>
+          <thead><tr>
+            <th class="fx fx1 c"><button type="button" class="cb" id="cbAll" aria-label="전체 선택" onclick="toggleAll()"></button></th>
+            <th class="fx fx2">바코드</th>
+            <th class="fx fx3">상품명</th>
+            <th>계약 사업소</th>
+            <th><button type="button" class="sort" onclick="sortBy('done')">회수 완료일<span id="sort-done"></span></button></th>
+            <th>상품 유형</th>
+            <th>입고 경로</th>
+            <th>설치업체/택배운송장</th>
+            <th class="c">입고 사유</th>
+            <th class="c">바코드 해지 여부</th>
+            <th><button type="button" class="sort" onclick="sortBy('req')">회수 요청일<span id="sort-req"></span></button></th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="table-ref">표를 밀어보세요.<svg width="12" height="10" viewBox="0 0 12 10" fill="none" aria-hidden="true"><path d="M6.8335 9.26619L11.0002 5.09953L6.8335 0.932861" stroke="#616161" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 5.09961H1" stroke="#616161" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="pager" aria-label="페이지"><button type="button" class="on" aria-current="page">1</button><button type="button">2</button><button type="button">3</button></div>
+    </div>
+    <div class="callout">
+      표를 가로로 밀어보세요 — <b>체크박스·바코드·상품명 440px은 제자리</b>, 나머지만 움직입니다. 행이나 체크박스를 누르면 선택(행 배경 <code>#eff1fd</code>), 헤더 체크박스는 전체 선택, 선택한 건수만큼 우측 <b>입고처리</b> 버튼이 활성화됩니다. "회수 완료일"·"회수 요청일" 헤더를 누르면 정렬(기본 → 오름차순 → 내림차순). 퍼블은 고정 표와 스크롤 표 두 개로 나눠 구현했고, 이 데모는 한 표에 <code>position:sticky</code>로 같은 동작을 구현 — 동작 규칙만 같으면 구현 방식은 자유.
+    </div>
+  </div>
+
+  <!-- ================= Mobile ================= -->
+  <div class="stack-col">
+    <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 이하 — 풀폭 탭 + 카드 목록 + 카드 탭하면 1건 처리</div>
+    <div class="mo-shell">
+      <div class="mo-screen">
+        <div class="mo-gnb">
+          <div class="title">입고처리</div>
+          <div class="ham"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7C4 6.58579 4.33579 6.25 4.75 6.25H19.75C20.1642 6.25 20.5 6.58579 20.5 7C20.5 7.41421 20.1642 7.75 19.75 7.75H4.75C4.33579 7.75 4 7.41421 4 7Z" fill="white"/><path d="M4 12C4 11.5858 4.33579 11.25 4.75 11.25H19.75C20.1642 11.25 20.5 11.5858 20.5 12C20.5 12.4142 20.1642 12.75 19.75 12.75H4.75C4.33579 12.75 4 12.4142 4 12Z" fill="white"/><path d="M4.75 16.25C4.33579 16.25 4 16.5858 4 17C4 17.4142 4.33579 17.75 4.75 17.75H19.75C20.1642 17.75 20.5 17.4142 20.5 17C20.5 16.5858 20.1642 16.25 19.75 16.25H4.75Z" fill="white"/></svg></div>
+        </div>
+        <div class="mo-scroll">
+          <div class="mo-tabs" role="tablist">
+            <button type="button" class="tab on" role="tab" aria-selected="true">입고대기</button>
+            <button type="button" class="tab" role="tab" aria-selected="false">입고완료</button>
+          </div>
+          <div class="count-row" id="moCount"></div>
+          <div class="cards" id="cards"></div>
+        </div>
+
+        <div class="proc" id="proc" role="dialog" aria-label="입고처리">
+          <div class="proc-head">
+            <button type="button" aria-label="뒤로" onclick="closeProc()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.7071 5.29289C16.0976 5.68342 16.0976 6.31658 15.7071 6.70711L10.4142 12L15.7071 17.2929C16.0976 17.6834 16.0976 18.3166 15.7071 18.7071C15.3166 19.0976 14.6834 19.0976 14.2929 18.7071L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929L14.2929 5.29289C14.6834 4.90237 15.3166 4.90237 15.7071 5.29289Z" fill="#333333"/></svg></button>
+            <div class="t">입고처리</div>
+          </div>
+          <div class="proc-body">
+            <div class="proc-sum">
+              <div class="top"><span class="st">입고대기</span><span class="more">상세<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.29289 5.29289C8.68342 4.90237 9.31658 4.90237 9.70711 5.29289L15.7071 11.2929C16.0976 11.6834 16.0976 12.3166 15.7071 12.7071L9.70711 18.7071C9.31658 19.0976 8.68342 19.0976 8.29289 18.7071C7.90237 18.3166 7.90237 17.6834 8.29289 17.2929L13.5858 12L8.29289 6.70711C7.90237 6.31658 7.90237 5.68342 8.29289 5.29289Z" fill="#333333"/></svg></span></div>
+              <dl><dt>상품명</dt><dd id="pName"></dd><dt>바코드</dt><dd class="code" id="pCode"></dd></dl>
+            </div>
+            <div class="proc-sec"><h4>하자 체크</h4>작동여부 · 부품누락</div>
+            <div class="proc-sec"><h4>창고 위치</h4>가상창고명 · 랙</div>
+            <div class="proc-sec"><h4>상품 이미지 등록</h4>최소 2건 이상 등록 필수</div>
+            <div class="proc-sec"><h4>메모</h4>하자 체크 비정상일 때 필수</div>
+          </div>
+          <div class="proc-foot"><button type="button" onclick="closeProc()">저장</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="callout">
+      카드를 누르면 <b>누른 카드가 선택 스타일</b>(배경 <code>#eff1fd</code> + 테두리 <code>#141e76</code>)로 바뀐 뒤 <b>1건 입고처리 화면</b>이 열립니다(요약 카드 + 하자 체크 · 창고 위치 · 이미지 · 메모 + 하단 저장). PC처럼 여러 건을 체크해서 한 번에 처리하는 기능은 모바일에 없음. 요약 카드의 "상세"는 입고대기 상세(읽기 전용, 3-1 텍스트형)로 이동 — <span class="warn-tag">확인 필요</span>카드 탭의 목적지가 처리 화면인지 상세 화면인지 Figma에 연결선이 없어 화면 구성으로 추정.
+    </div>
+  </div>
+</div>
+
+<script>
+var CHECK_W = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.8047 3.5286C14.0651 3.78895 14.0651 4.21106 13.8047 4.4714L6.4714 11.8047C6.21106 12.0651 5.78894 12.0651 5.5286 11.8047L2.19526 8.4714C1.93491 8.21106 1.93491 7.78895 2.19526 7.5286C2.45561 7.26825 2.87772 7.26825 3.13807 7.5286L6 10.3905L12.8619 3.5286C13.1223 3.26825 13.5444 3.26825 13.8047 3.5286Z" fill="white"/></svg>';
+var SORT = {
+  none:'<svg width="8" height="16" viewBox="0 0 8 16" fill="none" aria-hidden="true"><path d="M3.84406 2.46849C3.92412 2.36841 4.07634 2.36841 4.15641 2.46849L6.40695 5.28167C6.51171 5.41262 6.41848 5.60661 6.25078 5.60661H1.74969C1.58199 5.60661 1.48876 5.41262 1.59352 5.28167L3.84406 2.46849Z" fill="#999999"/><path d="M4.15594 13.5315C4.07588 13.6316 3.92366 13.6316 3.84359 13.5315L1.59305 10.7183C1.48829 10.5874 1.58152 10.3934 1.74922 10.3934L6.25031 10.3934C6.41801 10.3934 6.51124 10.5874 6.40648 10.7183L4.15594 13.5315Z" fill="#999999"/></svg>',
+  asc:'<svg width="8" height="16" viewBox="0 0 8 16" fill="none" aria-hidden="true"><path d="M3.84406 2.46849C3.92412 2.36841 4.07634 2.36841 4.15641 2.46849L6.40695 5.28167C6.51171 5.41262 6.41848 5.60661 6.25078 5.60661H1.74969C1.58199 5.60661 1.48876 5.41262 1.59352 5.28167L3.84406 2.46849Z" fill="#323DA3"/><path d="M4.15594 13.5315C4.07588 13.6316 3.92366 13.6316 3.84359 13.5315L1.59305 10.7183C1.48829 10.5874 1.58152 10.3934 1.74922 10.3934L6.25031 10.3934C6.41801 10.3934 6.51124 10.5874 6.40648 10.7183L4.15594 13.5315Z" fill="#999999"/></svg>',
+  desc:'<svg width="8" height="16" viewBox="0 0 8 16" fill="none" aria-hidden="true"><path d="M3.84406 2.46849C3.92412 2.36841 4.07634 2.36841 4.15641 2.46849L6.40695 5.28167C6.51171 5.41262 6.41848 5.60661 6.25078 5.60661H1.74969C1.58199 5.60661 1.48876 5.41262 1.59352 5.28167L3.84406 2.46849Z" fill="#999999"/><path d="M4.15594 13.5315C4.07588 13.6316 3.92366 13.6316 3.84359 13.5315L1.59305 10.7183C1.48829 10.5874 1.58152 10.3934 1.74922 10.3934L6.25031 10.3934C6.41801 10.3934 6.51124 10.5874 6.40648 10.7183L4.15594 13.5315Z" fill="#323DA3"/></svg>'
+};
+var ROWS = [
+  {id:1, code:'S03091004118-220700008000', name:'MIRAGE7 (22D)-B', office:'(주)해피라이프', done:'2024-04-01', type:'휠체어', route:'택배', carrier:'천일택배<br>123456789', reason:'회수', bc:'N', req:'2024-04-01'},
+  {id:2, code:'S0309101310-16040444', name:'천연BED ST-3', office:'굿모닝의료기(중구)', done:'', type:'침대', route:'설치업체', carrier:'CMK 1팀 홍길동<br>010-1234-5678', reason:'미처리', bc:'Y', req:''},
+  {id:3, code:'S03091004118-220700000253', name:'천연BED ST-3', office:'이원건강의료기 화성점', done:'', type:'침대', route:'설치업체', carrier:'CMK 1팀 홍길동<br>010-1234-5678', reason:'취소요청', bc:'Y', req:''},
+  {id:4, code:'S03091004118-220700008001', name:'R-125SL', office:'와이티 메디칼', done:'2024-04-02', type:'경사로', route:'택배', carrier:'천일택배<br>123456789', reason:'회수', bc:'N', req:'2024-04-02'},
+  {id:5, code:'S03091004118-220700008002', name:'천연BED ST-3', office:'케어프러스', done:'2024-04-02', type:'침대', route:'설치업체', carrier:'효드림 A팀<br>010-1234-5678', reason:'회수', bc:'N', req:'2024-04-02'},
+  {id:6, code:'S03091004118-220700000254', name:'MIRAGE7 (22D)-B', office:'굿모닝의료기(중구)', done:'2024-04-03', type:'침대', route:'설치업체', carrier:'CMK 2팀<br>010-1234-5678', reason:'미처리', bc:'Y', req:'2024-04-03'},
+  {id:7, code:'S03091004118-220700000255', name:'MIRAGE7 (22D)-B', office:'굿모닝의료기(중구)', done:'2024-03-28', type:'침대', route:'설치업체', carrier:'CMK 2팀<br>010-1234-5678', reason:'취소요청', bc:'N', req:'2024-03-28'}
+];
+var BADGE = {'회수':'r','미처리':'u','취소요청':'g'};
+var selected = {}, sortKey = null, sortDir = null;
+
+function badge(r){ return '<span class="badge ' + BADGE[r] + '">' + r + '</span>'; }
+function rows(){
+  var list = ROWS.slice();
+  if (sortKey && sortDir) list.sort(function(a,b){ var x = a[sortKey] || '9999', y = b[sortKey] || '9999'; return (x < y ? -1 : x > y ? 1 : 0) * (sortDir === 'asc' ? 1 : -1); });
+  return list;
+}
+function renderPc(){
+  document.getElementById('tbody').innerHTML = rows().map(function(r){
+    var on = !!selected[r.id];
+    return '<tr class="' + (on ? 'sel' : '') + '" onclick="toggleRow(' + r.id + ')" aria-selected="' + on + '">' +
+      '<td class="fx fx1 c"><button type="button" class="cb' + (on ? ' on' : '') + '" aria-label="선택" aria-pressed="' + on + '" onclick="event.stopPropagation();toggleRow(' + r.id + ')">' + CHECK_W + '</button></td>' +
+      '<td class="fx fx2">' + r.code + '</td><td class="fx fx3">' + r.name + '</td>' +
+      '<td>' + r.office + '</td><td>' + (r.done || '-') + '</td><td>' + r.type + '</td><td>' + r.route + '</td>' +
+      '<td class="multi">' + r.carrier + '</td><td class="c">' + badge(r.reason) + '</td><td class="c">' + r.bc + '</td><td>' + (r.req || '-') + '</td></tr>';
+  }).join('');
+  var n = Object.keys(selected).filter(function(k){ return selected[k]; }).length;
+  var all = n === ROWS.length;
+  var cbAll = document.getElementById('cbAll');
+  cbAll.classList.toggle('on', all); cbAll.innerHTML = CHECK_W; cbAll.setAttribute('aria-pressed', String(all));
+  document.getElementById('selCount').textContent = n + '건 선택';
+  document.getElementById('bulkBtn').disabled = n === 0;
+  ['done','req'].forEach(function(k){ document.getElementById('sort-' + k).innerHTML = SORT[sortKey === k && sortDir ? sortDir : 'none']; });
+}
+function toggleRow(id){ selected[id] = !selected[id]; renderPc(); }
+function toggleAll(){ var all = ROWS.every(function(r){ return selected[r.id]; }); ROWS.forEach(function(r){ selected[r.id] = !all; }); renderPc(); }
+function sortBy(k){
+  if (sortKey !== k) { sortKey = k; sortDir = 'asc'; }
+  else sortDir = sortDir === 'asc' ? 'desc' : sortDir === 'desc' ? null : 'asc';
+  renderPc();
+}
+function bulk(){ var n = Object.keys(selected).filter(function(k){ return selected[k]; }).length; document.getElementById('selCount').textContent = n + '건 입고처리 요청됨(데모)'; }
+
+function renderMo(){
+  document.getElementById('moCount').textContent = ROWS.length + '건';
+  document.getElementById('cards').innerHTML = ROWS.map(function(r){
+    var extra = r.route === '택배' ? '택배: ' + r.carrier.split('<br>')[0] : '설치업체 : ' + r.carrier.split('<br>')[0];
+    return '<button type="button" class="m-card" id="card' + r.id + '" onclick="openProc(' + r.id + ')">' +
+      '<div class="l1">' + badge(r.reason) + '<span>' + r.type + '</span><span class="model">' + r.name + '</span></div>' +
+      '<div class="l2">' + r.code + '</div><div class="l3">' + extra + '</div></button>';
+  }).join('');
+}
+function openProc(id){
+  var r = ROWS.filter(function(x){ return x.id === id; })[0];
+  document.querySelectorAll('.m-card.pressed').forEach(function(c){ c.classList.remove('pressed'); });
+  document.getElementById('card' + id).classList.add('pressed');
+  document.getElementById('pName').textContent = r.name;
+  document.getElementById('pCode').textContent = r.code;
+  setTimeout(function(){ document.getElementById('proc').classList.add('open'); }, 150);
+}
+function closeProc(){ document.getElementById('proc').classList.remove('open'); }
+
+renderPc(); renderMo();
+</script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>브레이크포인트 맵</title>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999;
+  --border-primary:#bdbdbd; --border-secondary:#eee;
+  --brand:#323da3; --brand-dark:#141e76;
+  --shadow:0 2px 4px rgba(0,0,0,0.12), 0 0 2px rgba(0,0,0,0.12);
+  /* 구간 색 */
+  --z-none-bg:#f5f5f5;  --z-none-tx:#999;
+  --z-mo-bg:#eff1fd;    --z-mo-bd:#ced2f4; --z-mo-tx:#141e76;
+  --z-hide-bg:#fff8e1;  --z-hide-bd:#ffb300; --z-hide-tx:#ff8f00;
+  --z-show-bg:#f2fde4;  --z-show-bd:#c6f68d; --z-show-tx:#09af00;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+#wrap{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+code{background:var(--tertiary);padding:1px 5px;border-radius:4px;font-size:14px;}
+
+.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
+  padding:14px 18px;margin-bottom:20px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+.banner b{color:var(--text-primary);}
+.section{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;box-shadow:var(--shadow);
+  padding:20px;margin-bottom:24px;}
+.section h2{margin:0 0 4px;font-size:18px;font-weight:700;}
+.section .sub{margin:0 0 16px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+
+/* ---- 눈금자 + 앱별 띠 ---- */
+.map{display:grid;grid-template-columns:150px 1fr;gap:10px 12px;align-items:center;}
+.map .rowlabel{font-size:14px;font-weight:700;line-height:20px;}
+.map .rowlabel small{display:block;font-weight:400;color:var(--text-secondary);font-size:14px;}
+.band{position:relative;display:flex;height:44px;border-radius:6px;overflow:hidden;}
+.seg{display:flex;align-items:center;justify-content:center;padding:0 6px;border-right:1px solid #fff;
+  font-size:14px;font-weight:600;line-height:18px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.seg:last-child{border-right:none;}
+.seg.none{background:var(--z-none-bg);color:var(--z-none-tx);font-weight:400;}
+.seg.mo{background:var(--z-mo-bg);color:var(--z-mo-tx);}
+.seg.hide{background:var(--z-hide-bg);color:var(--z-hide-tx);}
+.seg.show{background:var(--z-show-bg);color:var(--z-show-tx);}
+.ruler{position:relative;height:40px;}
+.tick{position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;}
+.tick::before{content:"";width:1px;height:10px;background:#616161;}
+.tick span{margin-top:4px;font-size:14px;font-weight:600;color:var(--text-primary);white-space:nowrap;}
+.tick.major span{color:var(--brand);}
+.cursor{position:absolute;top:-4px;bottom:-4px;width:2px;background:#e53935;pointer-events:none;transition:left .1s;}
+.bands-wrap{position:relative;}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:16px;font-size:14px;color:var(--text-secondary);}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:-2px;border:1px solid;}
+
+/* ---- 슬라이더 + 미니 화면 ---- */
+.slider-row{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;}
+.slider-row input[type=range]{flex:1;min-width:240px;accent-color:var(--brand);background:transparent;}
+.wv{font-size:22px;font-weight:800;min-width:110px;color:var(--brand);}
+.presets{display:flex;gap:6px;flex-wrap:wrap;}
+.presets button{height:32px;padding:0 12px;border:1px solid var(--border-primary);border-radius:4px;background:#fff;color:var(--text-primary);
+  font-family:inherit;font-size:14px;cursor:pointer;}
+.presets button:hover{background:var(--tertiary);}
+.apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;}
+.app{border:1px solid var(--border-secondary);border-radius:8px;padding:14px;}
+.app h3{margin:0 0 8px;font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.state{display:inline-block;font-size:14px;font-weight:600;padding:1px 8px;border-radius:4px;border:1px solid;}
+.state.mo{background:var(--z-mo-bg);border-color:var(--z-mo-bd);color:var(--z-mo-tx);}
+.state.hide{background:var(--z-hide-bg);border-color:var(--z-hide-bd);color:var(--z-hide-tx);}
+.state.show{background:var(--z-show-bg);border-color:var(--z-show-bd);color:var(--z-show-tx);}
+.state.none{background:var(--z-none-bg);border-color:#e0e0e0;color:var(--z-none-tx);}
+.app p{margin:8px 0 0;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+/* 미니 화면(도식) */
+.mini{position:relative;height:150px;border:1px solid #d0d0d0;border-radius:6px;overflow:hidden;background:#fff;}
+.mini .gnb{position:absolute;left:0;right:0;top:0;height:18px;background:var(--brand);}
+.mini .gnb.legacy{background:#fff;border-bottom:1px solid #d0d0d0;}
+.mini .side{position:absolute;top:18px;bottom:0;left:0;width:26%;background:#f5f5f5;border-right:1px solid #e0e0e0;}
+.mini .side.overlay{box-shadow:3px 0 8px rgba(0,0,0,.15);z-index:2;}
+.mini .content{position:absolute;top:26px;bottom:8px;left:8px;right:8px;border-radius:4px;
+  background:repeating-linear-gradient(0deg,#fafafa 0 10px,#fff 10px 20px);border:1px solid #eee;}
+.mini .overflow{position:absolute;right:0;top:18px;bottom:0;width:18px;
+  background:repeating-linear-gradient(45deg,rgba(255,143,0,.25) 0 4px,transparent 4px 8px);border-left:2px dashed #ff8f00;}
+.mini .phone{position:absolute;top:8px;bottom:8px;left:50%;transform:translateX(-50%);width:84px;border:2px solid #333;border-radius:10px;overflow:hidden;background:#fff;}
+.mini .phone .gnb{height:14px;}
+.mini .phone .content{top:20px;left:5px;right:5px;bottom:5px;}
+.mini .note{position:absolute;left:0;right:0;bottom:4px;text-align:center;font-size:14px;color:#ff8f00;font-weight:600;}
+.mini .empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-tertiary);}
+
+/* ---- CSS 표 ---- */
+table.css{width:100%;border-collapse:collapse;font-size:14px;}
+table.css th, table.css td{border-bottom:1px solid var(--border-secondary);padding:10px 8px;text-align:left;vertical-align:top;line-height:1.6;}
+table.css th{background:var(--tertiary);font-weight:700;white-space:nowrap;}
+table.css td code{white-space:nowrap;}
+.why{margin-top:12px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+@media (max-width:640px){ .map{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="banner">
+    <b>브레이크포인트 맵</b> — CLAUDE.md 1번 "브레이크포인트 원칙"을 한 장으로 본 것(원본은 CLAUDE.md). 확정 2026-09-29:
+    <b>1024px 이하 = 모바일, 1025px 이상 = PC</b>(전 앱 공통, 유일한 PC·모바일 전환 기준). PC 구간 안에서 <b>왼쪽 사이드바를 숨기는 기준은 앱마다 다름</b> — 이로움케어 사업소 <b>1199px 이하</b>, 대대여(입출고 창고·설치파트너) <b>1439px 이하</b>. 모바일 최소 지원폭은 <b>360px</b>.
+  </div>
+
+  <!-- 1. 전체 지도 -->
+  <div class="section">
+    <h2>폭 구간 지도</h2>
+    <p class="sub">가로축은 화면 폭(320~1920px, 비례 아님 — 구간이 잘 보이게 눈금 간격을 조정). 빨간 선은 아래 슬라이더 위치.</p>
+    <div class="map">
+      <div></div>
+      <div class="ruler" id="ruler"></div>
+      <div class="rowlabel">이로움케어 사업소<small>PHP, 반응형 적용</small></div>
+      <div class="bands-wrap"><div class="band" id="band-office"></div></div>
+      <div class="rowlabel">대대여<small>입출고 창고 · 설치파트너</small></div>
+      <div class="bands-wrap"><div class="band" id="band-ddy"></div></div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--z-none-bg);border-color:#e0e0e0"></i>지원 안 함(360 미만)</span>
+      <span><i style="background:var(--z-mo-bg);border-color:var(--z-mo-bd)"></i>모바일 셸</span>
+      <span><i style="background:var(--z-hide-bg);border-color:var(--z-hide-bd)"></i>PC — 사이드바 숨김</span>
+      <span><i style="background:var(--z-show-bg);border-color:var(--z-show-bd)"></i>PC — 사이드바 표시</span>
+    </div>
+  </div>
+
+  <!-- 2. 슬라이더 -->
+  <div class="section">
+    <h2>이 폭에서는 어떻게 보이나</h2>
+    <p class="sub">슬라이더나 프리셋을 누르면 각 앱이 그 폭에서 어떤 상태인지 도식으로 보여줍니다.</p>
+    <div class="slider-row">
+      <div class="wv" id="wv">1300px</div>
+      <input type="range" id="w" min="320" max="1920" step="1" value="1300" aria-label="화면 폭">
+      <div class="presets" id="presets"></div>
+    </div>
+    <div class="apps" id="apps"></div>
+  </div>
+
+  <!-- 3. CSS -->
+  <div class="section">
+    <h2>개발용 CSS</h2>
+    <p class="sub">프로토타입은 프레임 폭 기준 <code>@container</code>, 실제 화면은 같은 값의 <code>@media</code>로 쓰면 됩니다.</p>
+    <table class="css">
+      <thead><tr><th>대상</th><th>조건</th><th>CSS</th></tr></thead>
+      <tbody>
+        <tr><td>전 앱 — 모바일</td><td>1024px 이하</td><td><code>@media (max-width:1024px)</code></td></tr>
+        <tr><td>전 앱 — PC</td><td>1025px 이상</td><td><code>@media (min-width:1024.02px)</code></td></tr>
+        <tr><td>이로움케어 사업소 — 사이드바(SNB) 숨김</td><td>1025~1199px</td><td><code>@media (min-width:1024.02px) and (max-width:1199px)</code></td></tr>
+        <tr><td>대대여 — SideNav 오버레이 + 콘텐츠 최소 1440 가로 스크롤</td><td>1025~1439px</td><td><code>@media (min-width:1024.02px) and (max-width:1439px)</code></td></tr>
+        <tr><td>공통 — 모달 Full(좌우 10px)</td><td>360px 미만</td><td><code>@media (max-width:359.98px)</code></td></tr>
+      </tbody>
+    </table>
+    <div class="why">
+      왜 <code>1024.02px</code>인가: PC를 <code>min-width:1025px</code>로 쓰면 브라우저 확대·축소로 폭이 1024.5px 같은 소수가 될 때 모바일(<code>max-width:1024px</code>)에도 PC에도 해당하지 않는 틈이 생김 — 소수점으로 두 조건을 맞물림.<br>
+      사업소 1199 / 대대여 1439는 퍼블 CSS에 이미 있는 값(<code>max-width:1199px</code>, <code>max-width:1439px</code>). 대대여 모바일은 현재 별도 React 앱 — 사업소처럼 PC 화면 안에서 1024px 이하일 때 전환하는 방식으로 바뀌어야 함.
+    </div>
+  </div>
+</div>
+
+<script>
+/* 눈금 위치(비례 아님): 폭 → 0~100% */
+var STOPS = [[320,0],[360,6],[1024,40],[1200,58],[1440,76],[1920,100]];
+function pos(w){
+  for (var i = 1; i < STOPS.length; i++) {
+    var a = STOPS[i-1], b = STOPS[i];
+    if (w <= b[0]) return a[1] + (b[1] - a[1]) * (w - a[0]) / (b[0] - a[0]);
+  }
+  return 100;
+}
+var TICKS = [[360,false],[1024,true],[1200,false],[1440,false],[1920,false]];
+document.getElementById('ruler').innerHTML = TICKS.map(function(t){
+  return '<div class="tick' + (t[1] ? ' major' : '') + '" style="left:' + pos(t[0]) + '%"><span>' + t[0] + (t[0] === 1024 ? ' | 1025' : '') + '</span></div>';
+}).join('') + '<div class="cursor" id="cur-ruler"></div>';
+
+/* 앱별 구간: [시작, 끝, 종류, 라벨] */
+var APPS = {
+  office: {name:'이로움케어 사업소', zones:[[320,359,'none','미지원'],[360,1024,'mo','모바일'],[1025,1199,'hide','SNB 숨김'],[1200,1920,'show','SNB 표시']]},
+  ddy:    {name:'대대여(창고·설치파트너)', zones:[[320,359,'none','미지원'],[360,1024,'mo','모바일'],[1025,1439,'hide','SideNav 오버레이 + 가로 스크롤'],[1440,1920,'show','SideNav 표시']]}
+};
+function renderBand(id, app){
+  var el = document.getElementById(id);
+  el.innerHTML = app.zones.map(function(z){
+    var w = pos(Math.min(z[1] + 1, 1920)) - pos(z[0]);
+    return '<div class="seg ' + z[2] + '" style="width:' + w + '%" title="' + z[0] + '~' + z[1] + 'px ' + z[3] + '">' + z[3] + '</div>';
+  }).join('');
+  el.parentNode.insertAdjacentHTML('beforeend', '<div class="cursor" id="cur-' + id + '"></div>');
+}
+renderBand('band-office', APPS.office);
+renderBand('band-ddy', APPS.ddy);
+
+var PRESETS = [360, 1024, 1025, 1199, 1200, 1439, 1440, 1920];
+document.getElementById('presets').innerHTML = PRESETS.map(function(p){
+  return '<button type="button" onclick="setW(' + p + ')">' + p + '</button>';
+}).join('');
+
+function zoneOf(app, w){ for (var i = 0; i < app.zones.length; i++) if (w >= app.zones[i][0] && w <= app.zones[i][1]) return app.zones[i]; return app.zones[app.zones.length-1]; }
+
+function mini(kind, appKey){
+  if (kind === 'none') return '<div class="mini"><div class="empty">360px 미만 — 지원 안 함</div></div>';
+  if (kind === 'mo') return '<div class="mini"><div class="phone"><div class="gnb"></div><div class="content"></div></div></div>';
+  var legacy = appKey === 'office';
+  var gnb = '<div class="gnb' + (legacy ? ' legacy' : '') + '"></div>';
+  if (kind === 'show') return '<div class="mini">' + gnb + '<div class="side"></div><div class="content" style="left:calc(26% + 8px)"></div></div>';
+  // hide
+  if (legacy) return '<div class="mini">' + gnb + '<div class="content"></div></div>';
+  return '<div class="mini">' + gnb + '<div class="side overlay"></div><div class="content" style="right:-40px"></div><div class="overflow"></div><div class="note">가로 스크롤(콘텐츠 1440 유지)</div></div>';
+}
+var DESC = {
+  office: {
+    mo: '모바일 셸 — 브랜드색 상단 GNB + 햄버거로 전체메뉴(9-1), 리스트는 카드(적응형), 상세는 반응형.',
+    hide: 'PC 레이아웃, 왼쪽 사이드바(SNB)만 숨김. 콘텐츠 상한 1060px.',
+    show: 'PC 레이아웃, 왼쪽 사이드바(SNB) 표시. 콘텐츠 상한 1060px.'
+  },
+  ddy: {
+    mo: '모바일 셸 — 사업소와 동일 구조(9-1). 현재는 별도 React 앱이라 이 방식으로 전환 대상.',
+    hide: 'SideNav는 숨고 햄버거를 누르면 콘텐츠 위 오버레이. 콘텐츠·GNB는 최소 폭 1440px 유지, 창이 좁으면 가로 스크롤.',
+    show: 'SideNav(240) 항상 표시 + 콘텐츠 1200(실콘텐츠 1136). 햄버거로 SideNav 접기/펼치기.'
+  }
+};
+var STATE_TXT = {none:'지원 안 함', mo:'모바일', hide:'PC · 사이드바 숨김', show:'PC · 사이드바 표시'};
+
+function setW(w){
+  w = Math.max(320, Math.min(1920, +w));
+  document.getElementById('w').value = w;
+  document.getElementById('wv').textContent = w + 'px';
+  ['cur-ruler','cur-band-office','cur-band-ddy'].forEach(function(id){ document.getElementById(id).style.left = 'calc(' + pos(w) + '% - 1px)'; });
+  document.getElementById('apps').innerHTML = ['office','ddy'].map(function(k){
+    var z = zoneOf(APPS[k], w), kind = z[2];
+    return '<div class="app"><h3>' + APPS[k].name + ' <span class="state ' + kind + '">' + STATE_TXT[kind] + '</span></h3>' +
+      mini(kind, k) + (kind === 'none' ? '' : '<p>' + DESC[k][kind] + '</p>') + '</div>';
+  }).join('');
+}
+document.getElementById('w').addEventListener('input', function(e){ setW(e.target.value); });
+setW(1300);
+</script>
+</body>
+</html>
