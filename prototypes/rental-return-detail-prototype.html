@@ -263,7 +263,7 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
 var STATUS_ORDER = ['회수접수','회수확인중','회수요청','회수준비중','회수완료','회수취소','회수취소완료'];
 
 var STATUS_META = {
-  '회수접수':   {chip:'info',      desc:'돌봄앱에서 회수 신청이 접수된 상태', cancelBlock:false, buttons:[{type:'cancel'},{type:'request'}]},
+  '회수접수':   {chip:'info',      desc:'돌봄앱에서 회수 신청이 접수된 상태 - "회수 접수 확인"을 누르면 회수확인중으로 바뀌고 신청자 정보가 공개됨', cancelBlock:false, buttons:[{type:'confirm'}]},
   '회수확인중': {chip:'mint',      desc:'사업소가 신청 내용을 확인 중인 상태', cancelBlock:false, buttons:[{type:'cancel'},{type:'request'}]},
   '회수요청':   {chip:'amber',     desc:'이로움에 회수 요청 완료 - 대대여 회수번호가 생성된 상태', cancelBlock:false, buttons:[{type:'withdraw', enabled:true}]},
   '회수준비중': {chip:'lime',      desc:'실제 회수 프로세스 진행 중 - 회수요청 취소 불가, 액션 버튼 없음', cancelBlock:false, buttons:[]},
@@ -347,6 +347,9 @@ function actionButtonsHtml(){
   var meta = STATUS_META[state.status];
   var html = '';
   meta.buttons.forEach(function(b){
+    if(b.type === 'confirm'){
+      html += '<button class="btn btn-filled" onclick="setStatus(\'회수확인중\')">회수 접수 확인</button>';
+    }
     if(b.type === 'cancel'){
       html += '<button class="btn btn-danger-outline" onclick="openCancelModal()">회수접수 취소</button>';
     }
