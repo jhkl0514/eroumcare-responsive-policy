@@ -123,7 +123,9 @@ table.info-table{width:100%;border-collapse:collapse;margin-bottom:24px;table-la
 table.info-table th{background:var(--tertiary);border-bottom:1px solid var(--border-tertiary);
   text-align:left;font-size:14px;font-weight:600;padding:12px;width:130px;}
 table.info-table td{border-bottom:1px solid var(--border-tertiary);font-size:14px;padding:12px;}
-.addr-cell{display:flex;flex-direction:column;align-items:flex-start;gap:10px;}
+.addr-cell{display:flex;align-items:center;justify-content:space-between;gap:12px;}  /* PC: 주소 오른쪽 같은 줄에 버튼(4-1, 2026-09-30) */
+.addr-edit-btn{flex:0 0 auto;background:#eee;border:0;color:#555;font:inherit;font-size:14px;font-weight:600;height:36px;padding:0 16px;border-radius:4px;cursor:pointer;}
+@container pf (max-width:1024px){ .addr-cell{flex-direction:column;align-items:flex-start;gap:10px;} }  /* 모바일: 주소 아래 버튼 */
 .link-btn{background:var(--brand);border:1px solid var(--brand);color:var(--on-brand);font-size:14px;font-weight:600;
   cursor:pointer;padding:8px 14px;border-radius:6px;white-space:nowrap;}
 .product-row{display:flex;gap:16px;padding-bottom:16px;flex-wrap:wrap;align-items:flex-start;
@@ -384,10 +386,12 @@ function renderPage(){
   var masked = state.status === '회수접수';
   var name = masked ? '홍*동 (남성, 85세)' : '홍길동 (남성, 85세)';
   var guardian = masked ? '홍*정 (수급자의 자녀)' : '홍꺽정 (수급자의 자녀)';
-  var phone = masked ? '010-****-5678' : '010-1234-5678';
+  var phone = masked ? '-' : '010-1234-5678';
+  var ltcNo = masked ? '-' : 'L12313414145';
+  var canEditAddr = state.status === '회수확인중' || state.status === '회수요청';
   var addrCell = masked
-    ? '<span>(16495) 경기 수원시 영통구 ***** (접수 확인 후 상세주소 노출)</span>'
-    : '<div class="addr-cell"><span>'+addrLine()+'</span><button class="link-btn" onclick="openAddressModal()">수정</button></div>';
+    ? '<span>-</span>'
+    : '<div class="addr-cell"><span>'+addrLine()+'</span>'+(canEditAddr ? '<button class="addr-edit-btn" onclick="openAddressModal()">회수지 수정</button>' : '')+'</div>';
 
   var buttonsHtml = actionButtonsHtml();
 
@@ -412,8 +416,9 @@ function renderPage(){
       '<button class="section-toggle" onclick="toggleSection(\'applicant\')">'+(state.collapsed.applicant ? '\u2304' : '\u2303')+'</button></div>'+
     '<div class="'+(state.collapsed.applicant ? 'collapsed-mobile' : '')+'"><table class="info-table">'+
       '<tr><th>수급자 이름</th><td>'+name+'</td>'+
-          '<th>보호자 이름</th><td>'+guardian+'</td></tr>'+
-      '<tr><th>상담받을 연락처</th><td>'+phone+'</td><th></th><td></td></tr>'+
+          '<th>요양인정번호</th><td>'+ltcNo+'</td></tr>'+
+      '<tr><th>보호자 이름</th><td>'+guardian+'</td>'+
+          '<th>상담받을 연락처</th><td>'+phone+'</td></tr>'+
       '<tr><th>회수지주소</th><td colspan="3">'+addrCell+'</td></tr>'+
     '</table></div>'+
 
