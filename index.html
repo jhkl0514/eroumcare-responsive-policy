@@ -45,6 +45,25 @@
   .brand h1{font-size:15px; font-weight:700; margin:0; letter-spacing:-.01em;}
   .brand .sub{font-size:12px; color:var(--text-secondary); margin-left:8px; font-weight:400;}
   .top-actions{display:flex; align-items:center; gap:8px;}
+  /* ---------- 검색 (2026-09-30) ---------- */
+  .search-wrap{position:relative;}
+  .search-box{display:flex; align-items:center; gap:8px; width:340px; height:36px; padding:0 10px; border:1px solid var(--border);
+    border-radius:8px; background:var(--bg-sunken); color:var(--text-tertiary);}
+  .search-box:focus-within{border-color:var(--accent); background:var(--bg-elevated);}
+  .search-box input{flex:1 1 auto; min-width:0; border:0; outline:0; background:transparent; color:var(--text); font:inherit; font-size:13px;}
+  .search-box kbd{font:inherit; font-size:11px; color:var(--text-tertiary); border:1px solid var(--border); border-radius:4px; padding:1px 5px;}
+  .search-results{position:absolute; top:42px; right:0; width:460px; max-height:70vh; overflow-y:auto; background:var(--bg-elevated);
+    border:1px solid var(--border); border-radius:10px; box-shadow:0 12px 32px rgba(0,0,0,.18); padding:6px; z-index:50;}
+  .search-results[hidden]{display:none;}
+  .sr-item{display:block; width:100%; text-align:left; font:inherit; color:var(--text); background:none; border:0; border-radius:8px; padding:9px 10px; cursor:pointer;}
+  .sr-item.active, .sr-item:hover{background:var(--accent-soft);}
+  .sr-top{display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700;}
+  .sr-kind{flex:0 0 auto; font-size:11px; font-weight:700; color:var(--accent-text); background:var(--accent-soft); border-radius:4px; padding:1px 6px;}
+  .sr-item.active .sr-kind, .sr-item:hover .sr-kind{background:var(--bg-elevated);}
+  .sr-snip{font-size:12px; color:var(--text-secondary); margin-top:3px; line-height:1.5;}
+  .sr-empty{font-size:13px; color:var(--text-tertiary); padding:14px 10px;}
+  mark{background:#ffe58a; color:inherit; border-radius:2px; padding:0 1px;}
+  @media (max-width: 980px){ .search-box{width:200px;} .search-results{width:min(460px, calc(100vw - 32px));} }
   .doc-link{
     font-size:12.5px; color:var(--text-secondary); text-decoration:none; padding:7px 12px;
     border:1px solid var(--border); border-radius:8px; background:var(--bg-sunken);
@@ -273,6 +292,10 @@
       <span class="sub">프로토타입 허브</span>
     </div>
     <div class="top-actions">
+      <div class="search-wrap">
+        <label class="search-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="siteSearch" placeholder="정책·화면 검색 (예: 4-4, 펼침, 340)" autocomplete="off" aria-label="정책·화면 검색" aria-controls="searchResults"><kbd id="searchKbd">⌘K</kbd></label>
+        <div class="search-results" id="searchResults" role="listbox" hidden></div>
+      </div>
       <button class="doc-link" id="toggleGallery" style="cursor:pointer;">🏠 홈</button>
       <a class="doc-link" href="CLAUDE.md" target="_blank" rel="noopener">📄 CLAUDE.md 원문</a>
     </div>
@@ -382,6 +405,7 @@ var SECTIONS = {
       '<ul><li><strong>재확인(2026-09-28, Figma 노드 실측)</strong>: 409px·313px는 산수로 지어낸 값이 아니라 Figma에 그 폭 그대로 프레임이 존재함. <span class="mono">배송조회_입력폼</span>(node 6591:177940, 폭 409px)에서 라벨 x=0/w=125, 콘텐츠 x=129/w=280(gap 4px) 확인. <span class="mono">배송조회</span>(node 6591:173787, 폭 313px)에서 라벨 x=0/w=125, 콘텐츠 x=133/w=180(gap 8px) 확인. 340px 프레임(node 6591:160253)에서는 라벨/콘텐츠가 위아래로 줄바꿈된 상태도 확인.</li></ul></li>'+
     '<li>flex-wrap 컨테이너라 미디어쿼리 없이 순수 flexbox로 동작</li>'+
     '<li><strong>PC(1025px↑) 상한</strong>: 입력 콘텐츠 영역 <span class="mono">max-width:480px</span> (Figma 실측)</li>'+
+    '<li><strong>지우기(X) 버튼</strong>(2026-09-30): 텍스트 입력칸은 <strong>미입력 시 X 없음, 입력값이 있으면 X 노출</strong>. 읽기전용·비활성·날짜·셀렉트 칸은 X 없음. 누르면 값만 지우고 포커스 유지. 아이콘 24, 모바일 터치 40×40, 입력칸 오른쪽 패딩을 X 폭만큼 확보. 수급자관리 서비스와 같은 방식</li>'+
     '</ul>' },
 
   s33: { title:"3-3. 모달", html:
@@ -431,6 +455,7 @@ var SECTIONS = {
     '<ul>'+
     '<li>패널 bg <span class="mono">#fafafa</span>, 테두리 <span class="mono">#bdbdbd</span>, radius 4, 패딩 16. 행 높이 44 + 하단 구분선 <span class="mono">#eee</span>, <strong>2열 배치</strong></li>'+
     '<li><strong>날짜 행</strong>(첫 행): 기준 셀렉트 160 + 시작일~종료일(각 160, 달력 아이콘, yyyy-mm-dd) + 기간 세그먼트(오늘/어제/일주일/지난달/3개월, 선택 칸 bg <span class="mono">#e0e0e0</span>)</li>'+
+    '<li><strong>기간 버튼 구성은 화면마다 다름</strong>(2026-09-30, 통일 안 함): 창고 오늘/어제/일주일/지난달/3개월 · 주문요청 3개월/일주일/이번달/지난달/1년 · 회수·반품 일주일/1개월/3개월/6개월/1년. 기본 선택값은 처음부터 선택 상태(bg #e0e0e0 + SemiBold, 양옆 구분선 숨김) + 날짜 칸 채움</li>'+
     '<li>라벨 <strong>120px 고정</strong>(4-2 검색 라벨과 동일, 3-2 입력 라벨 125px와 다름) + <strong>체크박스 복수 선택</strong>(20×20, 선택 시 <span class="mono">#323da3</span>) — 기본은 "전체"만 체크, <strong>"전체"를 누르면 같은 행 모두 체크</strong>(기획 합의)</li>'+
     '<li>셀렉트·달력은 <strong>DS 컴포넌트</strong>: 옵션 패널(선택 bg <span class="mono">#eff1fd</span>+체크) / <span class="mono">calendar_Default</span> 팝오버(선택 <span class="mono">#90ee02</span>, 호버 <span class="mono">#f2fde4</span>) — 네이티브 select·date 금지</li>'+
     '<li>검색어: 셀렉트 160×40 + 입력 264×40. 하단 가운데 초기화(아웃라인)/검색(필드) 각 130×36</li>'+
@@ -494,8 +519,8 @@ var SECTIONS = {
     '<ul>'+
     '<li><strong>적응형</strong>: PC=테이블, 모바일=카드 (주문요청관리 리스트와 동일 패턴)</li>'+
     '<li>PC 검색: 회수 신청일(날짜 2개+구간 세그먼트 일주일/1개월/3개월[기본]/6개월/1년) 기본 노출, "상세" 토글로 회수 진행상태/검색어까지 펼침(기본 펼침)</li>'+
-    '<li>PC 테이블 컬럼: NO / 수급자명 / 연락처 / 회수신청일시 / 돌봄주문번호 / 회수번호 / 회수상태</li>'+
-    '<li><strong>회수번호 노출 조건</strong>: 4-1의 "회수요청 시 발급" 규칙과 연동 — 회수접수·회수확인중·회수취소는 <span class="mono">-</span>, 회수요청·회수준비중·회수완료·회수취소완료는 실제 번호(<span class="mono">COL...</span>) 노출</li>'+
+    '<li>PC 테이블 컬럼(2026-09-30 정정, 현재 Figma·퍼블 기준): <strong>NO / 수급자 / 요양인정번호 / 연락처 / 돌봄 회수 신청번호 / 원 주문번호(링크) / 회수상태 / 회수 신청일</strong>. PC도 수급자·요양인정번호·연락처 마스킹, 돌봄 회수 신청번호(COL…)는 모든 상태에서 노출</li>'+
+    '<li><s>회수번호 노출 조건(회수요청부터 COL 번호)</s> → 폐기(2026-09-30): 현재 디자인은 돌봄 회수 신청번호를 모든 상태에서 노출. 4-1 상세 쪽은 상세 검수 때 재확인</li>'+
     '<li>모바일 카드: 상태칩+회수신청일시(헤더), 수급자명(마스킹)+마스킹ID, 돌봄주문번호 — "함께 요청" 개념 없음</li>'+
     '<li>모바일 필터칩: 기간(기본 3개월)/상태(기본 전체)/검색 — 대여-구입 전환 토글 없음(회수 관리는 대여 전용)</li>'+
     '<li>모바일 바텀시트 2종: 검색(회수요청일+회수진행상태+검색어), 회수상태 선택(전체+7개 상태, 체크마크)</li>'+
@@ -796,6 +821,97 @@ function route(){
 }
 window.addEventListener('popstate', route);
 
+/* ---------------- 검색 (조항 번호 · 본문 · 화면) — 2026-09-30 ---------------- */
+var pendingTerm = null;
+var SEARCH_INDEX = null;
+function stripHtml(h){ var d = document.createElement('div'); d.innerHTML = h; return d.textContent.replace(/\s+/g, ' ').trim(); }
+function buildIndex(){
+  SEARCH_INDEX = Object.keys(SECTIONS).map(function(k){
+    return { kind:'조항', slug:secSlug(k), title:SECTIONS[k].title, text:stripHtml(SECTIONS[k].html) };
+  }).concat(PROTOS.map(function(p){
+    return { kind:'화면', slug:protoSlug(p.id), id:p.id, title:p.title, text:p.desc + ' ' + p.id };
+  }));
+}
+function esc(t){ return t.replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function hl(t, q){ var i = t.toLowerCase().indexOf(q.toLowerCase()); if(i < 0) return esc(t); return esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length)); }
+function snippet(t, q){
+  var i = t.toLowerCase().indexOf(q.toLowerCase());
+  if(i < 0) return esc(t.slice(0, 90)) + (t.length > 90 ? '…' : '');
+  var a = Math.max(0, i - 36), b = Math.min(t.length, i + q.length + 54);
+  return (a > 0 ? '…' : '') + hl(t.slice(a, b), q) + (b < t.length ? '…' : '');
+}
+function doSearch(q){
+  if(!SEARCH_INDEX) buildIndex();
+  q = q.trim(); if(!q) return [];
+  var lq = q.toLowerCase();
+  return SEARCH_INDEX.map(function(it){
+    var score = 0, tl = it.title.toLowerCase(), xl = it.text.toLowerCase();
+    if(it.kind === '조항' && it.slug === q) score += 1000;               /* "4-4" 번호 정확히 */
+    else if(it.kind === '조항' && tl.indexOf(q + '.') === 0) score += 900;
+    if(tl.indexOf(lq) >= 0) score += 100;
+    var n = 0, from = 0; while((from = xl.indexOf(lq, from)) >= 0){ n++; from += lq.length; }
+    score += Math.min(n, 20) * 5;
+    return { it:it, score:score };
+  }).filter(function(r){ return r.score > 0; }).sort(function(a, b){ return b.score - a.score; }).slice(0, 12);
+}
+var searchInput = document.getElementById('siteSearch');
+var searchBox = document.getElementById('searchResults');
+var searchSel = 0, searchRes = [];
+function renderSearch(){
+  var q = searchInput.value.trim();
+  if(!q){ searchBox.hidden = true; return; }
+  searchRes = doSearch(q); searchSel = 0;
+  searchBox.innerHTML = searchRes.length ? searchRes.map(function(r, i){
+    return '<button type="button" role="option" class="sr-item' + (i === 0 ? ' active' : '') + '" data-i="' + i + '">' +
+      '<div class="sr-top"><span class="sr-kind">' + r.it.kind + '</span><span>' + hl(r.it.title, q) + '</span></div>' +
+      '<div class="sr-snip">' + snippet(r.it.text, q) + '</div></button>';
+  }).join('') : '<div class="sr-empty">"' + esc(q) + '"에 맞는 결과가 없어요</div>';
+  searchBox.hidden = false;
+}
+function pickSearch(i){
+  var r = searchRes[i]; if(!r) return;
+  var q = searchInput.value.trim();
+  searchBox.hidden = true; searchInput.blur();
+  if(r.it.kind === '화면'){ closeDocModal(); selectProto(r.it.id); return; }
+  pendingTerm = (q === r.it.slug) ? null : q;
+  if(location.hash.slice(1) !== r.it.slug) history.pushState(null, '', '#' + r.it.slug);
+  openDocModal(r.it.slug);
+}
+function markTerm(root, q){
+  var lq = q.toLowerCase(), first = null, walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), nodes = [];
+  while(walker.nextNode()) if(walker.currentNode.nodeValue.toLowerCase().indexOf(lq) >= 0) nodes.push(walker.currentNode);
+  nodes.forEach(function(node){
+    var v = node.nodeValue, i = v.toLowerCase().indexOf(lq), frag = document.createDocumentFragment(), last = 0;
+    while(i >= 0){
+      frag.appendChild(document.createTextNode(v.slice(last, i)));
+      var m = document.createElement('mark'); m.textContent = v.slice(i, i + q.length); frag.appendChild(m);
+      if(!first) first = m;
+      last = i + q.length; i = v.toLowerCase().indexOf(lq, last);
+    }
+    frag.appendChild(document.createTextNode(v.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  });
+  return first;
+}
+searchInput.addEventListener('input', renderSearch);
+searchInput.addEventListener('focus', function(){ if(searchInput.value.trim()) renderSearch(); });
+searchInput.addEventListener('keydown', function(e){
+  var items = searchBox.querySelectorAll('.sr-item');
+  if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+    if(!items.length) return; e.preventDefault();
+    items[searchSel].classList.remove('active');
+    searchSel = (searchSel + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+    items[searchSel].classList.add('active'); items[searchSel].scrollIntoView({block:'nearest'});
+  } else if(e.key === 'Enter'){ e.preventDefault(); pickSearch(searchSel); }
+  else if(e.key === 'Escape'){ searchBox.hidden = true; searchInput.blur(); }
+});
+searchBox.addEventListener('mousedown', function(e){ var b = e.target.closest('.sr-item'); if(b){ e.preventDefault(); pickSearch(+b.dataset.i); } });
+document.addEventListener('click', function(e){ if(!e.target.closest('.search-wrap')) searchBox.hidden = true; });
+document.addEventListener('keydown', function(e){
+  if((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){ e.preventDefault(); searchInput.focus(); searchInput.select(); }
+});
+if(!/Mac|iPhone|iPad/.test(navigator.platform)) document.getElementById('searchKbd').textContent = 'Ctrl K';
+
 function selectProto(id, fromRoute){
   if(!fromRoute && location.hash.slice(1) !== protoSlug(id)) history.pushState(null, '', '#' + protoSlug(id));
   state.activeId = id;
@@ -815,8 +931,13 @@ function openDocModal(slug){
   docModalOverlay.hidden = false;
   if(typeof slug === 'string'){
     var card = body.querySelector('.p-section-card[data-slug="' + slug + '"]');
-    if(card){ card.scrollIntoView({block:'start'}); card.classList.add('flash'); setTimeout(function(){ card.classList.remove('flash'); }, 1600); }
+    if(card){
+      var first = pendingTerm ? markTerm(card, pendingTerm) : null;
+      (first || card).scrollIntoView({block: first ? 'center' : 'start'});
+      card.classList.add('flash'); setTimeout(function(){ card.classList.remove('flash'); }, 1600);
+    }
   }
+  pendingTerm = null;
 }
 function closeDocModal(){
   if(docModalOverlay.hidden) return;

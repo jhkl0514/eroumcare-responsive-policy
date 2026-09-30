@@ -80,6 +80,7 @@ table.pc-table th{background:var(--tertiary);padding:14px 12px;text-align:left;b
   font-weight:600;}
 table.pc-table td{padding:14px 12px;border-bottom:1px solid var(--border-secondary);}
 table.pc-table th:last-child,table.pc-table td:last-child{text-align:center;}
+.ord-link{color:inherit;text-decoration:underline;}
 table.pc-table tr.rowlink{cursor:pointer;}
 table.pc-table tr.rowlink:hover{background:#eff1fd;}
 /* Pagination — Figma 컴포넌트 실측(2026-09-23): 좌측 전체건수 / 중앙 페이지 컨트롤 / 우측 페이지 크기 선택, 3분할 justify-between */
@@ -224,14 +225,14 @@ table.pc-table tr.rowlink:hover{background:#eff1fd;}
 
           <div class="pc-tablewrap">
           <table class="pc-table">
-            <tr><th>NO</th><th>수급자명</th><th>연락처</th><th>회수신청일시</th><th>돌봄주문번호</th><th>회수번호</th><th>회수상태</th></tr>
-            <tr class="rowlink"><td>7</td><td>홍길동</td><td>010-1234-5678</td><td>2026-06-19 10:20</td><td>RET-20260619-001</td><td>-</td><td><span class="chip-collect 접수">회수접수</span></td></tr>
-            <tr class="rowlink"><td>6</td><td>김순자</td><td>010-2222-3333</td><td>2026-06-18 14:02</td><td>RET-20260618-014</td><td>-</td><td><span class="chip-collect 확인중">회수확인중</span></td></tr>
-            <tr class="rowlink"><td>5</td><td>박영희</td><td>010-4444-5555</td><td>2026-06-17 09:11</td><td>RET-20260617-009</td><td>COL20260617A11C1</td><td><span class="chip-collect 요청">회수요청</span></td></tr>
-            <tr class="rowlink"><td>4</td><td>이철수</td><td>010-7777-8888</td><td>2026-06-15 16:40</td><td>RET-20260615-002</td><td>COL20260615A09C4</td><td><span class="chip-collect 준비중">회수준비중</span></td></tr>
-            <tr class="rowlink"><td>3</td><td>최민재</td><td>010-9999-1111</td><td>2026-06-12 11:05</td><td>RET-20260612-021</td><td>COL20260612A02C7</td><td><span class="chip-collect 완료">회수완료</span></td></tr>
-            <tr class="rowlink"><td>2</td><td>정수현</td><td>010-3333-2222</td><td>2026-06-10 13:27</td><td>RET-20260610-007</td><td>-</td><td><span class="chip-collect 취소">회수취소</span></td></tr>
-            <tr class="rowlink"><td>1</td><td>강태오</td><td>010-5555-6666</td><td>2026-06-08 08:52</td><td>RET-20260608-003</td><td>COL20260608A15C2</td><td><span class="chip-collect 취소완료">회수취소완료</span></td></tr>
+            <tr><th>NO</th><th>수급자</th><th>요양인정번호</th><th>연락처</th><th>돌봄 회수 신청번호</th><th>원 주문번호</th><th>회수상태</th><th>회수 신청일</th></tr>
+            <tr class="rowlink"><td>20</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 접수">회수접수</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>19</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 확인중">회수확인중</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>18</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 요청">회수요청</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>17</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 준비중">회수준비중</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>16</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 완료">회수완료</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>15</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 취소">회수취소</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>14</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 취소완료">회수취소완료</span></td><td>2024-03-02 08:00</td></tr>
           </table>
           <div class="pagination">
             <span class="pagination-total">전체 7/21</span>
