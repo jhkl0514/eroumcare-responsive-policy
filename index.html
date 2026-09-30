@@ -390,6 +390,7 @@ var SECTIONS = {
     '<li><strong>PC</strong>: 페이지 타이틀 옆(우측), Hug 사이즈(<span class="mono">flex:0 0 auto</span>) — 전체폭 분할 금지</li>'+
     '<li><strong>모바일</strong>: 타이틀 아래로 이동 + 화면 하단 sticky 플로팅(흰색 그라데이션 페이드), 버튼은 폭을 나눠 가짐(Full)</li>'+
     '<li>모바일 하단 sticky 요소는 <span class="mono">env(safe-area-inset-bottom)</span> 필수</li>'+
+    '<li><strong>모바일 하단 고정 버튼 영역 여백</strong>(2026-09-30): 위 32 / 좌우 20 / <strong>아래 20 + safe-area</strong> — <span class="mono">padding:32px 20px calc(20px + env(safe-area-inset-bottom))</span>, viewport 메타에 <span class="mono">viewport-fit=cover</span>. 화면 하단 sticky 버튼에만 적용(바텀시트·검색 시트는 기존 위/아래 32 그대로 — 페이지 버튼은 뒤 본문을 상시 가리므로 아래 20). 본문 맨 아래 일반 버튼(주문목록 등, 고정 아님)은 영역 여백 위 48 / 아래 20. 아래 여백 0이면 안드로이드·인앱 브라우저(safe-area 0)에서 버튼이 툴바에 붙음</li>'+
     '</ul>' },
 
   s35: { title:"3-5. 팝오버 / 바텀시트", html:
