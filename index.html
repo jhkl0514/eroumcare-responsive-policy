@@ -112,6 +112,19 @@
     border:1px solid var(--border); border-radius:7px; background:var(--bg-sunken); white-space:nowrap;
   }
   .stage-header .open-new:hover{border-color:var(--border-strong);}
+  .stage-actions{display:flex; align-items:center; gap:8px;}
+  .copy-link{display:inline-flex; align-items:center; gap:6px; font:inherit; font-size:12px; font-weight:600; color:#fff; background:var(--accent);
+    border:1px solid var(--accent); border-radius:7px; padding:6px 10px; cursor:pointer; white-space:nowrap;}
+  .copy-link:hover{filter:brightness(1.08);}
+  .p-card-head{display:flex; align-items:flex-start; justify-content:space-between; gap:8px;}
+  .p-card-head h3{margin-top:0;}
+  .card-link{flex:0 0 auto; display:inline-flex; align-items:center; gap:4px; font:inherit; font-size:12px; color:var(--text-tertiary);
+    background:none; border:1px solid var(--border); border-radius:6px; padding:3px 8px; cursor:pointer; white-space:nowrap;}
+  .card-link:hover{color:var(--accent-text); border-color:var(--accent);}
+  .p-section-card.flash{outline:2px solid var(--accent); outline-offset:2px; transition:outline-color .6s;}
+  .copy-toast{position:fixed; left:50%; bottom:32px; transform:translateX(-50%); background:#1a1a1a; color:#fff; font-size:13px;
+    padding:10px 16px; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,.2); opacity:0; pointer-events:none; transition:opacity .2s; z-index:2000; max-width:calc(100% - 32px);}
+  .copy-toast.show{opacity:1;}
   .proto-frame{flex:1 1 auto; width:100%; border:0; background:#fff;}
 
   /* ---------- Right policy panel ---------- */
@@ -296,7 +309,10 @@
             <div class="file-name" id="stageFile">-</div>
           </div>
         </div>
-        <a class="open-new" id="stageOpen" href="#" target="_blank" rel="noopener">새 탭에서 열기 ↗</a>
+        <div class="stage-actions">
+          <button type="button" class="copy-link" id="stageCopy" title="이 화면으로 바로 열리는 링크를 복사합니다"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>링크 복사</button>
+          <a class="open-new" id="stageOpen" href="#" target="_blank" rel="noopener">새 탭에서 열기 ↗</a>
+        </div>
       </div>
       <iframe class="proto-frame" id="protoFrame" title="prototype preview"></iframe>
     </main>
@@ -329,7 +345,7 @@ var SECTIONS = {
   s1: { title:"1. 브레이크포인트 원칙", html:
     '<table class="policy-table"><thead><tr><th>값</th><th>역할</th></tr></thead><tbody>'+
     '<tr><td class="mono">1024px</td><td>PC ↔ 모바일 전환 기준 (전역, 유일한 1차 분기) — <strong>1024px 이하 = 모바일, 1025px 이상 = PC</strong></td></tr>'+
-    '<tr><td class="mono">360px</td><td>모바일 구간 내 하위 기준 — 모바일 최소 지원폭, 모달 Full 전환</td></tr>'+
+    '<tr><td class="mono">360px</td><td>모바일 구간 내 하위 기준 — 모바일 최소 지원폭 (모달은 360 분기 없음, 3-3)</td></tr>'+
     '<tr><td class="mono">1199 / 1439px</td><td>PC 구간 내 앱별 사이드바 숨김 기준(2차) — 사업소 1199px 이하, 대대여 1439px 이하</td></tr>'+
     '</tbody></table>'+
     '<p><strong>폐기된 값</strong>: 480px, 640px, 768px, 1060px — 전부 과거 검토 과정에서 임시로 쓰였다가 위 두 값으로 통합됨.</p>'+
@@ -370,18 +386,15 @@ var SECTIONS = {
 
   s33: { title:"3-3. 모달", html:
     '<p><strong>타입 판단 기준</strong>: 테이블(행/열 데이터) 포함 여부 — 요소 개수가 아님.</p>'+
-    '<table class="policy-table"><thead><tr><th>유형</th><th>사이즈</th><th>예시</th></tr></thead><tbody>'+
-    '<tr><td>텍스트형(안내/확인)</td><td class="mono">sm-340</td><td>주문 불가 안내, 회수요청 취소 확인</td></tr>'+
-    '<tr><td>정보확인/입력형/검색-리스트형</td><td class="mono">md-480</td><td>회수 요청하기, 회수접수 취소, 주소 수정, 상품 변경</td></tr>'+
-    '<tr><td>테이블 포함형</td><td class="mono">lg-600 / xl-800</td><td>실제 사례 미확인 — 발생 시 문서 업데이트</td></tr>'+
+    '<table class="policy-table"><thead><tr><th>유형</th><th>PC(1025px↑)</th><th>모바일(1024px↓)</th><th>예시</th></tr></thead><tbody>'+
+    '<tr><td>텍스트형(안내/확인)</td><td><strong>480 고정</strong></td><td><strong>340 모달</strong></td><td>주문 불가 안내, 주문하기 확인, 회수요청 취소 확인</td></tr>'+
+    '<tr><td>정보확인/입력형/검색-리스트형</td><td>480 고정</td><td><strong>바텀시트</strong>(길면 전체 화면) — 텍스트·확인 성격만 340 모달</td><td>회수 요청하기, 회수접수 취소, 주소 수정, 상품 변경</td></tr>'+
+    '<tr><td>테이블 포함형</td><td>600 / 800 고정</td><td><strong>Full</strong>, 좌우 마진 20(테이블 가로 스크롤)</td><td>입고처리 모달(600), 계약서 모달(800)</td></tr>'+
     '</tbody></table>'+
-    '<table class="policy-table"><thead><tr><th>구간</th><th>sm-340</th><th>md-480</th><th>lg-600/xl-800</th></tr></thead><tbody>'+
-    '<tr><td>1025px↑</td><td>340 고정</td><td>480 고정</td><td>600/800 고정</td></tr>'+
-    '<tr><td>360~1024px</td><td>340 고정</td><td><strong>340으로 축소</strong></td><td><strong>Full</strong>(테이블 가로 스크롤)</td></tr>'+
-    '<tr><td>360px 미만</td><td colspan="3">Full, 좌우 마진 10px</td></tr>'+
-    '</tbody></table>'+
-    '<p><strong>모바일 입력·조회형 모달 → 바텀시트(2026-09-29)</strong>: 주소 수정·사유 입력·배송조회 같은 입력·조회형은 1024px 이하에서 바텀시트(길면 전체 화면). 340 모달은 텍스트 확인형(sm-340)에만. 폼은 입력 48 / 버튼 54.</p>'+
-    '<p><strong>버튼 폭</strong>: md/lg가 1025px↑(=480/600으로 뜬 상태)일 때 각 150px 고정폭, gap 12px 가운데 정렬(150+12+150=312px). sm-340은 항상 전체폭 분할.</p>'+
+    '<p><strong>340은 모바일 전용</strong>(2026-09-30): PC 텍스트형도 480. 이전 "PC 340"은 폐기.</p>'+
+    '<p><strong>모바일 340 모달 — 분기 하나로</strong>(2026-09-30): 1024px 이하에서 <span class="mono">width:min(340px, 100% - 40px)</span>, 테이블형 <span class="mono">width:calc(100% - 40px)</span>. 380px 미만은 좌우 20을 남기고 줄어듦. 360 미만 별도 분기 없음(이전 "좌우 10px" 폐기)</p>'+
+    '<p><strong>모바일 입력·조회형 → 바텀시트(2026-09-29)</strong>: 주소 수정·사유 입력·배송조회 같은 입력·조회형은 1024px 이하에서 바텀시트(길면 전체 화면). 폼은 입력 48 / 버튼 54.</p>'+
+    '<p><strong>버튼 폭</strong>(2026-09-30): PC는 모든 모달 버튼 각 150px 고정, gap 12px 가운데 정렬(텍스트형 480 포함). 모바일 340 모달은 버튼 Full.</p>'+
     '<ul><li>딤(dim) 배경 위 정중앙 정렬</li><li>오버레이(모달/드롭다운/달력/바텀시트)는 하나만 — 새로 열리면 기존 것 자동 닫힘</li>'+
     '<li>내용이 넘치면 모달 자체를 max-height로 제한, 내부 스크롤(정중앙 정렬 유지)</li></ul>' },
 
@@ -725,9 +738,10 @@ function renderStage(){
 function sectionCard(sid, isPrimary){
   var s = SECTIONS[sid];
   return '<div class="p-section'+(isPrimary?' primary':'')+'">'+
-    '<div class="p-section-card">'+
+    '<div class="p-section-card" data-slug="'+secSlug(sid)+'">'+
     '<span class="p-tag'+(isPrimary?'':' secondary')+'">'+(isPrimary?'핵심 규칙':'함께 참고')+'</span>'+
-    '<h3>'+s.title+'</h3>'+s.html+
+    '<div class="p-card-head"><h3>'+s.title+'</h3>'+
+    '<button type="button" class="card-link" onclick="copyLink(\''+secSlug(sid)+'\')" title="이 조항으로 바로 열리는 링크를 복사합니다">'+LINK_ICON+'링크</button></div>'+s.html+
     '</div></div>';
 }
 
@@ -750,7 +764,40 @@ function toggleRelated(){
   document.getElementById('relatedBody').classList.toggle('open');
 }
 
-function selectProto(id){
+/* ---------------- 공유 링크 (#화면이름 · #조항번호) — 2026-09-30 ---------------- */
+var LINK_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
+function protoSlug(id){ return id.replace(/\.html$/, ''); }
+function secSlug(sid){ var m = SECTIONS[sid].title.match(/^([\d-]+)\./); return m ? m[1] : sid; }
+function showToast(msg){
+  var t = document.getElementById('copyToast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(showToast._t); showToast._t = setTimeout(function(){ t.classList.remove('show'); }, 2000);
+}
+function copyLink(hash){
+  var url = location.origin + location.pathname + '#' + hash;
+  function fallback(){
+    var ta = document.createElement('textarea'); ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); showToast('링크가 복사되었어요'); } catch(e){ window.prompt('아래 링크를 복사하세요', url); }
+    ta.remove();
+  }
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(url).then(function(){ showToast('링크가 복사되었어요'); }, fallback);
+  } else { fallback(); }
+}
+function route(){
+  var h = decodeURIComponent(location.hash.slice(1));
+  if(!h){ closeDocModal(); goHome(true); return; }
+  var p = PROTOS.find(function(x){ return protoSlug(x.id) === h; });
+  if(p){ closeDocModal(); selectProto(p.id, true); return; }
+  var sid = Object.keys(SECTIONS).find(function(k){ return secSlug(k) === h; });
+  if(sid){ if(!state.activeId && document.getElementById('homeView').hidden) goHome(true); openDocModal(h); return; }
+  goHome(true);
+}
+window.addEventListener('popstate', route);
+
+function selectProto(id, fromRoute){
+  if(!fromRoute && location.hash.slice(1) !== protoSlug(id)) history.pushState(null, '', '#' + protoSlug(id));
   state.activeId = id;
   var p = PROTOS.find(function(x){ return x.id === id; });
   state.openCategory = p.category; /* 선택한 항목의 대카테고리를 자동으로 펼침 */
@@ -762,13 +809,25 @@ function selectProto(id){
 
 /* ---------------- 전체 문서 모달 ---------------- */
 var docModalOverlay = document.getElementById('docModalOverlay');
-function openDocModal(){
-  document.getElementById('docModalBody').innerHTML =
-    FULL_DOC_ORDER.map(function(sid){ return sectionCard(sid, false); }).join('');
+function openDocModal(slug){
+  var body = document.getElementById('docModalBody');
+  body.innerHTML = FULL_DOC_ORDER.map(function(sid){ return sectionCard(sid, false); }).join('');
   docModalOverlay.hidden = false;
+  if(typeof slug === 'string'){
+    var card = body.querySelector('.p-section-card[data-slug="' + slug + '"]');
+    if(card){ card.scrollIntoView({block:'start'}); card.classList.add('flash'); setTimeout(function(){ card.classList.remove('flash'); }, 1600); }
+  }
 }
-function closeDocModal(){ docModalOverlay.hidden = true; }
-document.getElementById('toggleFullDoc').addEventListener('click', openDocModal);
+function closeDocModal(){
+  if(docModalOverlay.hidden) return;
+  docModalOverlay.hidden = true;
+  /* 조항 링크(#3-3)로 열린 경우 닫으면 주소를 현재 화면 기준으로 되돌림 */
+  var h = decodeURIComponent(location.hash.slice(1));
+  if(h && Object.keys(SECTIONS).some(function(k){ return secSlug(k) === h; })){
+    history.replaceState(null, '', state.activeId ? '#' + protoSlug(state.activeId) : location.pathname);
+  }
+}
+document.getElementById('toggleFullDoc').addEventListener('click', function(){ openDocModal(); });
 document.getElementById('docModalClose').addEventListener('click', closeDocModal);
 docModalOverlay.addEventListener('click', function(e){ if(e.target === docModalOverlay) closeDocModal(); });
 document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !docModalOverlay.hidden) closeDocModal(); });
@@ -792,15 +851,17 @@ function renderHome(){
   });
   document.getElementById('homeGrid').innerHTML = html;
 }
-function goHome(){
+function goHome(fromRoute){
+  if(!fromRoute && location.hash) history.pushState(null, '', location.pathname);
   state.activeId = null;
   document.getElementById('bodyGrid').hidden = true;
   document.getElementById('homeView').hidden = false;
   renderHome();
   renderMenu(); /* 좌측 메뉴는 홈에서도 항상 노출 — active 표시 해제 반영 */
 }
-document.getElementById('toggleGallery').addEventListener('click', goHome);
-document.getElementById('homeBackBtn').addEventListener('click', goHome);
+document.getElementById('toggleGallery').addEventListener('click', function(){ goHome(); });
+document.getElementById('homeBackBtn').addEventListener('click', function(){ goHome(); });
+document.getElementById('stageCopy').addEventListener('click', function(){ if(state.activeId) copyLink(protoSlug(state.activeId)); });
 document.getElementById('homeDocCard').addEventListener('click', openDocModal);
 
 /* ---------------- 우측 패널 드래그 리사이즈 ---------------- */
@@ -851,7 +912,8 @@ document.getElementById('homeDocCard').addEventListener('click', openDocModal);
   window.addEventListener('touchend', onUp);
 })();
 
-goHome();
+route();
 </script>
+<div class="copy-toast" id="copyToast" role="status" aria-live="polite"></div>
 </body>
 </html>
