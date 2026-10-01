@@ -107,7 +107,7 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
 <body>
 <div id="wrap">
   <div class="banner">
-    <b>모달 8유형 반응형 갤러리</b> — 콘텐츠 기준 분류(①~⑧)에 맞춰 각 유형의 실제 반응형 크기 규칙(모든 모달 min(모달 크기, 화면 − 40) — 넉넉하면 480/600, 좁으면 좌우 마진 20 남기고 Full / 버튼 PC 150 고정·모바일 Full)을 확인할 수 있습니다. 사유 작성·주소 입력(⑤⑥)은 1024px 이하에서 바텀시트로 열립니다. 프리셋으로 폭을 바꾼 뒤 버튼을 눌러보세요. 오버레이는 하나만 열립니다.
+    <b>모달 8유형 반응형 갤러리</b> — 콘텐츠 기준 분류(①~⑧)에 맞춰 각 유형의 실제 반응형 크기 규칙(모든 모달 min(모달 크기, 화면 − 40) — 넉넉하면 480/600, 좁으면 좌우 마진 20 남기고 Full / 버튼 PC 150 고정·모바일 Full)을 확인할 수 있습니다. 글자 입력이 있는 ⑤⑥⑦은 1024px 이하에서 바텀시트로 열립니다(⑦ 상품 변경의 실제 흐름은 "상품 변경 바텀시트" 데모). 프리셋으로 폭을 바꾼 뒤 버튼을 눌러보세요. 오버레이는 하나만 열립니다.
   </div>
 
   <div class="preset-row" id="preset-row">
@@ -132,7 +132,7 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
         <button class="gallery-btn" onclick="openModal('t4')"><span class="num">4</span><div class="ttl">입력형 - 선택 위주</div><div class="size">480 · 모바일 모달(선택만)</div></button>
         <button class="gallery-btn" onclick="openModal('t5')"><span class="num">5</span><div class="ttl">입력형 - 사유 작성</div><div class="size">480 · 모바일 바텀시트</div></button>
         <button class="gallery-btn" onclick="openModal('t6')"><span class="num">6</span><div class="ttl">입력형 - 주소</div><div class="size">480 · 모바일 바텀시트</div></button>
-        <button class="gallery-btn" onclick="openModal('t7')"><span class="num">7</span><div class="ttl">검색 - 리스트형</div><div class="size">480</div></button>
+        <button class="gallery-btn" onclick="openModal('t7')"><span class="num">7</span><div class="ttl">검색 - 리스트형</div><div class="size">480 · 모바일 바텀시트</div></button>
         <button class="gallery-btn" onclick="openModal('t8')"><span class="num">8</span><div class="ttl">테이블형</div><div class="size">600</div></button>
       </div>
 
@@ -186,7 +186,7 @@ var MODALS = {
     '<label class="field-label">기본 주소</label><input class="form-input" value="경기 수원시 영통구 광교로 32" readonly>'+
     '<label class="field-label">상세 주소</label><input class="form-input" placeholder="상세주소 입력">'+
     '<div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="closeModal()">수정</button></div>'},
-  t7: {size:'md', title:'상품 변경', body:
+  t7: {size:'md', sheet:true, title:'상품 변경', body:
     '<label class="field-label">상품 변경</label>'+
     '<input class="form-input" value="전동침대" style="margin-bottom:0;">'+
     '<div class="search-result">'+

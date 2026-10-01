@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>상품 변경 바텀시트</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<style>
+*{box-sizing:border-box;}
+body{margin:0;font-family:'SUIT',-apple-system,sans-serif;background:#2b2b2b;color:#1a1a1a;
+  display:flex;flex-wrap:wrap;gap:40px;justify-content:center;align-items:flex-start;padding:32px 16px;}
+.note{max-width:420px;color:#eee;font-size:14px;line-height:1.7;}
+.note h1{font-size:20px;margin:0 0 12px;color:#fff;}
+.note ol{padding-left:20px;margin:8px 0 16px;}
+.note b{color:#c6d0ff;}
+.note .tag{display:inline-block;background:#3d4470;color:#fff;border-radius:4px;padding:0 6px;font-size:12px;margin-right:4px;}
+
+/* ---- 폰 프레임 360×800 (Figma 프레임 크기) ---- */
+.phone{width:360px;height:800px;background:#fff;border-radius:28px;overflow:hidden;position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);flex:0 0 auto;}
+.page{padding:0 20px;}
+.page .gnb{height:56px;margin:0 -20px;background:#323da3;color:#fff;display:flex;align-items:center;padding:0 20px;font-size:18px;font-weight:700;}
+.page h2{font-size:18px;margin:24px 0 12px;}
+.prod{border:1px solid #eee;border-radius:8px;padding:14px;display:flex;gap:12px;align-items:center;}
+.prod .thumb{width:56px;height:56px;border-radius:6px;background:#f5f5f5;flex:0 0 auto;}
+.prod .name{font-size:16px;font-weight:600;}
+.prod .sub{font-size:14px;color:#616161;margin-top:2px;}
+.chg-btn{margin-left:auto;height:36px;padding:0 14px;border:0;border-radius:4px;background:#eee;color:#555;
+  font:inherit;font-size:14px;font-weight:600;cursor:pointer;flex:0 0 auto;}
+.done-msg{margin-top:16px;font-size:14px;color:#166534;background:#e8f5e9;border:1px solid #43a047;border-radius:8px;padding:12px 14px;display:none;}
+
+/* ---- 딤 + 바텀시트(3-5) ---- */
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .2s;}
+.dim.on{opacity:1;pointer-events:auto;}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:40px 40px 0 0;padding-top:12px;
+  display:flex;flex-direction:column;transform:translateY(100%);transition:transform .25s, bottom .2s;
+  max-height:calc(100% - 40px);}
+.sheet.on{transform:none;}
+.sheet.kb{max-height:calc(100% - 211px - 24px);}   /* 키보드 위 남은 공간 안에서 최대 높이 */
+.sheet-head{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;}
+.sheet-head h3{margin:0;font-size:20px;font-weight:700;}
+.icon-btn{border:0;background:none;padding:0;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1a1a1a;}
+.body{flex:1 1 auto;min-height:0;overflow-y:auto;padding:24px 20px 0;}
+.label{font-size:18px;font-weight:700;margin:0 0 12px;}
+
+/* 입력칸(3-2 Textfield MO) — 오른쪽 돋보기만, 지우기 X 없음 */
+.field{position:relative;}
+.field input{width:100%;height:48px;border:1px solid #bdbdbd;border-radius:4px;background:#fff;color:#333;
+  font:inherit;font-size:16px;padding:0 44px 0 12px;outline:0;text-overflow:ellipsis;}
+.field input::placeholder{color:#bdbdbd;}
+.field input::-webkit-search-cancel-button{-webkit-appearance:none;display:none;}  /* 브라우저 기본 X 숨김 — 디자인에서 X 생략 */
+.field input:not(:placeholder-shown){border-color:#333;}
+.field input:focus{border:2px solid #323da3;padding-left:11px;}
+.field .search{position:absolute;right:12px;top:12px;pointer-events:none;}
+
+/* 결과 패널 = DS OptionGroup(3-7 옵션 패널) */
+.panel{display:none;margin-top:8px;border:1px solid #333;border-radius:4px;padding:8px;background:#fff;}
+.panel.on{display:block;}
+.opt{display:block;width:100%;text-align:left;border:0;background:#fff;border-radius:4px;min-height:40px;
+  padding:8px 8px 8px 12px;margin-bottom:6px;font:inherit;font-size:16px;color:#1a1a1a;cursor:pointer;}
+.opt:last-child{margin-bottom:0;}
+.opt:hover,.opt:active{background:#eff1fd;}
+.opt.soldout{color:#bdbdbd;cursor:default;background:#fff;}
+.opt .so{display:block;font-size:16px;}
+.empty{font-size:16px;color:#999;padding:8px 12px;}
+
+/* 하단 버튼(3-3) */
+.actions{flex:0 0 auto;display:flex;gap:8px;padding:32px 20px;background:#fff;}
+.btn{height:54px;border:0;border-radius:4px;font:inherit;font-size:18px;font-weight:600;cursor:pointer;}
+.btn.cancel{flex:0 0 120px;background:#eee;color:#555;}
+.btn.ok{flex:1 1 auto;background:#323da3;color:#fff;}
+.btn.ok:disabled{background:#eee;color:#bdbdbd;cursor:default;}
+
+/* 가짜 키보드(Figma Keyboard/KR/iOS 높이 211) */
+.kbd{position:absolute;left:0;right:0;bottom:0;height:211px;background:#d2d3d8;transform:translateY(100%);transition:transform .2s;
+  padding:8px 4px;display:grid;grid-template-columns:repeat(10,1fr);gap:6px;align-content:start;}
+.kbd.on{transform:none;}
+.kbd span{background:#fff;border-radius:5px;height:40px;box-shadow:0 1px 0 rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;font-size:16px;}
+.kbd .wide{grid-column:span 4;font-size:13px;}
+.kbd .srch{grid-column:span 3;background:#323da3;color:#fff;font-size:14px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<div class="note">
+  <h1>상품 변경 — 모바일 바텀시트</h1>
+  Figma 상품변경 3화면(빈 상태 · 입력 중 · 선택 완료)을 그대로 옮겼어요. 검색 입력과 결과 선택이 <b>한 시트 안에서</b> 끝나요.
+  <ol>
+    <li>"상품변경" → 바텀시트(빈 상태, "상품 변경" 비활성)</li>
+    <li>입력칸을 누르면 <b>키보드가 올라오고</b>, 시트는 키보드 위에 붙어요</li>
+    <li>입력하면 결과가 <b>입력칸 아래 패널</b>에 바로 나와요 (예: "NY", "1300", "침대", "없음")</li>
+    <li>결과를 누르면 <b>입력칸에 상품명이 들어가고, 패널과 키보드가 닫히고</b> "상품 변경"이 활성화돼요</li>
+    <li>입력칸을 다시 누르면 <b>글자 전체가 선택</b>돼서 바로 새 검색어를 칠 수 있어요(지우기 X가 없어서)</li>
+    <li>키보드의 <b>"검색"</b> 키를 누르면 키보드만 닫혀요</li>
+  </ol>
+  <span class="tag">3-5</span>바텀시트 · 키보드 위 최대 높이 · 본문만 스크롤<br>
+  <span class="tag">3-2</span>입력칸 48 · 포커스 2px · 돋보기 칸은 X 생략<br>
+  <span class="tag">3-7</span>결과 패널 = 옵션 패널(누르는 순간 틴트), 품절은 선택 불가<br>
+  <span class="tag">3-3</span>하단 버튼 54 · 위·아래 32 · 선택 전 비활성
+</div>
+
+<div class="phone" id="phone">
+  <div class="page">
+    <div class="gnb">주문 상세보기</div>
+    <h2>주문상품</h2>
+    <div class="prod">
+      <div class="thumb"></div>
+      <div><div class="name" id="curName">천연BED ST-3</div><div class="sub">대여 1개</div></div>
+      <button class="chg-btn" id="openBtn">상품변경</button>
+    </div>
+    <div class="done-msg" id="doneMsg"></div>
+  </div>
+
+  <div class="dim" id="dim"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-label="상품 변경">
+    <div class="sheet-head">
+      <h3>상품 변경</h3>
+      <button class="icon-btn" id="closeBtn" aria-label="닫기"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="body" id="body">
+      <p class="label">상품명</p>
+      <div class="field">
+        <input id="q" type="search" enterkeyhint="search" placeholder="상품 이름을 입력하세요" autocomplete="off">
+        <svg class="search" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1a1a1a" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="panel" id="panel" role="listbox"></div>
+    </div>
+    <div class="actions">
+      <button class="btn cancel" id="cancelBtn">취소하기</button>
+      <button class="btn ok" id="okBtn" disabled>상품 변경</button>
+    </div>
+  </div>
+
+  <div class="kbd" id="kbd" aria-hidden="true"></div>
+</div>
+
+<script>
+var DATA = [
+  {name:'[대여] NY(M)-1300 (월 이용료 36,900원)'},
+  {name:'[대여] NY(M)-1300 프리미엄 (월 이용료 39,900원)'},
+  {name:'[대여] NY(M)-1500 (월 이용료 41,200원)'},
+  {name:'[대여] NY(M)-1300 (월 이용료 36,900원)', soldout:true},
+  {name:'[대여] 천연BED ST-3 (월 이용료 76,200원)'},
+  {name:'[대여] 전동침대 SW-SM03 (월 이용료 52,000원)'},
+  {name:'[대여] 전동침대 KR-2M (월 이용료 48,500원)'},
+  {name:'[대여] 전동침대 KR-3M (월 이용료 55,300원)', soldout:true}
+];
+var $ = function(id){ return document.getElementById(id); };
+var sel = -1, timer = null;
+
+// 가짜 키보드: 자모 + "검색" 키
+(function(){
+  var keys='ㅂㅈㄷㄱㅅㅛㅕㅑㅐㅔㅁㄴㅇㄹㅎㅗㅓㅏㅣ'.split(''), h='';
+  keys.forEach(function(k){ h+='<span>'+k+'</span>'; });
+  h+='<span></span><span class="wide">스페이스</span><span></span><span></span>'; h+='<span class="srch" id="kSearch">검색</span>';
+  $('kbd').innerHTML=h;
+})();
+
+function esc(t){ return t.replace(/[&<>]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
+function render(){
+  var q = $('q').value.trim();
+  if(!q){ $('panel').classList.remove('on'); return; }
+  var res = DATA.map(function(d,i){ return {d:d,i:i}; }).filter(function(x){ return x.d.name.toLowerCase().indexOf(q.toLowerCase()) >= 0; });
+  $('panel').innerHTML = res.length ? res.map(function(x){
+    return '<button class="opt'+(x.d.soldout?' soldout':'')+'" role="option" data-i="'+x.i+'"'+(x.d.soldout?' disabled':'')+'>'+esc(x.d.name)+
+      (x.d.soldout ? '<span class="so">품절</span>' : '')+'</button>';
+  }).join('') : '<div class="empty">검색 결과가 없습니다.</div>';
+  $('panel').classList.add('on');
+}
+function keyboard(on){
+  $('kbd').classList.toggle('on', on);
+  $('sheet').style.bottom = on ? '211px' : '0';
+  $('sheet').classList.toggle('kb', on);
+}
+function open(){ sel=-1; $('q').value=''; $('okBtn').disabled=true; render();
+  $('dim').classList.add('on'); $('sheet').classList.add('on'); keyboard(false); }
+function close(){ keyboard(false); $('q').blur(); $('dim').classList.remove('on'); $('sheet').classList.remove('on'); }
+
+$('openBtn').onclick = open;
+$('closeBtn').onclick = close; $('cancelBtn').onclick = close; $('dim').onclick = close;
+$('q').addEventListener('focus', function(){
+  keyboard(true);
+  if(sel >= 0){ var el=$('q'); setTimeout(function(){ el.select(); }, 0); }   // 다시 누르면 전체 선택(X 대신)
+  render();
+});
+$('q').addEventListener('input', function(){
+  sel = -1; $('okBtn').disabled = true;              // 글자를 바꾸면 선택 해제
+  clearTimeout(timer); timer = setTimeout(render, 300); // 입력하는 대로(0.3초 간격) 결과 표시
+});
+$('q').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); $('q').blur(); keyboard(false); } });
+$('kbd').addEventListener('mousedown', function(e){ e.preventDefault(); if(e.target.id === 'kSearch'){ $('q').blur(); keyboard(false); } });
+$('panel').addEventListener('mousedown', function(e){ e.preventDefault(); });   // 패널 누를 때 포커스 유지 후 처리
+$('panel').addEventListener('click', function(e){
+  var b = e.target.closest('.opt'); if(!b || b.disabled) return;
+  sel = +b.dataset.i; $('q').value = DATA[sel].name; $('okBtn').disabled = false;
+  $('panel').classList.remove('on'); $('q').blur(); keyboard(false);
+});
+$('okBtn').onclick = function(){
+  var n = DATA[sel].name.replace(/^\[대여\]\s*/,'').replace(/\s*\(.*$/,'');
+  $('curName').textContent = n; close();
+  $('doneMsg').textContent = '상품이 "'+n+'"(으)로 변경되었습니다.'; $('doneMsg').style.display='block';
+};
+</script>
+</body>
+</html>
