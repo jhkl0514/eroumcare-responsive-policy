@@ -51,7 +51,7 @@ body{margin:0;font-family:'SUIT',-apple-system,sans-serif;background:#2b2b2b;col
 .field input::-webkit-search-cancel-button{-webkit-appearance:none;display:none;}  /* 브라우저 기본 X 숨김 — 디자인에서 X 생략 */
 .field input:not(:placeholder-shown){border-color:#333;}
 .field input:focus{border:2px solid #323da3;padding-left:11px;}
-.field .search{position:absolute;right:12px;top:12px;pointer-events:none;}
+.field .search{position:absolute;right:4px;top:4px;width:40px;height:40px;border:0;background:none;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;}  /* 돋보기 = 검색 실행 버튼 */
 
 /* 결과 패널 = DS OptionGroup(3-7 옵션 패널) */
 .panel{display:none;margin-top:8px;border:1px solid #333;border-radius:4px;padding:8px;background:#fff;}
@@ -84,17 +84,17 @@ body{margin:0;font-family:'SUIT',-apple-system,sans-serif;background:#2b2b2b;col
 
 <div class="note">
   <h1>상품 변경 — 모바일 바텀시트</h1>
-  Figma 상품변경 3화면(빈 상태 · 입력 중 · 선택 완료)을 그대로 옮겼어요. 검색 입력과 결과 선택이 <b>한 시트 안에서</b> 끝나요.
+  Figma 상품변경 3화면(빈 상태 · 입력 중 · 선택 완료)을 그대로 옮겼어요. 검색 입력과 결과 선택이 <b>한 시트 안에서</b> 끝나요. 검색은 <b>실행형</b>(돋보기·검색 키)이에요.
   <ol>
     <li>"상품변경" → 바텀시트(빈 상태, "상품 변경" 비활성)</li>
     <li>입력칸을 누르면 <b>키보드가 올라오고</b>, 시트는 키보드 위에 붙어요</li>
-    <li>입력하면 결과가 <b>입력칸 아래 패널</b>에 바로 나와요 (예: "NY", "1300", "침대", "없음")</li>
+    <li>검색어를 입력하고 <b>돋보기</b> 또는 키보드 <b>"검색"</b> 키를 누르면 결과가 <b>입력칸 아래 패널</b>에 나오고 키보드가 닫혀요 (예: "NY", "1300", "침대", "없음")</li>
     <li>결과를 누르면 <b>입력칸에 상품명이 들어가고, 패널과 키보드가 닫히고</b> "상품 변경"이 활성화돼요</li>
     <li>입력칸을 다시 누르면 <b>글자 전체가 선택</b>돼서 바로 새 검색어를 칠 수 있어요(지우기 X가 없어서)</li>
-    <li>키보드의 <b>"검색"</b> 키를 누르면 키보드만 닫혀요</li>
+    <li>검색어를 고치면 이전 결과는 닫히고 선택이 풀려요 — 다시 돋보기로 검색</li>
   </ol>
   <span class="tag">3-5</span>바텀시트 · 키보드 위 최대 높이 · 본문만 스크롤<br>
-  <span class="tag">3-2</span>입력칸 48 · 포커스 2px · 돋보기 칸은 X 생략<br>
+  <span class="tag">3-2</span>입력칸 MO 48 · 포커스 2px · 돋보기 = 검색 버튼, X 없음<br>
   <span class="tag">3-7</span>결과 패널 = 옵션 패널, 행은 SelectOption MO 44(누르는 순간 틴트), 품절은 선택 불가<br>
   <span class="tag">3-3</span>하단 버튼 54 · 위·아래 32 · 선택 전 비활성
 </div>
@@ -121,7 +121,7 @@ body{margin:0;font-family:'SUIT',-apple-system,sans-serif;background:#2b2b2b;col
       <p class="label">상품명</p>
       <div class="field">
         <input id="q" type="search" enterkeyhint="search" placeholder="상품 이름을 입력하세요" autocomplete="off">
-        <svg class="search" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1a1a1a" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/></svg>
+        <button class="search" id="searchBtn" aria-label="검색"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1a1a1a" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/></svg></button>
       </div>
       <div class="panel" id="panel" role="listbox"></div>
     </div>
@@ -181,14 +181,16 @@ $('closeBtn').onclick = close; $('cancelBtn').onclick = close; $('dim').onclick 
 $('q').addEventListener('focus', function(){
   keyboard(true);
   if(sel >= 0){ var el=$('q'); setTimeout(function(){ el.select(); }, 0); }   // 다시 누르면 전체 선택(X 대신)
-  render();
 });
+function runSearch(){ render(); $('q').blur(); keyboard(false); }   // 실행형: 돋보기·검색 키
 $('q').addEventListener('input', function(){
   sel = -1; $('okBtn').disabled = true;              // 글자를 바꾸면 선택 해제
-  clearTimeout(timer); timer = setTimeout(render, 300); // 입력하는 대로(0.3초 간격) 결과 표시
+  $('panel').classList.remove('on');                 // 이전 결과는 닫음
 });
-$('q').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); $('q').blur(); keyboard(false); } });
-$('kbd').addEventListener('mousedown', function(e){ e.preventDefault(); if(e.target.id === 'kSearch'){ $('q').blur(); keyboard(false); } });
+$('q').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); runSearch(); } });
+$('searchBtn').addEventListener('mousedown', function(e){ e.preventDefault(); });
+$('searchBtn').addEventListener('click', runSearch);
+$('kbd').addEventListener('mousedown', function(e){ e.preventDefault(); if(e.target.id === 'kSearch'){ runSearch(); } });
 $('panel').addEventListener('mousedown', function(e){ e.preventDefault(); });   // 패널 누를 때 포커스 유지 후 처리
 $('panel').addEventListener('click', function(e){
   var b = e.target.closest('.opt'); if(!b || b.disabled) return;
