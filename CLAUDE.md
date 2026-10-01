@@ -5,7 +5,7 @@
 - **배포**: [eroumcare-responsive-policy.vercel.app](https://eroumcare-responsive-policy.vercel.app/) — GitHub `main`에 push하면 자동 배포. 저장소 [github.com/jhkl0514/eroumcare-responsive-policy](https://github.com/jhkl0514/eroumcare-responsive-policy)
 - **공유 링크**: 화면은 `/#화면이름`(예: `/#modal-types-gallery`), 조항은 `/#조항번호`(예: `/#3-3`). 허브 상단 검색(⌘K)으로 조항·화면을 찾을 수 있음
 - **프로토타입**: 각 절 끝의 `→ 파일명`이 그 규칙을 구현한 예시(목록은 8번)
-- **동기화**: 규칙이 바뀌면 이 문서 · `index.html`의 SECTIONS · 스킬(`.claude/skills/eroumcare-design-system/SKILL.md`) 세 곳을 함께 고친다
+- **동기화**: 규칙이 바뀌면 이 문서 · `index.html`의 SECTIONS · 스킬(`.claude/skills/eroumcare-design-system/SKILL.md`) 세 곳을 함께 고친다. 허브는 `python3 tools/sync-hub.py s33=3-3 s5=5 …`(SECTIONS 키=조항 번호)로 이 문서 본문에서 자동 변환하고, 스킬은 요약본이라 직접 고친다
 
 ---
 
