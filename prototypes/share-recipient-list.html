@@ -23,6 +23,9 @@ code{background:var(--tertiary);padding:1px 6px;border-radius:4px;font-size:14px
 table{width:100%;border-collapse:collapse;margin:10px 0 16px;font-size:14px;}
 th,td{border:1px solid #e0e0e0;padding:8px 10px;text-align:left;vertical-align:top;}
 th{background:var(--tertiary);font-weight:700;}
+.info-note{display:flex;gap:10px;align-items:flex-start;margin:16px 0;padding:14px 16px;border-radius:8px;background:#eef4ff;border:1px solid #c9d8ff;color:#1e40af;font-size:15px;line-height:1.6;}
+.info-note svg{flex:0 0 auto;margin-top:2px;}
+.info-note div{color:#1a2b5e;}
 .demo-link{display:inline-block;margin:4px 0 8px;padding:8px 14px;border-radius:4px;background:#e3e5f5;color:var(--brand);font-size:14px;font-weight:600;text-decoration:none;}
 @media (max-width:640px){.sheet{padding:20px 16px;}}
 </style>
@@ -39,6 +42,7 @@ th{background:var(--tertiary);font-weight:700;}
 </ul>
 <p>(260318 버전은 PC 전용이고, 위 260824 버전이 최신이므로 이것을 기준으로 합니다.)</p>
 <p><a class="demo-link" href="card-list-responsive-demo.html">동작 데모 보기 — 카드 목록형(반응형)</a></p>
+<div class="info-note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor"/></svg><div><b>추후 수정 시 새 규칙 적용 (2026-10-02)</b><br>이 화면은 지금 디자인(모바일에서 버튼도 48로 확장)을 그대로 둡니다. 다음에 이 화면을 수정할 때는 공통 규칙을 적용해 주세요 — 버튼은 PC 크기 그대로(SM 36 / MD 48), 하단 고정·바텀시트 하단 버튼만 LG 54, 입력칸·셀렉트만 모바일 48·16px. (정책 3-4·3-2)</div></div>
 <p>정책 원문은 반응형 정책 문서 <b>3-10 "카드 목록형"</b>입니다. 이 문서는 그중 구현에 필요한 내용과, 현재 퍼블 결과물과 다른 점을 정리한 것입니다.</p>
 <hr>
 <h2>1. 핵심 방향</h2>
