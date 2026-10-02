@@ -44,7 +44,7 @@ th{background:var(--tertiary);font-weight:700;}
 <h1>모바일 반응형 한눈에</h1>
 <p class="lead">모바일(1024px 이하) 화면을 만들 때 자주 헷갈리는 규칙만 모았어요. 자세한 내용은 각 항목 오른쪽 조항 링크(원문)에서 확인하세요.</p>
 <div class="toc">
-  <a href="#s1">1. 기준</a><a href="#s2">2. 무엇이 바뀌나</a><a href="#s3">3. 버튼</a><a href="#s4">4. 모달 vs 바텀시트</a><a href="#s5">5. 모달 크기·버튼</a><a href="#s6">6. 키보드·검색</a><a href="#s7">7. 하단 여백</a><a href="#s8">8. 목록·상세</a><a href="#s9">9. 자주 묻는 질문</a><a href="#s10">10. 공통 CSS</a>
+  <a href="#s1">1. 기준</a><a href="#s2">2. 무엇이 바뀌나</a><a href="#s3">3. 버튼</a><a href="#s4">4. 모달 vs 바텀시트</a><a href="#s5">5. 모달 크기·버튼</a><a href="#s6">6. 키보드·검색</a><a href="#s7">7. 하단 여백</a><a href="#s8">8. 목록·상세</a><a href="#s9">9. 자주 묻는 질문</a>
 </div>
 
 <h2 id="s1"><span class="num">1</span>기준 — 1024px 이하는 모바일, 한 페이지로<a class="ref" href="../index.html#1" target="_top">원문 1·2</a></h2>
@@ -149,23 +149,6 @@ th{background:var(--tertiary);font-weight:700;}
 <div class="qa"><div class="q">하단 고정 버튼이 뭔가요?</div><div class="a">모바일에서 화면 아래에 sticky(fixed)로 붙는 버튼이에요. LG 54, 아래 여백 20 + safe-area.</div></div>
 <div class="qa"><div class="q">반응형이면 PC 컴포넌트를 그대로 써도 되나요?</div><div class="a">입력류는 아니에요 — 1024px 이하에서 모바일 크기로 바꿔요. 버튼·칩·탭은 PC 크기 그대로예요.</div></div>
 
-<h2 id="s10"><span class="num">10</span>공통 CSS (페이지별 예외 없이 이것만)<a class="ref" href="../index.html#3-2" target="_top">원문 3-2</a></h2>
-<pre>/* 모달 폭 — 미디어쿼리 없음 */
-.modal { width: min(var(--modal-w, 480px), calc(100% - 40px)); }
-
-/* 버튼 — PC·모바일 같은 값 */
-.btn-sm { height: 36px; }  .btn-md { height: 48px; }  .btn-lg { height: 54px; }
-
-/* 1024px 이하: 입력류만 모바일 크기 */
-@media (max-width: 1024px) {
-  .input, .select   { height: 48px; padding: 12px; font-size: 16px; }
-  .select-option    { min-height: 44px; padding: 10px 8px 10px 12px; font-size: 16px; }
-  textarea          { font-size: 16px; }
-  .modal-actions .btn { flex: 1; }          /* 모달 버튼 폭 Full */
-}
-@media (min-width: 1024.02px) {
-  .modal-actions .btn { flex: 0 0 150px; }  /* 모달 버튼 PC 150 고정 */
-}</pre>
 
 </div></div></body>
 </html>
