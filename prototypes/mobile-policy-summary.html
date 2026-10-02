@@ -108,13 +108,20 @@ th{background:var(--tertiary);font-weight:700;}
 .lm-btns span.pri{background:var(--brand);border-color:var(--brand);color:#fff;}
 @media (max-width:640px){.h-acts{margin-left:0;width:100%;} .pop-ov{padding:0;} .pop{border-radius:0;height:100%;} .ls-row{grid-template-columns:60px 1fr 80px;}}
 
+.pg-demo{display:flex;align-items:center;justify-content:center;gap:4px;min-height:40px;}
+.pg-demo .pg-arrow{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border:0;background:none;border-radius:4px;color:#333;cursor:pointer;padding:0;}
+.pg-demo .pg-arrow:hover:not(:disabled){background:#eff1fd;}
+.pg-demo .pg-arrow:disabled{color:#bdbdbd;cursor:default;}
+.pg-demo .pg-ind{display:inline-flex;align-items:center;gap:8px;padding:0 8px;font-size:14px;line-height:20px;color:#999;user-select:none;}
+.pg-demo .pg-ind .cur{color:#1a1a1a;}
+.pg-demo .empty{font-size:14px;color:#999;}
 </style>
 </head>
 <body><div class="doc"><div class="sheet">
 <h1>모바일 반응형 한눈에</h1>
 <p class="lead">모바일(1024px 이하) 화면을 만들 때 자주 헷갈리는 규칙만 모았어요. 각 항목 오른쪽 <b>화면으로 확인</b>을 누르면 실제로 동작하는 화면이 바로 뜨고, <b>정책 원문</b>을 누르면 해당 조항이 팝업으로 열려요. 글보다 먼저 화면을 눌러 보세요.</p>
 <div class="toc">
-  <a href="#s1">1. 기준</a><a href="#s2">2. 무엇이 바뀌나</a><a href="#s3">3. 버튼</a><a href="#s4">4. 모달 vs 바텀시트</a><a href="#s5">5. 모달 크기·버튼</a><a href="#s6">6. 키보드·검색</a><a href="#s7">7. 하단 여백</a><a href="#s8">8. 목록·상세</a><a href="#s9">9. 자주 묻는 질문</a>
+  <a href="#s1">1. 기준</a><a href="#s2">2. 무엇이 바뀌나</a><a href="#s3">3. 버튼</a><a href="#s4">4. 모달 vs 바텀시트</a><a href="#s5">5. 모달 크기·버튼</a><a href="#s6">6. 키보드·검색</a><a href="#s7">7. 하단 여백</a><a href="#s8">8. 목록·상세</a><a href="#s9">9. 페이지네이션</a><a href="#s10">10. 자주 묻는 질문</a>
 </div>
 
 <h2 id="s1" data-sec="s1,s2" data-proto="breakpoint-map.html:360"><span class="num">1</span>기준 — 1024px 이하는 모바일, 한 페이지로</h2>
@@ -218,16 +225,39 @@ th{background:var(--tertiary);font-weight:700;}
 </table>
 <ul><li>viewport 메타에 <code>viewport-fit=cover</code>가 없으면 safe-area 값이 0이에요. 안드로이드·인앱 브라우저는 원래 0이라 기본 20이 필요해요</li></ul>
 
-<h2 id="s8" data-sec="s36,s37,s39,s311" data-proto="order-list-adaptive.html:360|목록;order-detail-mobile.html:360|상세;pagination-compare-demo.html|페이지네이션"><span class="num">8</span>목록·상세</h2>
+<h2 id="s8" data-sec="s37,s39,s311" data-proto="order-list-adaptive.html:360|목록;order-detail-mobile.html:360|상세"><span class="num">8</span>목록·상세</h2>
 <ul>
 <li><b>목록</b>: PC 테이블 ↔ 모바일 카드(모바일 전용 구조)를 둘 다 두고 표시만 전환. 카드를 누르면 상세로</li>
-<li><b>모바일 페이지네이션 = 축약형</b> ‹ 현재 / 전체 › — 카드 20개마다 한 페이지, 화살표 40, 숫자는 누를 수 없는 글자. 첫·끝 페이지 화살표는 비활성, 0건이면 숨김. 모달·바텀시트 안 목록도 같은 축약형(40). PC 목록만 번호형(32)</li>
+<li><b>페이지네이션</b>: 모바일 목록 아래 축약형 — 9번 참고</li>
 <li><b>검색 영역</b>: 모바일 필터칩(32) — 기본값일 땐 "이름 : 값"(예: "상태 : 전체"), 고르면 값만. 모바일 필터는 모두 단일 선택. 시트를 열면 현재 값이 처음부터 선택 표시. 기간 기본값(3개월 등)은 처음부터 선택 상태</li>
 <li><b>상세</b>: 정보 표는 PC 한 줄 2쌍 → 모바일 1쌍. 본문 맨 아래 "○○목록" 버튼 + 상단 뒤로가기(48×48), 연락처는 <code>tel:</code> 링크</li>
 <li>화면 좌우 여백 20, 카드 사이 12, 상단에 상태가 붙는 카드 패딩 16 16 24 16</li>
 </ul>
 
-<h2 id="s9"><span class="num">9</span>자주 묻는 질문</h2>
+<h2 id="s9" data-sec="s36" data-proto="pagination-compare-demo.html"><span class="num">9</span>페이지네이션 — 모바일은 축약형</h2>
+<div class="rule">모바일 목록과 모든 팝업 안 목록은 <b>‹ 현재 / 전체 ›</b> 축약형(화살표 40). 번호가 늘어선 형태는 PC 목록에서만 써요.</div>
+<table>
+<tr><th>어디</th><th>형태</th><th>크기</th></tr>
+<tr><td>PC 페이지 목록</td><td>기본형·조합형 ‹ 1 2 3 … 10 › (전체 N/M · N개씩)</td><td>칸 32</td></tr>
+<tr><td><b>모바일 페이지 목록</b></td><td><b>축약형 ‹ 1 / 10 ›</b></td><td><b>화살표 40</b></td></tr>
+<tr><td>모달·바텀시트 안 목록(PC·모바일)</td><td>축약형 ‹ 1 / 10 ›</td><td>화살표 40(PC 모달도 40)</td></tr>
+</table>
+<div class="live" id="livePg">
+  <div class="live-head"><span class="live-tag">직접 해보기</span>
+    <div class="seg"><button type="button" data-t="10" class="on">10페이지</button><button type="button" data-t="1">1페이지뿐</button><button type="button" data-t="0">0건</button></div></div>
+  <div class="pg-demo" id="pgDemo"></div>
+  <p class="live-note" id="pgNote"></p>
+</div>
+<ul>
+<li>가운데 숫자는 <b>누를 수 없는 글자</b>예요(버튼·호버 없음). 14px — 현재 <code>#1a1a1a</code>, "/"·전체 <code>#999</code></li>
+<li><b>첫 페이지 ‹, 마지막 페이지 ›는 비활성</b>(<code>#bdbdbd</code>). 숨기지 않아서 위치가 흔들리지 않아요</li>
+<li>모바일 목록은 <b>카드 20개마다 한 페이지</b>, 마지막 카드 아래 위·아래 여백 32. <b>0건이면 숨기고</b> 빈 화면 안내만</li>
+<li>페이지를 넘기면 <b>목록 맨 위로</b>(고정된 탭 바로 아래). 주소에 <code>?page=</code>를 남겨서 상세에 갔다 돌아와도 같은 페이지</li>
+<li>무한 스크롤(내리면 계속 불러오기)은 쓰지 않아요</li>
+<li>DS 컴포넌트: <code>Pagination</code> → <code>Property 1=Compact</code></li>
+</ul>
+
+<h2 id="s10"><span class="num">10</span>자주 묻는 질문</h2>
 <div class="qa"><div class="q">모바일에서 모달은 Full로 가는 거 아닌가요?</div><div class="a">아니요. 모든 모달은 <code>min(크기, 100% - 40px)</code>예요. 폰에서는 좌우 20만 남기고 거의 꽉 차 보이고, 태블릿에서는 원래 크기(480 등)로 떠요.</div></div>
 <div class="qa"><div class="q">PC에 340 모달이 있나요?</div><div class="a">없어요. PC는 480 / 600 / 800이에요.</div></div>
 <div class="qa"><div class="q">모달 버튼도 PC 고정인가요?</div><div class="a">높이는 네(48). 폭은 아니요 — 모바일은 Full, 150 고정은 PC에서만.</div></div>
@@ -235,6 +265,8 @@ th{background:var(--tertiary);font-weight:700;}
 <div class="qa"><div class="q">입력칸이 48이면 옆 버튼(우편번호)도 48인가요?</div><div class="a">아니요. 버튼은 PC 크기(SM 36) 그대로 두고 입력칸 높이의 가운데에 맞춰요.</div></div>
 <div class="qa"><div class="q">바텀시트는 모바일 모달 전부에 쓰나요?</div><div class="a">아니요. 글자를 입력하는 팝업(사유·주소·검색)만이에요. 안내·확인·선택만 하는 팝업은 모바일에서도 모달이에요.</div></div>
 <div class="qa"><div class="q">하단 고정 버튼이 뭔가요?</div><div class="a">모바일에서 화면 아래에 sticky(fixed)로 붙는 버튼이에요. LG 54, 아래 여백 20 + safe-area.</div></div>
+<div class="qa"><div class="q">모바일 목록도 번호(1 2 3 4 5)로 하면 안 되나요?</div><div class="a">축약형으로 해요. 모바일은 필터로 좁혀 최신 건을 보는 일이 대부분이라 멀리 건너뛸 일이 드물고, 번호형은 360 화면에서 칸이 좁아 잘못 누르기 쉬워요. PC와 다른 번호 계산을 따로 관리할 필요도 없어져요.</div></div>
+<div class="qa"><div class="q">모달 안 페이지네이션은 PC에서 32인가요?</div><div class="a">아니요. 축약형은 PC 모달에서도 40 하나예요. 32는 PC 목록의 번호형만이에요.</div></div>
 <div class="qa"><div class="q">반응형이면 PC 컴포넌트를 그대로 써도 되나요?</div><div class="a">입력류는 아니에요 — 1024px 이하에서 모바일 크기로 바꿔요. 버튼·칩·탭은 PC 크기 그대로예요.</div></div>
 
 
@@ -367,6 +399,24 @@ th{background:var(--tertiary);font-weight:700;}
   }); });
   window.addEventListener('resize', drawModal);
   drawModal();
+
+  /* 9절: 축약형 페이지네이션 */
+  var pgT = 10, pgC = 1, pgBox = document.getElementById('pgDemo'), pgNote = document.getElementById('pgNote');
+  var PV = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5.5L8.5 12l6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var NX = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5.5l6.5 6.5L9 18.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function drawPg(){
+    if(pgT === 0){ pgBox.innerHTML = '<span class="empty">(페이지네이션 숨김 — 빈 화면 안내만)</span>'; pgNote.textContent = '0건이면 페이지네이션을 보여 주지 않아요.'; return; }
+    pgBox.innerHTML = '<button type="button" class="pg-arrow" aria-label="이전 페이지"' + (pgC <= 1 ? ' disabled' : '') + '>' + PV + '</button>' +
+      '<span class="pg-ind"><span class="cur">' + pgC + '</span><span>/</span><span>' + pgT + '</span></span>' +
+      '<button type="button" class="pg-arrow" aria-label="다음 페이지"' + (pgC >= pgT ? ' disabled' : '') + '>' + NX + '</button>';
+    var a = pgBox.querySelectorAll('.pg-arrow');
+    a[0].onclick = function(){ pgC--; drawPg(); }; a[1].onclick = function(){ pgC++; drawPg(); };
+    pgNote.textContent = pgT === 1 ? '1페이지뿐이면 화살표 둘 다 비활성이에요.' : pgC === 1 ? '첫 페이지 — ‹ 비활성. › 를 눌러 보세요.' : pgC === pgT ? '마지막 페이지 — › 비활성.' : '가운데 숫자는 누를 수 없어요. 화살표로만 이동해요.';
+  }
+  document.querySelectorAll('#livePg .seg button').forEach(function(b){ b.addEventListener('click', function(){
+    pgT = +b.dataset.t; pgC = 1; document.querySelectorAll('#livePg .seg button').forEach(function(x){ x.classList.toggle('on', x === b); }); drawPg();
+  }); });
+  drawPg();
 })();
 </script>
 </body>
