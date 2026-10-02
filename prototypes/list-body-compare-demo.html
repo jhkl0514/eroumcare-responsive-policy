@@ -80,11 +80,18 @@ table.lt{border-collapse:separate;border-spacing:0;table-layout:fixed;width:1440
 /* ================= 모바일 — Figma `입고대기` / `입고처리` 실측 ================= */
 .mo-shell{width:382px;max-width:100%;margin:0 auto;background:var(--card);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;padding:10px;}
 .mo-screen{position:relative;height:760px;overflow:hidden;border-radius:12px;background:#fff;display:flex;flex-direction:column;}
-.mo-gnb{flex:0 0 56px;background:var(--brand);display:flex;align-items:center;padding:0 4px 0 20px;}
+.mo-gnb{position:absolute;top:0;left:0;right:0;height:56px;z-index:6;background:var(--brand);display:flex;align-items:center;padding:0 4px 0 20px;transition:transform .2s ease;}
+/* 스크롤을 내리면 GNB가 위로 숨고, 다시 올리면 나타남 — 탭은 그 아래(또는 맨 위)에 붙어 고정 */
+.mo-screen.gnb-hidden .mo-gnb{transform:translateY(-100%);}
 .mo-gnb .title{flex:1;font-size:20px;font-weight:700;color:#fff;letter-spacing:-.4px;}
 .mo-gnb .ham{width:48px;height:48px;display:flex;align-items:center;justify-content:center;}
-.mo-scroll{flex:1;overflow-y:auto;}
-.mo-tabs{display:flex;border-bottom:1px solid var(--border-secondary);background:#fff;}
+.mo-gnb-space{height:56px;}
+.mo-scroll{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#bdbdbd transparent;}
+.mo-scroll::-webkit-scrollbar{width:3px;}
+.mo-scroll::-webkit-scrollbar-track{background:transparent;}
+.mo-scroll::-webkit-scrollbar-thumb{background:#bdbdbd;border-radius:3px;}
+.mo-tabs{display:flex;border-bottom:1px solid var(--border-secondary);background:#fff;position:sticky;top:56px;z-index:5;transition:top .2s ease;}
+.mo-screen.gnb-hidden .mo-tabs{top:0;}
 .mo-tabs .tab{flex:1;text-align:center;}
 .count-row{height:56px;display:flex;align-items:center;padding:4px 20px;font-size:16px;line-height:24px;letter-spacing:-.24px;color:var(--text-secondary);}
 .cards{display:flex;flex-direction:column;gap:12px;padding:0 20px 24px;}
@@ -167,12 +174,13 @@ table.lt{border-collapse:separate;border-spacing:0;table-layout:fixed;width:1440
   <div class="stack-col">
     <div class="compare-label"><span class="compare-tag">Mobile</span> 1024px 이하 — 풀폭 탭 + 카드 목록 + 카드 탭하면 상세</div>
     <div class="mo-shell">
-      <div class="mo-screen">
+      <div class="mo-screen" id="moScreen">
         <div class="mo-gnb">
           <div class="title">입고처리</div>
           <div class="ham"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7C4 6.58579 4.33579 6.25 4.75 6.25H19.75C20.1642 6.25 20.5 6.58579 20.5 7C20.5 7.41421 20.1642 7.75 19.75 7.75H4.75C4.33579 7.75 4 7.41421 4 7Z" fill="white"/><path d="M4 12C4 11.5858 4.33579 11.25 4.75 11.25H19.75C20.1642 11.25 20.5 11.5858 20.5 12C20.5 12.4142 20.1642 12.75 19.75 12.75H4.75C4.33579 12.75 4 12.4142 4 12Z" fill="white"/><path d="M4.75 16.25C4.33579 16.25 4 16.5858 4 17C4 17.4142 4.33579 17.75 4.75 17.75H19.75C20.1642 17.75 20.5 17.4142 20.5 17C20.5 16.5858 20.1642 16.25 19.75 16.25H4.75Z" fill="white"/></svg></div>
         </div>
-        <div class="mo-scroll">
+        <div class="mo-scroll" id="moScroll">
+          <div class="mo-gnb-space" aria-hidden="true"></div>
           <div class="mo-tabs" role="tablist">
             <button type="button" class="tab on" role="tab" aria-selected="true">입고대기</button>
             <button type="button" class="tab" role="tab" aria-selected="false">입고완료</button>
@@ -191,7 +199,7 @@ table.lt{border-collapse:separate;border-spacing:0;table-layout:fixed;width:1440
       </div>
     </div>
     <div class="callout">
-      카드를 누르면 <b>누른 카드가 선택 스타일</b>(배경 <code>#eff1fd</code> + 테두리 <code>#141e76</code>)로 바뀐 뒤 <b>상세 화면</b>(Figma <code>입고대기 상세</code> — 상태 + 상품정보 + 입고정보, 읽기 전용 3-1 텍스트형)이 열립니다(사용자 확인 2026-09-29). 카드에 없던 나머지 컬럼(계약 사업소, 회수요청일, 운송장번호 등)은 여기서 보여줌. PC처럼 여러 건을 체크해서 한 번에 처리하는 기능은 모바일에 없음.
+      <b>스크롤</b>: 목록을 위로 밀어 내리면 상단 GNB(입고처리)가 위로 숨고 <b>탭(입고대기·입고완료)이 맨 위에 붙어 고정</b>돼요. 다시 아래로 당기면(위로 스크롤) GNB가 바로 나타나요. 스크롤바는 오른쪽 끝에 얇게(3px, 회색).<br>카드를 누르면 <b>누른 카드가 선택 스타일</b>(배경 <code>#eff1fd</code> + 테두리 <code>#141e76</code>)로 바뀐 뒤 <b>상세 화면</b>(Figma <code>입고대기 상세</code> — 상태 + 상품정보 + 입고정보, 읽기 전용 3-1 텍스트형)이 열립니다(사용자 확인 2026-09-29). 카드에 없던 나머지 컬럼(계약 사업소, 회수요청일, 운송장번호 등)은 여기서 보여줌. PC처럼 여러 건을 체크해서 한 번에 처리하는 기능은 모바일에 없음.
     </div>
   </div>
 </div>
@@ -269,6 +277,17 @@ function openProc(id){
       : [['입고경로', r.route], ['설치업체', carrier[0]], ['연락처', carrier[1] || '-'], ['입고사유', r.reason]]) + '</div>';
   setTimeout(function(){ document.getElementById('proc').classList.add('open'); }, 150);
 }
+/* 모바일 스크롤: 아래로 내리면 GNB 숨김(탭은 맨 위 고정), 위로 올리면 GNB 다시 표시 */
+(function(){
+  var sc = document.getElementById('moScroll'), screen = document.getElementById('moScreen'), last = 0;
+  sc.addEventListener('scroll', function(){
+    var y = sc.scrollTop, d = y - last;
+    if(y <= 56) screen.classList.remove('gnb-hidden');           /* 맨 위 근처에서는 항상 표시 */
+    else if(d > 4) screen.classList.add('gnb-hidden');           /* 내리는 중 → 숨김 */
+    else if(d < -4) screen.classList.remove('gnb-hidden');       /* 올리는 중 → 표시 */
+    if(Math.abs(d) > 4 || y <= 56) last = y;
+  }, {passive:true});
+})();
 function closeProc(){ document.getElementById('proc').classList.remove('open'); }
 
 renderPc(); renderMo();
