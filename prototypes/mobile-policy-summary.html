@@ -218,10 +218,10 @@ th{background:var(--tertiary);font-weight:700;}
 </table>
 <ul><li>viewport 메타에 <code>viewport-fit=cover</code>가 없으면 safe-area 값이 0이에요. 안드로이드·인앱 브라우저는 원래 0이라 기본 20이 필요해요</li></ul>
 
-<h2 id="s8" data-sec="s37,s39,s311" data-proto="order-list-adaptive.html:360|목록;order-detail-mobile.html:360|상세"><span class="num">8</span>목록·상세</h2>
+<h2 id="s8" data-sec="s36,s37,s39,s311" data-proto="order-list-adaptive.html:360|목록;order-detail-mobile.html:360|상세;pagination-compare-demo.html|페이지네이션"><span class="num">8</span>목록·상세</h2>
 <ul>
 <li><b>목록</b>: PC 테이블 ↔ 모바일 카드(모바일 전용 구조)를 둘 다 두고 표시만 전환. 카드를 누르면 상세로</li>
-<li><b>모바일 페이지네이션 — 확인 중</b>: 지금 정책은 "페이지네이션 없이 스크롤로 이어서 불러오기"예요. 모바일에도 페이지네이션을 넣는 쪽으로 검토하고 있어서, <b>결정될 때까지 기존 페이지네이션을 지우지 말고 그대로 두세요</b></li>
+<li><b>모바일 페이지네이션 = 축약형</b> ‹ 현재 / 전체 › — 카드 20개마다 한 페이지, 화살표 40, 숫자는 누를 수 없는 글자. 첫·끝 페이지 화살표는 비활성, 0건이면 숨김. 모달·바텀시트 안 목록도 같은 축약형(40). PC 목록만 번호형(32)</li>
 <li><b>검색 영역</b>: 모바일 필터칩(32) — 기본값일 땐 "이름 : 값"(예: "상태 : 전체"), 고르면 값만. 모바일 필터는 모두 단일 선택. 시트를 열면 현재 값이 처음부터 선택 표시. 기간 기본값(3개월 등)은 처음부터 선택 상태</li>
 <li><b>상세</b>: 정보 표는 PC 한 줄 2쌍 → 모바일 1쌍. 본문 맨 아래 "○○목록" 버튼 + 상단 뒤로가기(48×48), 연락처는 <code>tel:</code> 링크</li>
 <li>화면 좌우 여백 20, 카드 사이 12, 상단에 상태가 붙는 카드 패딩 16 16 24 16</li>
@@ -254,7 +254,7 @@ th{background:var(--tertiary);font-weight:700;}
   var TITLES = {
     'breakpoint-map.html':'브레이크포인트 맵', 'form-breakpoint-demo.html':'입력 폼 — PC·모바일 크기', 'action-button-placement-demo.html':'액션 버튼 배치',
     'rental-return-detail-prototype.html':'대여 회수 상세 — 회수접수 취소·회수지 주소 수정(바텀시트)', 'modal-types-gallery.html':'모달 타입 갤러리',
-    'product-change-sheet-demo.html':'상품 변경 바텀시트 — 키보드·검색', 'order-detail-mobile.html':'주문요청관리 상세', 'order-list-adaptive.html':'주문요청관리 리스트'
+    'product-change-sheet-demo.html':'상품 변경 바텀시트 — 키보드·검색', 'order-detail-mobile.html':'주문요청관리 상세', 'order-list-adaptive.html':'주문요청관리 리스트', 'pagination-compare-demo.html':'페이지네이션 — 기본형 / 축약형'
   };
   var WIDTHS = [360, 390, 768, 1024, 1025, 1440];
 

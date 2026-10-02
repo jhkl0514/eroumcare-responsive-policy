@@ -4,132 +4,381 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>페이지네이션 — PC 전용 컴포넌트 비교</title>
+<title>페이지네이션 — 기본형 / 축약형</title>
 <style>
 :root{
   --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa;
-  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999;
+  --text-primary:#1a1a1a; --text-333:#333; --text-555:#555; --text-secondary:#616161; --text-tertiary:#999;
   --border-primary:#bdbdbd; --border-secondary:#eee;
-  --brand:#323da3; --group1:#eff1fd;
-  --shadow:0 2px 4px rgba(0,0,0,0.12), 0 0 2px rgba(0,0,0,0.12);
+  --brand:#323da3; --tint:#eff1fd; --tint-text:#141e76;
+  --ok:#43a047; --ok-bg:#f2fde4;
+  --shadow:0 2px 4px rgba(0,0,0,.12), 0 0 2px rgba(0,0,0,.12);
+  --shadow-pop:0 8px 24px rgba(0,0,0,.2), 0 0 4px rgba(0,0,0,.12);
 }
 *{box-sizing:border-box;}
-body{margin:0;background:var(--bg);color:var(--text-primary);
-  font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
-#wrap{max-width:1200px;margin:0 auto;padding:20px 16px 60px;}
+[hidden]{display:none !important;}
+body{margin:0;background:var(--bg);color:var(--text-primary);font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+button,input{font-family:inherit;}
+#wrap{max-width:1200px;margin:0 auto;padding:24px 20px 80px;}
+code{background:var(--tertiary);padding:1px 5px;border-radius:4px;font-size:14px;}
 
-.banner{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
-  padding:14px 18px;margin-bottom:20px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
-.banner b{color:var(--text-primary);}
-.banner ul{margin:8px 0 0;padding-left:18px;}
-.banner li{margin-bottom:4px;}
-.banner code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+/* 문서 머리 */
+.head{background:var(--card);border:1px solid var(--border-secondary);border-radius:12px;padding:24px 28px;margin-bottom:32px;}
+.head h1{margin:0 0 6px;font-size:22px;}
+.head p{margin:0 0 16px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+.rule-table{width:100%;border-collapse:collapse;font-size:14px;word-break:keep-all;}
+.rule-table th,.rule-table td{border:1px solid #e0e0e0;padding:10px 12px;text-align:left;vertical-align:top;line-height:1.5;}
+.rule-table th{background:var(--tertiary);font-weight:700;}
 
-.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
-@media (max-width:820px){ .compare-grid{grid-template-columns:1fr;} }
-.compare-col{display:flex;flex-direction:column;gap:10px;}
-.compare-label{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;}
-.compare-tag{font-size:14px;font-weight:700;color:#fff;background:var(--brand);
-  border-radius:4px;padding:2px 10px;}
-.compare-tag.none{background:var(--text-tertiary);}
+/* 절 */
+.sec{margin-bottom:48px;}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.sec-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;font-size:14px;font-weight:700;flex:0 0 auto;}
+.sec-head h2{margin:0;font-size:20px;}
+.sec-rule{margin:0 0 16px 38px;font-size:15px;color:var(--text-secondary);line-height:1.6;}
+.sec-rule b{color:var(--text-primary);}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start;}
+@media (max-width:900px){ .grid2{grid-template-columns:minmax(0,1fr);} .sec-rule{margin-left:0;} }
+.col{display:flex;flex-direction:column;gap:10px;min-width:0;}
+.label{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;}
+.tag{font-size:14px;font-weight:700;color:#fff;background:var(--brand);border-radius:4px;padding:2px 10px;}
+.tag.mo{background:var(--tint-text);}
+.hint{font-size:14px;color:var(--text-tertiary);text-align:center;}
+.ctrl-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px;color:var(--text-secondary);}
+.ctrl-row button{height:32px;padding:0 12px;border:1px solid #e0e0e0;border-radius:999px;background:#fff;font-size:14px;cursor:pointer;color:var(--text-333);}
+.ctrl-row button.on{border-color:var(--brand);background:var(--tint);color:var(--tint-text);font-weight:600;}
 
-.callout{font-size:14px;color:var(--text-secondary);line-height:1.6;background:var(--card);
-  border:1px solid var(--border-secondary);border-radius:8px;padding:12px 14px;}
-.callout b{color:var(--text-primary);}
-.callout code{background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+/* ===== 페이지네이션 공통 ===== */
+.pg-arrow{display:inline-flex;align-items:center;justify-content:center;border:0;background:none;border-radius:4px;cursor:pointer;color:#333;padding:0;flex:0 0 auto;}
+.pg-arrow:hover:not(:disabled){background:var(--tint);}
+.pg-arrow:disabled{color:var(--border-primary);cursor:default;}
+/* 기본형(PC) 32 */
+.pg-basic{display:flex;align-items:center;justify-content:center;gap:4px;}
+.pg-basic .pg-arrow{width:32px;height:32px;}
+.pg-num{width:32px;height:32px;border:0;background:none;border-radius:4px;font-size:14px;font-weight:400;color:var(--text-primary);cursor:pointer;padding:0;}
+.pg-num:hover{background:var(--tint);color:var(--tint-text);}
+.pg-num.on{background:var(--tint);color:var(--tint-text);font-weight:600;cursor:default;}
+.pg-more{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-primary);}
+.pg-combo{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:16px 0;}
+.pg-total{font-size:14px;color:var(--text-secondary);}
+.pg-total b{font-weight:600;color:var(--text-primary);}
+.pg-size{justify-self:end;display:inline-flex;align-items:center;gap:4px;font-size:14px;color:var(--text-333);}
+/* 축약형 40 */
+.pg-compact{display:flex;align-items:center;justify-content:center;gap:4px;}
+.pg-compact .pg-arrow{width:40px;height:40px;}
+.pg-ind{display:inline-flex;align-items:center;gap:8px;padding:0 8px;font-size:14px;line-height:20px;color:var(--text-tertiary);user-select:none;}
+.pg-ind .cur{color:var(--text-primary);}
 
-/* ---- PC 테이블 + Pagination (order-list-adaptive.html과 동일 클래스/스펙) ---- */
-.pc-frame{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;
-  box-shadow:var(--shadow);overflow:hidden;}
-.mini-table{width:100%;border-collapse:collapse;}
-.mini-table th{font-size:14px;color:var(--text-tertiary);text-align:left;font-weight:600;
-  padding:10px 16px;border-bottom:1px solid var(--border-secondary);}
-.mini-table td{font-size:14px;padding:10px 16px;border-bottom:1px solid var(--border-secondary);}
-.mini-table tr:last-child td{border-bottom:none;}
+/* ===== ① PC 목록 ===== */
+.pc-frame{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;}
+.pc-topbar{height:14px;background:var(--tertiary);display:flex;align-items:center;gap:5px;padding:0 10px;}
+.pc-dot{width:6px;height:6px;border-radius:999px;background:var(--border-primary);}
+.pc-body{padding:20px 24px;}
+.tbl{width:100%;border-collapse:collapse;font-size:14px;}
+.tbl th{height:44px;background:var(--tertiary);border-bottom:1px solid var(--border-primary);font-weight:600;text-align:left;padding:0 12px;}
+.tbl td{height:44px;border-bottom:1px solid var(--border-secondary);padding:0 12px;}
+.tbl .empty td{text-align:center;color:var(--text-tertiary);height:88px;}
 
-.pagination{display:flex;align-items:center;justify-content:space-between;padding:16px 16px;flex-wrap:wrap;gap:12px;}
-.pagination-total{font-size:14px;color:var(--text-secondary);}
-.pagination-center{display:flex;align-items:center;gap:4px;}
-.page-nav{width:32px;height:32px;border-radius:4px;border:none;background:none;padding:4px;
-  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-primary);}
-.page-nav:hover{background:var(--tertiary);}
-.page-nav:disabled{opacity:.35;cursor:not-allowed;}
-.page-btn{width:32px;height:32px;padding:0;border-radius:4px;border:none;background:none;
-  font-size:14px;color:var(--text-primary);cursor:pointer;font-family:inherit;}
-.page-btn:hover{background:var(--tertiary);}
-.page-btn.active{background:var(--group1);color:#141e76;font-weight:600;cursor:default;}
-.pagination-size{display:flex;align-items:center;gap:4px;padding:8px 12px;border-radius:4px;cursor:pointer;
-  font-size:14px;color:var(--text-primary);background:none;border:none;font-family:inherit;}
-.pagination-size:hover{background:var(--tertiary);}
+/* ===== 모바일 폰 목업 ===== */
+.phone{width:380px;max-width:100%;margin:0 auto;background:#fff;border:1px solid var(--border-secondary);border-radius:24px;box-shadow:var(--shadow);padding:10px;}
+.screen{position:relative;height:700px;overflow:hidden;border-radius:16px;background:#fff;display:flex;flex-direction:column;}
+.m-head{flex:0 0 56px;display:flex;align-items:center;padding:0 20px;background:var(--brand);color:#fff;font-size:20px;font-weight:700;}
+.m-scroll{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#bdbdbd transparent;}
+.m-scroll::-webkit-scrollbar{width:3px;} .m-scroll::-webkit-scrollbar-thumb{background:#bdbdbd;border-radius:3px;}
+.m-url{font-size:14px;color:var(--text-tertiary);padding:8px 20px 0;font-family:ui-monospace,Menlo,monospace;}
+.m-count{height:56px;display:flex;align-items:center;padding:0 20px;font-size:16px;color:var(--text-secondary);}
+.m-cards{display:flex;flex-direction:column;gap:12px;padding:0 20px;}
+.m-card{display:flex;flex-direction:column;gap:6px;width:100%;padding:16px 16px 24px;border:1px solid transparent;border-radius:8px;background:#fff;text-align:left;cursor:pointer;
+  box-shadow:0 0 1px rgba(0,0,0,.2),0 2px 16px rgba(0,0,0,.08);}
+.m-card:active{background:var(--tint);border-color:var(--tint-text);}
+.m-card .top{display:flex;justify-content:space-between;align-items:center;font-size:16px;color:var(--text-555);}
+.chip{height:32px;display:inline-flex;align-items:center;padding:4px 12px;border-radius:999px;font-size:14px;font-weight:600;border:1px solid #dbeafe;background:#eff6ff;color:#1e40af;}
+.m-card .name{font-size:18px;font-weight:700;}
+.m-card .sub{font-size:16px;color:var(--text-555);}
+.m-pg{padding:32px 0;}
+.m-empty{padding:80px 20px;text-align:center;color:var(--text-tertiary);font-size:16px;}
+.detail{position:absolute;inset:0;background:#fff;transform:translateX(100%);transition:transform .25s;z-index:5;display:flex;flex-direction:column;}
+.detail.open{transform:none;}
+.d-head{flex:0 0 56px;display:flex;align-items:center;gap:4px;padding:0 20px 0 4px;border-bottom:1px solid var(--border-secondary);font-size:20px;font-weight:700;}
+.d-head button{width:48px;height:48px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.d-body{padding:24px 20px;font-size:16px;line-height:1.7;color:var(--text-555);}
 
-/* ---- 모바일: 페이지네이션 없음, 카드 + 더보기 ---- */
-.mo-shell{width:320px;max-width:100%;margin:0 auto;background:var(--card);border:1px solid var(--border-secondary);
-  border-radius:20px;box-shadow:var(--shadow);overflow:hidden;padding:10px;}
-.mo-list{padding:4px;display:flex;flex-direction:column;gap:8px;}
-.mo-card{border:1px solid var(--border-secondary);border-radius:8px;padding:12px;}
-.mo-card .name{font-size:14px;font-weight:700;margin-bottom:4px;}
-.mo-card .sub{font-size:14px;color:var(--text-secondary);}
-.load-more{margin:8px 4px 4px;padding:12px 0;text-align:center;font-size:14px;font-weight:600;
-  color:var(--text-primary);background:var(--tertiary);border-radius:8px;cursor:pointer;}
+/* ===== ③ 선택 팝업 (복지용구사업소 등록) ===== */
+.dim-stage{position:relative;background:rgba(20,20,22,.5);border-radius:10px;padding:32px 20px;display:flex;justify-content:center;}
+.modal{width:min(480px,100%);background:#fff;border-radius:16px;box-shadow:var(--shadow-pop);display:flex;flex-direction:column;max-height:860px;}
+.p-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:24px 24px 16px;border-bottom:1px solid var(--border-primary);margin:0 24px;padding-left:0;padding-right:0;}
+.p-title{font-size:20px;font-weight:700;line-height:30px;}
+.p-close{width:32px;height:32px;border:0;background:none;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#333;flex:0 0 auto;}
+.p-close:hover{background:var(--tertiary);}
+.p-body{padding:20px 24px 0;overflow-y:auto;flex:1 1 auto;}
+.search-box{background:var(--secondary-bg);padding:16px;border-radius:4px;}
+.search-row{display:flex;align-items:center;gap:8px;}
+.inp{flex:1;min-width:0;height:40px;padding:0 12px;border:1px solid var(--text-secondary);border-radius:4px;background:#fff;color:var(--text-primary);font-size:14px;}
+.inp::placeholder{color:var(--border-primary);}
+.inp:focus{outline:none;border:2px solid var(--brand);padding:0 11px;}
+.btn{height:36px;padding:0 16px;border-radius:4px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid transparent;white-space:nowrap;}
+.btn.fill{background:var(--brand);color:#fff;}
+.btn.gray{background:#eee;color:var(--text-555);}
+.btn:disabled{background:#eee;color:var(--border-primary);cursor:default;}
+.notes{margin-top:12px;font-size:14px;line-height:20px;color:var(--text-555);display:flex;flex-direction:column;gap:4px;}
+.info{display:flex;align-items:center;gap:6px;margin:16px 0 4px;font-size:14px;color:var(--text-333);}
+.info svg{flex:0 0 auto;}
+.opt-list{display:flex;flex-direction:column;}
+.opt{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-secondary);cursor:pointer;}
+.opt:last-child{border-bottom:0;}
+.opt .txt{flex:1;min-width:0;}
+.opt .nm{font-size:16px;line-height:24px;color:var(--text-333);}
+.opt .ad{font-size:14px;line-height:20px;color:var(--text-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.opt.on .nm{color:var(--ok);font-weight:600;}
+.sel-btn{flex:0 0 auto;height:36px;min-width:80px;padding:0 12px;display:inline-flex;align-items:center;justify-content:center;gap:4px;border:1px solid #333;border-radius:4px;background:#fff;color:var(--text-primary);font-size:14px;font-weight:600;cursor:pointer;}
+.opt.on .sel-btn{border-color:var(--ok);background:var(--ok-bg);color:var(--ok);}
+.no-result{padding:40px 0;text-align:center;color:var(--text-tertiary);font-size:14px;}
+.pg-area{background:var(--secondary-bg);border-radius:4px;padding:16px 0;margin:8px 0 0;}
+.p-foot{display:flex;justify-content:center;gap:12px;padding:24px;}
+.modal .p-foot .btn{flex:0 0 150px;height:48px;font-size:16px;}
+/* 모바일 바텀시트 버전 */
+.sheet-dim{position:absolute;inset:0;background:rgba(20,20,22,.5);z-index:6;}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-height:92%;background:#fff;border-radius:40px 40px 0 0;padding-top:12px;display:flex;flex-direction:column;z-index:7;}
+.sheet .p-head{margin:0 20px;padding-top:20px;}
+.sheet .p-body{padding:16px 20px 0;}
+.sheet .inp{height:48px;font-size:16px;}
+.sheet .inp:focus{padding:0 11px;}
+.sheet .p-foot{padding:32px 20px;gap:8px;}
+.sheet .p-foot .btn{height:54px;font-size:18px;}
+.sheet .p-foot .btn.gray{flex:0 0 120px;}
+.sheet .p-foot .btn.fill{flex:1;}
+.toast{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);width:80%;max-width:520px;display:flex;align-items:center;gap:8px;min-height:62px;padding:8px 16px;border:1px solid #43a047;border-radius:8px;background:#e8f5e9;
+  box-shadow:0 2px 4px rgba(0,0,0,.12),0 0 2px rgba(0,0,0,.12);font-size:16px;font-weight:600;color:var(--text-primary);z-index:20;opacity:0;pointer-events:none;transition:opacity .2s;}
+.toast.show{opacity:1;}
+.note{margin-top:14px;font-size:14px;color:var(--text-secondary);line-height:1.6;background:var(--card);border:1px solid var(--border-secondary);border-radius:8px;padding:12px 16px;}
+.note b{color:var(--text-primary);}
+.note ul{margin:4px 0 0;padding-left:18px;}
+@media (max-width:640px){ #wrap{padding:16px 12px 60px;} .head{padding:20px 16px;} .rule-table th,.rule-table td{padding:8px;} .pc-body{padding:16px 12px;} .dim-stage{padding:20px 0;} }
 </style>
 </head>
 <body>
 <div id="wrap">
-  <div class="banner">
-    <b>3-6. 페이지네이션 (PC 전용)</b> — CLAUDE.md 규칙 원문:
-    <ul>
-      <li>3분할 레이아웃(<code>justify-content:space-between</code>): 좌측 "전체 N/M" 건수 텍스트 · 중앙 이전/다음 + 페이지 번호 · 우측 "N개씩" 페이지 크기 선택</li>
-      <li>페이지 번호 버튼: <b>32×32px, radius 4px</b> — 원형/알약 아님</li>
-      <li>활성 페이지: 브랜드색 꽉 채움이 아니라 <b>연한 틴트 배경(#eff1fd) + 진한 텍스트(#141e76) semibold</b></li>
-      <li><b>모바일에는 이 컴포넌트가 없음</b> — 카드 리스트는 별도 스크롤/더보기 방식</li>
-    </ul>
-    다른 유형들과 달리 이건 <b>"모바일 버전이 다르게 생겼다"가 아니라 "모바일엔 아예 없다"</b>는 게 핵심입니다. 그래서 오른쪽 컬럼은 페이지네이션의 축소판이 아니라, 실제로 Figma에 존재하는 <b>"더보기" 버튼 패턴</b>을 보여줍니다.
+  <div class="head">
+    <h1>페이지네이션 — 기본형 / 축약형</h1>
+    <p>PC 페이지 목록은 번호를 보여 주는 <b>기본형(32)</b>, 모바일 목록과 모든 팝업 안 목록은 <b>축약형(40)</b>을 씁니다. 아래 화면을 직접 눌러 보세요.</p>
+    <table class="rule-table">
+      <tr><th>형태</th><th>쓰는 곳</th><th>모양 · 크기</th></tr>
+      <tr><td><b>기본형 · 조합형</b></td><td>PC 페이지 목록(1025px 이상)</td><td>‹ 번호 › (조합형은 왼쪽 "전체 N/M", 오른쪽 "N개씩"). 칸 32. 7페이지 이하는 전부, 8페이지부터 말줄임</td></tr>
+      <tr><td><b>축약형</b></td><td>모바일 페이지 목록(1024px 이하) + 모달·바텀시트 안 목록(PC·모바일)</td><td>‹ 현재 / 전체 ›. 화살표 40 — 화면 폭과 관계없이 하나. 숫자는 표시용 글자(누를 수 없음)</td></tr>
+      <tr><td>공통</td><td colspan="2">첫 페이지 ‹ · 마지막 페이지 › 는 비활성(<code>#bdbdbd</code>, 숨기지 않음). 현재 페이지 <code>#eff1fd</code> + <code>#141e76</code> SemiBold, 나머지 번호 Regular. 페이지를 넘기면 목록 맨 위로, 주소에 <code>?page=</code>를 남겨 상세에서 돌아와도 같은 페이지</td></tr>
+    </table>
   </div>
 
-  <div class="compare-grid">
-    <div class="compare-col">
-      <div class="compare-label"><span class="compare-tag">PC</span> 1025px 이상 — 3분할 페이지네이션</div>
-      <div class="pc-frame">
-        <table class="mini-table">
-          <tr><th>수급자명</th><th>연락처</th><th>상태</th></tr>
-          <tr><td>홍길동</td><td>010-1234-5678</td><td>주문완료</td></tr>
-          <tr><td>김영수</td><td>010-2345-6789</td><td>배송완료</td></tr>
-          <tr><td>박영희</td><td>010-3456-7890</td><td>출고준비중</td></tr>
-        </table>
-        <div class="pagination">
-          <span class="pagination-total">전체 20/100</span>
-          <div class="pagination-center">
-            <button class="page-nav" aria-label="이전 페이지"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button class="page-btn">1</button>
-            <button class="page-btn active">2</button>
-            <button class="page-btn">3</button>
-            <button class="page-btn">4</button>
-            <button class="page-btn">5</button>
-            <button class="page-nav" aria-label="다음 페이지"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <!-- ① PC 기본형 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">1</span><h2>PC 페이지 목록 — 기본형·조합형(32)</h2></div>
+    <p class="sec-rule">페이지 수를 바꿔 보고 번호를 눌러 보세요. <b>7페이지 이하는 전부</b>, <b>8페이지부터 말줄임</b>(앞쪽 <code>1 2 3 4 5 … 끝</code> / 가운데 <code>1 … 앞 현재 뒤 … 끝</code> / 뒤쪽 <code>1 … 끝-4 ~ 끝</code>). 결과가 없어도 영역은 보이고 "전체 0/0"만 표시.</p>
+    <div class="ctrl-row" id="pcCtrl">전체 페이지 수:
+      <button type="button" data-n="0">0건</button><button type="button" data-n="1">1</button><button type="button" data-n="5">5</button><button type="button" data-n="7">7</button><button type="button" data-n="10" class="on">10</button><button type="button" data-n="30">30</button>
+    </div>
+    <div class="pc-frame" style="margin-top:10px;">
+      <div class="pc-topbar"><span class="pc-dot"></span><span class="pc-dot"></span><span class="pc-dot"></span></div>
+      <div class="pc-body">
+        <table class="tbl"><thead><tr><th style="width:80px;">NO</th><th>수급자</th><th>주문상태</th><th style="width:180px;">주문일시</th></tr></thead><tbody id="pcRows"></tbody></table>
+        <div class="pg-combo"><div class="pg-total" id="pcTotal"></div><div class="pg-basic" id="pcPg"></div>
+          <div class="pg-size">20개씩<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② 모바일 목록 축약형 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">2</span><h2>모바일 페이지 목록 — 축약형(40)</h2></div>
+    <p class="sec-rule">카드 20개마다 한 페이지. 목록 맨 아래에 <b>‹ 현재 / 전체 ›</b>(위아래 여백 32). 페이지를 넘기면 <b>목록 맨 위로</b> 이동하고, 카드를 눌러 상세에 갔다가 <b>뒤로 오면 보던 페이지 그대로</b>예요. 0건이면 숨기고 빈 화면 안내만.</p>
+    <div class="grid2">
+      <div class="col">
+        <div class="ctrl-row" id="moCtrl">전체 건수:
+          <button type="button" data-n="0">0건</button><button type="button" data-n="15">15건</button><button type="button" data-n="57" class="on">57건</button><button type="button" data-n="230">230건</button>
+        </div>
+        <div class="note" style="margin-top:0;">
+          <b>직접 해보기</b>
+          <ul>
+            <li>맨 아래 › 로 다음 페이지 — 목록이 맨 위로 올라가요</li>
+            <li>카드를 누르면 상세, 왼쪽 위 뒤로 가기 — 같은 페이지·같은 위치로 돌아와요</li>
+            <li>15건(1/1)은 화살표가 둘 다 비활성, 0건은 페이지네이션이 숨겨져요</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col">
+        <div class="label"><span class="tag mo">모바일</span> 360 화면</div>
+        <div class="phone"><div class="screen" id="moScreen">
+          <div class="m-head">주문요청관리</div>
+          <div class="m-scroll" id="moScroll">
+            <div class="m-url" id="moUrl"></div>
+            <div class="m-count" id="moCount"></div>
+            <div class="m-cards" id="moCards"></div>
+            <div class="m-pg"><div class="pg-compact" id="moPg"></div></div>
           </div>
-          <button class="pagination-size">20개씩 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        </div>
-      </div>
-      <div class="callout">
-        좌측 건수 텍스트 · 중앙 페이지 버튼(32×32, 활성 페이지는 틴트 배경) · 우측 페이지 크기 선택이 <code>space-between</code>으로 나뉩니다.
+          <div class="detail" id="moDetail">
+            <div class="d-head"><button type="button" aria-label="뒤로" id="moBack"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span>주문요청 상세</span></div>
+            <div class="d-body" id="moDetailBody"></div>
+          </div>
+        </div></div>
       </div>
     </div>
+  </section>
 
-    <div class="compare-col">
-      <div class="compare-label"><span class="compare-tag none">Mobile</span> 1024px 이하 — 컴포넌트 자체가 없음</div>
-      <div class="mo-shell">
-        <div class="mo-list">
-          <div class="mo-card"><div class="name">홍길동</div><div class="sub">010-1234-5678 · 주문완료</div></div>
-          <div class="mo-card"><div class="name">김영수</div><div class="sub">010-2345-6789 · 배송완료</div></div>
-          <div class="mo-card"><div class="name">박영희</div><div class="sub">010-3456-7890 · 출고준비중</div></div>
-          <div class="load-more">더보기</div>
-        </div>
+  <!-- ③ 팝업 안 축약형 + 선택 -->
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">3</span><h2>팝업 안 목록 — 축약형(40) + 선택</h2></div>
+    <p class="sec-rule">복지용구사업소 등록처럼 <b>팝업 안에서 고르는 목록</b>도 축약형 40. 검색어 입력이 있어서 <b>PC는 480 모달, 모바일은 바텀시트</b>(3-3). <b>"선택"을 누르면 그 줄이 초록 선택 상태</b>가 되고 하나만 고를 수 있어요. 페이지를 넘겨도 고른 사업소는 유지되고, 고르기 전에는 "등록"이 비활성이에요.</p>
+    <div class="grid2">
+      <div class="col">
+        <div class="label"><span class="tag">PC</span> 480 모달</div>
+        <div class="dim-stage"><div class="modal" id="pcPicker"></div></div>
       </div>
-      <div class="callout">
-        페이지 번호나 이전/다음 버튼 자체가 <b>존재하지 않습니다.</b> 대신 카드 리스트 하단에 "더보기"를 눌러 다음 목록을 이어붙이는 방식 — 반응형으로 축소된 페이지네이션이 아니라 <b>애초에 다른 컴포넌트</b>입니다.
+      <div class="col">
+        <div class="label"><span class="tag mo">모바일</span> 바텀시트</div>
+        <div class="phone"><div class="screen" id="moPickScreen">
+          <div class="m-head">수급자 상세</div>
+          <div class="d-body">매칭 사업소: <b id="moPicked">없음</b><br><button type="button" class="btn fill" style="margin-top:12px;height:48px;font-size:16px;" id="moOpenPick">복지용구사업소 등록</button></div>
+          <div class="sheet-dim" id="moPickDim" hidden></div>
+          <div class="sheet" id="moPicker" hidden></div>
+          <div class="toast" id="moToast" role="status"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#166534"/><path d="M7.5 12.5l3 3 6-6.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span></span></div>
+        </div></div>
+        <div class="hint">"복지용구사업소 등록"을 눌러 보세요</div>
       </div>
     </div>
-  </div>
+    <div class="note">
+      <b>선택 동작</b>
+      <ul>
+        <li>"선택"을 누르면 버튼이 <code>#f2fde4</code> 배경 + <code>#43a047</code> 테두리·글자 + 체크로 바뀌고, 사업소 이름도 초록 SemiBold. 다른 줄을 고르면 앞의 선택은 풀려요(하나만). 같은 줄을 다시 누르면 선택 해제</li>
+        <li>줄 어디를 눌러도 선택돼요(모바일에서 버튼만 누르기 어렵지 않게)</li>
+        <li>검색하면 1페이지부터 다시. 결과가 없으면 "검색 결과가 없습니다." + 페이지네이션 숨김. 3글자 미만이면 "검색" 비활성</li>
+        <li>"등록"을 누르면 팝업이 닫히고 Toast로 결과 안내</li>
+      </ul>
+    </div>
+  </section>
 </div>
+
+<script>
+var IC_PREV = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5.5L8.5 12l6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var IC_NEXT = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5.5l6.5 6.5L9 18.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var IC_CLOSE = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+var IC_CHECK = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var IC_INFO = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="#333" stroke-width="1.5"/><path d="M12 11v5" stroke="#333" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="8" r="1" fill="#333"/></svg>';
+function chipRow(id, cb){ var row = document.getElementById(id); row.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){ row.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); }); cb(+b.dataset.n); }); }); }
+
+/* 축약형: ‹ 현재 / 전체 › — 숫자는 글자, 화살표만 버튼 */
+function compact(el, cur, total, go){
+  if(total < 1){ el.innerHTML = ''; el.hidden = true; return; }
+  el.hidden = false;
+  el.innerHTML = '<button type="button" class="pg-arrow" aria-label="이전 페이지"' + (cur <= 1 ? ' disabled' : '') + '>' + IC_PREV + '</button>' +
+    '<span class="pg-ind" aria-live="polite"><span class="cur">' + cur + '</span><span>/</span><span>' + total + '</span></span>' +
+    '<button type="button" class="pg-arrow" aria-label="다음 페이지"' + (cur >= total ? ' disabled' : '') + '>' + IC_NEXT + '</button>';
+  var a = el.querySelectorAll('.pg-arrow');
+  a[0].onclick = function(){ go(cur - 1); }; a[1].onclick = function(){ go(cur + 1); };
+}
+
+/* ① PC 기본형 — DS 규칙: 7 이하 전부, 8부터 말줄임 */
+var pc = { total:10, cur:1 };
+function pageItems(c, t){
+  if(t <= 7){ var a = []; for(var i = 1; i <= t; i++) a.push(i); return a; }
+  if(c <= 4) return [1,2,3,4,5,'…',t];
+  if(c >= t - 3) return [1,'…',t-4,t-3,t-2,t-1,t];
+  return [1,'…',c-1,c,c+1,'…',t];
+}
+function renderPc(){
+  var t = pc.total, c = pc.cur, rows = '';
+  if(t === 0) rows = '<tr class="empty"><td colspan="4">검색 조건에 맞는 주문이 없습니다.</td></tr>';
+  else for(var i = 0; i < 4; i++){ var no = (c - 1) * 20 + i + 1; rows += '<tr><td>' + no + '</td><td>홍*동</td><td>신규배정</td><td>2026-09-' + String(28 - (no % 20)).padStart(2,'0') + ' 10:2' + i + '</td></tr>'; }
+  document.getElementById('pcRows').innerHTML = rows;
+  document.getElementById('pcTotal').innerHTML = '<b>전체</b> ' + (t ? Math.min(c * 20, t * 20) : 0) + '/' + t * 20;
+  var el = document.getElementById('pcPg');
+  if(t === 0){ el.innerHTML = ''; return; }
+  var h = '<button type="button" class="pg-arrow" aria-label="이전 페이지"' + (c <= 1 ? ' disabled' : '') + ' data-go="' + (c - 1) + '">' + IC_PREV + '</button>';
+  pageItems(c, t).forEach(function(p){ h += p === '…' ? '<span class="pg-more">…</span>' : '<button type="button" class="pg-num' + (p === c ? ' on' : '') + '" data-go="' + p + '"' + (p === c ? ' aria-current="page"' : '') + '>' + p + '</button>'; });
+  h += '<button type="button" class="pg-arrow" aria-label="다음 페이지"' + (c >= t ? ' disabled' : '') + ' data-go="' + (c + 1) + '">' + IC_NEXT + '</button>';
+  el.innerHTML = h;
+  el.querySelectorAll('[data-go]').forEach(function(b){ b.onclick = function(){ if(b.disabled) return; pc.cur = +b.dataset.go; renderPc(); }; });
+}
+chipRow('pcCtrl', function(n){ pc.total = n; pc.cur = 1; renderPc(); });
+renderPc();
+
+/* ② 모바일 목록 */
+var mo = { count:57, cur:1, saved:0 };
+var NAMES = ['박*순','김*자','이*호','최*영','정*수','강*희','조*민','윤*숙'];
+var ITEMS = ['전동침대','수동휠체어','경사로'];
+function renderMo(){
+  var total = Math.ceil(mo.count / 20), start = (mo.cur - 1) * 20, end = Math.min(start + 20, mo.count), html = '';
+  document.getElementById('moCount').textContent = mo.count + '건';
+  document.getElementById('moUrl').textContent = '/order-request' + (mo.cur > 1 ? '?page=' + mo.cur : '');
+  if(mo.count === 0) html = '<div class="m-empty">조회된 주문이 없습니다.</div>';
+  for(var i = start; i < end; i++){
+    html += '<button type="button" class="m-card" data-i="' + i + '"><span class="top"><span class="chip">신규배정</span><span>2026-09-' + String(30 - (i % 28)).padStart(2,'0') + ' 09:4' + (i % 10) + '</span></span>' +
+      '<span class="name">' + NAMES[i % 8] + ' <span style="font-weight:400;color:#555;font-size:16px;">L12345****</span></span><span class="sub">품목 : ' + ITEMS[i % 3] + ' · ' + (i + 1) + '번째</span></button>';
+  }
+  document.getElementById('moCards').innerHTML = html;
+  document.querySelectorAll('#moCards .m-card').forEach(function(c){ c.onclick = function(){ openDetail(+c.dataset.i); }; });
+  compact(document.getElementById('moPg'), mo.cur, total, function(p){ mo.cur = p; renderMo(); document.getElementById('moScroll').scrollTo({top:0, behavior:'smooth'}); });
+}
+function openDetail(i){
+  mo.saved = document.getElementById('moScroll').scrollTop;
+  document.getElementById('moDetailBody').innerHTML = '<b style="color:#1a1a1a;">' + NAMES[i % 8] + '</b> · ' + ITEMS[i % 3] + '<br>목록 ' + mo.cur + '페이지의 ' + (i % 20 + 1) + '번째 카드예요.<br>뒤로 가면 ' + mo.cur + '페이지, 같은 위치로 돌아가요.';
+  document.getElementById('moDetail').classList.add('open');
+}
+document.getElementById('moBack').onclick = function(){ document.getElementById('moDetail').classList.remove('open'); document.getElementById('moScroll').scrollTop = mo.saved; };
+chipRow('moCtrl', function(n){ mo.count = n; mo.cur = 1; renderMo(); document.getElementById('moScroll').scrollTop = 0; });
+renderMo();
+
+/* ③ 사업소 선택 팝업 — PC 모달 / 모바일 바텀시트 같은 로직 */
+var CENTERS = (function(){
+  var a = ['하람','늘봄','온누리','새솔','다온','한빛','소망','푸른','행복','우리','나눔','바른'], b = ['복지센터','의료기','케어','복지용구'], out = [];
+  for(var i = 0; i < 46; i++) out.push({ id:i, name:a[i % 12] + b[(i * 5) % 4] + (i >= 12 ? ' ' + (Math.floor(i / 12) + 1) + '호점' : ''), km:(1 + i * 0.7).toFixed(1), addr:'충남 태안군 태안읍 독샘로 ' + (100 + i) });
+  return out;
+})();
+function picker(root, opts){
+  var st = { q:'', page:1, sel:null }, PER = 7;
+  root.innerHTML =
+    '<div class="p-head"><span class="p-title">복지용구사업소 등록</span><button type="button" class="p-close" aria-label="닫기">' + IC_CLOSE + '</button></div>' +
+    '<div class="p-body"><div class="search-box"><div class="search-row"><input class="inp" type="search" enterkeyhint="search" placeholder="복지용구사업소명 (3글자 이상) 입력"><button type="button" class="btn fill" disabled>검색</button></div>' +
+    '<div class="notes"><div>※ 매칭 서비스 이용중인 복지용구사업소 내에서 선택 가능합니다.</div><div>※ 매칭된 수급자가 복지용구를 주문요청할 때 우선 연결해 드립니다.</div></div></div>' +
+    '<div class="info">' + IC_INFO + '<span>입력한 사업소가 없다면, 가까운 사업소 목록을 안내해 드립니다.</span></div>' +
+    '<div class="opt-list"></div><div class="pg-area"><div class="pg-compact"></div></div></div>' +
+    '<div class="p-foot"><button type="button" class="btn gray">취소</button><button type="button" class="btn fill" disabled>등록</button></div>';
+  var inp = root.querySelector('.inp'), sBtn = root.querySelector('.search-row .btn'), list = root.querySelector('.opt-list'),
+      pgArea = root.querySelector('.pg-area'), pg = root.querySelector('.pg-compact'), ok = root.querySelector('.p-foot .fill'), body = root.querySelector('.p-body');
+  function data(){ return st.q ? CENTERS.filter(function(c){ return c.name.indexOf(st.q) >= 0; }) : CENTERS; }
+  function render(){
+    var d = data(), total = Math.ceil(d.length / PER);
+    if(st.page > total) st.page = Math.max(1, total);
+    var slice = d.slice((st.page - 1) * PER, st.page * PER);
+    list.innerHTML = d.length ? slice.map(function(c){ var on = st.sel === c.id;
+      return '<div class="opt' + (on ? ' on' : '') + '" data-id="' + c.id + '"><div class="txt"><div class="nm">' + c.name + '</div><div class="ad">' + c.km + 'km · ' + c.addr + '</div></div>' +
+        '<button type="button" class="sel-btn" aria-pressed="' + on + '">' + (on ? IC_CHECK : '') + '선택</button></div>'; }).join('') : '<div class="no-result">검색 결과가 없습니다.</div>';
+    list.querySelectorAll('.opt').forEach(function(o){ o.onclick = function(){ var id = +o.dataset.id; st.sel = st.sel === id ? null : id; render(); }; });
+    pgArea.hidden = !d.length;
+    compact(pg, st.page, total, function(p){ st.page = p; render(); body.scrollTop = 0; list.scrollIntoView({block:'nearest'}); });
+    ok.disabled = st.sel === null;
+  }
+  inp.addEventListener('input', function(){ sBtn.disabled = inp.value.trim().length < 3; if(!inp.value.trim()){ st.q = ''; st.page = 1; render(); } });
+  function search(){ if(sBtn.disabled) return; st.q = inp.value.trim(); st.page = 1; render(); inp.blur(); }
+  sBtn.onclick = search;
+  inp.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); search(); } });
+  root.querySelector('.p-close').onclick = function(){ opts.close && opts.close(); };
+  root.querySelector('.p-foot .gray').onclick = function(){ opts.close && opts.close(); };
+  ok.onclick = function(){ var c = CENTERS.filter(function(x){ return x.id === st.sel; })[0]; opts.done && opts.done(c); };
+  render();
+  return { reset:function(){ st.q = ''; st.page = 1; st.sel = null; inp.value = ''; sBtn.disabled = true; render(); } };
+}
+picker(document.getElementById('pcPicker'), {
+  close:function(){ flash(document.getElementById('pcPicker'), '닫기 — 실제 화면에서는 모달이 닫혀요'); },
+  done:function(c){ flash(document.getElementById('pcPicker'), c.name + ' 등록 — 실제 화면에서는 모달이 닫히고 Toast'); }
+});
+function flash(el, msg){ var t = document.createElement('div'); t.className = 'toast show'; t.style.position = 'fixed'; t.innerHTML = IC_CHECK.replace('currentColor', '#166534') + '<span>' + msg + '</span>'; document.body.appendChild(t); setTimeout(function(){ t.remove(); }, 2000); }
+var moSheet = document.getElementById('moPicker'), moDim = document.getElementById('moPickDim');
+var moPick = picker(moSheet, {
+  close:function(){ moSheet.hidden = true; moDim.hidden = true; },
+  done:function(c){ moSheet.hidden = true; moDim.hidden = true; document.getElementById('moPicked').textContent = c.name;
+    var t = document.getElementById('moToast'); t.querySelector('span').textContent = '복지용구사업소를 등록했어요'; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2000); }
+});
+document.getElementById('moOpenPick').onclick = function(){ moPick.reset(); moSheet.hidden = false; moDim.hidden = false; };
+moDim.onclick = function(){ moSheet.hidden = true; moDim.hidden = true; };
+</script>
 </body>
 </html>
