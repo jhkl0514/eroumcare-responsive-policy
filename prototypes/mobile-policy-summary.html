@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>모바일 반응형 한눈에</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--tertiary:#f5f5f5;--text-primary:#1a1a1a;--text-secondary:#616161;--border:#eee;--brand:#323da3;--ok:#166534;--ok-bg:#e8f5e9;--no:#c62828;--no-bg:#ffebee;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;font-size:16px;line-height:1.7;}
+.doc{max-width:880px;margin:0 auto;padding:32px 20px 80px;}
+.sheet{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:32px 36px;}
+h1{margin:0 0 8px;font-size:26px;line-height:1.35;}
+.lead{color:var(--text-secondary);margin:0 0 20px;}
+h2{margin:36px 0 12px;padding-top:20px;border-top:1px solid var(--border);font-size:20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+h2 .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;font-size:14px;flex:0 0 auto;}
+p{margin:6px 0;}
+ul{margin:6px 0 10px;padding-left:20px;}
+li{margin:3px 0;}
+code{background:var(--tertiary);padding:1px 6px;border-radius:4px;font-size:14px;}
+pre{background:#1e1f24;color:#e8e8ef;border-radius:8px;padding:14px 16px;font-size:13px;line-height:1.6;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;margin:10px 0 16px;font-size:14px;}
+th,td{border:1px solid #e0e0e0;padding:8px 10px;text-align:left;vertical-align:top;}
+th{background:var(--tertiary);font-weight:700;}
+.ref{margin-left:auto;font-size:13px;font-weight:600;color:var(--brand);text-decoration:none;border:1px solid #c5cae9;border-radius:999px;padding:2px 10px;background:#f4f5fd;white-space:nowrap;}
+.ref:hover{background:#e3e5f5;}
+.rule{background:#f4f5fd;border-left:4px solid var(--brand);border-radius:4px;padding:12px 14px;margin:10px 0;font-weight:600;}
+.chg{display:inline-block;font-size:12px;font-weight:700;border-radius:4px;padding:0 6px;}
+.chg.yes{background:var(--ok-bg);color:var(--ok);}
+.chg.no{background:var(--tertiary);color:var(--text-secondary);}
+.qa{border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin:8px 0;}
+.qa .q{font-weight:700;}
+.qa .q::before{content:"Q. ";color:var(--brand);}
+.qa .a{margin-top:4px;}
+.qa .a::before{content:"A. ";font-weight:700;color:var(--ok);}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px;}
+.toc a{font-size:13px;color:var(--text-primary);text-decoration:none;border:1px solid #e0e0e0;border-radius:999px;padding:3px 10px;background:#fff;}
+.toc a:hover{border-color:var(--brand);color:var(--brand);}
+@media (max-width:640px){.sheet{padding:20px 16px;} h2 .ref{margin-left:0;}}
+</style>
+</head>
+<body><div class="doc"><div class="sheet">
+<h1>모바일 반응형 한눈에</h1>
+<p class="lead">모바일(1024px 이하) 화면을 만들 때 자주 헷갈리는 규칙만 모았어요. 자세한 내용은 각 항목 오른쪽 조항 링크(원문)에서 확인하세요.</p>
+<div class="toc">
+  <a href="#s1">1. 기준</a><a href="#s2">2. 무엇이 바뀌나</a><a href="#s3">3. 버튼</a><a href="#s4">4. 모달 vs 바텀시트</a><a href="#s5">5. 모달 크기·버튼</a><a href="#s6">6. 키보드·검색</a><a href="#s7">7. 하단 여백</a><a href="#s8">8. 목록·상세</a><a href="#s9">9. 자주 묻는 질문</a><a href="#s10">10. 공통 CSS</a>
+</div>
+
+<h2 id="s1"><span class="num">1</span>기준 — 1024px 이하는 모바일, 한 페이지로<a class="ref" href="../index.html#1" target="_top">원문 1·2</a></h2>
+<ul>
+<li><b>1024px 이하 = 모바일, 1025px 이상 = PC.</b> CSS: 모바일 <code>max-width:1024px</code> / PC <code>min-width:1024.02px</code></li>
+<li>360px은 최소 지원폭일 뿐, 360에서 따로 바뀌는 규칙은 없어요(768도 마찬가지)</li>
+<li><b>모바일을 별도 페이지로 만들지 않아요.</b> PC 페이지 안에 모바일 구조를 넣고 1024px 이하에서 전환해요(<code>*_mobile.html</code> 분리 금지)</li>
+</ul>
+
+<h2 id="s2"><span class="num">2</span>무엇이 바뀌나 — 입력류 크기와 폭뿐<a class="ref" href="../index.html#3-0" target="_top">원문 3-0</a></h2>
+<div class="rule">1024px 이하에서 크기가 바뀌는 것은 입력칸 · 셀렉트 · 옵션 행뿐이에요. 나머지는 PC와 같아요.</div>
+<table>
+<tr><th>컴포넌트</th><th>PC</th><th>모바일</th><th></th></tr>
+<tr><td>입력칸 <code>Textfield</code> · 셀렉트 <code>SelectField</code></td><td>40 · 14px</td><td><b>48 · 16px</b></td><td><span class="chg yes">바뀜</span></td></tr>
+<tr><td>옵션 행 <code>SelectOption</code></td><td>36 · 14px</td><td><b>44 · 16px</b></td><td><span class="chg yes">바뀜</span></td></tr>
+<tr><td>긴 글 <code>TextArea</code></td><td>16px</td><td>16px</td><td><span class="chg no">그대로</span></td></tr>
+<tr><td>버튼 SM / MD</td><td>36 / 48</td><td>36 / 48</td><td><span class="chg no">그대로</span></td></tr>
+<tr><td>체크박스·라디오 / 토글</td><td>20 / 48×24</td><td>같음 (줄 전체 터치, 줄 높이 44↑)</td><td><span class="chg no">그대로</span></td></tr>
+<tr><td>필터칩 · 선택칩 · 탭</td><td colspan="2">쓰는 자리에 맞는 크기(필터칩 SM 32 등) — PC·모바일 같음</td><td><span class="chg no">그대로</span></td></tr>
+</table>
+<ul>
+<li><b>모달 안·바텀시트 안 입력류도 예외 없이</b> 모바일 크기(48·16px)예요</li>
+<li>모바일 입력 글자가 16px보다 작으면 iOS가 입력칸을 누를 때 화면을 확대해요</li>
+</ul>
+
+<h2 id="s3"><span class="num">3</span>버튼 — PC 크기 그대로, 예외는 LG 54 하나<a class="ref" href="../index.html#3-4" target="_top">원문 3-4</a></h2>
+<table>
+<tr><th>버튼</th><th>높이</th><th>폭</th></tr>
+<tr><td>하단 고정 버튼(화면 아래 sticky)</td><td><b>LG 54</b></td><td>폭을 나눠 가짐</td></tr>
+<tr><td>바텀시트 하단 버튼</td><td><b>LG 54</b></td><td>취소 120 + 확인 나머지</td></tr>
+<tr><td>모달 버튼</td><td>MD 48 (PC·모바일 같음)</td><td>PC 150 고정 / <b>모바일 Full</b></td></tr>
+<tr><td>본문 단독 버튼(주문목록 등)</td><td>MD 48</td><td>내용만큼</td></tr>
+<tr><td>섹션 제목 옆·표 안 보조 버튼(조회·변경하기)</td><td>SM 36</td><td>내용만큼</td></tr>
+<tr><td>입력칸 옆 버튼(우편번호)</td><td>SM 36, 입력칸 높이의 <b>가운데 정렬</b></td><td>내용만큼</td></tr>
+</table>
+
+<h2 id="s4"><span class="num">4</span>모달 vs 바텀시트 — 글자 입력이 있으면 바텀시트<a class="ref" href="../index.html#3-3" target="_top">원문 3-3</a></h2>
+<table>
+<tr><th>팝업 내용</th><th>모바일 형태</th><th>예</th></tr>
+<tr><td>안내·확인(글자만)</td><td>모달</td><td>주문하기 확인, 주문 불가 안내, 메모 삭제</td></tr>
+<tr><td>선택만(셀렉트·체크박스·라디오)</td><td>모달</td><td>회수 요청하기</td></tr>
+<tr><td><b>글자 입력</b>(사유·주소·검색)</td><td><b>바텀시트</b></td><td>회수접수 취소, 회수지 주소 수정, 상품 변경</td></tr>
+<tr><td>테이블</td><td>모달(가로 스크롤)</td><td>대여 이력 조회</td></tr>
+</table>
+<ul>
+<li>이유: 키보드가 화면 절반을 가려서 가운데 모달 안의 입력칸·버튼이 숨어요. 바텀시트는 키보드 위에 붙어요</li>
+<li>바텀시트 안 셀렉트를 누르면 <b>옵션 시트</b>가 원래 시트 대신 열리고, "선택완료"하면 돌아와요</li>
+<li>PC는 모두 모달이에요</li>
+</ul>
+
+<h2 id="s5"><span class="num">5</span>모달 크기·버튼 — 340은 없어요<a class="ref" href="../index.html#3-3" target="_top">원문 3-3</a></h2>
+<div class="rule">모든 모달: <code>width: min(모달 크기, calc(100% - 40px))</code> 한 줄. 크기를 바꾸는 미디어쿼리 없음</div>
+<table>
+<tr><th>화면 폭</th><th>480 모달</th><th>600 모달</th><th>800 모달</th></tr>
+<tr><td>PC</td><td>480</td><td>600</td><td>800</td></tr>
+<tr><td>768</td><td>480</td><td>600</td><td>728</td></tr>
+<tr><td>390</td><td>350</td><td>350</td><td>350</td></tr>
+<tr><td>360</td><td>320</td><td>320</td><td>320</td></tr>
+</table>
+<ul>
+<li>PC에는 340 모달이 없어요. Figma의 340 프레임은 480 모달이 폰에서 줄어든 모습이에요</li>
+<li>모달 버튼은 <b>높이 48 그대로</b>, 폭만 PC 150 고정 → 모바일 Full</li>
+</ul>
+
+<h2 id="s6"><span class="num">6</span>키보드·검색<a class="ref" href="../index.html#3-12" target="_top">원문 3-12</a></h2>
+<ul>
+<li>키보드가 올라오면 바텀시트는 <b>키보드 위</b>에 붙고, 남은 공간 안에서 최대 높이까지 커져요. 본문만 스크롤</li>
+<li>하단 버튼은 키보드 위에 붙고 입력칸을 가리지 않아요</li>
+<li>키보드가 닫히는 때: 선택 완료, "완료"·"검색" 키, 바깥 빈 곳 탭, 시트 닫기</li>
+<li><b>검색 결과는 입력하는 대로 자동 표시</b>(약 0.3초 간격). 돋보기·"검색" 키는 키보드를 닫아요</li>
+<li><b>검색칸에는 지우기 X가 없어요</b>(오른쪽 돋보기 고정). 다시 누르면 글자 전체 선택. <code>type="search"</code>의 브라우저 기본 ×는 CSS로 숨겨요</li>
+<li>숫자 칸은 숫자 키패드(<code>inputmode="tel"</code>), 엔터로 폼을 바로 제출하지 않아요</li>
+</ul>
+<p><a class="demo-link" style="display:inline-block;padding:6px 12px;border-radius:4px;background:#e3e5f5;color:var(--brand);font-size:14px;font-weight:600;text-decoration:none;" href="../index.html#product-change-sheet-demo" target="_top">상품 변경 바텀시트 시연 보기</a></p>
+
+<h2 id="s7"><span class="num">7</span>하단 여백<a class="ref" href="../index.html#3-4" target="_top">원문 3-4</a></h2>
+<table>
+<tr><th>위치</th><th>여백 (위 / 좌우 / 아래)</th></tr>
+<tr><td>화면 하단 고정 버튼 영역</td><td>32 / 20 / <b>20 + safe-area</b> — <code>padding:32px 20px calc(20px + env(safe-area-inset-bottom))</code></td></tr>
+<tr><td>본문 맨 아래 버튼(주문목록 등)</td><td>48 / — / 20</td></tr>
+<tr><td>바텀시트 하단 버튼</td><td>32 / 20 / 32</td></tr>
+</table>
+<ul><li>viewport 메타에 <code>viewport-fit=cover</code>가 없으면 safe-area 값이 0이에요. 안드로이드·인앱 브라우저는 원래 0이라 기본 20이 필요해요</li></ul>
+
+<h2 id="s8"><span class="num">8</span>목록·상세<a class="ref" href="../index.html#3-9" target="_top">원문 3-7·3-9·3-11</a></h2>
+<ul>
+<li><b>목록</b>: PC 테이블 ↔ 모바일 카드를 둘 다 두고 표시만 전환. 모바일은 <b>페이지네이션 없음</b>(스크롤로 이어서), 카드를 누르면 상세로</li>
+<li><b>검색 영역</b>: 모바일 필터칩(32) — 기본값일 땐 "이름 : 값"(예: "상태 : 전체"), 고르면 값만. 모바일 필터는 모두 단일 선택. 시트를 열면 현재 값이 처음부터 선택 표시. 기간 기본값(3개월 등)은 처음부터 선택 상태</li>
+<li><b>상세</b>: 정보 표는 PC 한 줄 2쌍 → 모바일 1쌍. 본문 맨 아래 "○○목록" 버튼 + 상단 뒤로가기(48×48), 연락처는 <code>tel:</code> 링크</li>
+<li>화면 좌우 여백 20, 카드 사이 12, 상단에 상태가 붙는 카드 패딩 16 16 24 16</li>
+</ul>
+
+<h2 id="s9"><span class="num">9</span>자주 묻는 질문</h2>
+<div class="qa"><div class="q">모바일에서 모달은 Full로 가는 거 아닌가요?</div><div class="a">아니요. 모든 모달은 <code>min(크기, 100% - 40px)</code>예요. 폰에서는 좌우 20만 남기고 거의 꽉 차 보이고, 태블릿에서는 원래 크기(480 등)로 떠요.</div></div>
+<div class="qa"><div class="q">PC에 340 모달이 있나요?</div><div class="a">없어요. PC는 480 / 600 / 800이에요.</div></div>
+<div class="qa"><div class="q">모달 버튼도 PC 고정인가요?</div><div class="a">높이는 네(48). 폭은 아니요 — 모바일은 Full, 150 고정은 PC에서만.</div></div>
+<div class="qa"><div class="q">모달 안 셀렉트도 48로 키우나요?</div><div class="a">네, 예외 없이 1024px 이하면 48·16px이에요. 디자인은 PC 모달 하나로 관리해요.</div></div>
+<div class="qa"><div class="q">입력칸이 48이면 옆 버튼(우편번호)도 48인가요?</div><div class="a">아니요. 버튼은 PC 크기(SM 36) 그대로 두고 입력칸 높이의 가운데에 맞춰요.</div></div>
+<div class="qa"><div class="q">바텀시트는 모바일 모달 전부에 쓰나요?</div><div class="a">아니요. 글자를 입력하는 팝업(사유·주소·검색)만이에요. 안내·확인·선택만 하는 팝업은 모바일에서도 모달이에요.</div></div>
+<div class="qa"><div class="q">하단 고정 버튼이 뭔가요?</div><div class="a">모바일에서 화면 아래에 sticky(fixed)로 붙는 버튼이에요. LG 54, 아래 여백 20 + safe-area.</div></div>
+<div class="qa"><div class="q">반응형이면 PC 컴포넌트를 그대로 써도 되나요?</div><div class="a">입력류는 아니에요 — 1024px 이하에서 모바일 크기로 바꿔요. 버튼·칩·탭은 PC 크기 그대로예요.</div></div>
+
+<h2 id="s10"><span class="num">10</span>공통 CSS (페이지별 예외 없이 이것만)<a class="ref" href="../index.html#3-2" target="_top">원문 3-2</a></h2>
+<pre>/* 모달 폭 — 미디어쿼리 없음 */
+.modal { width: min(var(--modal-w, 480px), calc(100% - 40px)); }
+
+/* 버튼 — PC·모바일 같은 값 */
+.btn-sm { height: 36px; }  .btn-md { height: 48px; }  .btn-lg { height: 54px; }
+
+/* 1024px 이하: 입력류만 모바일 크기 */
+@media (max-width: 1024px) {
+  .input, .select   { height: 48px; padding: 12px; font-size: 16px; }
+  .select-option    { min-height: 44px; padding: 10px 8px 10px 12px; font-size: 16px; }
+  textarea          { font-size: 16px; }
+  .modal-actions .btn { flex: 1; }          /* 모달 버튼 폭 Full */
+}
+@media (min-width: 1024.02px) {
+  .modal-actions .btn { flex: 0 0 150px; }  /* 모달 버튼 PC 150 고정 */
+}</pre>
+
+</div></div></body>
+</html>

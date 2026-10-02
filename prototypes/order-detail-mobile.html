@@ -206,6 +206,16 @@ select.dv-input{background-color:var(--card);color:var(--input-text-active);
 /* 하단버튼 sticky */
 .bottom-actions{position:sticky;bottom:0;display:flex;gap:8px;padding:32px 20px calc(20px + env(safe-area-inset-bottom, 0px));
   background:linear-gradient(to bottom, rgba(255,255,255,0), var(--card) 35%);}
+/* ---- 3-0 모바일 크기: 입력류 MO(48·16px, 옵션 행 44), 하단 고정·시트 버튼 LG 54 ---- */
+.dv-input{height:48px;font-size:16px;box-sizing:border-box;}
+textarea.dv-input{height:auto;}
+.select-box{min-height:48px;font-size:16px;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;}
+.bottom-actions .btn{height:54px;font-size:18px;padding:0;display:flex;align-items:center;justify-content:center;}
+@container pf (min-width: 1024.02px){
+  .dv-input{height:40px;font-size:14px;}
+  .select-box{min-height:40px;font-size:14px;}
+  .bottom-actions{display:none;}   /* PC는 타이틀 옆 버튼만(3-4) — 뒤쪽 sticky 규칙이 덮어쓰던 것 정정 */
+}
 </style>
 </head>
 <body>

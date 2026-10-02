@@ -36,7 +36,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .width-readout{font-size:14px;color:var(--text-tertiary);font-variant-numeric:tabular-nums;margin-bottom:16px;}
 
 #device-frame-outer{overflow-x:auto;padding-bottom:8px;}
-#device-frame{width:100%;max-width:1440px;margin:0 auto;transition:width .2s;box-sizing:border-box;}
+#device-frame{width:100%;max-width:1440px;margin:0 auto;transition:width .2s;box-sizing:border-box;container-type:inline-size;container-name:pf;}
 #device-frame-chrome{border:1px dashed var(--border-primary);border-radius:8px;padding:4px;background:var(--bg);}
 
 /* 좌우 20px — order-detail-mobile.html의 .section{padding:24px 20px}와 동일 (실제 배송정보 폼 여백 기준) */
@@ -90,6 +90,14 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .zip-btn{flex-shrink:0;background:var(--tertiary);color:var(--text-primary);border:1px solid var(--border-primary);
   border-radius:4px;padding:8px 16px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;}
 .readonly-text{padding:8px 0;font-size:14px;color:var(--text-primary);overflow-wrap:break-word;word-break:keep-all;}
+/* ---- 3-0 모바일 크기: 입력류 MO(48·16px, 옵션 행 44), 하단 고정·시트 버튼 LG 54 ---- */
+.zip-combo{align-items:center;}
+.zip-btn{height:36px;padding:0 16px;}
+.field-input,.field-select{height:40px;box-sizing:border-box;}
+@container pf (max-width:1024px){
+  .field-input,.field-select{height:48px;font-size:16px;padding-top:0;padding-bottom:0;}
+  .field-textarea{font-size:16px;}
+}
 </style>
 </head>
 <body>

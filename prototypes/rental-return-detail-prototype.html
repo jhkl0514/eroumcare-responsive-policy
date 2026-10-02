@@ -167,9 +167,9 @@ textarea.memo-input{width:100%;min-height:72px;border:1px solid var(--border-pri
 .btn-danger-outline{background:var(--card);color:var(--danger-text);border-color:var(--danger-border);}
 .btn-small{padding:6px 12px;font-size:14px;}
 .hint{font-size:14px;color:var(--text-tertiary);margin-top:6px;}
-.overlay{position:absolute;inset:0;background:rgba(20,20,22,0.5);display:flex;align-items:flex-start;
+.overlay{position:absolute;inset:0;background:rgba(20,20,22,0.5);display:flex;align-items:center;
   justify-content:center;padding:60px 20px;z-index:10;}
-.modal{background:var(--card);border-radius:14px;width:100%;max-width:440px;padding:0;box-shadow:var(--shadow);
+.modal{background:var(--card);border-radius:14px;width:100%;max-width:480px;padding:0;box-shadow:var(--shadow);
   max-height:85vh;display:flex;flex-direction:column;}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 16px;
   border-bottom:1px solid var(--border-tertiary);flex-shrink:0;}
@@ -187,7 +187,7 @@ textarea.form-input{min-height:70px;resize:vertical;}
 select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-moz-appearance:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 12px center;background-size:14px 14px;}
-.zip-row{display:flex;gap:8px;align-items:flex-start;}
+.zip-row{display:flex;gap:8px;align-items:center;}
 .zip-row input{flex:1;}
 .zip-btn{flex-shrink:0;background:var(--info-bg);color:var(--info-text);border:1px solid var(--info-border);
   border-radius:6px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;}
@@ -225,6 +225,24 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
   .card{padding:24px 20px;}   /* 3-8 View(상세) 화면 컨테이너 24/20 */
   .product-side{align-items:flex-start;width:100%;min-width:0;}
   .barcode-pill{width:100%;box-sizing:border-box;}
+}
+/* ---- 3-0 모바일 크기: 입력류 MO(48·16px, 옵션 행 44), 하단 고정·시트 버튼 LG 54 ---- */
+.modal-actions .btn{height:48px;padding:0 20px;display:flex;align-items:center;justify-content:center;}
+.zip-btn{height:36px;padding:0 16px;}
+@container pf (min-width: 1024.02px){
+  .modal-actions{justify-content:center;}
+  .modal-actions .btn{flex:0 0 150px;}
+}
+@container pf (max-width:1024px){
+  select.form-input, input.form-input{height:48px;font-size:16px;}
+  textarea.form-input, textarea.memo-input{font-size:16px;}
+  .actions-bottom.has-buttons .btn{height:54px;font-size:18px;padding:0;display:flex;align-items:center;justify-content:center;flex:1;}
+  .overlay.is-sheet{align-items:flex-end;padding:0;}
+  .overlay.is-sheet .modal{max-width:100%;border-radius:40px 40px 0 0;max-height:90%;}
+  .overlay.is-sheet .modal-header{padding:32px 20px 16px;border-bottom:0;}
+  .overlay.is-sheet .modal-body{padding:0 20px;}
+  .overlay.is-sheet .modal-actions{position:sticky;bottom:0;background:var(--card);padding:32px 0;margin:0;}
+  .overlay.is-sheet .modal-actions .btn{height:54px;font-size:18px;}
 }
 </style>
 </head>
@@ -495,22 +513,29 @@ function confirmDeleteMemo(idx){
   renderPage();
 }
 
-function openOverlay(title, bodyHtml){
+function openOverlay(title, bodyHtml, sheet){
   closeOverlay();
   var page = document.getElementById('page');
   var ov = document.createElement('div');
-  ov.className = 'overlay';
+  ov.className = 'overlay' + (sheet ? ' is-sheet' : '');   /* 사유 작성·주소 입력 = 모바일 바텀시트(3-3) */
   ov.id = 'overlay';
   ov.innerHTML =
     '<div class="modal">'+
-      '<div class="modal-header"><h3>'+title+'</h3><button class="modal-close" onclick="closeOverlay()">&times;</button></div>'+
+      '<div class="modal-header"><h3>'+title+'</h3><button class="modal-close" onclick="closeOverlay()" aria-label="닫기"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>'+
       '<div class="modal-body">'+bodyHtml+'</div>'+
     '</div>';
+  /* 팝업을 지금 보이는 화면 영역에 맞춘다(긴 페이지에서도 모달은 화면 가운데, 시트는 화면 아래) */
+  var pr = page.getBoundingClientRect();
+  var top = Math.max(0, -pr.top);
+  var h = Math.min(window.innerHeight - Math.max(0, pr.top), page.offsetHeight - top);
+  ov.style.top = top + 'px'; ov.style.bottom = 'auto'; ov.style.height = h + 'px';
   page.appendChild(ov);
+  document.documentElement.style.overflow = 'hidden';   /* 팝업이 열려 있는 동안 뒤 페이지 스크롤 잠금 */
 }
 function closeOverlay(){
   var ov = document.getElementById('overlay');
   if(ov){ ov.remove(); }
+  document.documentElement.style.overflow = '';
 }
 function openAlertModal(title, msg){
   openOverlay(title,
@@ -665,7 +690,7 @@ function openCancelModal(){
       '<button class="btn btn-outline" onclick="closeOverlay()">취소</button>'+
       '<button class="btn btn-disabled" id="cancel-save" disabled>저장</button>'+
     '</div>'
-  );
+  , true);
   document.getElementById('cancel-reason').addEventListener('change', validateCancel);
 }
 function toggleCancelDetail(){
@@ -716,7 +741,7 @@ function openAddressModal(){
       '<button class="btn btn-outline" onclick="closeOverlay()">취소</button>'+
       '<button class="btn btn-filled" onclick="confirmAddress()">수정</button>'+
     '</div>'
-  );
+  , true);
 }
 function searchZip(){
   document.getElementById('addr-zip').value = '08577';
