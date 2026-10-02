@@ -202,6 +202,29 @@
   .checklist li.done::before{content:"☑"; color:var(--accent);}
   .checklist li.done .strike{text-decoration:line-through; color:var(--text-tertiary);}
 
+
+  /* ---------- 조항 카드: 화면으로 확인(프로토타입 팝업) — 2026-10-02 ---------- */
+  .see-btn{flex:0 0 auto; display:inline-flex; align-items:center; gap:4px; font:inherit; font-size:12px; font-weight:600; color:#fff; background:var(--accent);
+    border:1px solid var(--accent); border-radius:6px; padding:3px 9px; cursor:pointer; white-space:nowrap;}
+  .see-btn:hover{filter:brightness(1.08);}
+  .p-card-acts{display:flex; gap:6px; flex:0 0 auto;}
+  .see-chip{display:inline-flex; align-items:center; gap:4px; font:inherit; font-size:12px; font-weight:600; color:var(--accent-text); background:var(--accent-soft);
+    border:1px solid color-mix(in srgb, var(--accent) 35%, transparent); border-radius:999px; padding:2px 9px; margin:2px 0; cursor:pointer; white-space:nowrap; vertical-align:middle;}
+  .see-chip:hover{border-color:var(--accent);}
+  .see-chip.current{opacity:.6; cursor:default;}
+  .pp-overlay{position:fixed; inset:0; background:rgba(16,20,28,.55); z-index:60; display:flex; align-items:center; justify-content:center; padding:3vh 20px;}
+  .pp-overlay[hidden]{display:none;}
+  .pp{background:var(--bg-elevated); border-radius:14px; box-shadow:0 20px 60px rgba(0,0,0,.3); width:min(1480px,100%); height:100%; display:flex; flex-direction:column; overflow:hidden;}
+  .pp-head{flex:0 0 auto; display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:12px 14px 12px 20px; border-bottom:1px solid var(--border);}
+  .pp-head h2{font-size:16px; margin:0; font-weight:700; flex:1 1 auto; min-width:0;}
+  .pp-tabs,.pp-tools{display:flex; gap:6px; flex-wrap:wrap; align-items:center;}
+  .pp-tabs button{font:inherit; font-size:12.5px; font-weight:600; border:1px solid var(--border); background:var(--bg-sunken); color:var(--text); border-radius:999px; padding:5px 12px; cursor:pointer;}
+  .pp-tabs button.on{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .pp-tools button,.pp-tools a{font:inherit; font-size:12px; font-weight:600; border:1px solid var(--border); background:var(--bg-elevated); color:var(--text); border-radius:6px; padding:5px 9px; cursor:pointer; text-decoration:none;}
+  .pp-tools button.on{border-color:var(--accent); color:var(--accent-text); background:var(--accent-soft);}
+  .pp-frame{flex:1 1 auto; border:0; width:100%; background:#fff;}
+  @media (max-width: 980px){ .pp-overlay{padding:0;} .pp{border-radius:0;} }
+
   /* ---------- 전체 문서 보기: 좁은 사이드 패널 대신 넓은 오버레이 모달 ---------- */
   .doc-modal-overlay{
     position:fixed; inset:0; background:rgba(16,20,28,.5); z-index:50;
@@ -365,6 +388,14 @@
       <button class="doc-modal-close" id="docModalClose" aria-label="닫기">✕</button>
     </div>
     <div class="doc-modal-body" id="docModalBody"></div>
+  </div>
+</div>
+
+<div class="pp-overlay" id="ppOverlay" hidden>
+  <div class="pp" role="dialog" aria-modal="true" aria-labelledby="ppTitle">
+    <div class="pp-head"><h2 id="ppTitle"></h2><div class="pp-tabs" id="ppTabs"></div><div class="pp-tools" id="ppTools"></div>
+      <button class="doc-modal-close" id="ppClose" aria-label="닫기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+    <iframe class="pp-frame" id="ppFrame" title="프로토타입 미리보기"></iframe>
   </div>
 </div>
 
@@ -551,15 +582,62 @@ function renderStage(){
   document.getElementById('protoFrame').src = 'prototypes/'+p.id;
 }
 
+/* 조항 본문에 나오는 프로토타입 파일명(→ xxx.html) — 화면으로 확인 버튼으로 바꿈 */
+var PLAY_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>';
+function protoTitle(id){ var p = PROTOS.find(function(x){ return x.id === id; }); return p ? p.title : id; }
+function sectionProtos(sid){
+  var out = [], re = /<span class="mono">([\w-]+\.html)<\/span>/g, m;
+  while((m = re.exec(SECTIONS[sid].html))){ if(PROTOS.some(function(x){ return x.id === m[1]; }) && out.indexOf(m[1]) < 0) out.push(m[1]); }
+  return out;
+}
 function sectionCard(sid, isPrimary){
-  var s = SECTIONS[sid];
+  var s = SECTIONS[sid], protos = sectionProtos(sid).filter(function(f){ return f !== state.activeId; }); /* 지금 보는 화면은 빼고 */
+  var body = s.html.replace(/<span class="mono">([\w-]+\.html)<\/span>/g, function(all, f){
+    if(!PROTOS.some(function(x){ return x.id === f; })) return all;
+    var cur = f === state.activeId;
+    return '<button type="button" class="see-chip'+(cur?' current':'')+'"'+(cur?' title="지금 보고 있는 화면"':' onclick="openProtoPop([\''+f+'\'],0)"')+'>'+PLAY_ICON+protoTitle(f)+'</button>';
+  });
+  var list = '['+protos.map(function(f){ return '\''+f+'\''; }).join(',')+']';
   return '<div class="p-section'+(isPrimary?' primary':'')+'">'+
     '<div class="p-section-card" data-slug="'+secSlug(sid)+'">'+
     '<span class="p-tag'+(isPrimary?'':' secondary')+'">'+(isPrimary?'핵심 규칙':'함께 참고')+'</span>'+
-    '<div class="p-card-head"><h3>'+s.title+'</h3>'+
-    '<button type="button" class="card-link" onclick="copyLink(\''+secSlug(sid)+'\')" title="이 조항으로 바로 열리는 링크를 복사합니다">'+LINK_ICON+'링크</button></div>'+s.html+
+    '<div class="p-card-head"><h3>'+s.title+'</h3><div class="p-card-acts">'+
+    (protos.length ? '<button type="button" class="see-btn" onclick="openProtoPop('+list+',0)" title="이 조항을 구현한 화면을 팝업으로 열어 직접 조작해 봅니다">'+PLAY_ICON+'화면으로 확인</button>' : '')+
+    '<button type="button" class="card-link" onclick="copyLink(\''+secSlug(sid)+'\')" title="이 조항으로 바로 열리는 링크를 복사합니다">'+LINK_ICON+'링크</button></div></div>'+body+
     '</div></div>';
 }
+
+/* ---------------- 화면으로 확인 팝업 (프로토타입 iframe) — 2026-10-02 ---------------- */
+var PP_WIDTHS = [360, 768, 1024, 1025, 1440];
+var ppOverlay = document.getElementById('ppOverlay'), ppFrame = document.getElementById('ppFrame');
+function ppFindBtn(w){
+  try {
+    var d = ppFrame.contentDocument; if(!d) return null;
+    return d.querySelector('[data-w="'+w+'"]') || Array.prototype.find.call(d.querySelectorAll('button'), function(b){ return b.textContent.trim().replace(/px$/, '') === String(w); }) || null;
+  } catch(e){ return null; }
+}
+function openProtoPop(list, idx){
+  var f = list[idx];
+  document.getElementById('ppTitle').textContent = '화면으로 확인 — ' + protoTitle(f);
+  var tabs = document.getElementById('ppTabs');
+  tabs.innerHTML = list.length > 1 ? list.map(function(x, i){ return '<button type="button" class="'+(i === idx ? 'on' : '')+'" data-i="'+i+'">'+protoTitle(x)+'</button>'; }).join('') : '';
+  tabs.querySelectorAll('button').forEach(function(b){ b.onclick = function(){ openProtoPop(list, +b.dataset.i); }; });
+  var tools = document.getElementById('ppTools'); tools.innerHTML = '';
+  ppFrame.onload = function(){
+    var has = PP_WIDTHS.filter(function(w){ return ppFindBtn(w); });
+    tools.innerHTML = has.map(function(w){ return '<button type="button" data-w="'+w+'">'+w+'</button>'; }).join('') +
+      '<a href="prototypes/'+f+'" target="_blank" rel="noopener">새 탭</a>';
+    tools.querySelectorAll('button').forEach(function(b){ b.onclick = function(){
+      var t = ppFindBtn(b.dataset.w); if(t) t.click();
+      tools.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
+    }; });
+  };
+  ppFrame.src = 'prototypes/' + f;
+  ppOverlay.hidden = false;
+}
+function closeProtoPop(){ if(ppOverlay.hidden) return; ppOverlay.hidden = true; ppFrame.removeAttribute('src'); }
+document.getElementById('ppClose').addEventListener('click', closeProtoPop);
+ppOverlay.addEventListener('click', function(e){ if(e.target === ppOverlay) closeProtoPop(); });
 
 function renderPolicy(){
   var box = document.getElementById('policyContent');
@@ -742,7 +820,7 @@ function closeDocModal(){
 document.getElementById('toggleFullDoc').addEventListener('click', function(){ openDocModal(); });
 document.getElementById('docModalClose').addEventListener('click', closeDocModal);
 docModalOverlay.addEventListener('click', function(e){ if(e.target === docModalOverlay) closeDocModal(); });
-document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !docModalOverlay.hidden) closeDocModal(); });
+document.addEventListener('keydown', function(e){ if(e.key !== 'Escape') return; if(!ppOverlay.hidden){ closeProtoPop(); return; } if(!docModalOverlay.hidden) closeDocModal(); });
 
 /* ---------------- 홈 화면 (카테고리별 프로토타입 카드 그리드) ---------------- */
 function renderHome(){
