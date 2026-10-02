@@ -37,17 +37,87 @@ th{background:var(--tertiary);font-weight:700;}
 .toc{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px;}
 .toc a{font-size:13px;color:var(--text-primary);text-decoration:none;border:1px solid #e0e0e0;border-radius:999px;padding:3px 10px;background:#fff;}
 .toc a:hover{border-color:var(--brand);color:var(--brand);}
-@media (max-width:640px){.sheet{padding:20px 16px;} h2 .ref{margin-left:0;}}
+@media (max-width:640px){.sheet{padding:20px 16px;}}
+/* 조항 버튼 — 정책 원문(팝업) · 화면으로 확인(프로토타입 팝업) */
+.h-acts{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;}
+.h-btn{display:inline-flex;align-items:center;gap:4px;height:30px;padding:0 12px;border-radius:999px;font-weight:600;font-size:13px;line-height:1;font-family:inherit;cursor:pointer;white-space:nowrap;}
+.h-btn.h-doc{border:1px solid #c5cae9;background:#f4f5fd;color:var(--brand);}
+.h-btn.h-doc:hover{background:#e3e5f5;}
+.h-btn.h-see{border:1px solid var(--brand);background:var(--brand);color:#fff;}
+.h-btn.h-see:hover{background:#28318a;}
+.h-btn svg{flex:0 0 auto;}
+/* 팝업 */
+.pop-ov{position:fixed;inset:0;background:rgba(20,20,22,.5);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px;}
+.pop-ov[hidden]{display:none;}
+.pop{background:#fff;border-radius:12px;width:min(760px,100%);max-height:100%;display:flex;flex-direction:column;box-shadow:0 8px 24px rgba(0,0,0,.2),0 0 4px rgba(0,0,0,.12);overflow:hidden;}
+.pop.wide{width:min(1480px,100%);height:100%;}
+.pop-head{display:flex;align-items:center;gap:8px;padding:12px 12px 12px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.pop-head h3{margin:0;font-size:17px;flex:1 1 auto;min-width:0;}
+.pop-close{width:36px;height:36px;border:0;background:transparent;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#333;}
+.pop-close:hover{background:var(--tertiary);}
+.pop-body{overflow-y:auto;padding:16px 24px 28px;}
+.pop-frame{flex:1 1 auto;border:0;width:100%;background:#f4f5f7;}
+.pop-tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.pop-tools button,.pop-tools a{height:30px;padding:0 10px;border:1px solid #e0e0e0;border-radius:4px;background:#fff;font-weight:600;font-size:13px;line-height:28px;font-family:inherit;color:#333;cursor:pointer;text-decoration:none;white-space:nowrap;}
+.pop-tools button.on{border-color:var(--brand);background:#eff1fd;color:#141e76;}
+.pop-tabs{display:flex;gap:6px;}
+.pop-tabs button{height:30px;padding:0 12px;border:1px solid #e0e0e0;border-radius:999px;background:#fff;font-weight:600;font-size:13px;line-height:1;font-family:inherit;cursor:pointer;}
+.pop-tabs button.on{background:var(--brand);border-color:var(--brand);color:#fff;}
+/* 팝업 안 정책 원문(허브 SECTIONS HTML) */
+.sec-card{border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin:0 0 14px;font-size:15px;}
+.sec-card h4.sec-title{margin:0 0 8px;font-size:17px;}
+.sec-card h4{font-size:15px;margin:14px 0 6px;}
+.sec-card .mono{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:var(--tertiary);padding:1px 5px;border-radius:4px;}
+.sec-card .policy-table{font-size:13px;}
+.sec-card .proto-ref{color:var(--text-secondary);font-size:13px;}
+.sec-card .info-note{display:flex;gap:8px;background:#eff6ff;border:1px solid #dbeafe;border-radius:6px;padding:10px 12px;margin:10px 0;font-size:14px;}
+.sec-card .info-note svg{flex:0 0 auto;margin-top:3px;}
+/* 인라인 데모 */
+.live{border:1px dashed #9fa8da;border-radius:10px;background:#fafbff;padding:14px 16px;margin:12px 0;}
+.live-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.live-tag{font-size:12px;font-weight:700;color:#fff;background:var(--brand);border-radius:4px;padding:2px 8px;}
+.seg{display:inline-flex;background:#eee;border-radius:6px;padding:3px;gap:2px;}
+.seg button{border:0;background:transparent;height:30px;padding:0 12px;border-radius:4px;font-weight:600;font-size:13px;line-height:1;font-family:inherit;color:#616161;cursor:pointer;}
+.seg button.on{background:#fff;color:#141e76;box-shadow:0 1px 2px rgba(0,0,0,.12);}
+.live-note{font-size:14px;color:var(--text-secondary);margin:10px 0 0;}
+.ls-body{display:flex;flex-direction:column;gap:10px;max-width:520px;}
+.ls-row{display:grid;grid-template-columns:72px 1fr 92px;align-items:center;gap:10px;}
+.ls-cap{font-size:13px;color:var(--text-secondary);font-weight:600;}
+.ls-val{font-size:13px;font-weight:700;color:#166534;}
+.ls-val.fixed{color:#616161;font-weight:600;}
+.ls-input{height:var(--ih);padding:0 12px;border:1px solid #333;border-radius:4px;background:#fff;color:#1a1a1a;font-size:var(--if);display:flex;align-items:center;justify-content:space-between;transition:height .25s,font-size .25s;}
+.ls-select{color:#9e9e9e;}
+.ls-opt{min-height:var(--oh);padding:0 12px;border-radius:4px;background:#eff1fd;color:#141e76;font-size:var(--if);display:flex;align-items:center;transition:min-height .25s,font-size .25s;}
+.ls-btn{border-radius:4px;font-weight:600;font-size:14px;line-height:1;font-family:inherit;padding:0 16px;cursor:default;}
+.ls-btn.sm{height:36px;border:1px solid #616161;background:#fff;color:#333;}
+.ls-btn.md{height:48px;border:1px solid #616161;background:#fff;color:#333;font-size:16px;padding:0 20px;}
+#liveSize{--ih:48px;--if:16px;--oh:44px;}
+#liveSize.pc{--ih:40px;--if:14px;--oh:36px;}
+.lm-range{display:flex;align-items:center;gap:10px;font-size:14px;flex-wrap:wrap;}
+.lm-range input{flex:1 1 200px;accent-color:var(--brand);}
+.lm-quick{display:flex;gap:4px;flex-wrap:wrap;margin:8px 0 12px;}
+.lm-quick button{height:28px;padding:0 10px;border:1px solid #e0e0e0;border-radius:4px;background:#fff;font-weight:600;font-size:12px;line-height:1;font-family:inherit;cursor:pointer;}
+.lm-quick button.on{border-color:var(--brand);color:#141e76;background:#eff1fd;}
+.lm-stage{overflow:hidden;}
+.lm-screen{margin:0 auto;height:200px;background:rgba(20,20,22,.45);border-radius:8px;display:flex;align-items:center;justify-content:center;transition:width .15s;position:relative;}
+.lm-modal{background:#fff;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:8px;transition:width .15s;box-sizing:border-box;}
+.lm-title{font-size:13px;font-weight:700;}
+.lm-text{height:30px;border-radius:3px;background:repeating-linear-gradient(#eee 0 6px,transparent 6px 12px);}
+.lm-btns{display:flex;gap:6px;justify-content:center;}
+.lm-btns span{height:24px;border:1px solid #616161;border-radius:3px;font-size:11px;display:flex;align-items:center;justify-content:center;background:#fff;}
+.lm-btns span.pri{background:var(--brand);border-color:var(--brand);color:#fff;}
+@media (max-width:640px){.h-acts{margin-left:0;width:100%;} .pop-ov{padding:0;} .pop{border-radius:0;height:100%;} .ls-row{grid-template-columns:60px 1fr 80px;}}
+
 </style>
 </head>
 <body><div class="doc"><div class="sheet">
 <h1>모바일 반응형 한눈에</h1>
-<p class="lead">모바일(1024px 이하) 화면을 만들 때 자주 헷갈리는 규칙만 모았어요. 자세한 내용은 각 항목 오른쪽 조항 링크(원문)에서 확인하세요.</p>
+<p class="lead">모바일(1024px 이하) 화면을 만들 때 자주 헷갈리는 규칙만 모았어요. 각 항목 오른쪽 <b>화면으로 확인</b>을 누르면 실제로 동작하는 화면이 바로 뜨고, <b>정책 원문</b>을 누르면 해당 조항이 팝업으로 열려요. 글보다 먼저 화면을 눌러 보세요.</p>
 <div class="toc">
   <a href="#s1">1. 기준</a><a href="#s2">2. 무엇이 바뀌나</a><a href="#s3">3. 버튼</a><a href="#s4">4. 모달 vs 바텀시트</a><a href="#s5">5. 모달 크기·버튼</a><a href="#s6">6. 키보드·검색</a><a href="#s7">7. 하단 여백</a><a href="#s8">8. 목록·상세</a><a href="#s9">9. 자주 묻는 질문</a>
 </div>
 
-<h2 id="s1"><span class="num">1</span>기준 — 1024px 이하는 모바일, 한 페이지로<a class="ref" href="../index.html#1" target="_top">원문 1·2</a></h2>
+<h2 id="s1" data-sec="s1,s2" data-proto="breakpoint-map.html:360"><span class="num">1</span>기준 — 1024px 이하는 모바일, 한 페이지로</h2>
 <ul>
 <li><b>1024px 이하 = 모바일, 1025px 이상 = PC.</b> CSS: 모바일 <code>max-width:1024px</code> / PC <code>min-width:1024.02px</code></li>
 <li>360px은 최소 지원폭일 뿐, 360에서 따로 바뀌는 규칙은 없어요(768도 마찬가지)</li>
@@ -55,7 +125,7 @@ th{background:var(--tertiary);font-weight:700;}
   <table style="margin-top:8px;"><tr><th>화면</th><th>모바일 구조</th></tr><tr><td><b>목록</b></td><td><b>모바일 전용 구조</b>(카드 등)를 따로 만들어, PC 테이블과 함께 한 페이지에 넣고 1024px 이하에서 표시만 바꿔요(적응형)</td></tr><tr><td><b>상세</b></td><td><b>PC 구조 하나</b>를 그대로 반응형으로 재배치해요(모바일 구조를 따로 만들지 않음)</td></tr></table></li>
 </ul>
 
-<h2 id="s2"><span class="num">2</span>무엇이 바뀌나 — 입력류 크기와 폭뿐<a class="ref" href="../index.html#3-0" target="_top">원문 3-0</a></h2>
+<h2 id="s2" data-sec="s30,s32" data-proto="form-breakpoint-demo.html:360"><span class="num">2</span>무엇이 바뀌나 — 입력류 크기와 폭뿐</h2>
 <div class="rule">1024px 이하에서 크기가 바뀌는 것은 입력칸 · 셀렉트 · 옵션 행뿐이에요. 나머지는 PC와 같아요.</div>
 <table>
 <tr><th>컴포넌트</th><th>PC</th><th>모바일</th><th></th></tr>
@@ -66,12 +136,24 @@ th{background:var(--tertiary);font-weight:700;}
 <tr><td>체크박스·라디오 / 토글</td><td>20 / 48×24</td><td>같음 (줄 전체 터치, 줄 높이 44↑)</td><td><span class="chg no">그대로</span></td></tr>
 <tr><td>필터칩 · 선택칩 · 탭</td><td colspan="2">쓰는 자리에 맞는 크기(필터칩 SM 32 등) — PC·모바일 같음</td><td><span class="chg no">그대로</span></td></tr>
 </table>
+<div class="live" id="liveSize">
+  <div class="live-head"><span class="live-tag">직접 해보기</span>
+    <div class="seg" role="tablist"><button type="button" data-mode="pc">PC (1025px 이상)</button><button type="button" data-mode="mo" class="on">모바일 (1024px 이하)</button></div></div>
+  <div class="ls-body">
+    <div class="ls-row"><span class="ls-cap">입력칸</span><div class="ls-input">홍길동</div><span class="ls-val" data-pc="40 · 14px" data-mo="48 · 16px"></span></div>
+    <div class="ls-row"><span class="ls-cap">셀렉트</span><div class="ls-input ls-select">사유를 선택해 주세요<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ls-val" data-pc="40 · 14px" data-mo="48 · 16px"></span></div>
+    <div class="ls-row"><span class="ls-cap">옵션 행</span><div class="ls-opt">병원·요양원 입소</div><span class="ls-val" data-pc="36 · 14px" data-mo="44 · 16px"></span></div>
+    <div class="ls-row"><span class="ls-cap">버튼 SM</span><div><button type="button" class="ls-btn sm">우편번호</button></div><span class="ls-val fixed">36 그대로</span></div>
+    <div class="ls-row"><span class="ls-cap">버튼 MD</span><div><button type="button" class="ls-btn md">주문목록</button></div><span class="ls-val fixed">48 그대로</span></div>
+  </div>
+  <p class="live-note">버튼을 바꿔 눌러 보세요. <b>입력류만 커지고</b> 버튼은 그대로예요.</p>
+</div>
 <ul>
 <li><b>모달 안·바텀시트 안 입력류도 예외 없이</b> 모바일 크기(48·16px)예요</li>
 <li>모바일 입력 글자가 16px보다 작으면 iOS가 입력칸을 누를 때 화면을 확대해요</li>
 </ul>
 
-<h2 id="s3"><span class="num">3</span>버튼 — PC 크기 그대로, 예외는 LG 54 하나<a class="ref" href="../index.html#3-4" target="_top">원문 3-4</a></h2>
+<h2 id="s3" data-sec="s34" data-proto="action-button-placement-demo.html"><span class="num">3</span>버튼 — PC 크기 그대로, 예외는 LG 54 하나</h2>
 <table>
 <tr><th>버튼</th><th>높이</th><th>폭</th></tr>
 <tr><td>하단 고정 버튼(화면 아래 sticky)</td><td><b>LG 54</b></td><td>폭을 나눠 가짐</td></tr>
@@ -82,7 +164,7 @@ th{background:var(--tertiary);font-weight:700;}
 <tr><td>입력칸 옆 버튼(우편번호)</td><td>SM 36, 입력칸 높이의 <b>가운데 정렬</b></td><td>내용만큼</td></tr>
 </table>
 
-<h2 id="s4"><span class="num">4</span>모달 vs 바텀시트 — 글자 입력이 있으면 바텀시트<a class="ref" href="../index.html#3-3" target="_top">원문 3-3</a></h2>
+<h2 id="s4" data-sec="s33" data-proto="rental-return-detail-prototype.html:360"><span class="num">4</span>모달 vs 바텀시트 — 글자 입력이 있으면 바텀시트</h2>
 <table>
 <tr><th>팝업 내용</th><th>모바일 형태</th><th>예</th></tr>
 <tr><td>안내·확인(글자만)</td><td>모달</td><td>주문하기 확인, 주문 불가 안내, 메모 삭제</td></tr>
@@ -96,7 +178,7 @@ th{background:var(--tertiary);font-weight:700;}
 <li>PC는 모두 모달이에요</li>
 </ul>
 
-<h2 id="s5"><span class="num">5</span>모달 크기·버튼 — 340은 없어요<a class="ref" href="../index.html#3-3" target="_top">원문 3-3</a></h2>
+<h2 id="s5" data-sec="s33" data-proto="modal-types-gallery.html:360"><span class="num">5</span>모달 크기·버튼 — 340은 없어요</h2>
 <div class="rule">모든 모달: <code>width: min(모달 크기, calc(100% - 40px))</code> 한 줄. 크기를 바꾸는 미디어쿼리 없음</div>
 <table>
 <tr><th>화면 폭</th><th>480 모달</th><th>600 모달</th><th>800 모달</th></tr>
@@ -105,12 +187,20 @@ th{background:var(--tertiary);font-weight:700;}
 <tr><td>390</td><td>350</td><td>350</td><td>350</td></tr>
 <tr><td>360</td><td>320</td><td>320</td><td>320</td></tr>
 </table>
+<div class="live" id="liveModal">
+  <div class="live-head"><span class="live-tag">직접 해보기</span>
+    <div class="seg"><button type="button" data-size="480" class="on">480 모달</button><button type="button" data-size="600">600</button><button type="button" data-size="800">800</button></div></div>
+  <label class="lm-range">화면 폭 <b id="lmW">390</b>px<input type="range" id="lmSlider" min="320" max="1440" step="1" value="390"></label>
+  <div class="lm-quick"><button type="button" data-w="360">360</button><button type="button" data-w="390">390</button><button type="button" data-w="768">768</button><button type="button" data-w="1024">1024</button><button type="button" data-w="1025">1025</button><button type="button" data-w="1440">1440</button></div>
+  <div class="lm-stage" id="lmStage"><div class="lm-screen" id="lmScreen"><div class="lm-modal" id="lmModal"><div class="lm-title">안내</div><div class="lm-text"></div><div class="lm-btns" id="lmBtns"><span>취소</span><span class="pri">확인</span></div></div></div></div>
+  <p class="live-note" id="lmOut"></p>
+</div>
 <ul>
 <li>PC에는 340 모달이 없어요. Figma의 340 프레임은 480 모달이 폰에서 줄어든 모습이에요</li>
 <li>모달 버튼은 <b>높이 48 그대로</b>, 폭만 PC 150 고정 → 모바일 Full</li>
 </ul>
 
-<h2 id="s6"><span class="num">6</span>키보드·검색<a class="ref" href="../index.html#3-12" target="_top">원문 3-12</a></h2>
+<h2 id="s6" data-sec="s312,s32" data-proto="product-change-sheet-demo.html"><span class="num">6</span>키보드·검색</h2>
 <ul>
 <li>키보드가 올라오면 바텀시트는 <b>키보드 위</b>에 붙고, 남은 공간 안에서 최대 높이까지 커져요. 본문만 스크롤</li>
 <li>하단 버튼은 키보드 위에 붙고 입력칸을 가리지 않아요</li>
@@ -119,9 +209,7 @@ th{background:var(--tertiary);font-weight:700;}
 <li><b>검색칸에는 지우기 X가 없어요</b>(오른쪽 돋보기 고정). 다시 누르면 글자 전체 선택. <code>type="search"</code>의 브라우저 기본 ×는 CSS로 숨겨요</li>
 <li>숫자 칸은 숫자 키패드(<code>inputmode="tel"</code>), 엔터로 폼을 바로 제출하지 않아요</li>
 </ul>
-<p><a class="demo-link" style="display:inline-block;padding:6px 12px;border-radius:4px;background:#e3e5f5;color:var(--brand);font-size:14px;font-weight:600;text-decoration:none;" href="../index.html#product-change-sheet-demo" target="_top">상품 변경 바텀시트 시연 보기</a></p>
-
-<h2 id="s7"><span class="num">7</span>하단 여백<a class="ref" href="../index.html#3-4" target="_top">원문 3-4</a></h2>
+<h2 id="s7" data-sec="s34" data-proto="order-detail-mobile.html:360"><span class="num">7</span>하단 여백</h2>
 <table>
 <tr><th>위치</th><th>여백 (위 / 좌우 / 아래)</th></tr>
 <tr><td>화면 하단 고정 버튼 영역</td><td>32 / 20 / <b>20 + safe-area</b> — <code>padding:32px 20px calc(20px + env(safe-area-inset-bottom))</code></td></tr>
@@ -130,7 +218,7 @@ th{background:var(--tertiary);font-weight:700;}
 </table>
 <ul><li>viewport 메타에 <code>viewport-fit=cover</code>가 없으면 safe-area 값이 0이에요. 안드로이드·인앱 브라우저는 원래 0이라 기본 20이 필요해요</li></ul>
 
-<h2 id="s8"><span class="num">8</span>목록·상세<a class="ref" href="../index.html#3-9" target="_top">원문 3-7·3-9·3-11</a></h2>
+<h2 id="s8" data-sec="s37,s39,s311" data-proto="order-list-adaptive.html:360|목록;order-detail-mobile.html:360|상세"><span class="num">8</span>목록·상세</h2>
 <ul>
 <li><b>목록</b>: PC 테이블 ↔ 모바일 카드(모바일 전용 구조)를 둘 다 두고 표시만 전환. 카드를 누르면 상세로</li>
 <li><b>모바일 페이지네이션 — 확인 중</b>: 지금 정책은 "페이지네이션 없이 스크롤로 이어서 불러오기"예요. 모바일에도 페이지네이션을 넣는 쪽으로 검토하고 있어서, <b>결정될 때까지 기존 페이지네이션을 지우지 말고 그대로 두세요</b></li>
@@ -150,5 +238,136 @@ th{background:var(--tertiary);font-weight:700;}
 <div class="qa"><div class="q">반응형이면 PC 컴포넌트를 그대로 써도 되나요?</div><div class="a">입력류는 아니에요 — 1024px 이하에서 모바일 크기로 바꿔요. 버튼·칩·탭은 PC 크기 그대로예요.</div></div>
 
 
-</div></div></body>
+</div></div>
+<div class="pop-ov" id="popOv" hidden>
+  <div class="pop" id="pop" role="dialog" aria-modal="true" aria-labelledby="popTitle">
+    <div class="pop-head"><h3 id="popTitle"></h3><div class="pop-tabs" id="popTabs"></div><div class="pop-tools" id="popTools"></div>
+      <button type="button" class="pop-close" id="popClose" aria-label="닫기"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+    <div class="pop-body" id="popBody"></div>
+    <iframe class="pop-frame" id="popFrame" title="프로토타입" hidden></iframe>
+  </div>
+</div>
+<script>
+(function(){
+  var ICON_DOC = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>';
+  var ICON_PLAY = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>';
+  var TITLES = {
+    'breakpoint-map.html':'브레이크포인트 맵', 'form-breakpoint-demo.html':'입력 폼 — PC·모바일 크기', 'action-button-placement-demo.html':'액션 버튼 배치',
+    'rental-return-detail-prototype.html':'대여 회수 상세 — 회수접수 취소·회수지 주소 수정(바텀시트)', 'modal-types-gallery.html':'모달 타입 갤러리',
+    'product-change-sheet-demo.html':'상품 변경 바텀시트 — 키보드·검색', 'order-detail-mobile.html':'주문요청관리 상세', 'order-list-adaptive.html':'주문요청관리 리스트'
+  };
+  var WIDTHS = [360, 390, 768, 1024, 1025, 1440];
+
+  /* 정책 원문: 허브(index.html)의 SECTIONS를 그대로 사용 — 허브 안이면 부모에서, 단독으로 열면 index.html을 읽어 옴 */
+  var sectionsP = null;
+  function getSections(){
+    if(sectionsP) return sectionsP;
+    try { if(window.parent !== window && window.parent.SECTIONS) return (sectionsP = Promise.resolve(window.parent.SECTIONS)); } catch(e){}
+    sectionsP = fetch('../index.html').then(function(r){ return r.text(); }).then(function(t){
+      var a = t.indexOf('var SECTIONS = '), b = t.indexOf('var FULL_DOC_ORDER');
+      var body = t.slice(a + 'var SECTIONS = '.length, b).trim().replace(/;\s*$/, '');
+      return (new Function('return ' + body))();
+    });
+    return sectionsP;
+  }
+
+  var ov = document.getElementById('popOv'), pop = document.getElementById('pop'), title = document.getElementById('popTitle'),
+      body = document.getElementById('popBody'), frame = document.getElementById('popFrame'),
+      tools = document.getElementById('popTools'), tabs = document.getElementById('popTabs');
+  function open(){ ov.hidden = false; document.body.style.overflow = 'hidden'; }
+  function close(){ ov.hidden = true; document.body.style.overflow = ''; frame.removeAttribute('src'); }
+  document.getElementById('popClose').addEventListener('click', close);
+  ov.addEventListener('click', function(e){ if(e.target === ov) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !ov.hidden) close(); });
+
+  function openDoc(secs, label){
+    pop.classList.remove('wide'); frame.hidden = true; body.hidden = false; tools.innerHTML = ''; tabs.innerHTML = '';
+    title.textContent = '정책 원문 — ' + label;
+    body.innerHTML = '<p style="color:#616161">불러오는 중…</p>';
+    open();
+    getSections().then(function(S){
+      body.innerHTML = secs.map(function(k){ var x = S[k]; return x ? '<div class="sec-card"><h4 class="sec-title">' + x.title + '</h4>' + x.html + '</div>' : ''; }).join('') +
+        '<p style="font-size:13px;color:#616161">전체 문서는 허브 상단 "전체 문서"에서 볼 수 있어요.</p>';
+    }).catch(function(){ body.innerHTML = '<p>원문을 불러오지 못했어요. 허브(index.html)에서 열어 주세요.</p>'; });
+  }
+
+  /* 프로토타입 안의 폭 프리셋 버튼(data-w 또는 숫자 글자)을 눌러 원하는 폭으로 맞춤 */
+  function pressWidth(w){
+    try {
+      var d = frame.contentDocument; if(!d) return false;
+      var btn = d.querySelector('[data-w="' + w + '"]');
+      if(!btn){ btn = Array.prototype.find.call(d.querySelectorAll('button'), function(b){ return b.textContent.trim().replace(/px$/, '') === String(w); }); }
+      if(btn){ btn.click(); return true; }
+    } catch(e){}
+    return false;
+  }
+  function loadProto(file, w){
+    tools.innerHTML = '';
+    frame.onload = function(){
+      var has = WIDTHS.filter(function(x){ try { var d = frame.contentDocument; return d.querySelector('[data-w="' + x + '"]') || Array.prototype.some.call(d.querySelectorAll('button'), function(b){ return b.textContent.trim().replace(/px$/, '') === String(x); }); } catch(e){ return false; } });
+      tools.innerHTML = has.map(function(x){ return '<button type="button" data-w="' + x + '"' + (String(x) === String(w) ? ' class="on"' : '') + '>' + x + '</button>'; }).join('') +
+        '<a href="' + file + '" target="_blank" rel="noopener">새 탭</a>';
+      tools.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+        pressWidth(b.dataset.w); tools.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
+      }); });
+      if(w) pressWidth(w);
+    };
+    frame.src = file;
+  }
+  function openProto(list, idx){
+    pop.classList.add('wide'); body.hidden = true; frame.hidden = false;
+    var cur = list[idx || 0];
+    title.textContent = '화면으로 확인 — ' + (TITLES[cur.file] || cur.file);
+    tabs.innerHTML = list.length > 1 ? list.map(function(p, i){ return '<button type="button" class="' + (i === (idx || 0) ? 'on' : '') + '" data-i="' + i + '">' + p.label + '</button>'; }).join('') : '';
+    tabs.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){ openProto(list, +b.dataset.i); }); });
+    open(); loadProto(cur.file, cur.w);
+  }
+
+  /* 각 h2에 버튼 두 개 */
+  document.querySelectorAll('h2[data-sec]').forEach(function(h){
+    var secs = h.dataset.sec.split(','), label = h.textContent.replace(/^\d+/, '').trim();
+    var list = h.dataset.proto.split(';').map(function(x){ var p = x.split('|'), f = p[0].split(':'); return { file:f[0], w:f[1] || '', label:p[1] || '' }; });
+    var box = document.createElement('span'); box.className = 'h-acts';
+    var see = document.createElement('button'); see.type = 'button'; see.className = 'h-btn h-see'; see.innerHTML = ICON_PLAY + '화면으로 확인';
+    see.addEventListener('click', function(){ openProto(list, 0); });
+    var doc = document.createElement('button'); doc.type = 'button'; doc.className = 'h-btn h-doc'; doc.innerHTML = ICON_DOC + '정책 원문';
+    doc.addEventListener('click', function(){ openDoc(secs, label); });
+    box.appendChild(see); box.appendChild(doc); h.appendChild(box);
+  });
+
+  /* 2절: PC / 모바일 크기 전환 */
+  var ls = document.getElementById('liveSize');
+  function setMode(m){
+    ls.classList.toggle('pc', m === 'pc');
+    ls.querySelectorAll('.seg button').forEach(function(b){ b.classList.toggle('on', b.dataset.mode === m); });
+    ls.querySelectorAll('.ls-val[data-pc]').forEach(function(v){ v.textContent = m === 'pc' ? v.dataset.pc : v.dataset.mo; });
+  }
+  ls.querySelectorAll('.seg button').forEach(function(b){ b.addEventListener('click', function(){ setMode(b.dataset.mode); }); });
+  setMode('mo');
+
+  /* 5절: 화면 폭에 따른 모달 폭 — min(크기, 100% - 40px), 버튼 PC 150 고정 / 모바일 Full */
+  var lmSize = 480, lmW = 390;
+  var slider = document.getElementById('lmSlider'), stage = document.getElementById('lmStage');
+  function drawModal(){
+    var avail = stage.clientWidth || 600, sc = Math.min(1, avail / lmW);
+    var mw = Math.min(lmSize, lmW - 40), pc = lmW >= 1025;
+    document.getElementById('lmScreen').style.width = (lmW * sc) + 'px';
+    document.getElementById('lmModal').style.width = (mw * sc) + 'px';
+    var btns = document.getElementById('lmBtns').children;
+    for(var i = 0; i < btns.length; i++){ btns[i].style.flex = pc ? '0 0 ' + (150 * sc) + 'px' : '1 1 0'; }
+    document.getElementById('lmW').textContent = lmW;
+    document.getElementById('lmOut').innerHTML = '화면 <b>' + lmW + '</b> → ' + lmSize + ' 모달은 <b>' + mw + 'px</b>' +
+      (mw < lmSize ? ' (좌우 20씩 남기고 꽉 참)' : ' (원래 크기)') + ' · 버튼 ' + (pc ? '<b>150 고정</b>(PC)' : '<b>Full</b>(모바일)') + ' · 높이는 늘 48';
+    document.querySelectorAll('.lm-quick button').forEach(function(b){ b.classList.toggle('on', +b.dataset.w === lmW); });
+  }
+  slider.addEventListener('input', function(){ lmW = +slider.value; drawModal(); });
+  document.querySelectorAll('.lm-quick button').forEach(function(b){ b.addEventListener('click', function(){ lmW = +b.dataset.w; slider.value = lmW; drawModal(); }); });
+  document.querySelectorAll('#liveModal .seg button').forEach(function(b){ b.addEventListener('click', function(){
+    lmSize = +b.dataset.size; document.querySelectorAll('#liveModal .seg button').forEach(function(x){ x.classList.toggle('on', x === b); }); drawModal();
+  }); });
+  window.addEventListener('resize', drawModal);
+  drawModal();
+})();
+</script>
+</body>
 </html>
