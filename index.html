@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>이로움케어 반응형 정책 — 프로토타입 허브</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <style>
   :root{
     --bg:#f5f6f8; --bg-elevated:#ffffff; --bg-sunken:#eef0f3;
@@ -40,8 +41,9 @@
     padding:0 20px; background:var(--bg-elevated); border-bottom:1px solid var(--border);
     box-shadow:var(--shadow); z-index:5;
   }
-  .brand{display:flex; align-items:center; gap:10px;}
-  .brand .dot{width:10px; height:10px; border-radius:50%; background:var(--accent); flex:0 0 auto;}
+  .brand{display:flex; align-items:center; gap:10px; color:inherit; text-decoration:none; border-radius:8px; padding:4px 8px 4px 4px; margin-left:-4px;}
+  .brand:hover{background:var(--bg-sunken);}
+  .brand .logo{flex:0 0 auto; display:block;}
   .brand h1{font-size:15px; font-weight:700; margin:0; letter-spacing:-.01em;}
   .brand .sub{font-size:12px; color:var(--text-secondary); margin-left:8px; font-weight:400;}
   .top-actions{display:flex; align-items:center; gap:8px;}
@@ -315,18 +317,18 @@
 <body>
 <div class="app">
   <header class="topbar">
-    <div class="brand">
-      <span class="dot"></span>
+    <a class="brand" href="./" id="brandHome" title="홈으로">
+      <img class="logo" src="favicon.svg" width="24" height="24" alt="">
       <h1>이로움케어 반응형 정책</h1>
       <span class="sub">프로토타입 허브</span>
-    </div>
+    </a>
     <div class="top-actions">
       <div class="search-wrap">
         <label class="search-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="siteSearch" placeholder="정책·화면 검색 (예: 4-4, 펼침, 340)" autocomplete="off" aria-label="정책·화면 검색" aria-controls="searchResults"><kbd id="searchKbd">⌘K</kbd></label>
         <div class="search-results" id="searchResults" role="listbox" hidden></div>
       </div>
-      <button class="doc-link" id="toggleGallery" style="cursor:pointer;">🏠 홈</button>
-      <a class="doc-link" href="CLAUDE.md" target="_blank" rel="noopener">📄 CLAUDE.md 원문</a>
+      <button class="doc-link" id="toggleGallery" style="cursor:pointer;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg> 홈</button>
+      <a class="doc-link" href="CLAUDE.md" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg> CLAUDE.md 원문</a>
     </div>
   </header>
 
@@ -850,6 +852,7 @@ function goHome(fromRoute){
   renderMenu(); /* 좌측 메뉴는 홈에서도 항상 노출 — active 표시 해제 반영 */
 }
 document.getElementById('toggleGallery').addEventListener('click', function(){ goHome(); });
+document.getElementById('brandHome').addEventListener('click', function(e){ if(e.metaKey || e.ctrlKey || e.shiftKey) return; e.preventDefault(); closeDocModal(); goHome(); });
 document.getElementById('homeBackBtn').addEventListener('click', function(){ goHome(); });
 document.getElementById('stageCopy').addEventListener('click', function(){ if(state.activeId) copyLink(protoSlug(state.activeId)); });
 document.getElementById('homeDocCard').addEventListener('click', openDocModal);
