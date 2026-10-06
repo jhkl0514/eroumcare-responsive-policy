@@ -168,7 +168,7 @@ th{background:var(--tertiary);font-weight:700;}
 <tr><th>버튼</th><th>높이</th><th>폭</th></tr>
 <tr><td>하단 고정 버튼(화면 아래 sticky)</td><td><b>LG 54</b></td><td>폭을 나눠 가짐</td></tr>
 <tr><td>바텀시트 하단 버튼</td><td><b>LG 54</b></td><td>취소 120 + 확인 나머지</td></tr>
-<tr><td>모달 버튼</td><td>MD 48 (PC·모바일 같음)</td><td>PC 150 고정 / <b>모바일 Full</b></td></tr>
+<tr><td>모달 버튼</td><td>MD 48 (PC·모바일 같음)</td><td><b>150 고정</b>, 모달이 좁으면 줄어듦 (PC·모바일 같음)</td></tr>
 <tr><td>본문 단독 버튼(주문목록 등)</td><td>MD 48</td><td>내용만큼</td></tr>
 <tr><td>섹션 제목 옆·표 안 보조 버튼(조회·변경하기)</td><td>SM 36</td><td>내용만큼</td></tr>
 <tr><td>입력칸 옆 버튼(우편번호)</td><td>SM 36, 입력칸 높이의 <b>가운데 정렬</b></td><td>내용만큼</td></tr>
@@ -207,7 +207,7 @@ th{background:var(--tertiary);font-weight:700;}
 </div>
 <ul>
 <li>PC에는 340 모달이 없어요. Figma의 340 프레임은 480 모달이 폰에서 줄어든 모습이에요</li>
-<li>모달 버튼은 <b>높이 48 그대로</b>, 폭만 PC 150 고정 → 모바일 Full</li>
+<li>모달 버튼은 <b>높이 48, 폭 150 고정</b>(PC·모바일 같음). 모달 안쪽이 버튼보다 좁으면 그만큼 줄어들어요. 바텀시트 버튼만 Full</li>
 </ul>
 
 <h2 id="s6" data-sec="s312,s32" data-proto="product-change-sheet-demo.html"><span class="num">6</span>키보드·검색</h2>
@@ -263,7 +263,7 @@ th{background:var(--tertiary);font-weight:700;}
 <h2 id="s10"><span class="num">10</span>자주 묻는 질문</h2>
 <div class="qa"><div class="q">모바일에서 모달은 Full로 가는 거 아닌가요?</div><div class="a">아니요. 모든 모달은 <code>min(크기, 100% - 40px)</code>예요. 폰에서는 좌우 20만 남기고 거의 꽉 차 보이고, 태블릿에서는 원래 크기(480 등)로 떠요.</div></div>
 <div class="qa"><div class="q">PC에 340 모달이 있나요?</div><div class="a">없어요. PC는 480 / 600 / 800이에요.</div></div>
-<div class="qa"><div class="q">모달 버튼도 PC 고정인가요?</div><div class="a">높이는 네(48). 폭은 아니요 — 모바일은 Full, 150 고정은 PC에서만.</div></div>
+<div class="qa"><div class="q">모달 버튼도 PC 고정인가요?</div><div class="a">네. 높이 48, 폭 150 고정이에요. 폰에서 모달 안쪽이 312(150+12+150)보다 좁으면 버튼이 같이 줄어들어요. Full은 바텀시트 버튼만이에요.</div></div>
 <div class="qa"><div class="q">모달 안 셀렉트도 48로 키우나요?</div><div class="a">네, 예외 없이 1024px 이하면 48·16px이에요. 디자인은 PC 모달 하나로 관리해요.</div></div>
 <div class="qa"><div class="q">입력칸이 48이면 옆 버튼(우편번호)도 48인가요?</div><div class="a">아니요. 버튼은 PC 크기(SM 36) 그대로 두고 입력칸 높이의 가운데에 맞춰요.</div></div>
 <div class="qa"><div class="q">바텀시트는 모바일 모달 전부에 쓰나요?</div><div class="a">아니요. 글자를 입력하는 팝업(사유·주소·검색)만이에요. 안내·확인·선택만 하는 팝업은 모바일에서도 모달이에요.</div></div>
@@ -380,19 +380,21 @@ th{background:var(--tertiary);font-weight:700;}
   ls.querySelectorAll('.seg button').forEach(function(b){ b.addEventListener('click', function(){ setMode(b.dataset.mode); }); });
   setMode('mo');
 
-  /* 5절: 화면 폭에 따른 모달 폭 — min(크기, 100% - 40px), 버튼 PC 150 고정 / 모바일 Full */
+  /* 5절: 화면 폭에 따른 모달 폭 — min(크기, 100% - 40px), 버튼 150 고정, 좁으면 줄어듦 */
   var lmSize = 480, lmW = 390;
   var slider = document.getElementById('lmSlider'), stage = document.getElementById('lmStage');
   function drawModal(){
     var avail = stage.clientWidth || 600, sc = Math.min(1, avail / lmW);
-    var mw = Math.min(lmSize, lmW - 40), pc = lmW >= 1025;
+    var mw = Math.min(lmSize, lmW - 40);
     document.getElementById('lmScreen').style.width = (lmW * sc) + 'px';
     document.getElementById('lmModal').style.width = (mw * sc) + 'px';
-    var btns = document.getElementById('lmBtns').children;
-    for(var i = 0; i < btns.length; i++){ btns[i].style.flex = pc ? '0 0 ' + (150 * sc) + 'px' : '1 1 0'; }
+    var btnRow = document.getElementById('lmBtns'), btns = btnRow.children;
+    btnRow.style.gap = (12 * sc) + 'px';
+    for(var i = 0; i < btns.length; i++){ btns[i].style.flex = '0 1 ' + (150 * sc) + 'px'; btns[i].style.minWidth = '0'; }
+    var inner = mw - 40, bw = Math.min(150, Math.floor((inner - 12) / 2));
     document.getElementById('lmW').textContent = lmW;
     document.getElementById('lmOut').innerHTML = '화면 <b>' + lmW + '</b> → ' + lmSize + ' 모달은 <b>' + mw + 'px</b>' +
-      (mw < lmSize ? ' (좌우 20씩 남기고 꽉 참)' : ' (원래 크기)') + ' · 버튼 ' + (pc ? '<b>150 고정</b>(PC)' : '<b>Full</b>(모바일)') + ' · 높이는 늘 48';
+      (mw < lmSize ? ' (좌우 20씩 남기고 꽉 참)' : ' (원래 크기)') + ' · 버튼 ' + (bw >= 150 ? '<b>150 고정</b>' : '<b>' + bw + 'px</b>(150에서 줄어듦)') + ' · 높이는 늘 48';
     document.querySelectorAll('.lm-quick button').forEach(function(b){ b.classList.toggle('on', +b.dataset.w === lmW); });
   }
   slider.addEventListener('input', function(){ lmW = +slider.value; drawModal(); });
