@@ -235,6 +235,7 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
 /* 모달 버튼: 150 고정, 모달이 좁으면 줄어듦(PC·모바일 같음, 3-3). 바텀시트는 Full */
 .modal-actions{justify-content:center;gap:12px;}
 .modal-actions .btn{flex:0 1 150px;min-width:0;}
+.modal-actions .btn:only-child{flex:0 1 auto;min-width:min(150px,100%);max-width:100%;white-space:nowrap;overflow:hidden;}
 @container pf (max-width:1024px){
   select.form-input, input.form-input{height:48px;font-size:16px;}
   textarea.form-input, textarea.memo-input{font-size:16px;}
