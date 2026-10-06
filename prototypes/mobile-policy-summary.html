@@ -102,12 +102,13 @@ th{background:var(--tertiary);font-weight:700;}
 .lm-quick button{height:28px;padding:0 10px;border:1px solid #e0e0e0;border-radius:4px;background:#fff;font-weight:600;font-size:12px;line-height:1;font-family:inherit;cursor:pointer;}
 .lm-quick button.on{border-color:var(--brand);color:#141e76;background:#eff1fd;}
 .lm-stage{overflow:hidden;}
-.lm-screen{margin:0 auto;height:200px;background:rgba(20,20,22,.45);border-radius:8px;display:flex;align-items:center;justify-content:center;transition:width .15s;position:relative;}
-.lm-modal{background:#fff;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:8px;transition:width .15s;box-sizing:border-box;}
-.lm-title{font-size:13px;font-weight:700;}
-.lm-text{height:30px;border-radius:3px;background:repeating-linear-gradient(#eee 0 6px,transparent 6px 12px);}
-.lm-btns{display:flex;gap:6px;justify-content:center;}
-.lm-btns span{height:24px;border:1px solid #616161;border-radius:3px;font-size:11px;display:flex;align-items:center;justify-content:center;background:#fff;}
+.lm-screen{margin:0 auto;height:280px;background:rgba(20,20,22,.45);border-radius:8px;display:flex;align-items:center;justify-content:center;transition:width .15s;position:relative;}
+.lm-modal{background:#fff;border-radius:16px;display:flex;flex-direction:column;transition:width .15s;box-sizing:border-box;}
+.lm-title{font-weight:700;color:#1a1a1a;}
+.lm-text{border-radius:3px;background:repeating-linear-gradient(#eee 0 8px,transparent 8px 16px);}
+.lm-btns{display:flex;justify-content:center;}
+.lm-btns span{flex:0 0 auto;box-sizing:border-box;border:1px solid #616161;border-radius:4px;font-weight:600;display:flex;align-items:center;justify-content:center;background:#fff;white-space:nowrap;overflow:hidden;}
+.lm-seg2{margin:0 0 8px;}
 .lm-btns span.pri{background:var(--brand);border-color:var(--brand);color:#fff;}
 @media (max-width:640px){.h-acts{margin-left:0;width:100%;} .pop-ov{padding:0;} .pop{border-radius:0;height:100%;} .ls-row{grid-template-columns:60px 1fr 80px;}}
 
@@ -202,8 +203,9 @@ th{background:var(--tertiary);font-weight:700;}
   <div class="live-head"><span class="live-tag">직접 해보기</span>
     <div class="seg"><button type="button" data-size="480" class="on">480 모달</button><button type="button" data-size="600">600</button><button type="button" data-size="800">800</button></div></div>
   <label class="lm-range">화면 폭 <b id="lmW">390</b>px<input type="range" id="lmSlider" min="320" max="1440" step="1" value="390"></label>
+  <div class="seg lm-seg2" id="lmBtnSeg"><button type="button" data-b="two" class="on">버튼 2개</button><button type="button" data-b="one">버튼 1개</button><button type="button" data-b="long">버튼명이 긴 1개</button></div>
   <div class="lm-quick"><button type="button" data-w="360">360</button><button type="button" data-w="390">390</button><button type="button" data-w="768">768</button><button type="button" data-w="1024">1024</button><button type="button" data-w="1025">1025</button><button type="button" data-w="1440">1440</button></div>
-  <div class="lm-stage" id="lmStage"><div class="lm-screen" id="lmScreen"><div class="lm-modal" id="lmModal"><div class="lm-title">안내</div><div class="lm-text"></div><div class="lm-btns" id="lmBtns"><span>취소</span><span class="pri">확인</span></div></div></div></div>
+  <div class="lm-stage" id="lmStage"><div class="lm-screen" id="lmScreen"><div class="lm-modal" id="lmModal"><div class="lm-title">안내</div><div class="lm-text"></div><div class="lm-btns" id="lmBtns"></div></div></div></div>
   <p class="live-note" id="lmOut"></p>
 </div>
 <ul>
@@ -383,27 +385,42 @@ th{background:var(--tertiary);font-weight:700;}
   ls.querySelectorAll('.seg button').forEach(function(b){ b.addEventListener('click', function(){ setMode(b.dataset.mode); }); });
   setMode('mo');
 
-  /* 5절: 화면 폭에 따른 모달 폭 — min(크기, 100% - 40px), 버튼 150 고정, 좁으면 줄어듦 */
-  var lmSize = 480, lmW = 390;
+  /* 5절: 화면 폭에 따른 모달 폭 — min(크기, 100% - 40px). 모달 버튼 150 고정·좁으면 줄어듦, 버튼 1개는 버튼명이 길면 글자만큼(모달 안쪽까지) — 실제 비율로 그림 */
+  var lmSize = 480, lmW = 390, lmB = 'two';
+  var LM_BTNS = { two:[['취소',''],['확인','pri']], one:[['확인','pri']], long:[['대여 회수 관리 바로가기','pri']] };
   var slider = document.getElementById('lmSlider'), stage = document.getElementById('lmStage');
   function drawModal(){
     var avail = stage.clientWidth || 600, sc = Math.min(1, avail / lmW);
-    var mw = Math.min(lmSize, lmW - 40);
+    var mw = Math.min(lmSize, lmW - 40), inner = mw - 40;
     document.getElementById('lmScreen').style.width = (lmW * sc) + 'px';
-    document.getElementById('lmModal').style.width = (mw * sc) + 'px';
-    var btnRow = document.getElementById('lmBtns'), btns = btnRow.children;
-    btnRow.style.gap = (12 * sc) + 'px';
-    for(var i = 0; i < btns.length; i++){ btns[i].style.flex = '0 1 ' + (150 * sc) + 'px'; btns[i].style.minWidth = '0'; }
-    var inner = mw - 40, bw = Math.min(150, Math.floor((inner - 12) / 2));
+    var m = document.getElementById('lmModal');
+    m.style.width = (mw * sc) + 'px'; m.style.padding = (24 * sc) + 'px ' + (20 * sc) + 'px'; m.style.gap = (16 * sc) + 'px';
+    var t = m.querySelector('.lm-title'); t.style.fontSize = (20 * sc) + 'px'; t.textContent = lmB === 'long' ? '회수 요청 불가 안내' : '안내';
+    m.querySelector('.lm-text').style.height = (40 * sc) + 'px';
+    var row = document.getElementById('lmBtns'), list = LM_BTNS[lmB], ws = [], note;
+    row.style.gap = (12 * sc) + 'px'; row.style.marginTop = (8 * sc) + 'px';
+    if(list.length === 2){ var w2 = Math.min(150, Math.floor((inner - 12) / 2)); ws = [w2, w2];
+      note = w2 >= 150 ? '<b>150 고정</b>' : '<b>' + w2 + 'px</b>(150에서 줄어듦)'; }
+    else if(lmB === 'one'){ ws = [Math.min(150, inner)]; note = '<b>150 고정</b>(1개도 150)'; }
+    row.innerHTML = list.map(function(b){ return '<span class="' + b[1] + '" style="height:' + (48 * sc) + 'px;font-size:' + (16 * sc) + 'px;padding:0 ' + (20 * sc) + 'px">' + b[0] + '</span>'; }).join('');
+    var spans = row.children;
+    if(lmB === 'long'){ /* 실제 그려진 글자 폭 + 좌우 패딩 20 */
+      var need = Math.ceil(spans[0].getBoundingClientRect().width / sc), w1 = Math.min(Math.max(150, need), inner); ws = [w1];
+      note = '<b>' + w1 + 'px</b>' + (w1 >= inner ? '(모달 안쪽까지 = Full)' : '(글자 + 좌우 패딩 20, Hug)'); }
+    for(var i = 0; i < spans.length; i++) spans[i].style.width = (ws[i] * sc) + 'px';
     document.getElementById('lmW').textContent = lmW;
     document.getElementById('lmOut').innerHTML = '화면 <b>' + lmW + '</b> → ' + lmSize + ' 모달은 <b>' + mw + 'px</b>' +
-      (mw < lmSize ? ' (좌우 20씩 남기고 꽉 참)' : ' (원래 크기)') + ' · 버튼 ' + (bw >= 150 ? '<b>150 고정</b>' : '<b>' + bw + 'px</b>(150에서 줄어듦)') + ' · 높이는 늘 48';
+      (mw < lmSize ? ' (좌우 20씩 남기고 꽉 참)' : ' (원래 크기)') + ' · 버튼 ' + note + ' · 높이는 늘 48' + (sc < 1 ? ' · 그림은 ' + Math.round(sc * 100) + '% 축소' : '');
     document.querySelectorAll('.lm-quick button').forEach(function(b){ b.classList.toggle('on', +b.dataset.w === lmW); });
   }
+  document.querySelectorAll('#lmBtnSeg button').forEach(function(b){ b.addEventListener('click', function(){
+    lmB = b.dataset.b; document.querySelectorAll('#lmBtnSeg button').forEach(function(x){ x.classList.toggle('on', x === b); }); drawModal();
+  }); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ drawModal(); });
   slider.addEventListener('input', function(){ lmW = +slider.value; drawModal(); });
   document.querySelectorAll('.lm-quick button').forEach(function(b){ b.addEventListener('click', function(){ lmW = +b.dataset.w; slider.value = lmW; drawModal(); }); });
-  document.querySelectorAll('#liveModal .seg button').forEach(function(b){ b.addEventListener('click', function(){
-    lmSize = +b.dataset.size; document.querySelectorAll('#liveModal .seg button').forEach(function(x){ x.classList.toggle('on', x === b); }); drawModal();
+  document.querySelectorAll('#liveModal .live-head .seg button').forEach(function(b){ b.addEventListener('click', function(){
+    lmSize = +b.dataset.size; document.querySelectorAll('#liveModal .live-head .seg button').forEach(function(x){ x.classList.toggle('on', x === b); }); drawModal();
   }); });
   window.addEventListener('resize', drawModal);
   drawModal();
