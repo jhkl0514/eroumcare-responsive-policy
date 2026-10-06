@@ -111,12 +111,13 @@ th{background:var(--tertiary);font-weight:700;}
 .lm-btns span.pri{background:var(--brand);border-color:var(--brand);color:#fff;}
 @media (max-width:640px){.h-acts{margin-left:0;width:100%;} .pop-ov{padding:0;} .pop{border-radius:0;height:100%;} .ls-row{grid-template-columns:60px 1fr 80px;}}
 
-.pg-demo{display:flex;align-items:center;justify-content:center;gap:4px;min-height:40px;}
-.pg-demo .pg-arrow{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border:0;background:none;border-radius:4px;color:#333;cursor:pointer;padding:0;}
-.pg-demo .pg-arrow:hover:not(:disabled){background:#eff1fd;}
+.pg-demo{display:flex;align-items:center;justify-content:center;gap:4px;min-height:48px;}
+.pg-demo .pg-arrow svg{width:32px;height:32px;}
+.pg-demo .pg-arrow{width:48px;height:48px;-webkit-tap-highlight-color:transparent;display:inline-flex;align-items:center;justify-content:center;border:0;background:none;border-radius:4px;color:#333;cursor:pointer;padding:0;}
+.pg-demo .pg-arrow:active:not(:disabled){background:#eff1fd;}
 .pg-demo .pg-arrow:disabled{color:#bdbdbd;cursor:default;}
-.pg-demo .pg-ind{display:inline-flex;align-items:center;gap:8px;padding:0 8px;font-size:14px;line-height:20px;color:#999;user-select:none;}
-.pg-demo .pg-ind .cur{color:#1a1a1a;}
+.pg-demo .pg-ind{display:inline-flex;align-items:center;gap:8px;padding:0 8px;font-size:18px;line-height:26px;color:#999;user-select:none;}
+.pg-demo .pg-ind .cur{color:#1a1a1a;font-weight:600;}
 .pg-demo .empty{font-size:14px;color:#999;}
 </style>
 </head>
@@ -239,12 +240,12 @@ th{background:var(--tertiary);font-weight:700;}
 </ul>
 
 <h2 id="s9" data-sec="s36" data-proto="pagination-compare-demo.html"><span class="num">9</span>페이지네이션 — 모바일은 축약형</h2>
-<div class="rule">모바일 목록과 모든 팝업 안 목록은 <b>‹ 현재 / 전체 ›</b> 축약형(화살표 40). 번호가 늘어선 형태는 PC 목록에서만 써요.</div>
+<div class="rule">모바일 목록과 모든 팝업 안 목록은 <b>‹ 현재 / 전체 ›</b> 축약형(화살표 48·글자 18px). 번호가 늘어선 형태는 PC 목록에서만 써요.</div>
 <table>
 <tr><th>어디</th><th>형태</th><th>크기</th></tr>
 <tr><td>PC 페이지 목록</td><td>기본형·조합형 ‹ 1 2 3 … 10 › (전체 N/M · N개씩)</td><td>칸 32</td></tr>
-<tr><td><b>모바일 페이지 목록</b></td><td><b>축약형 ‹ 1 / 10 ›</b></td><td><b>화살표 40</b></td></tr>
-<tr><td>모달·바텀시트 안 목록(PC·모바일)</td><td>축약형 ‹ 1 / 10 ›</td><td>화살표 40(PC 모달도 40)</td></tr>
+<tr><td><b>모바일 페이지 목록</b></td><td><b>축약형 ‹ 1 / 10 ›</b></td><td><b>화살표 48</b>(아이콘 32), 글자 18px</td></tr>
+<tr><td>모달·바텀시트 안 목록(PC·모바일)</td><td>축약형 ‹ 1 / 10 ›</td><td>화살표 48(PC 모달도 48)</td></tr>
 </table>
 <div class="live" id="livePg">
   <div class="live-head"><span class="live-tag">직접 해보기</span>
@@ -253,7 +254,8 @@ th{background:var(--tertiary);font-weight:700;}
   <p class="live-note" id="pgNote"></p>
 </div>
 <ul>
-<li>가운데 숫자는 <b>누를 수 없는 글자</b>예요(버튼·호버 없음). 14px — 현재 <code>#1a1a1a</code>, "/"·전체 <code>#999</code></li>
+<li>가운데 숫자는 <b>누를 수 없는 글자</b>예요(버튼·호버 없음). 18px — 현재 <code>#1a1a1a</code> SemiBold, "/"·전체 <code>#999</code></li>
+<li>크기를 최대로 둔 이유: 목록 맨 아래 혼자 있는 요소라 <b>누르기 쉽고 잘 보이게</b>. 48은 뒤로가기와 같은 터치 크기예요</li>
 <li><b>첫 페이지 ‹, 마지막 페이지 ›는 비활성</b>(<code>#bdbdbd</code>). 숨기지 않아서 위치가 흔들리지 않아요</li>
 <li>모바일 목록은 <b>카드 20개마다 한 페이지</b>, 마지막 카드 아래 위·아래 여백 32. <b>0건이면 숨기고</b> 빈 화면 안내만</li>
 <li>페이지를 넘기면 <b>목록 맨 위로</b>(고정된 탭 바로 아래). 주소에 <code>?page=</code>를 남겨서 상세에 갔다 돌아와도 같은 페이지</li>
@@ -270,7 +272,7 @@ th{background:var(--tertiary);font-weight:700;}
 <div class="qa"><div class="q">바텀시트는 모바일 모달 전부에 쓰나요?</div><div class="a">아니요. 글자를 입력하는 팝업(사유·주소·검색)만이에요. 안내·확인·선택만 하는 팝업은 모바일에서도 모달이에요.</div></div>
 <div class="qa"><div class="q">하단 고정 버튼이 뭔가요?</div><div class="a">모바일에서 화면 아래에 sticky(fixed)로 붙는 버튼이에요. LG 54, 아래 여백 20 + safe-area.</div></div>
 <div class="qa"><div class="q">모바일 목록도 번호(1 2 3 4 5)로 하면 안 되나요?</div><div class="a">축약형으로 해요. 모바일은 필터로 좁혀 최신 건을 보는 일이 대부분이라 멀리 건너뛸 일이 드물고, 번호형은 360 화면에서 칸이 좁아 잘못 누르기 쉬워요. PC와 다른 번호 계산을 따로 관리할 필요도 없어져요.</div></div>
-<div class="qa"><div class="q">모달 안 페이지네이션은 PC에서 32인가요?</div><div class="a">아니요. 축약형은 PC 모달에서도 40 하나예요. 32는 PC 목록의 번호형만이에요.</div></div>
+<div class="qa"><div class="q">모달 안 페이지네이션은 PC에서 32인가요?</div><div class="a">아니요. 축약형은 PC 모달에서도 48 하나예요. 32는 PC 목록의 번호형만이에요.</div></div>
 <div class="qa"><div class="q">반응형이면 PC 컴포넌트를 그대로 써도 되나요?</div><div class="a">입력류는 아니에요 — 1024px 이하에서 모바일 크기로 바꿔요. 버튼·칩·탭은 PC 크기 그대로예요.</div></div>
 
 

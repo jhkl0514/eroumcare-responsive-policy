@@ -69,11 +69,12 @@ code{background:var(--tertiary);padding:1px 5px;border-radius:4px;font-size:14px
 .pg-total{font-size:14px;color:var(--text-secondary);}
 .pg-total b{font-weight:600;color:var(--text-primary);}
 .pg-size{justify-self:end;display:inline-flex;align-items:center;gap:4px;font-size:14px;color:var(--text-333);}
-/* 축약형 40 */
+/* 축약형 48 — 화살표 영역 48, 아이콘 32, 글자 18px(누르기 편하고 잘 보이게) */
 .pg-compact{display:flex;align-items:center;justify-content:center;gap:4px;}
-.pg-compact .pg-arrow{width:40px;height:40px;}
-.pg-ind{display:inline-flex;align-items:center;gap:8px;padding:0 8px;font-size:14px;line-height:20px;color:var(--text-tertiary);user-select:none;}
-.pg-ind .cur{color:var(--text-primary);}
+.pg-compact .pg-arrow{width:48px;height:48px;}
+.pg-compact .pg-arrow svg{width:32px;height:32px;}
+.pg-ind{display:inline-flex;align-items:center;gap:8px;padding:0 8px;font-size:18px;line-height:26px;color:var(--text-tertiary);user-select:none;}
+.pg-ind .cur{color:var(--text-primary);font-weight:600;}
 
 /* ===== ① PC 목록 ===== */
 .pc-frame{background:var(--card);border:1px solid var(--border-secondary);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;}
@@ -166,11 +167,11 @@ code{background:var(--tertiary);padding:1px 5px;border-radius:4px;font-size:14px
 <div id="wrap">
   <div class="head">
     <h1>페이지네이션 — 기본형 / 축약형</h1>
-    <p>PC 페이지 목록은 번호를 보여 주는 <b>기본형(32)</b>, 모바일 목록과 모든 팝업 안 목록은 <b>축약형(40)</b>을 씁니다. 아래 화면을 직접 눌러 보세요.</p>
+    <p>PC 페이지 목록은 번호를 보여 주는 <b>기본형(32)</b>, 모바일 목록과 모든 팝업 안 목록은 <b>축약형(48)</b>을 씁니다. 아래 화면을 직접 눌러 보세요.</p>
     <table class="rule-table">
       <tr><th>형태</th><th>쓰는 곳</th><th>모양 · 크기</th></tr>
       <tr><td><b>기본형 · 조합형</b></td><td>PC 페이지 목록(1025px 이상)</td><td>‹ 번호 › (조합형은 왼쪽 "전체 N/M", 오른쪽 "N개씩"). 칸 32. 7페이지 이하는 전부, 8페이지부터 말줄임</td></tr>
-      <tr><td><b>축약형</b></td><td>모바일 페이지 목록(1024px 이하) + 모달·바텀시트 안 목록(PC·모바일)</td><td>‹ 현재 / 전체 ›. 화살표 40 — 화면 폭과 관계없이 하나. 숫자는 표시용 글자(누를 수 없음)</td></tr>
+      <tr><td><b>축약형</b></td><td>모바일 페이지 목록(1024px 이하) + 모달·바텀시트 안 목록(PC·모바일)</td><td>‹ 현재 / 전체 ›. 화살표 영역 48·아이콘 32, 글자 18px — 화면 폭과 관계없이 하나. 숫자는 표시용 글자(누를 수 없음)</td></tr>
       <tr><td>공통</td><td colspan="2">첫 페이지 ‹ · 마지막 페이지 › 는 비활성(<code>#bdbdbd</code>, 숨기지 않음). 현재 페이지 <code>#eff1fd</code> + <code>#141e76</code> SemiBold, 나머지 번호 Regular. 페이지를 넘기면 목록 맨 위로, 주소에 <code>?page=</code>를 남겨 상세에서 돌아와도 같은 페이지</td></tr>
     </table>
   </div>
@@ -194,7 +195,7 @@ code{background:var(--tertiary);padding:1px 5px;border-radius:4px;font-size:14px
 
   <!-- ② 모바일 목록 축약형 -->
   <section class="sec">
-    <div class="sec-head"><span class="sec-num">2</span><h2>모바일 페이지 목록 — 축약형(40)</h2></div>
+    <div class="sec-head"><span class="sec-num">2</span><h2>모바일 페이지 목록 — 축약형(48)</h2></div>
     <p class="sec-rule">카드 20개마다 한 페이지. 목록 맨 아래에 <b>‹ 현재 / 전체 ›</b>(위아래 여백 32). 페이지를 넘기면 <b>목록 맨 위로</b> 이동하고, 카드를 눌러 상세에 갔다가 <b>뒤로 오면 보던 페이지 그대로</b>예요. 0건이면 숨기고 빈 화면 안내만.</p>
     <div class="grid2">
       <div class="col">
@@ -231,8 +232,8 @@ code{background:var(--tertiary);padding:1px 5px;border-radius:4px;font-size:14px
 
   <!-- ③ 팝업 안 축약형 + 선택 -->
   <section class="sec">
-    <div class="sec-head"><span class="sec-num">3</span><h2>팝업 안 목록 — 축약형(40) + 선택</h2></div>
-    <p class="sec-rule">복지용구사업소 등록처럼 <b>팝업 안에서 고르는 목록</b>도 축약형 40. 검색어 입력이 있어서 <b>PC는 480 모달, 모바일은 바텀시트</b>(3-3). <b>"선택"을 누르면 그 줄이 초록 선택 상태</b>가 되고 하나만 고를 수 있어요. 페이지를 넘겨도 고른 사업소는 유지되고, 고르기 전에는 "등록"이 비활성이에요.</p>
+    <div class="sec-head"><span class="sec-num">3</span><h2>팝업 안 목록 — 축약형(48) + 선택</h2></div>
+    <p class="sec-rule">복지용구사업소 등록처럼 <b>팝업 안에서 고르는 목록</b>도 축약형 48. 검색어 입력이 있어서 <b>PC는 480 모달, 모바일은 바텀시트</b>(3-3). <b>"선택"을 누르면 그 줄이 초록 선택 상태</b>가 되고 하나만 고를 수 있어요. 페이지를 넘겨도 고른 사업소는 유지되고, 고르기 전에는 "등록"이 비활성이에요.</p>
     <div class="grid2">
       <div class="col">
         <div class="label"><span class="tag">PC</span> 480 모달</div>
