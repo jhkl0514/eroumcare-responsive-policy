@@ -55,6 +55,9 @@ code{background:var(--tertiary);padding:1px 5px;border-radius:4px;font-size:14px
 .pg-arrow{display:inline-flex;align-items:center;justify-content:center;border:0;background:none;border-radius:4px;cursor:pointer;color:#333;padding:0;flex:0 0 auto;}
 .pg-arrow:hover:not(:disabled){background:var(--tint);}
 .pg-arrow:disabled{color:var(--border-primary);cursor:default;}
+.pg-arrow{-webkit-tap-highlight-color:transparent;}
+.pg-compact .pg-arrow:active:not(:disabled){background:var(--tint);}
+@media (hover:none){ .pg-compact .pg-arrow:hover{background:none;} .pg-compact .pg-arrow:active:not(:disabled){background:var(--tint);} }
 /* 기본형(PC) 32 */
 .pg-basic{display:flex;align-items:center;justify-content:center;gap:4px;}
 .pg-basic .pg-arrow{width:32px;height:32px;}
