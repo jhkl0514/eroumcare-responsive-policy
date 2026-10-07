@@ -61,6 +61,7 @@ button{font-family:inherit;}
 .segc button.active{background:var(--brand);}
 .segc button.active b,.segc button.active small{color:#fff;}
 .segc button.plan.active{background:var(--note-text);}
+.segc button.uxv.active{background:var(--brand);}
 .segc.sm button{padding:6px 12px;min-height:36px;align-items:center;}
 /* 단계: 흐름(›) + 분기(주문취소) */
 .flow-ui{display:flex;align-items:center;flex-wrap:wrap;gap:4px;}
@@ -243,7 +244,7 @@ body:not(.q-on) .q-badge{display:none;}
 .prow.add{background:var(--info-bg);}
 .prow.del .pname,.prow.del .pprice .value{text-decoration:line-through;color:var(--text-tertiary);}
 .prow.flash{background:var(--tint);}
-@container pf (max-width:1024px){ .prow.chg,.prow.del,.prow.add,.prow.flash{margin:0 -20px;padding-left:20px;padding-right:20px;} }
+@container pf (max-width:1024px){ .prow.chg,.prow.del,.prow.add,.prow.flash{padding-left:12px;padding-right:12px;border-radius:4px;} }   /* 배경은 화면 좌우 20px 안쪽에 */
 @container pf (min-width:1024.02px){
   .prow{grid-template-columns:minmax(0,1fr) 48px 150px 200px 104px;grid-template-areas:"main type qty price act";
     align-items:center;padding:16px 8px;gap:16px;}
@@ -409,6 +410,7 @@ details.uwrap summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--
 .ubox{background:var(--secondary-bg);border-radius:4px;padding:12px 16px;font-size:16px;display:flex;flex-direction:column;gap:4px;}
 .ubox.prop{background:var(--tint);} .ubox .uk{font-size:14px;font-weight:700;color:var(--text-secondary);} .ubox.prop .uk{color:var(--brand);}
 /* U1 요양정보 조회 */
+.lk-done{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--text-secondary);}   /* 조회 완료: 상태칩과 구분되게 칩 대신 아이콘 + 회색 글자 */
 .done-tag{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:600;
   background:var(--success-bg);border:1px solid var(--success-border);color:var(--success-text);}
 .done-at{font-size:12px;color:var(--text-tertiary);}
@@ -434,7 +436,8 @@ details.uwrap summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--
 .lk-t tr.no td{background:var(--danger-bg);} .lk-t td.no{color:var(--danger-text);} .lk-t td.ok{color:var(--info-text);}
 @container pf (max-width:1024px){ .lk-tables{grid-template-columns:1fr;} .lk-card{grid-template-columns:1fr 1fr;} .lk-grid{grid-template-columns:1fr;} .lk-r span{width:auto;min-width:96px;} }
 .overlay2{z-index:12;}
-.pw-wrap{position:relative;} .pw-wrap .input{padding-right:48px;}
+.pw-wrap{position:relative;} .pw-wrap .input{padding-right:48px;} .pw-wrap.has-eye .input{padding-right:88px;} .pw-wrap.has-eye .pw-x{right:44px;}
+.pw-eye{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:none;background:none;cursor:pointer;color:var(--text-secondary);display:flex;align-items:center;justify-content:center;}
 .pw-x{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:none;background:none;cursor:pointer;color:var(--text-tertiary);display:flex;align-items:center;justify-content:center;}
 /* U2 · U3 · U4 · U5 */
 .m-prod .nm{font-size:16px;font-weight:600;}
@@ -446,8 +449,10 @@ details.uwrap summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--
 .diff-line s{color:var(--text-tertiary);}
 .warn-line{font-size:14px;color:var(--danger-text);font-weight:600;display:flex;align-items:center;flex-wrap:wrap;gap:4px;}
 .warn-line.sm{font-size:12px;width:100%;justify-content:center;}
-.res-panel{position:static;margin-top:0;max-height:none;}
-.res-row{flex-direction:column;align-items:flex-start;gap:2px;}
+.opt-panel.res-panel{position:static;margin-top:0;max-height:none;box-shadow:none;}   /* 결과 목록은 모달 본문 흐름 안에(떠 있으면 잘림) */
+.opt-row.res-row{flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;text-align:left;}
+.opt-row{text-align:left;}
+.overlay > .modal.lg{width:min(600px, calc(100% - 40px));}
 .res-row .rm{font-size:12px;color:var(--text-secondary);font-weight:400;}
 .r-out{color:var(--danger-text);font-weight:600;} .r-in{color:var(--brand);font-weight:600;}
 .amt-box{background:var(--tint);border-radius:4px;padding:12px 16px;display:flex;flex-direction:column;gap:4px;font-size:14px;}
@@ -488,9 +493,10 @@ body:not(.n-on) .n-badge{display:none;}
 /* 변경 행 색: 기획서 원안 = 연두(success), UX 제안 = caution */
 .prow.chg{background:var(--success-bg);}
 /* UX 제안: 배경 한 단계 연하게(기존 토큰을 흰색과 50% 혼합 — 임시, Q11) + 왼쪽 3px 색 막대 */
-body.ux-on .prow.chg{background:color-mix(in srgb, var(--caution-bg) 50%, #fff);box-shadow:inset 3px 0 0 var(--caution-text);}
-body.ux-on .prow.del{background:color-mix(in srgb, var(--danger-bg) 50%, #fff);box-shadow:inset 3px 0 0 var(--danger-text);}
-body.ux-on .prow.add{background:color-mix(in srgb, var(--info-bg) 50%, #fff);box-shadow:inset 3px 0 0 var(--info-text);}
+body.ux-on .prow.chg,body.ux-on .prow.del,body.ux-on .prow.add{background:none;}   /* ④: 배경은 '행 배경' 옵션으로 켤 때만 */
+body.ux-on.bg-chg .prow.chg,body.ux-on.bg-all .prow.chg{background:color-mix(in srgb, var(--caution-bg) 50%, #fff);}
+body.ux-on.bg-del .prow.del,body.ux-on.bg-all .prow.del{background:color-mix(in srgb, var(--danger-bg) 50%, #fff);}
+body.ux-on.bg-add .prow.add,body.ux-on.bg-all .prow.add{background:color-mix(in srgb, var(--info-bg) 50%, #fff);}
 .bar{display:inline-block;width:3px;height:16px;border-radius:2px;margin-left:8px;vertical-align:middle;}
 .bar-chg{background:var(--caution-text);} .bar-del{background:var(--danger-text);} .bar-add{background:var(--info-text);}
 .c-k-keep{background:var(--card);border-color:var(--border-primary);color:var(--neutral-text);}
@@ -611,7 +617,7 @@ body.ux-on .c-k-chg,.legend-g .c-k-chg{background:var(--caution-bg);border-color
 <div class="proto-note">
   <b>주문요청관리 상세 — 구입</b> (4-5) · 보기를 바꿔 같은 단계를 비교합니다.
   <b>① 현행</b> = 개발 화면 캡처(2026-10-07) + 문제 핀 · <b>② 화면 정책 적용</b> = 기능은 현행 그대로 두고 화면 정책(3장·4-2·4-3·5장)과 확정 표기(D-01 상품 유형 '구입')만 적용 ·
-  <b>③ + 기획 개선안</b> = 2026.10 기획서(확인 중)를 주문확인중에만 얹은 화면 — 정책 아님, 비주얼 임시.
+  <b>③ + 기획 개선안</b> = 2026.10 기획서 원안(확인 중)을 주문확인중에 얹은 화면 · <b>④ UI/UX 제안</b> = ③에 UX 제안(U)을 적용한 화면 — 둘 다 정책 아님, 비주얼 임시.
 </div>
 
 <div class="ctrl-card">
@@ -621,7 +627,8 @@ body.ux-on .c-k-chg,.legend-g .c-k-chg{background:var(--caution-bg);border-color
       <div class="segc" id="seg-view">
         <button data-v="current"><b>① 현행</b><small>개발 화면 캡처 + 문제 핀</small></button>
         <button data-v="policy"><b>② 화면 정책 적용</b><small>기능은 그대로, 화면 정책만</small></button>
-        <button data-v="plan" class="plan"><b>③ + 기획 개선안</b><small>확인 중 · 주문확인중에만</small></button>
+        <button data-v="plan" class="plan"><b>③ + 기획 개선안</b><small>2026.10 기획서 원안 · 확인 중</small></button>
+        <button data-v="ux" class="uxv"><b>④ UI/UX 제안</b><small>③ + UX 제안(U) 적용</small></button>
       </div></div>
     <div class="ctrl-row"><span class="ctrl-label">단계</span>
       <div class="flow-ui" id="seg-step"><button data-s="list"><i>1</i>리스트</button><span class="sx"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button data-s="received"><i>2</i>주문접수</button><span class="sx"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button data-s="confirming"><i>3</i>주문확인중</button><span class="sx"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button data-s="preparing"><i>4</i>상품준비</button><span class="sx"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button data-s="shipped"><i>5</i>출고완료</button><span class="sx"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button data-s="delivered"><i>6</i>배송완료</button><span class="branch">분기</span><button data-s="cancel" class="cancel"><i><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></i>주문취소</button></div></div>
@@ -636,13 +643,15 @@ body.ux-on .c-k-chg,.legend-g .c-k-chg{background:var(--caution-bg);border-color
   <div class="ctx-wrap" id="ctx-wrap">
     <div class="ctrl-row" id="row-example"><span class="ctrl-label">행 예시</span>
       <div class="chips" id="seg-example"><button data-e="basic">기본</button><button data-e="option">옵션 있음</button><button data-e="added">추가상품</button><button data-e="dup">같은 상품 다른 옵션</button></div></div>
+    <div class="ctrl-row" id="row-bg"><span class="ctrl-label">행 배경</span>
+      <div class="chips" id="seg-bg"><button data-bg="none">없음</button><button data-bg="chg">변경</button><button data-bg="del">삭제</button><button data-bg="add">추가</button><button data-bg="all">전체</button></div></div>
     <div class="ctrl-row" id="row-cancel"><span class="ctrl-label">취소 시점</span>
       <div class="chips" id="seg-cancel"><button data-c="before">주문 전 취소</button><button data-c="after">주문 후 취소</button></div></div>
     <div class="ctrl-row" id="row-modal"><span class="ctrl-label">팝업</span><div class="chips" id="modal-btns"></div></div>
   </div>
   <div class="scen">
     <div class="scen-g scen-head"><span>③ 기획 개선안 — 시나리오 버튼을 누르면 조작이 자동으로 재현됩니다</span>
-      <div class="segc sm" id="seg-ux"><button data-ux="0">기획서 원안</button><button data-ux="1">UX 제안 적용</button></div></div>
+</div>
     <div class="scen-g chips">
       <button onclick="runScenario(1)">① 옵션 변경</button><button onclick="runScenario(2)">② 수량 변경</button>
       <button onclick="runScenario(3)">③ 상품 삭제</button><button onclick="runScenario(4)">④ 상품 추가</button>
@@ -677,13 +686,13 @@ body.ux-on .c-k-chg,.legend-g .c-k-chg{background:var(--caution-bg);border-color
    데이터
    ===================================================================== */
 var ASSET = 'assets/purchase-order/';
-/* 본인부담률 — 조회 전에는 주문 요청 시점 값(예시 15%), 조회 후에는 조회 결과(감경 6%)로 다시 계산(U5-1) */
+/* 본인부담률 — 조회 전에는 주문 요청 시점 값(예시 15%), 조회 후에는 조회 결과(감경 6%)로 다시 계산 (현행 동작) */
 var RATE_BEFORE = 0.15, RATE_AFTER = 0.06;
 function rate(){ return cur().lookedUp ? RATE_AFTER : RATE_BEFORE; }
 function rateLabel(){ return Math.round(rate()*100)+'%'; }
 /* 요양정보 조회 결과(가상) — 품목명은 개발 화면 구조, 수치는 예시 */
 var SALE_ITEMS = [['이동변기','1개/5년','-','급여불가'],['자세변환용구','5개','-',5],['목욕의자','1개/5년','-','급여불가'],['성인용보행기','2개/5년','1개','급여불가'],
-  ['안전손잡이','10개','-',10],['요실금팬티','4개','-','급여불가'],['미끄럼방지용품_양말','6개','-','급여불가'],['경사로(실내용)','6개/2년','-',6],
+  ['안전손잡이','10개','-',10],['요실금팬티','4개','-',4],['미끄럼방지용품_양말','6개','-',6],['경사로(실내용)','6개/2년','-',6],
   ['미끄럼방지용품_매트,액','5개','-','급여불가'],['구강세척기','1개/5년','-','급여불가'],['간이변기','2개','-',2],['배회감지기(태그형)','2개/2년','-',2],
   ['지팡이','1개/2년','-','급여불가'],['고관절보호대','1개/2년','-','급여불가'],['욕창예방매트리스','1개/3년','1개',0],['기저귀센서','1개/3년','-',1],
   ['욕창예방방석','1개/3년','1개',0],['이승보조기기','1개/5년','-',1]];
@@ -696,6 +705,7 @@ var CATALOG = {
   hd:  {name:'HD-B-001', img:'HD-B-001', cat:'간이변기', opts:[], price:11000},
   ash: {name:'ASH-106', img:'ASH-106', cat:'자세변환용구', opts:[], price:42100},
   msh: {name:'MSH 안전손잡이 부품', img:'MSH 부품', opts:[{k:'구성',v:['MSH용 안전핀너트']}], price:0, part:true},
+  cane:{name:'경량 접이식 지팡이 W-01', img:'지팡이', cat:'지팡이', opts:[], price:25000},
   soom:{name:'SOOM M-130cc (남성용)', img:'SOOM', cat:'요실금팬티', opts:[], price:9800, soldout:true}
 };
 var SAMPLES = {   /* ② 행 예시 · ③ 샘플 주문(상품 3개, 옵션 있는 상품 2개) */
@@ -726,11 +736,11 @@ var UINFO = {
   U2:{t:'옵션 변경 모달에 현재 옵션 표시', prob:'모달 상단에 썸네일 + 상품명만 있어 무엇을 바꾸는지 모른다(A6과 같은 문제)', prop:'상품명 아래 "현재 옵션 · 수량", 이미 바꾼 상품이면 "고객 주문" 한 줄 더. 셀렉트는 현재 값 선택, 바꾼 항목만 굵게, 같은 값이면 [확인] 비활성', why:'기억에 의존하지 않고 모달 안에서 변경 전후를 비교한다'},
   U3:{t:'변경 행을 색 말고도 구분', prob:'행 배경색만으로 구분하고, 변경의 연두는 주문확인중·주문완료·추가상품 칩과 같은 초록 계열이라 A4 문제가 다시 생기고 \'정상\'으로 읽힌다', prop:'변경 = caution(오렌지) 계열 임시, 행 앞 텍스트 뱃지(변경·삭제·추가), 바뀐 값 표시(수량 1 → 2, 옵션은 이전 값 취소선 + 새 값), 상단 범례', why:'색 + 글자 두 가지로 알려야 놓치지 않는다. 실제 토큰은 Q11에서 확정'},
   U4:{t:'상품 추가 검색 개선', prob:'무엇으로 검색하는지 모르고, 결과에 가격·옵션·이미 주문 목록에 있는지가 없다', prop:'placeholder 예시, 포커스하면 입력 전에도 목록(최대 5개), 결과 행에 가격·옵션 유무·품절·"주문 목록에 있음", 결과 없음 문구', why:'헛검색과 같은 상품 중복 추가(dev_08)를 줄인다'},
-  'U5-1':{t:'요양정보와 주문 상품 연결', prob:'사업소가 조회 결과 표와 주문 목록을 눈으로 대조해야 한다', prop:'조회 후 급여불가 품목 행에 "요양정보상 급여불가 품목입니다" + 본인부담률을 조회 결과(감경 6%)로 다시 계산', why:'주문불가 사유를 주문하기 전에 화면에서 바로 발견한다'},
-  'U5-2':{t:'사용한도 초과 경고', prob:'수량이 판매가능 수를 넘어도 화면에서 알 수 없다', prop:'스텝퍼 아래 경고(막지는 않음)', why:'주문 후 급여 처리 문제를 예방한다 — 막을지 여부는 기획 확인 필요'},
+  'U5-2':{t:'판매가능 수량에서 + 비활성', prob:'수량이 판매가능 수를 넘어도 화면에서 알 수 없다', prop:'조회 후 수량이 판매가능 수에 닿으면 스텝퍼 [+] 비활성, 아래에 "판매가능 N개까지"', why:'주문 후 급여 처리 문제를 주문 전에 막는다'},
   'U5-3':{t:'개선안 삭제 확인 모달 생략', prob:'[복원]이 있는데도 "정말 삭제하시겠습니까?"를 한 번 더 묻는다', prop:'[삭제]를 누르면 바로 삭제 상태로', why:'되돌릴 수 있는 동작에 확인 모달은 과하다'},
   'U5-4':{t:'변경 사유 모달에 금액 변화', prob:'변경 목록만 있고 금액이 어떻게 바뀌는지 없다', prop:'"총 구입 금액 A → B / 본인부담금 a → b"', why:'수급자 동의에서 가장 중요한 정보다'},
   'U5-5':{t:'이탈 방지', prob:'(Q21 확정 시점 저장일 때) 변경한 채로 [주문목록]·뒤로가기를 누르면 변경이 사라진다', prop:'"변경한 내용이 저장되지 않습니다. 나가시겠습니까?" 확인', why:'실수로 작업을 잃지 않게 한다'},
+  'U8':{t:'비밀번호 보기', prob:'공인인증서 비밀번호를 입력할 때 친 글자를 확인할 수 없어 틀리기 쉽다', prop:'입력칸 오른쪽에 눈 모양 버튼 — 누르면 글자 보이기/숨기기 (지우기 X는 그대로)', why:'긴 인증서 비밀번호를 한 번에 맞게 입력하도록 돕는다'},
   'U6':{t:'문구·표기 교정', prob:'주문불가 문구가 \'본인부담율 및 주문가능\'으로 표준 표기(본인부담률·주문 가능)와 다르고, 변경 사유 안내 문구가 기획서 화면과 설명에서 서로 다르다', prop:'\'본인부담률 및 주문 가능 품목\'으로 교정, 사유 입력 안내는 "변경 사유를 입력해 주세요. 수급자에게 안내되는 문구이니 신중하게 적어주세요."로 통일', why:'같은 용어를 화면마다 다르게 쓰면 신뢰가 떨어진다'},
   'U7':{t:'최초 주문 / 변경 주문 구분 방식', prob:'\'최초 주문\' 박스와 \'변경 주문\' 목록으로 같은 상품 목록을 두 번 보여주고, 무엇이 바뀌었는지 보려면 위아래를 오가며 비교해야 한다', prop:'목록은 하나만. 위에 변경 요약 바("고객 요청에서 N건 변경됨 · 변경 n · 삭제 n · 추가 n") + [고객 요청 원본 보기]로 접어 둔 원본 표, 섹션 오른쪽에 [최초 주문으로 되돌리기]. 변경이 없으면 현행과 같음. 모바일은 원본을 바텀시트로', why:'비교 대상(원본)은 필요할 때만 펼치고, 변경 내용은 행 안에서 바로 읽게 해 화면 길이와 비교 거리를 줄인다'},
   'U5-6':{t:'주문취소 사유 전체 보기', prob:'주문 후 취소의 사유가 한 줄 말줄임(K4)', prop:'말줄임 사유에 DS 팝오버(PC 호버) / 바텀시트(모바일)', why:'\'확인 필요\' 항목에 대한 제안안'}
@@ -796,7 +806,6 @@ var CUR = {
     {id:'A5',t:'모든 행에 \'주문확인중\' 반복',d:'주문 전에는 정보 가치 없음',shot:'dev-02-confirming-added.jpg',x:17.5,y:56.3,plan:''},
     {id:'A4',t:'\'추가상품\'이 상태칩 자리에 같은 초록',d:'상태와 변경 유형이 같은 모양. DS Status chip-Order의 \'추가상품\'은 회색(Neutral)',shot:'dev-02-confirming-added.jpg',x:17,y:78.6,plan:'scenario=4'},
     {id:'B3',t:'수량은 스텝퍼 후 [변경]을 눌러야 반영',d:'미반영 체크 없음 — 바꾼 줄 알고 그대로 주문될 수 있음',shot:'dev-02-confirming-added.jpg',x:57.6,y:59.4,plan:'scenario=2'},
-    {id:'K2',k:'k',t:'부품: 유형(\'판매\') 미표시, 급여가 0원',d:'확인 필요',shot:'dev-02-confirming-added.jpg',x:84.5,y:80.3},
     {id:'A2',t:'옵션·수량 변경 후 행에 표시 없음',d:'수급자 요청분과 사업소 변경분 구분 불가',shot:'dev-02-confirming-added.jpg',plan:'scenario=2'},
     {id:'K1',k:'k',t:'옵션이 길면 \'| 수정 >\'이 다음 줄로',d:'확인 필요 — 구분선 \'|\'가 줄 앞에 남음',shot:'dev-05-option-label.jpg'},
     {id:'A3',t:'옵션 변경한 행이 목록 맨 아래로 이동',d:'추가 상품처럼 보이고 순서가 깨짐 (의도 여부 확인 필요)',shot:'dev-09-option-change-moves-down.jpg',plan:'scenario=1'},
@@ -826,7 +835,7 @@ var CUR = {
    상태
    ===================================================================== */
 var S = {
-  view:'plan', step:'confirming', example:'option', pin:null, shot:null, cancelVar:'before', ux:false, origOpen:false,
+  view:'plan', step:'confirming', bg:'none', example:'option', pin:null, shot:null, cancelVar:'before', ux:false, origOpen:false,
   lf:{period:'3개월', status:'전체', key:'전체', q:'', open:true, openSel:null, applied:{period:'3개월', status:'전체', key:'전체', q:''}},   /* 리스트 검색 */
   pol:null,   /* ② 현행 동작 */
   plan:null,  /* ③ 개선안 */
@@ -864,6 +873,9 @@ var ICON = {
   search:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4.5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   cal:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9H21M8 3V6M16 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   check:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5 9-10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  reset:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  eye:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>',
+  eyeOff:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3l18 18M10.6 5.1A10.9 10.9 0 0 1 12 5c6.5 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.2M6.6 6.6C3.8 8.4 2 12 2 12s3.5 7 10 7c1.9 0 3.5-.6 4.9-1.4M9.9 9.9a3 3 0 0 0 4.2 4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   ok:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#166534"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 };
 function won(n){ return n.toLocaleString('ko-KR') + '원'; }
@@ -894,33 +906,36 @@ function syncControls(){
   document.body.classList.toggle('v-plan', S.view === 'plan');
   document.body.classList.toggle('v-cur', S.view === 'current');
   document.body.classList.toggle('ux-on', planUx());
-  document.querySelectorAll('#seg-ux button').forEach(function(b){ b.classList.toggle('active', (b.getAttribute('data-ux') === '1') === S.ux); });
-  document.querySelectorAll('#seg-view button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-v') === S.view); });
+  var vk = S.view === 'plan' && S.ux ? 'ux' : S.view;
+  document.querySelectorAll('#seg-view button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-v') === vk); });
   document.querySelectorAll('#seg-step button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-s') === S.step); });
   document.querySelectorAll('#seg-example button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-e') === S.example); });
   document.querySelectorAll('#seg-cancel button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-c') === S.cancelVar); });
-  var showEx = S.view === 'policy' && S.step === 'confirming', showCancel = S.view !== 'current' && S.step === 'cancel';
+  var showEx = S.view === 'policy' && S.step === 'confirming', showCancel = S.view !== 'current' && S.step === 'cancel', showBg = planUx() && S.step === 'confirming';
+  document.getElementById('row-bg').style.display = showBg ? '' : 'none';
+  document.querySelectorAll('#seg-bg button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-bg') === S.bg); });
+  ['chg','del','add','all'].forEach(function(k){ document.body.classList.toggle('bg-'+k, S.bg === k); });
   document.getElementById('row-example').style.display = showEx ? '' : 'none';
   document.getElementById('row-cancel').style.display = showCancel ? '' : 'none';
   var m = [];
   if(S.view !== 'current' && S.step === 'confirming'){
     m = S.view === 'plan'
-      ? [['요양정보 조회','lookup'],['옵션 변경','optEdit'],['상품 추가','add'],['주문 변경 사유','changeReason'],['주문하기 확인','confirmNoChange'],['변경불가','dupNotAllowed'],['나가기 확인','leave'],['주문취소','cancel'],['주문불가','notAllowed']]
-      : [['요양정보 조회','lookup'],['옵션 수정','optEdit'],['상품 추가','add'],['상품 삭제','del'],['상품 삭제 사유','delReason'],['주문하기 확인','confirm'],['주문취소','cancel'],['주문불가','notAllowed']];
+      ? [['요양정보 조회','lookup'],['공인인증서','certDemo'],['옵션 변경','optEdit'],['상품 추가','add'],['주문 변경 사유','changeReason'],['주문하기 확인','confirmNoChange'],['변경불가','dupNotAllowed'],['나가기 확인','leave'],['주문취소','cancel'],['주문불가','notAllowed']]
+      : [['요양정보 조회','lookup'],['공인인증서','certDemo'],['옵션 수정','optEdit'],['상품 추가','add'],['상품 삭제','del'],['상품 삭제 사유','delReason'],['주문하기 확인','confirm'],['주문취소','cancel'],['주문불가','notAllowed']];
   } else if(S.view !== 'current' && S.step === 'received'){ m = [['주문취소','cancel']]; }
   else if(S.view !== 'current' && S.step === 'list'){ m = [['상태 선택 시트(모바일)','lfStatus'],['검색 시트(모바일)','lfSearch']]; }
   document.getElementById('modal-btns').innerHTML = m.map(function(x){ return '<button class="pop" onclick="openModal(\''+x[1]+'\',{demo:true})">'+x[0]+'</button>'; }).join('');
   document.getElementById('row-modal').style.display = m.length ? '' : 'none';
-  document.getElementById('ctx-wrap').style.display = (showEx || showCancel || m.length) ? '' : 'none';
+  document.getElementById('ctx-wrap').style.display = (showEx || showCancel || showBg || m.length) ? '' : 'none';
   updateNow(); updateLists();
 }
 function updateNow(){
   var el = document.getElementById('ctrl-now'); if(!el) return;
   var w = Math.round(document.getElementById('frame').getBoundingClientRect().width);
-  var vlabel = {current:'① 현행', policy:'② 화면 정책 적용', plan:'③ + 기획 개선안 (확인 중)'}[S.view];
+  var vlabel = S.view === 'plan' && S.ux ? '④ UI/UX 제안' : {current:'① 현행', policy:'② 화면 정책 적용', plan:'③ + 기획 개선안 (확인 중)'}[S.view];
   var step = STEP_LABEL[S.step] + (S.step === 'cancel' && S.view !== 'current' ? ' · ' + (S.cancelVar === 'after' ? '주문 후 취소' : '주문 전 취소') : '');
   el.innerHTML = '<span>지금 보는 화면</span><span class="tag '+(S.view==='plan'?'plan':(S.view==='current'?'cur':''))+'">'+vlabel+'</span>'+
-    (S.view === 'plan' ? '<span class="tag '+(S.ux?'':'cur')+'">'+(S.ux ? 'UX 제안 적용' : '기획서 원안')+'</span>' : '')+
+
     '<b>'+step+'</b><span>·</span><b>'+w+'px</b><span>'+(w > 1024 ? 'PC (1025px 이상)' : '모바일 (1024px 이하)')+'</span>';
 }
 
@@ -935,7 +950,8 @@ function render(){
   else {
     var planHere = S.view === 'plan' && (S.step === 'confirming' || (S.step === 'preparing' && S.plan.ordered));
     if(S.view === 'plan' && !planHere) h += planFallback();
-    if(planHere) h += '<div class="view-banner">'+ICON.info+'<span>개선안 — 기획 확인 중. 비주얼은 Figma 디자인 후 확정. Q 배지는 미결 항목 (2026.10 운영 건 IS-1276 · 정책 조항 아님)</span></div>';
+    if(planHere) h += S.ux ? '<div class="view-banner policy">'+ICON.info+'<span>UI/UX 제안 — ③ 기획 개선안 위에 UX 제안(U)을 적용한 화면. 정책 조항 아님, 비주얼 임시 · 배지는 위 \'배지\'에서 켜기</span></div>'
+                           : '<div class="view-banner">'+ICON.info+'<span>개선안 — 2026.10 기획서 원안(확인 중). 비주얼은 Figma 디자인 후 확정. Q 배지는 미결 항목 (운영 건 IS-1276 · 정책 조항 아님)</span></div>';
     h += renderDetail(planHere);
   }
   page.innerHTML = h;
@@ -1050,7 +1066,7 @@ function renderDetail(plan){
     '</div>');
   /* 수급자 정보 */
   var known = after || (conf && st.lookedUp);      /* 현행: 주문확인중은 요양정보 조회 전 성별·나이·요양인정번호 '-' (Figma 12030:9930) */
-  var lookup = conf ? ' <button class="mini-btn" onclick="openModal(\'lookup\')">조회</button>'+(st.lookedUp && uxOn() ? ' <span class="done-tag">조회완료</span><span class="done-at">'+st.lookupAt+'</span>'+u('U1')+(planUx() ? nn('N7') : '') : uMark('U1')) : (after ? ' <button class="mini-btn">조회</button>' : '');
+  var lookup = conf ? ' <button class="mini-btn" onclick="openModal(\'lookup\')">'+(st.lookedUp && uxOn() ? '재조회' : '조회')+'</button>'+(st.lookedUp && uxOn() ? ' <span class="lk-done">'+ICON.check.replace('width="24" height="24"','width="16" height="16"')+'조회 완료 · '+st.lookupAt+'</span>'+u('U1')+(planUx() ? nn('N7') : '') : uMark('U1')) : (after ? ' <button class="mini-btn">조회</button>' : '');
   h += sec('recipient','수급자 정보', st,
     '<div class="info-grid">'+
       tr('수급자', masked ? '홍*동 (-, -)' : (known ? '홍길동 (여, 80세)' : '홍길동 (-, -)'))+tr('요양인정번호', masked ? '- -' : (known ? 'L0000000000' : '-')+lookup)+
@@ -1059,7 +1075,7 @@ function renderDetail(plan){
     '<div class="notice">※ 보호자(수급자)의 주문요청 시점과 이로움에 주문 시점 사이에 수급자의 계약 조건이 변경될 수 있습니다. <u>주문 전, 반드시 요양정보를 다시 확인하시기 바랍니다.</u></div>');
   /* 주문상품 */
   h += '<div class="sec"><div class="sec-head"><div class="sec-title">주문상품</div>'+
-    (plan && conf && planUx() && planChanged() ? '<button class="text-btn" onclick="resetPlan(false)">최초 주문으로 되돌리기'+q('Q20')+'</button>' : '')+'</div>';
+    (plan && conf && planUx() && planChanged() ? '<button class="text-btn" onclick="resetPlan(false)">최초 주문으로 되돌리기 '+ICON.reset+q('Q20')+'</button>' : '')+'</div>';
   if(plan && conf) h += renderPlanProducts();
   else if(plan && step === 'preparing') h += renderFinal(st.finalItems, step, true);
   else if(conf) h += renderPolProducts();
@@ -1087,15 +1103,13 @@ function priceBox(it, onlyList){
     (onlyList ? '' : '<div class="price-row danger"><span class="label">본인부담금('+rateLabel()+')</span><span class="value">'+won(Math.round(a*rate()))+'</span></div>')+'</div>';
 }
 function thumb(it){ return '<div class="thumb">'+CATALOG[it.pid].img+'</div>'; }
-function lookupWarn(it){    /* U5-1 급여불가 품목 */
-  if(!cur().lookedUp || S.step !== 'confirming' || !uxOn()) return '';
-  var si = saleItem(CATALOG[it.pid].cat);
-  return si && si[3] === '급여불가' ? '<div class="warn-line">요양정보상 급여불가 품목입니다'+u('U5-1')+'</div>' : '';
+function maxQty(it){          /* U5-2 판매가능 수량 — 조회 후 ②·④ */
+  if(!cur().lookedUp || S.step !== 'confirming' || !uxOn()) return null;
+  var si = saleItem(CATALOG[it.pid].cat); return si && typeof si[3] === 'number' ? si[3] : null;
 }
-function qtyWarn(it, q){    /* U5-2 사용한도 초과 — 막지 않음 */
-  if(!cur().lookedUp || S.step !== 'confirming' || !uxOn()) return '';
-  var si = saleItem(CATALOG[it.pid].cat);
-  return si && typeof si[3] === 'number' && q > si[3] ? '<div class="warn-line sm">판매가능 '+si[3]+'개를 넘었습니다 '+note('기획 확인 필요')+u('U5-2')+'</div>' : '';
+function qtyWarn(it, q){
+  var mx = maxQty(it);
+  return mx !== null && q >= mx ? '<div class="qty-was">판매가능 '+mx+'개까지'+u('U5-2')+'</div>' : '';
 }
 
 /* 주문접수: 상태칩 · 상품명 · 판매 · 수량 N개 · 급여가(정가)만 */
@@ -1118,11 +1132,10 @@ function renderPolProducts(){
       (optStr(it).length > 14 ? note('줄바꿈 확인 필요') : '')+'</div>' : '';
     var notes = '';
     if(st.moved[it.uid]) notes += '<div class="row-note">'+note()+' 옵션 변경 후 이 행이 목록 맨 아래로 이동(현행 동작, 의도 여부 확인 중)</div>';
-    if(p.part) notes += '<div class="row-note">'+note()+' 부품: 급여가 0원 (현행은 유형도 미표시)</div>';
     return '<div class="prow" data-uid="'+it.uid+'"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips">'+chip+'</div>'+
-      '<div class="pname">'+p.name+'</div>'+opt+notes+lookupWarn(it)+'</div></div>'+
+      '<div class="pname">'+p.name+'</div>'+opt+notes+'</div></div>'+
       '<div class="ptype">구입</div>'+
-      '<div class="pqty"><span class="stepper"><button aria-label="수량 빼기" '+(it.pend<=1?'disabled':'')+' onclick="polPend('+it.uid+',-1)">'+ICON.minus+'</button><span>'+it.pend+'</span><button aria-label="수량 더하기" onclick="polPend('+it.uid+',1)">'+ICON.plus+'</button></span>'+
+      '<div class="pqty"><span class="stepper"><button aria-label="수량 빼기" '+(it.pend<=1?'disabled':'')+' onclick="polPend('+it.uid+',-1)">'+ICON.minus+'</button><span>'+it.pend+'</span><button aria-label="수량 더하기" '+(maxQty(it) !== null && it.pend >= maxQty(it) ? 'disabled' : '')+' onclick="polPend('+it.uid+',1)">'+ICON.plus+'</button></span>'+
         '<button class="btn btn-sm btn-gray" onclick="polQty('+it.uid+')">변경</button>'+qtyWarn(it, it.pend)+'</div>'+
       priceBox(it)+
       '<div class="pact"><button class="btn btn-sm btn-gray" onclick="openModal(\'del\',{uid:'+it.uid+'})">삭제</button></div></div>';
@@ -1133,7 +1146,7 @@ function renderPolProducts(){
 function totalBar(items, label, extra, onlyList){
   var sum = 0; items.forEach(function(it){ if(!it.deleted) sum += amount(it); });
   return '<div class="total-bar"><div class="ttl">'+label+(extra||'')+'</div><div class="rows"><div class="row"><span class="label">급여가(정가)</span><span class="value">'+won(sum)+'</span></div>'+
-    (onlyList ? '' : '<div class="row danger"><span class="label">본인부담금('+rateLabel()+')'+(S.step === 'confirming' && cur().lookedUp ? (uxOn() ? u('U5-1') : uMark('U5-1')) : '')+'</span><span class="value">'+won(Math.round(sum*rate()))+'</span></div>')+'</div></div>';
+    (onlyList ? '' : '<div class="row danger"><span class="label">본인부담금('+rateLabel()+')</span><span class="value">'+won(Math.round(sum*rate()))+'</span></div>')+'</div></div>';
 }
 /* 주문취소 — 주문 전 취소 / 주문 후 취소 (현행: Figma 12032:10031) */
 function renderCancel(afterOrder){
@@ -1203,14 +1216,14 @@ function renderPlanProducts(){
       : optPlan(it);
     var opt = p.opts.length ? '<div class="popt">'+optTxt+q('Q9')+(optChanged ? q('Q17') : '')+'<button class="text-btn" '+(lock?'disabled':'')+' onclick="openModal(\'optEdit\',{uid:'+it.uid+'})">변경 '+ICON.right+'</button></div>' : '';
     var qtyCtl = p.rental ? '<span class="lbl">수량</span> <b>1개</b>' :
-      '<span class="stepper"><button aria-label="수량 빼기" '+(lock||it.qty<=1?'disabled':'')+' onclick="planQty('+it.uid+',-1)">'+ICON.minus+'</button><span>'+it.qty+'</span><button aria-label="수량 더하기" '+(lock?'disabled':'')+' onclick="planQty('+it.uid+',1)">'+ICON.plus+'</button></span>';
+      '<span class="stepper"><button aria-label="수량 빼기" '+(lock||it.qty<=1?'disabled':'')+' onclick="planQty('+it.uid+',-1)">'+ICON.minus+'</button><span>'+it.qty+'</span><button aria-label="수량 더하기" '+(lock || (ux && maxQty(it) !== null && it.qty >= maxQty(it)) ? 'disabled' : '')+' onclick="planQty('+it.uid+',1)">'+ICON.plus+'</button></span>';
     var act = del ? '<button class="btn btn-sm btn-gray" onclick="planRestore('+it.uid+')">복원'+q('Q2')+'</button>'
                   : (ux ? '<button class="btn btn-sm btn-gray" onclick="planDeleteNow('+it.uid+')">삭제</button>'+u('U5-3')+(it === st.items.filter(function(x){ return !x.deleted; })[0] ? nn('N4') : '')
                         : '<button class="btn btn-sm btn-gray" onclick="openModal(\'del\',{uid:'+it.uid+'})">삭제</button>'+(it === st.items.filter(function(x){ return !x.deleted; })[0] ? uMark('U5-3') : ''));
     var firstChg = ux && ps && st.items.filter(function(x){ return planState(x); })[0] === it;
     return '<div class="prow '+ps+'" data-uid="'+it.uid+'"><div class="prow-main">'+thumb(it)+'<div class="pinfo">'+
       (ux && ps ? '<div class="pchips"><span class="chip sm c-k-'+ps+'">'+KLBL[ps]+'</span>'+(firstChg ? nn('N2')+nn('N3') : '')+'</div>' : '')+
-      '<div class="pname">'+p.name+'</div>'+opt+(diff ? '<div class="diff-line">'+diff+'</div>' : '')+(ps==='del'?'<div class="row-note">'+q('Q3')+'</div>':'')+(del || !ux ? '' : lookupWarn(it))+'</div></div>'+
+      '<div class="pname">'+p.name+'</div>'+opt+(diff ? '<div class="diff-line">'+diff+'</div>' : '')+(ps==='del'?'<div class="row-note">'+q('Q3')+'</div>':'')+''+'</div></div>'+
       '<div class="ptype">구입</div><div class="pqty">'+qtyCtl+qtyWas+(del || !ux ? '' : qtyWarn(it, it.qty))+'</div>'+priceBox(it)+'<div class="pact">'+act+'</div></div>';
   }).join('')+'</div>';
   h += '<div class="add-row"><button class="text-btn" style="font-size:18px" onclick="openModal(\'add\')">상품추가 '+ICON.plus+'</button></div>';
@@ -1396,6 +1409,7 @@ function showToast(msg){
    ===================================================================== */
 function openModal(type, data){
   data = data || {};
+  if(type === 'certDemo'){ openModal('lookup'); S.modal2 = {type:'certPw', data:{}, pw:''}; drawModal2(); return; }
   var st = cur();
   if(data.demo && (type === 'optEdit' || type === 'del')){
     var cand = st.items.filter(function(it){ return !it.deleted && (type === 'del' || CATALOG[it.pid].opts.length); })[0];
@@ -1408,6 +1422,7 @@ function openModal(type, data){
     p.opts.forEach(function(o,i){ m.sel[o.k] = it.opt[i]; });     /* ③ 7 · U2: 현재 옵션이 선택된 상태로 열림(현행은 빈 상태 — ① A6) */
   }
   if(type === 'cancel') m.sel['취소 사유'] = null;
+  if(type === 'add' && uxOn()) m.showAll = true;      /* U4: 열자마자 목록(최대 5개) — 모달이 작아 목록이 안 보이던 문제 */
   if(type === 'lfStatus') m.sel.status = S.lf.applied.status;
   if(type === 'lfSearch'){ m.period = S.lf.applied.period; m.sel['주문 진행상태'] = S.lf.applied.status; m.text = S.lf.applied.q; }
   S.modal = m; drawModal();
@@ -1439,21 +1454,25 @@ function modalSpec(){
     var ready = !same && p.opts.every(function(o){ return m.sel[o.k]; });
     acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" '+(ready?'':'disabled')+' onclick="applyOpt()">확인</button>';
   } else if(t === 'add'){
-    sheet = true; title = '상품 추가';
+    sheet = true; title = '상품 추가'; if(uxOn()) cls = 'lg';
     var qq = m.query.toLowerCase();
     var res = Object.keys(CATALOG).filter(function(k){ return !qq || CATALOG[k].name.toLowerCase().indexOf(qq) >= 0 || k.indexOf(qq) >= 0; }).slice(0, 5);
     var inList = function(k){ return st.items.some(function(x){ return x.pid === k && !x.deleted; }); };
+    var noBen = function(k){ var si = st.lookedUp && saleItem(CATALOG[k].cat); return !!(si && si[3] === '급여불가'); };   /* 현행: 조회 결과 급여불가 품목은 선택 불가 */
+    var anyNo = res.some(noBen);
     var U4 = uxOn(), showRes = !m.pick && (m.query || (U4 && m.showAll));
     body = '<div class="field"><label for="add-q">상품명'+(U4 ? u('U4') : uMark('U4'))+'</label><div style="position:relative"><input id="add-q" class="input" type="search" placeholder="'+(U4 ? '상품명 또는 상품코드 (예: 양말, 보나수)' : '상품명을 입력하세요')+'" enterkeyhint="search" value="'+esc(m.pick ? CATALOG[m.pick].name : m.query)+'" oninput="addQuery(this.value)" onfocus="this.select();'+(U4 ? 'if(!S.modal.showAll){S.modal.showAll=true;drawModal(true);}' : '')+'" style="padding-right:48px">'+
       '<button class="modal-close" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);margin:0" aria-label="검색" onclick="document.activeElement.blur()">'+ICON.search+'</button></div>'+
       (showRes ? '<div class="opt-panel res-panel">'+(res.length ? res.map(function(k){ var c = CATALOG[k];
         var meta = [won(c.price), c.opts.length ? '옵션 있음' : '옵션 없음'];
-        if(!U4) return '<button class="opt-row" '+(c.soldout?'disabled':'')+' onclick="addPick(\''+k+'\')"><span>'+c.name+(c.soldout?' (일시품절)':'')+'</span></button>';
-        return '<button class="opt-row res-row" '+(c.soldout?'disabled':'')+' onclick="addPick(\''+k+'\')"><span class="rn">'+c.name+'</span><span class="rm">'+meta.join(' · ')+
-          (c.soldout ? ' · <b class="r-out">일시품절</b>' : '')+(inList(k) ? ' · <b class="r-in">주문 목록에 있음</b>' : '')+'</span></button>'; }).join('')
+        var off = c.soldout || noBen(k);
+        if(!U4) return '<button class="opt-row" '+(off?'disabled':'')+' onclick="addPick(\''+k+'\')"><span>'+c.name+(c.soldout?' (일시품절)':'')+(noBen(k)?' (급여불가)':'')+'</span></button>';
+        return '<button class="opt-row res-row" '+(off?'disabled':'')+' onclick="addPick(\''+k+'\')"><span class="rn">'+c.name+'</span><span class="rm">'+meta.join(' · ')+
+          (c.soldout ? ' · <b class="r-out">일시품절</b>' : '')+(noBen(k) ? ' · <b class="r-out">급여불가</b>' : '')+(inList(k) ? ' · <b class="r-in">주문 목록에 있음</b>' : '')+'</span></button>'; }).join('')
         : '<div class="opt-row" style="cursor:default">'+(U4 ? '검색 결과가 없습니다. 상품명을 다시 확인해 주세요.' : '검색 결과가 없습니다.')+'</div>')+'</div>' : '')+'</div>';
     if(m.pick) body += CATALOG[m.pick].opts.map(function(o){ return selectField(o.k, o.k, o.v); }).join('');
-    body += '<div class="m-note">급여상품(판매·대여)·부품만 노출 · 품절·일시품절은 선택 불가 · 같은 상품을 다른 옵션으로 여러 번 추가 가능</div>';
+    body += '<div class="m-note">급여상품(판매·대여)·부품만 노출 · 품절·일시품절은 선택 불가 · 같은 상품을 다른 옵션으로 여러 번 추가 가능'+
+      (anyNo && showRes ? '<br>요양정보상 급여불가 품목은 선택 불가 '+note('비활성인지 미노출인지 확인 필요') : '')+'</div>';
     acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="applyAdd()">상품 추가</button>';
   } else if(t === 'del'){
     var it2 = findItem(st, m.data.uid), p2 = CATALOG[it2.pid];
@@ -1667,10 +1686,11 @@ function drawModal2(){
   if(!ov){ ov = document.createElement('div'); ov.id = 'overlay2'; page.appendChild(ov); }
   var title, body, acts, sheet = false;
   if(m.type === 'certPw'){
-    sheet = isMO(); title = '공인인증서 비밀번호';
+    sheet = false; title = '공인인증서 비밀번호';   /* 현행: 모바일도 모달 */
     body = '<div>요양정보조회를 이용하시려면<br>공인인증서 비밀번호를 입력하셔야합니다.</div>'+
-      '<div class="pw-wrap"><input id="pw" class="input" type="password" autocomplete="off" placeholder="비밀번호" value="'+esc(m.pw)+'" oninput="S.modal2.pw=this.value;pwSync()" enterkeyhint="done">'+
-      '<button class="pw-x" id="pw-x" aria-label="지우기" '+(m.pw?'':'hidden')+' onclick="S.modal2.pw=\'\';var i=document.getElementById(\'pw\');i.value=\'\';pwSync();i.focus()">'+ICON.close+'</button></div>';
+      '<div class="pw-wrap'+(uxOn() ? ' has-eye' : '')+'"><input id="pw" class="input" type="'+(m.show ? 'text' : 'password')+'" autocomplete="off" placeholder="비밀번호" value="'+esc(m.pw)+'" oninput="S.modal2.pw=this.value;pwSync()" enterkeyhint="done">'+
+      '<button class="pw-x" id="pw-x" aria-label="지우기" '+(m.pw?'':'hidden')+' onclick="S.modal2.pw=\'\';var i=document.getElementById(\'pw\');i.value=\'\';pwSync();i.focus()">'+ICON.close+'</button>'+
+      (uxOn() ? '<button class="pw-eye" aria-label="'+(m.show?'비밀번호 숨기기':'비밀번호 보기')+'" onclick="S.modal2.show=!S.modal2.show;drawModal2()">'+(m.show ? ICON.eyeOff : ICON.eye)+'</button>' : '')+'</div>'+(uxOn() ? '<div class="m-note">'+u('U8')+'</div>' : '');
     acts = '<button class="btn btn-gray" onclick="closeModal2()">취소</button><button class="btn btn-filled" id="pw-ok" '+(m.pw?'':'disabled')+' onclick="closeModal2();S.modal.result=true;drawModal();var r=document.getElementById(\'lk-res\');if(r)r.scrollIntoView({block:\'start\',behavior:\'smooth\'})">확인</button>';
   } else if(m.type === 'nInfo'){
     title = '디자인 노트 ' + m.data.n + ' · ' + NINFO[m.data.n].t; body = nBody(m.data.n);
@@ -1755,7 +1775,10 @@ function runScenario(n, instant){
    이벤트 · 폭 프리셋 · URL
    ===================================================================== */
 document.querySelectorAll('#seg-view button').forEach(function(b){ b.addEventListener('click', function(){
-  S.view = b.getAttribute('data-v'); S.pin = null; S.shot = null; closeModal(); render(); }); });
+  var v = b.getAttribute('data-v'), wasUx = S.view === 'plan' && S.ux;
+  if(v === 'ux'){ S.view = 'plan'; S.ux = true; if(!wasUx) setBadges(false); }      /* ④ = ③ + UX 제안, 배지 기본 OFF */
+  else { if(v === 'plan' && wasUx) setBadges(true); S.view = v; S.ux = false; }
+  S.pin = null; S.shot = null; closeModal(); render(); }); });
 document.querySelectorAll('#seg-step button').forEach(function(b){ b.addEventListener('click', function(){
   S.step = b.getAttribute('data-s'); S.pin = null; S.shot = null; closeModal(); render(); }); });
 document.querySelectorAll('#seg-example button').forEach(function(b){ b.addEventListener('click', function(){
@@ -1769,7 +1792,7 @@ document.getElementById('n-toggle').addEventListener('change', function(){ docum
 document.getElementById('nlist').innerHTML = Object.keys(NINFO).map(function(k){ var x = NINFO[k];
   return '<button class="qitem nitem" onclick="openN(\''+k+'\')"><b>'+k+'</b><span>'+x.t+'<small>'+(x.code.length ? x.code.join('·')+' → ' : '')+x.dec+'</small></span></button>'; }).join('');
 function setBadges(on){ ['q','u','n'].forEach(function(k){ document.body.classList.toggle(k+'-on', on); document.getElementById(k+'-toggle').checked = on; }); }
-document.querySelectorAll('#seg-ux button').forEach(function(b){ b.addEventListener('click', function(){ S.ux = b.getAttribute('data-ux') === '1'; setBadges(!S.ux); closeModal(); render(); }); });   /* UX 제안 화면은 배지 기본 OFF */
+   /* UX 제안 화면은 배지 기본 OFF */
 function updateLists(){
   var plan = S.view === 'plan';
   document.getElementById('lists-sum').textContent = (plan ? '미결 Q '+Object.keys(QINFO).length+' · ' : '')+'UX 제안 U '+Object.keys(UINFO).length;
@@ -1780,9 +1803,10 @@ function updateLists(){
   document.querySelector('.switch.n').style.display = planUx() ? '' : 'none';
   var lg = document.getElementById('legend-g');
   lg.innerHTML = '<span class="lg-t">행 구분</span>'+(S.ux
-    ? '<span class="bar bar-chg"></span>변경 <span class="bar bar-del"></span>삭제 <span class="bar bar-add"></span>추가<span class="lg-n">왼쪽 막대 + 행 뱃지 + 연한 배경 — 색은 임시, 토큰은 Q11</span>'+q('Q11')+u('U3')
+    ? '<span class="chip sm c-k-chg">변경</span><span class="chip sm c-k-del">삭제</span><span class="chip sm c-k-add">추가</span><span class="lg-n">행 앞 텍스트 뱃지로 구분 · 배경은 위 \'행 배경\'에서 켜기(색은 임시, Q11)</span>'+q('Q11')+u('U3')
     : '<span class="sw sw-chg"></span>변경 <span class="sw sw-del"></span>삭제 <span class="sw sw-add"></span>추가<span class="lg-n">배경색만 — 기획서 원안(연두·분홍·하늘)</span>'+q('Q11')+u('U3'));
 }
+document.querySelectorAll('#seg-bg button').forEach(function(b){ b.addEventListener('click', function(){ S.bg = b.getAttribute('data-bg'); syncControls(); }); });
 document.querySelectorAll('#seg-cancel button').forEach(function(b){ b.addEventListener('click', function(){ S.cancelVar = b.getAttribute('data-c'); render(); }); });
 document.getElementById('q-toggle').addEventListener('change', function(){ document.body.classList.toggle('q-on', this.checked); });
 
@@ -1804,11 +1828,13 @@ if(window.ResizeObserver) new ResizeObserver(updateReadout).observe(frameEl);
 (function init(){
   var p = new URLSearchParams(location.search);
   if(['current','policy','plan'].indexOf(p.get('view')) >= 0) S.view = p.get('view');
+  if(p.get('view') === 'ux'){ S.view = 'plan'; S.ux = true; setBadges(p.get('badges') === '1'); }
   if(STEPS.indexOf(p.get('step')) >= 0) S.step = p.get('step');
   if(p.get('pin')) S.pin = p.get('pin');
   if(p.get('cv') === 'after') S.cancelVar = 'after';
   if(p.get('ux') === '1'){ S.ux = true; setBadges(p.get('badges') === '1'); }
   if(p.get('orig') === '1') S.origOpen = true;
+  if(['chg','del','add','all'].indexOf(p.get('bg')) >= 0) S.bg = p.get('bg');
   if(p.get('looked')){ cur().lookedUp = true; cur().lookupAt = '2026-10-07 10:42'; }
   setWidth(p.get('w') || 1025);
   render(); updateReadout();
