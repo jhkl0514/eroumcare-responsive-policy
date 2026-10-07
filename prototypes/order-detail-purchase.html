@@ -1806,7 +1806,15 @@ function updateLists(){
     ? '<span class="chip sm c-k-chg">변경</span><span class="chip sm c-k-del">삭제</span><span class="chip sm c-k-add">추가</span><span class="lg-n">행 앞 텍스트 뱃지로 구분 · 배경은 위 \'행 배경\'에서 켜기(색은 임시, Q11)</span>'+q('Q11')+u('U3')
     : '<span class="sw sw-chg"></span>변경 <span class="sw sw-del"></span>삭제 <span class="sw sw-add"></span>추가<span class="lg-n">배경색만 — 기획서 원안(연두·분홍·하늘)</span>'+q('Q11')+u('U3'));
 }
-document.querySelectorAll('#seg-bg button').forEach(function(b){ b.addEventListener('click', function(){ S.bg = b.getAttribute('data-bg'); syncControls(); }); });
+document.querySelectorAll('#seg-bg button').forEach(function(b){ b.addEventListener('click', function(){
+  S.bg = b.getAttribute('data-bg');
+  if(S.bg !== 'none' && planUx() && S.step === 'confirming' && !planChanged()){      /* 변경된 행이 없으면 칠할 행이 없어 반응이 없어 보임 → 예시 변경 4건 적용 */
+    [1,2,3,4].forEach(function(n){ runScenario(n, true); });
+    showToast('변경 예시 4건(옵션·수량·삭제·추가)을 적용했습니다');
+  }
+  syncControls();
+  var r = document.querySelector('#page .prow.chg, #page .prow.del, #page .prow.add'); if(r && S.bg !== 'none') r.scrollIntoView({block:'center', behavior:'smooth'});
+}); });
 document.querySelectorAll('#seg-cancel button').forEach(function(b){ b.addEventListener('click', function(){ S.cancelVar = b.getAttribute('data-c'); render(); }); });
 document.getElementById('q-toggle').addEventListener('change', function(){ document.body.classList.toggle('q-on', this.checked); });
 
