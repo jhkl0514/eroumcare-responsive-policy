@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>주문요청관리 상세 — 구입</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg?v=7">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png?v=7">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png?v=5">
+<style>
+:root{
+  --bg:#f4f5f7; --card:#ffffff; --tertiary:#f5f5f5; --secondary-bg:#fafafa; --disabled-bg:#eee;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999; --text-disabled:#bdbdbd; --text-danger:#e53935;
+  --border-primary:#bdbdbd; --border-secondary:#eee; --border-tertiary:#e0e0e0; --border-dark:#616161; --border-active:#333;
+  --brand:#323da3; --brand-subtle:#e3e5f5; --tint:#eff1fd; --btn-text:#555;
+  /* 상태칩 — DS Status chip-Order(배경·테두리) + 5장 같은 단계 글자색 */
+  --info-bg:#eff6ff; --info-border:#dbeafe; --info-text:#1e40af;           /* Info: 주문접수 */
+  --success-bg:#e8f5e9; --success-border:#c8e6c9; --success-text:#166534;  /* Success: 주문확인중 */
+  --caution-bg:#fff8e1; --caution-border:#ffb300; --caution-text:#ff8f00;  /* Caution: 상품준비·취소요청 */
+  --brandsub-bg:#f2fde4; --brandsub-border:#c6f68d; --brandsub-text:#09af00; /* BrandSub: 출고중·출고완료 */
+  --default-bg:#e3e5f5; --default-border:#ced2f4; --default-text:#141e76;  /* Default: 배송완료 */
+  --danger-bg:#ffebee; --danger-border:#ffcdd2; --danger-text:#c62828;     /* Error: 주문취소 */
+  --neutral-text:#555555;                                                   /* Neutral: 추가상품(DS 흰 배경 + #bdbdbd) */
+  /* 확인 필요 · Q 배지 — 4-3 프로토타입 .bug-note 값 */
+  --note-bg:#fff7e6; --note-border:#ffd699; --note-text:#b45309;
+  --shadow:0 1px 2px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.05);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);
+  font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+button{font-family:inherit;}
+.proto-note{max-width:960px;margin:16px auto 12px;background:var(--card);border:1px solid var(--border-secondary);
+  border-radius:10px;padding:12px 14px;font-size:14px;color:var(--text-secondary);line-height:1.6;}
+.proto-note b{color:var(--text-primary);}
+
+/* ---------- 상단 컨트롤 (보기 · 단계 · 폭 + 상황별 옵션) ---------- */
+.ctrl-card{max-width:960px;margin:0 auto 16px;background:var(--card);border:1px solid var(--border-secondary);border-radius:12px;
+  box-shadow:var(--shadow);overflow:hidden;}
+.ctrl-now{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 16px;background:var(--secondary-bg);
+  border-bottom:1px solid var(--border-secondary);font-size:14px;color:var(--text-secondary);}
+.ctrl-now b{color:var(--text-primary);}
+.ctrl-now .tag{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:700;
+  background:var(--tint);color:var(--brand);}
+.ctrl-now .tag.plan{background:var(--note-bg);color:var(--note-text);}
+.ctrl-now .tag.cur{background:var(--tertiary);color:var(--neutral-text);}
+.ctrl-body{padding:8px 16px 12px;}
+.ctrl-row{display:grid;grid-template-columns:64px minmax(0,1fr);align-items:center;gap:12px;padding:10px 0;}
+.ctrl-row > :last-child{min-width:0;}
+.ctrl-row + .ctrl-row{border-top:1px dashed var(--border-secondary);}
+.ctrl-label{font-size:14px;font-weight:700;color:var(--text-primary);}
+.ctrl-sub{font-size:12px;font-weight:500;color:var(--text-tertiary);display:block;}
+/* 연결된 세그먼트 */
+.segc{display:inline-flex;flex-wrap:wrap;border:1px solid var(--border-primary);border-radius:8px;overflow:hidden;background:var(--card);}
+.segc button{border:none;border-right:1px solid var(--border-primary);background:none;cursor:pointer;padding:8px 14px;font-size:14px;
+  color:var(--text-secondary);display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;min-height:40px;justify-content:center;}
+.segc button:last-child{border-right:none;}
+.segc button b{font-size:14px;font-weight:700;color:var(--text-primary);}
+.segc button small{font-size:12px;color:var(--text-tertiary);}
+.segc button:hover{background:var(--secondary-bg);}
+.segc button.active{background:var(--brand);}
+.segc button.active b,.segc button.active small{color:#fff;}
+.segc button.plan.active{background:var(--note-text);}
+.segc.sm button{padding:6px 12px;min-height:36px;align-items:center;}
+/* 단계: 흐름(›) + 분기(주문취소) */
+.flow-ui{display:flex;align-items:center;flex-wrap:wrap;gap:4px;}
+.flow-ui button{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px 0 6px;border-radius:999px;border:1px solid var(--border-primary);
+  background:var(--card);cursor:pointer;font-size:14px;color:var(--text-secondary);white-space:nowrap;}
+.flow-ui button i{font-style:normal;width:24px;height:24px;border-radius:999px;background:var(--tertiary);color:var(--text-secondary);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+.flow-ui button.active{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:700;}
+.flow-ui button.active i{background:#fff;color:var(--brand);}
+.flow-ui button.cancel i{background:var(--danger-bg);color:var(--danger-text);}
+.flow-ui button.cancel.active{background:var(--danger-text);border-color:var(--danger-text);}
+.flow-ui button.cancel.active i{background:#fff;color:var(--danger-text);}
+.flow-ui .sx{color:var(--text-disabled);display:flex;}
+.flow-ui .branch{font-size:12px;color:var(--text-tertiary);margin:0 4px 0 8px;padding-left:12px;border-left:1px solid var(--border-tertiary);}
+/* 폭: 모바일 / PC 묶음 */
+.wgroups{display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+.wg{display:flex;align-items:center;gap:8px;}
+.wg-l{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--text-tertiary);}
+.preset-btn{font-size:14px;}
+.segc button.preset-btn.active{background:var(--brand);color:#fff;font-weight:700;}
+/* 상황별 옵션 */
+.ctx-wrap{border-top:1px solid var(--border-secondary);background:var(--secondary-bg);padding:4px 16px;}
+.ctx-wrap:empty{display:none;}
+.ctx-wrap .ctrl-row + .ctrl-row{border-top:1px dashed var(--border-tertiary);}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chips button{height:32px;padding:0 12px;border-radius:999px;border:1px solid var(--border-tertiary);background:var(--card);cursor:pointer;
+  font-size:14px;color:var(--text-secondary);white-space:nowrap;}
+.chips button.active{border-color:var(--border-active);color:var(--text-primary);font-weight:700;}
+.chips button.pop{display:inline-flex;align-items:center;gap:4px;}
+.scen{border-top:1px solid var(--note-border);background:var(--note-bg);padding:12px 16px;display:none;flex-direction:column;gap:10px;}
+body.v-plan .scen{display:flex;}
+.scen-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:14px;font-weight:700;color:var(--note-text);}
+.scen .chips button{border-color:var(--note-border);color:var(--note-text);background:var(--card);}
+.scen .chips button.reset{background:none;}
+.switch{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--note-text);cursor:pointer;}
+.switch input{width:20px;height:20px;accent-color:var(--note-text);margin:0;}
+
+#frame-outer{overflow-x:auto;padding-bottom:40px;}
+#frame{width:100%;max-width:1440px;margin:0 auto;transition:width .2s;}
+#frame-chrome{border:1px dashed var(--border-primary);border-radius:10px;padding:12px;background:var(--bg);}
+#page{background:var(--card);min-height:600px;position:relative;overflow:hidden;}
+@container pf (min-width:1024.02px){
+  #page{max-width:1060px;margin:0 auto;box-shadow:var(--shadow);border-radius:8px;}
+}
+
+/* ---------- 공통 배지 ---------- */
+.note-badge,.q-badge{display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:4px;font-size:12px;font-weight:700;
+  background:var(--note-bg);border:1px solid var(--note-border);color:var(--note-text);white-space:nowrap;vertical-align:middle;}
+.q-badge{border-radius:999px;margin-left:4px;cursor:pointer;}
+.q-badge:hover{background:var(--note-border);}
+.q-badge.q-hl{outline:2px solid var(--note-text);outline-offset:2px;}
+.qbox{background:var(--secondary-bg);border-radius:4px;padding:12px 16px;font-size:16px;display:flex;flex-direction:column;gap:4px;}
+.qbox.tmp{background:var(--note-bg);}
+.qbox .qk{font-size:14px;font-weight:700;color:var(--text-secondary);}
+.qbox.tmp .qk{color:var(--note-text);}
+.qgrid{display:grid;grid-template-columns:1fr;gap:8px;}
+.qlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px;margin-top:8px;}
+.qitem{display:flex;gap:8px;align-items:flex-start;text-align:left;background:var(--card);border:1px solid var(--note-border);border-radius:6px;padding:8px 10px;cursor:pointer;font-family:inherit;}
+.qitem .qwho{font-style:normal;font-size:12px;color:var(--note-text);border:1px solid var(--note-border);border-radius:4px;padding:0 4px;margin-left:4px;white-space:nowrap;}
+.qitem b{flex-shrink:0;color:var(--note-text);font-size:12px;line-height:20px;}
+.qitem span{font-size:14px;color:var(--text-primary);}
+.qitem small{display:block;font-size:12px;color:var(--text-secondary);margin-top:2px;}
+details.qwrap summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--note-text);padding:2px 0;}
+body:not(.q-on) details.qwrap{display:none;}
+body:not(.q-on) .q-badge{display:none;}
+.view-banner{display:flex;gap:10px;align-items:flex-start;padding:12px 20px;font-size:14px;font-weight:600;line-height:1.5;
+  background:var(--note-bg);border-bottom:1px solid var(--note-border);color:var(--note-text);}
+.view-banner svg{flex-shrink:0;margin-top:1px;}
+.view-banner.policy{background:var(--tint);border-color:var(--brand-subtle);color:var(--brand);}
+
+/* ---------- 상태칩 (5장 · DS Status chip-Order) ---------- */
+.chip{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:600;
+  border:1px solid;white-space:nowrap;line-height:20px;}
+.chip.sm{height:24px;padding:0 8px;font-size:12px;font-weight:500;}
+.c-received{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text);}
+.c-confirming{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text);}
+.c-preparing,.c-cancelreq{background:var(--caution-bg);border-color:var(--caution-border);color:var(--caution-text);}
+.c-shipped{background:var(--brandsub-bg);border-color:var(--brandsub-border);color:var(--brandsub-text);}
+.c-delivered{background:var(--default-bg);border-color:var(--default-border);color:var(--default-text);}
+.c-cancel{background:var(--danger-bg);border-color:var(--danger-border);color:var(--danger-text);}
+.c-added{background:var(--card);border-color:var(--border-primary);color:var(--neutral-text);}
+
+/* ---------- 버튼 (3-4: SM 36 / MD 48, PC·모바일 같음) ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:4px;font-size:14px;font-weight:600;
+  cursor:pointer;border:1px solid transparent;height:48px;padding:0 20px;white-space:nowrap;}
+.btn-sm{height:36px;padding:0 16px;}
+.btn-outline{background:var(--card);color:var(--text-primary);border-color:var(--border-primary);}
+.btn-filled{background:var(--brand);color:#fff;}
+.btn-gray{background:var(--disabled-bg);color:var(--btn-text);}
+.btn:disabled{background:var(--disabled-bg);color:var(--text-disabled);border-color:transparent;cursor:default;}
+.text-btn{background:none;border:none;color:var(--brand);font-size:14px;font-weight:600;cursor:pointer;padding:6px 0;
+  display:inline-flex;align-items:center;gap:2px;}
+.text-btn:disabled{color:var(--text-disabled);cursor:default;}
+
+/* ---------- 상세: 타이틀 + 버튼 ---------- */
+.d-head{padding:20px 20px 0;}
+.d-title-row{display:flex;align-items:center;gap:4px;}
+.back-btn{width:48px;height:48px;margin-left:-14px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:var(--text-primary);}
+.d-title{font-size:20px;font-weight:700;}
+.breadcrumb{display:none;font-size:14px;color:var(--text-secondary);margin-top:8px;align-items:center;gap:4px;flex-wrap:wrap;}
+/* 모바일: 주문취소/주문하기는 타이틀 아래 한 줄, 폭을 나눠 가짐, MD 48 (3-4 예외 — 4-3·4-5) */
+.d-actions{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.d-actions .btns{display:flex;gap:8px;}
+.d-actions .btns .btn{flex:1;}
+.bubble{position:relative;align-self:stretch;background:var(--brandsub-bg);border:1px solid var(--border-dark);border-radius:8px;
+  padding:8px 12px;font-size:14px;line-height:1.5;}
+@container pf (min-width:1024.02px){
+  .d-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:32px 40px 0;}
+  .back-btn{display:none;}
+  .d-title{font-size:24px;}
+  .breadcrumb{display:flex;}
+  .d-actions{align-items:flex-end;margin-top:0;}
+  .d-actions .btns .btn{flex:0 0 auto;}
+  .bubble{align-self:flex-end;}
+}
+
+/* ---------- 섹션 ---------- */
+.sec{padding:24px 20px 0;}
+@container pf (min-width:1024.02px){ .sec{padding:32px 40px 0;} }
+.sec-head{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border-dark);padding-bottom:8px;}
+.sec-title{font-size:20px;font-weight:700;flex:1;}
+.acc-btn{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:var(--text-primary);margin-right:-8px;}
+.acc-btn svg{transition:transform .2s;}
+.sec.collapsed .acc-btn svg{transform:rotate(180deg);}
+@container pf (max-width:1024px){ .sec.collapsed .sec-body{display:none;} }
+@container pf (min-width:1024.02px){ .acc-btn{display:none;} }
+
+/* 읽기 전용 정보 표 (3-1 · 3-11: PC 2쌍/행, 모바일 1쌍/행) */
+.info-grid{display:grid;grid-template-columns:1fr;}
+@container pf (min-width:1024.02px){ .info-grid{grid-template-columns:1fr 1fr;} }
+.text-row{display:flex;align-items:stretch;min-height:52px;border-bottom:1px solid var(--border-tertiary);}
+.text-row .th{flex:1 0 0;max-width:128px;min-width:80px;background:var(--tertiary);display:flex;align-items:center;
+  padding:0 12px;font-size:14px;font-weight:600;}
+.text-row .td{flex:1 0 0;min-width:160px;padding:10px 12px;font-size:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.text-row .td a{color:var(--brand);}
+.mini-btn{background:var(--brand-subtle);color:var(--brand);font-size:14px;font-weight:600;border:none;
+  border-radius:4px;height:36px;padding:0 14px;cursor:pointer;}
+.mini-btn.done{background:var(--success-bg);color:var(--success-text);cursor:default;}
+.notice{font-size:14px;color:var(--text-secondary);line-height:1.6;padding:12px 0 0;}
+.notice u{color:var(--text-primary);}
+.plain-row{display:flex;padding:14px 0;border-bottom:1px solid var(--border-tertiary);font-size:16px;gap:4px;}
+.plain-row .th{width:125px;flex-shrink:0;font-weight:600;}
+.plain-row .td{flex:1;min-width:0;}
+
+/* ---------- 주문상품 행 ---------- */
+.prow{display:grid;gap:12px;padding:16px 0;border-top:1px solid var(--border-secondary);
+  grid-template-columns:auto minmax(0,1fr);
+  grid-template-areas:"main main" "type qty" "price price" "act act";transition:background .3s;}
+.prow:first-child{border-top:none;}
+.prow-main{grid-area:main;display:flex;gap:12px;align-items:flex-start;min-width:0;}
+.thumb{width:100px;height:100px;flex-shrink:0;border:1px solid var(--border-secondary);display:flex;align-items:center;
+  justify-content:center;text-align:center;font-size:14px;color:var(--text-tertiary);background:var(--card);padding:4px;}
+.pinfo{min-width:0;display:flex;flex-direction:column;gap:6px;}
+.pchips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.pname{font-size:18px;font-weight:600;word-break:keep-all;}
+.popt{font-size:16px;color:var(--text-secondary);display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;}
+.popt > span{white-space:nowrap;}
+.popt .opair{white-space:nowrap;}
+.popt .sep{color:var(--border-primary);}
+.popt .ok{color:var(--text-tertiary);}
+.popt .ov{color:var(--text-primary);font-weight:600;}
+.ptype{grid-area:type;font-size:14px;font-weight:600;align-self:center;}
+.pqty{grid-area:qty;display:flex;align-items:center;gap:8px;justify-content:flex-end;flex-wrap:wrap;}
+.pqty .lbl{font-size:14px;color:var(--text-secondary);}
+.stepper{display:inline-flex;border:1px solid var(--border-primary);border-radius:4px;height:36px;background:var(--card);}
+.stepper button{width:36px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-primary);}
+.stepper button:disabled{color:var(--text-disabled);cursor:default;}
+.stepper span{width:40px;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--border-primary);border-right:1px solid var(--border-primary);font-size:16px;}
+.pprice{grid-area:price;background:var(--secondary-bg);border-radius:4px;padding:8px 12px;}
+.price-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:14px;font-weight:600;gap:12px;}
+.price-row .label{color:var(--text-secondary);}
+.price-row .value{font-size:18px;}
+.price-row.danger .value{color:var(--text-danger);}
+.pact{grid-area:act;display:flex;justify-content:flex-end;gap:8px;}
+.pact:empty{display:none;}
+.row-note{font-size:14px;color:var(--note-text);display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+/* ③ 개선안 행 상태 — 5장 Success / Error / Info 배경만 사용 */
+.prow.chg{background:var(--caution-bg);}   /* U3 임시 — 토큰은 Q11 */
+.prow.del{background:var(--danger-bg);}
+.prow.add{background:var(--info-bg);}
+.prow.del .pname,.prow.del .pprice .value{text-decoration:line-through;color:var(--text-tertiary);}
+.prow.flash{background:var(--tint);}
+@container pf (max-width:1024px){ .prow.chg,.prow.del,.prow.add,.prow.flash{margin:0 -20px;padding-left:20px;padding-right:20px;} }
+@container pf (min-width:1024.02px){
+  .prow{grid-template-columns:minmax(0,1fr) 48px 150px 200px 104px;grid-template-areas:"main type qty price act";
+    align-items:center;padding:16px 8px;gap:16px;}
+  .pqty{flex-direction:column;align-items:center;justify-content:center;}
+  .pprice{background:none;padding:0;}
+  .pact{justify-content:center;}
+}
+.add-row{display:flex;justify-content:center;padding:12px 0;border-top:1px solid var(--border-secondary);}
+.total-bar{background:var(--tertiary);border-radius:4px;padding:12px 16px;display:flex;justify-content:space-between;
+  align-items:center;margin-top:16px;flex-wrap:wrap;gap:8px;}
+.total-bar .ttl{font-size:18px;font-weight:700;}
+.total-bar .rows{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.total-bar .row{display:flex;gap:10px;font-size:14px;align-items:center;}
+.total-bar .row .label{color:var(--text-secondary);}
+.total-bar .row .value{font-size:18px;font-weight:600;}
+.total-bar .row.danger .value{color:var(--text-danger);}
+@container pf (min-width:1024.02px){ .total-bar .rows{flex-direction:row;gap:32px;} }
+
+/* ③ 최초 주문 박스 · 변경 주문 */
+.orig-box{background:var(--secondary-bg);border-radius:4px;padding:12px 16px;margin-top:8px;}
+.orig-ttl{font-size:16px;font-weight:700;display:flex;align-items:center;margin-top:16px;}
+.orig-box .ttl{font-size:16px;font-weight:700;display:flex;align-items:center;}
+.orig-line{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding:6px 0;border-bottom:1px solid var(--border-secondary);}
+.orig-line:last-child{border-bottom:none;}
+.orig-line .amt{flex-shrink:0;font-weight:600;}
+.chg-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:20px;padding-bottom:8px;flex-wrap:wrap;}
+.chg-head .ttl{font-size:16px;font-weight:700;display:flex;align-items:center;}
+.hist{border:1px solid var(--border-primary);border-radius:4px;margin-top:16px;}
+.hist-head{display:flex;justify-content:space-between;align-items:center;width:100%;padding:12px 16px;background:var(--secondary-bg);
+  border:none;cursor:pointer;font-size:16px;font-weight:700;color:var(--text-primary);text-align:left;}
+.hist-body{padding:12px 16px;display:flex;flex-direction:column;gap:8px;font-size:14px;}
+.hist.closed .hist-body{display:none;}
+.hist.closed .hist-head svg{transform:rotate(180deg);}
+.chg-item{display:flex;gap:8px;align-items:flex-start;}
+.chg-item .what{display:flex;flex-direction:column;gap:2px;}
+.chg-item .sub{color:var(--text-secondary);}
+.chg-item .chip{flex-shrink:0;}
+.c-k-chg{background:var(--caution-bg);border-color:var(--caution-border);color:var(--caution-text);}
+.c-k-del{background:var(--danger-bg);border-color:var(--danger-border);color:var(--danger-text);}
+.c-k-add{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text);}
+
+/* 배송정보 수정 (3-2) */
+.dv-row{display:flex;flex-wrap:wrap;gap:4px;padding:14px 0;border-bottom:1px solid var(--border-tertiary);}
+.dv-label{width:125px;flex-shrink:0;font-size:16px;font-weight:600;padding-top:12px;}
+.dv-label .req{color:var(--text-danger);}
+.dv-content{flex:1 0 0;min-width:280px;display:flex;flex-direction:column;gap:6px;}
+@container pf (min-width:1024.02px){ .dv-content{max-width:480px;} }
+.input{width:100%;height:48px;border:1px solid var(--border-primary);border-radius:4px;padding:0 12px;font-size:16px;
+  font-family:inherit;background:var(--card);color:var(--text-primary);}
+.input:focus{outline:none;border:2px solid var(--brand);padding:0 11px;}
+.input[readonly]{background:var(--disabled-bg);border-color:var(--border-primary);}
+@container pf (min-width:1024.02px){ .input{height:40px;font-size:14px;} }
+textarea.input{height:auto;min-height:96px;padding:12px;resize:vertical;font-size:16px;line-height:1.5;}
+textarea.input:focus{padding:11px;}
+.zip-row{display:flex;gap:8px;align-items:center;}
+.list-btn-wrap{display:flex;justify-content:flex-end;padding:48px 20px 20px;}
+@container pf (min-width:1024.02px){ .list-btn-wrap{padding:48px 40px 40px;} }
+.result-box{margin:20px 20px 0;padding:16px;border-radius:4px;background:var(--note-bg);border:1px solid var(--note-border);color:var(--note-text);font-size:14px;line-height:1.5;}
+@container pf (min-width:1024.02px){ .result-box{margin:24px 40px 0;} }
+
+/* ---------- 리스트 (4-2 · 3-7 · 3-9) ---------- */
+.pc-only{display:none;}
+@container pf (min-width:1024.02px){ .pc-only{display:block;} .mo-only{display:none;} }
+.l-head{padding:32px 40px 0;}
+.l-title{font-size:24px;font-weight:700;}
+.l-tabs{margin:20px 40px 0;display:flex;border-bottom:2px solid var(--border-active);}
+.l-tab{flex:1;text-align:center;padding:12px 0;font-size:16px;border:1px solid var(--border-secondary);border-bottom:none;cursor:pointer;background:var(--card);}
+.l-tab.active{position:relative;z-index:1;border:2px solid var(--border-active);border-bottom:2px solid var(--card);margin-bottom:-2px;font-weight:700;}
+.s-panel{margin:16px 40px 0;background:var(--secondary-bg);border:1px solid var(--border-primary);border-radius:4px;padding:16px;}
+.s-row{display:flex;align-items:center;min-height:44px;padding:12px 0;border-bottom:1px solid var(--border-secondary);gap:12px;flex-wrap:wrap;}
+.s-row.h64{min-height:64px;}
+.s-label{width:120px;flex-shrink:0;font-size:14px;font-weight:600;}
+.s-field{height:40px;border:1px solid var(--border-active);border-radius:4px;background:var(--card);padding:0 12px;font-size:14px;
+  display:inline-flex;align-items:center;justify-content:space-between;gap:8px;width:160px;color:var(--text-primary);}
+.s-field.ph{color:var(--text-disabled);border-color:var(--border-dark);width:264px;}
+.segm{display:inline-flex;border:1px solid var(--border-dark);border-radius:4px;padding:4px;}
+.segm span{width:68px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-secondary);}
+.segm span.on{background:var(--border-tertiary);color:var(--text-primary);font-weight:600;border-radius:2px;}
+.s-help{font-size:14px;color:var(--text-secondary);}
+.s-btns{display:flex;justify-content:center;gap:10px;padding-top:16px;}
+.s-btns .btn{width:130px;}
+.tbl{margin:24px 40px 0;}
+.tbl table{width:100%;border-collapse:collapse;font-size:14px;}
+.tbl th{height:52px;background:var(--tertiary);border-bottom:1px solid var(--border-primary);font-weight:600;text-align:left;padding:0 12px;white-space:nowrap;}
+.tbl td{height:52px;border-bottom:1px solid var(--border-secondary);padding:0 12px;white-space:nowrap;}
+.tbl tbody tr{cursor:pointer;}
+.tbl tbody tr:hover{background:var(--tint);}
+.tbl td a{color:var(--text-primary);}
+.pager{display:flex;justify-content:center;align-items:center;gap:4px;padding:24px 0 40px;}
+.pager .pg{width:32px;height:32px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.pager .pg.on{background:var(--tint);color:var(--default-text);font-weight:600;}
+.pager .pg.arrow{color:var(--text-disabled);}
+.mo-title{padding:20px 20px 12px;font-size:20px;font-weight:700;}
+.mo-toggle-wrap{background:var(--secondary-bg);padding:0 20px 8px;}
+.mo-toggle{position:relative;display:flex;height:52px;background:var(--disabled-bg);border-radius:4px;padding:4px;}
+.mo-toggle .knob{position:absolute;top:4px;left:4px;width:calc(50% - 4px);height:44px;background:var(--brand);border-radius:4px;}
+.mo-toggle span{position:relative;flex:1;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text-secondary);}
+.mo-toggle span.on{color:#fff;font-weight:700;}
+.chip-row{display:flex;gap:6px;align-items:center;height:56px;padding:12px 0 12px 20px;background:var(--secondary-bg);border-bottom:1px solid var(--border-secondary);}
+.f-chip{display:inline-flex;align-items:center;gap:2px;height:32px;padding:4px 12px 4px 16px;border-radius:999px;font-size:14px;
+  background:var(--card);border:1px solid var(--border-tertiary);white-space:nowrap;}
+.f-chip.search{margin-left:auto;margin-right:20px;padding:4px 12px;}
+.count{height:56px;display:flex;align-items:center;padding-left:20px;font-size:16px;color:var(--text-secondary);}
+.ocards{display:flex;flex-direction:column;gap:12px;padding:0 20px;}
+.ocard{border-radius:8px;box-shadow:0 0 1px rgba(0,0,0,.2),0 2px 16px rgba(0,0,0,.08);padding:16px 16px 24px 16px;
+  display:flex;flex-direction:column;gap:6px;cursor:pointer;background:var(--card);border:1px solid transparent;}
+.ocard:active{background:var(--tint);border-color:var(--default-text);}
+.ocard .top{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.ocard .date{font-size:14px;color:var(--text-tertiary);}
+.ocard .name{font-size:16px;font-weight:700;}
+.ocard .sub{font-size:16px;color:var(--btn-text);}
+.cpager{display:flex;justify-content:center;align-items:center;padding:32px 0;}
+.cpager .ar{width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--text-disabled);}
+.cpager .ar.on{color:var(--text-primary);}
+.cpager .txt{font-size:18px;padding:0 8px;display:flex;gap:8px;}
+.cpager .txt b{font-weight:600;}
+.cpager .txt span{color:var(--text-tertiary);}
+
+/* 리스트 검색 동작 (3-7) */
+.s-row .selwrap{position:relative;display:inline-block;}
+.s-row button.s-field{cursor:pointer;font-family:inherit;}
+.s-row button.s-field.open{border:2px solid var(--brand);padding:0 11px;}
+.s-row .opt-panel{top:calc(100% + 8px);min-width:160px;}
+.s-input{height:40px;width:264px;border:1px solid var(--border-dark);border-radius:4px;padding:0 12px;font-size:14px;font-family:inherit;color:var(--text-primary);background:var(--card);}
+.s-input::placeholder{color:var(--text-disabled);}
+.segm button{width:68px;height:32px;border:none;background:none;font-size:14px;color:var(--text-secondary);cursor:pointer;font-family:inherit;border-radius:2px;}
+.segm button.on{background:var(--border-tertiary);color:var(--text-primary);font-weight:600;}
+.s-panel{position:relative;}
+.s-panel > .s-row:first-of-type{padding-right:84px;}
+.s-fold{position:absolute;top:16px;right:16px;height:36px;padding:0 16px;border:none;border-radius:4px;background:var(--disabled-bg);color:var(--btn-text);
+  font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-family:inherit;}
+.empty-row td{text-align:center;color:var(--text-secondary);height:120px;cursor:default;}
+.tbl tbody tr.empty-row:hover{background:none;}
+button.f-chip{cursor:pointer;font-family:inherit;color:var(--text-primary);}
+.f-chip.on{background:var(--tertiary);border-color:var(--text-tertiary);font-weight:600;}
+.tag-row{display:flex;align-items:center;gap:4px;height:48px;padding:0 20px;overflow-x:auto;border-bottom:1px solid var(--border-secondary);}
+.atag{display:inline-flex;align-items:center;gap:2px;height:32px;padding:4px 4px 4px 8px;border-radius:999px;background:var(--tint);color:var(--default-text);
+  font-size:14px;font-weight:600;white-space:nowrap;border:none;cursor:pointer;font-family:inherit;flex-shrink:0;}
+.tag-reset{margin-left:auto;flex-shrink:0;display:inline-flex;align-items:center;gap:4px;border:none;background:none;font-size:14px;color:var(--text-secondary);cursor:pointer;font-family:inherit;}
+.empty-list{padding:48px 20px;text-align:center;color:var(--text-secondary);font-size:16px;}
+.sheet-sec{display:flex;flex-direction:column;gap:12px;}
+.sheet-sec-t{font-size:18px;font-weight:600;}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pbtn{height:48px;border:1px solid var(--border-primary);border-radius:4px;background:var(--card);font-size:16px;color:var(--text-secondary);cursor:pointer;font-family:inherit;}
+.pbtn.on{border-color:var(--border-active);color:var(--border-active);font-weight:600;}
+.drange{display:flex;gap:4px;align-items:center;}
+.drange .box{flex:1;height:48px;border:1px solid var(--border-primary);border-radius:4px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:16px;color:var(--text-disabled);}
+.drange .box.on{color:var(--text-primary);border-color:var(--border-active);}
+.cancel-reason{font-size:14px;color:var(--text-primary);display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;}
+
+/* ---------- UX 제안(U) — Q(노랑)와 구분: 브랜드 틴트 ---------- */
+.u-badge{display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:999px;font-size:12px;font-weight:700;margin-left:4px;cursor:pointer;
+  background:var(--tint);border:1px solid var(--default-border);color:var(--brand);white-space:nowrap;vertical-align:middle;}
+.u-badge:hover{background:var(--default-border);}
+body:not(.u-on) .u-badge{display:none;}
+.upanel{border-top:1px solid var(--default-border);background:var(--tint);padding:12px 16px;display:flex;flex-direction:column;gap:10px;}
+body.v-cur .upanel{display:none;}
+body:not(.u-on) details.uwrap{display:none;}
+.scen-head.u{color:var(--brand);}
+.switch.u{color:var(--brand);} .switch.u input{accent-color:var(--brand);}
+details.uwrap summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--brand);padding:2px 0;}
+.uitem{border-color:var(--default-border);} .uitem b{color:var(--brand);}
+.ubox{background:var(--secondary-bg);border-radius:4px;padding:12px 16px;font-size:16px;display:flex;flex-direction:column;gap:4px;}
+.ubox.prop{background:var(--tint);} .ubox .uk{font-size:14px;font-weight:700;color:var(--text-secondary);} .ubox.prop .uk{color:var(--brand);}
+/* U1 요양정보 조회 */
+.done-tag{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:600;
+  background:var(--success-bg);border:1px solid var(--success-border);color:var(--success-text);}
+.done-at{font-size:12px;color:var(--text-tertiary);}
+.modal.xl{width:min(800px,100%);}
+.lk-box{background:var(--secondary-bg);border-radius:4px;padding:12px 16px;display:flex;flex-direction:column;gap:8px;font-size:14px;}
+.lk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;}
+.lk-r{display:flex;gap:12px;align-items:center;} .lk-r span{color:var(--text-secondary);width:120px;flex-shrink:0;} .lk-r b{font-weight:500;}
+.lk-phone{color:var(--brandsub-text);font-weight:700 !important;}
+.lk-go{display:flex;justify-content:center;}
+.lk-res{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--border-tertiary);padding-top:16px;}
+.lk-title{font-size:18px;font-weight:700;}
+.lk-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;color:var(--text-secondary);}
+.lk-bar span:last-child{display:flex;gap:6px;}
+.lk-save{background:var(--tint);color:var(--brand);}
+.lk-card{border:1px solid var(--border-primary);border-radius:4px;padding:12px 16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 16px;}
+.lk-card div{display:flex;flex-direction:column;gap:2px;font-size:14px;} .lk-card span{color:var(--text-secondary);font-size:12px;} .lk-card b{font-weight:600;}
+.lk-card em{font-style:normal;color:var(--danger-text);}
+.lk-sec{font-size:16px;font-weight:700;}
+.lk-tables{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.lk-t{width:100%;border-collapse:collapse;font-size:12px;}
+.lk-t th{background:var(--tertiary);text-align:left;font-weight:600;padding:8px;border-top:1px solid var(--border-dark);white-space:nowrap;}
+.lk-t td{padding:8px;border-bottom:1px solid var(--border-secondary);}
+.lk-t tr.no td{background:var(--danger-bg);} .lk-t td.no{color:var(--danger-text);} .lk-t td.ok{color:var(--info-text);}
+@container pf (max-width:1024px){ .lk-tables{grid-template-columns:1fr;} .lk-card{grid-template-columns:1fr 1fr;} .lk-grid{grid-template-columns:1fr;} .lk-r span{width:auto;min-width:96px;} }
+.overlay2{z-index:12;}
+.pw-wrap{position:relative;} .pw-wrap .input{padding-right:48px;}
+.pw-x{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:none;background:none;cursor:pointer;color:var(--text-tertiary);display:flex;align-items:center;justify-content:center;}
+/* U2 · U3 · U4 · U5 */
+.m-prod .nm{font-size:16px;font-weight:600;}
+.m-cur{font-size:14px;color:var(--text-primary);margin-top:4px;} .m-cust{font-size:14px;color:var(--text-tertiary);margin-top:2px;}
+.selectf.changed span{font-weight:700;}
+.legend{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:12px;font-size:14px;color:var(--text-secondary);}
+.legend .lg-t{font-weight:700;color:var(--text-primary);} .legend .lg-n{font-size:12px;color:var(--text-tertiary);}
+.diff-line{display:flex;flex-direction:column;gap:2px;font-size:14px;color:var(--text-primary);}
+.diff-line s{color:var(--text-tertiary);}
+.warn-line{font-size:14px;color:var(--danger-text);font-weight:600;display:flex;align-items:center;flex-wrap:wrap;gap:4px;}
+.warn-line.sm{font-size:12px;width:100%;justify-content:center;}
+.res-panel{position:static;margin-top:0;max-height:none;}
+.res-row{flex-direction:column;align-items:flex-start;gap:2px;}
+.res-row .rm{font-size:12px;color:var(--text-secondary);font-weight:400;}
+.r-out{color:var(--danger-text);font-weight:600;} .r-in{color:var(--brand);font-weight:600;}
+.amt-box{background:var(--tint);border-radius:4px;padding:12px 16px;display:flex;flex-direction:column;gap:4px;font-size:14px;}
+.amt-box div{display:flex;justify-content:space-between;gap:8px;} .amt-box b.dg{color:var(--danger-text);}
+.amt-box .u-badge{align-self:flex-start;margin-left:0;}
+.pact{flex-wrap:wrap;align-items:center;}
+@container pf (min-width:1024.02px){ .pact{flex-direction:column;gap:4px;} .pact .u-badge{margin-left:0;} }
+.rpop{position:relative;text-decoration:underline dotted;cursor:pointer;}
+.rpop .pop{display:none;position:absolute;left:0;top:calc(100% + 4px);width:340px;padding:24px 20px;border-radius:16px;background:var(--card);border:1px solid var(--border-primary);
+  box-shadow:0 8px 24px rgba(0,0,0,.2),0 0 4px rgba(0,0,0,.12);z-index:5;font-size:14px;color:var(--btn-text);line-height:1.6;white-space:normal;text-decoration:none;}
+.rpop .pop b{display:block;font-size:20px;color:var(--text-primary);margin-bottom:12px;}
+@container pf (min-width:1024.02px){ .rpop:hover .pop,.rpop:focus .pop{display:block;} }
+/* 모달 안 셀렉트 목록 — 모달 위 레이어(PC) */
+.float-panel{position:fixed;z-index:40;background:var(--card);border:1px solid var(--border-dark);border-radius:4px;padding:8px;max-height:240px;overflow-y:auto;
+  display:flex;flex-direction:column;gap:4px;box-shadow:0 2px 4px rgba(0,0,0,.12),0 0 2px rgba(0,0,0,.12);font-family:'SUIT','Apple SD Gothic Neo',sans-serif;}
+.float-panel .opt-row{min-height:36px;padding:8px 8px 8px 12px;font-size:14px;}
+
+/* ---------- ③ UX 토글 · 시나리오 간격 · 목록 패널 · N 배지 ---------- */
+.scen{gap:20px;}
+.scen-g{display:flex;}
+.legend-g{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--card);border:1px solid var(--note-border);border-radius:6px;padding:10px 12px;font-size:14px;color:var(--text-secondary);}
+.legend-g .lg-t{font-weight:700;color:var(--text-primary);margin-right:4px;} .legend-g .lg-n{font-size:12px;color:var(--text-tertiary);margin-left:6px;}
+.sw{display:inline-block;width:16px;height:16px;border-radius:4px;border:1px solid var(--border-tertiary);margin-left:6px;vertical-align:middle;}
+.sw-chg{background:var(--success-bg);} .sw-del{background:var(--danger-bg);} .sw-add{background:var(--info-bg);}
+#seg-ux button.active{background:var(--note-text);color:#fff;}
+.lists{border-top:1px solid var(--border-secondary);background:var(--secondary-bg);padding:12px 16px;display:flex;flex-direction:column;gap:8px;}
+body.v-cur .lists{display:none;}
+.lists-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:14px;font-weight:700;}
+.switch.q{color:var(--note-text);} .switch.n{color:var(--neutral-text);} .switch.n input{accent-color:var(--neutral-text);}
+.lists-d summary{cursor:pointer;font-size:14px;font-weight:700;color:var(--text-primary);padding:4px 0;}
+.lists-d[open] summary{margin-bottom:8px;}
+.lp-t{font-size:12px;font-weight:700;margin:8px 0 6px;} .lp-t.q{color:var(--note-text);} .lp-t.u{color:var(--brand);}
+.n-badge{display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:4px;font-size:12px;font-weight:700;margin-left:4px;cursor:pointer;
+  background:var(--tertiary);border:1px solid var(--border-primary);color:var(--neutral-text);white-space:nowrap;vertical-align:middle;}
+body:not(.n-on) .n-badge{display:none;}
+.nitem{border-color:var(--border-primary);} .nitem b{color:var(--neutral-text);}
+.ncode{color:var(--brand);font-weight:700;margin-right:6px;}
+/* 변경 행 색: 기획서 원안 = 연두(success), UX 제안 = caution */
+.prow.chg{background:var(--success-bg);}
+/* UX 제안: 배경 한 단계 연하게(기존 토큰을 흰색과 50% 혼합 — 임시, Q11) + 왼쪽 3px 색 막대 */
+body.ux-on .prow.chg{background:color-mix(in srgb, var(--caution-bg) 50%, #fff);box-shadow:inset 3px 0 0 var(--caution-text);}
+body.ux-on .prow.del{background:color-mix(in srgb, var(--danger-bg) 50%, #fff);box-shadow:inset 3px 0 0 var(--danger-text);}
+body.ux-on .prow.add{background:color-mix(in srgb, var(--info-bg) 50%, #fff);box-shadow:inset 3px 0 0 var(--info-text);}
+.bar{display:inline-block;width:3px;height:16px;border-radius:2px;margin-left:8px;vertical-align:middle;}
+.bar-chg{background:var(--caution-text);} .bar-del{background:var(--danger-text);} .bar-add{background:var(--info-text);}
+.c-k-keep{background:var(--card);border-color:var(--border-primary);color:var(--neutral-text);}
+.qty-was{font-size:12px;color:var(--text-tertiary);width:100%;text-align:center;}
+.vs-orig{font-size:12px;font-weight:500;color:var(--text-secondary);margin-left:8px;}
+.prow-main{align-items:center;}
+.c-k-chg{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text);}
+body.ux-on .c-k-chg,.legend-g .c-k-chg{background:var(--caution-bg);border-color:var(--caution-border);color:var(--caution-text);}
+/* U7 요약 바 + 원본 표 */
+.sumbar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px;padding:10px 16px;border-radius:4px;
+  background:var(--card);border:1px solid var(--border-primary);font-size:14px;color:var(--text-secondary);}
+.sumbar b{color:var(--text-primary);}
+.sumbar .sb-t{display:flex;align-items:center;gap:6px;flex-wrap:wrap;} .sumbar b{font-size:16px;}
+.sb-btn{font-size:14px;} .sb-chev{display:inline-flex;transition:transform .2s;} .sb-chev.up{transform:rotate(180deg);}
+.origtbl{background:var(--secondary-bg);border-radius:4px;padding:12px 16px;margin-top:8px;}
+.origtbl .ot-cap{font-size:14px;font-weight:700;color:var(--text-secondary);margin-bottom:6px;}
+.origtbl table{width:100%;border-collapse:collapse;font-size:14px;}
+.origtbl th{text-align:left;font-weight:600;color:var(--text-secondary);padding:6px 8px;border-bottom:1px solid var(--border-tertiary);}
+.origtbl td{padding:6px 8px;border-bottom:1px solid var(--border-secondary);}
+@container pf (max-width:1024px){   /* 모바일: 한 상품 = 두 줄(상품명 / 옵션 · 수량 · 금액) */
+  .origtbl thead{display:none;}
+  .origtbl tr{display:grid;grid-template-columns:1fr auto auto;gap:4px 12px;padding:8px 0;border-bottom:1px solid var(--border-secondary);align-items:center;}
+  .origtbl td:last-child{grid-column:1 / -1;}
+  .origtbl td{padding:0;border:none;}
+  .origtbl td:first-child{grid-column:1 / -1;font-weight:600;}
+  .origtbl td:nth-child(2){color:var(--text-secondary);}
+}
+.hist-ux{margin-top:20px;} .hist-ux .hist-ttl{font-size:16px;font-weight:700;} .hist-ux .kv-box{margin-top:8px;}
+.amt-bd{display:flex;gap:4px;}
+/* 모달: 미리보기 화면 안 sticky (문서 페이지는 스크롤 유지) */
+#page{overflow:clip;}
+.overlay{inset:0;display:block;padding:0 20px;}
+.overlay > .modal{position:absolute;left:0;right:0;margin:0 auto;width:min(480px, calc(100% - 40px));}
+.overlay > .modal.xl{width:min(800px, calc(100% - 40px));}
+.overlay.is-sheet{padding:0;}
+.overlay.is-sheet > .modal{width:100%;margin:0;}
+
+/* ---------- ① 현행 (스크린샷 + 핀) ---------- */
+.cur-wrap{padding:20px;}
+@container pf (min-width:1024.02px){ .cur-wrap{padding:24px 40px 40px;} }
+.shot-main{position:relative;border:1px solid var(--border-secondary);border-radius:4px;overflow:hidden;background:var(--tertiary);}
+.shot-main img{display:block;width:100%;height:auto;}
+.shot-cap{font-size:14px;color:var(--text-secondary);margin:8px 0 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.shot-strip{display:flex;gap:8px;overflow-x:auto;margin-top:12px;padding-bottom:4px;}
+.shot-strip button{flex:0 0 auto;width:96px;height:72px;border:1px solid var(--border-secondary);border-radius:4px;overflow:hidden;padding:0;cursor:pointer;background:var(--tertiary);}
+.shot-strip button.on{border:2px solid var(--brand);}
+.shot-strip img{width:100%;height:100%;object-fit:cover;object-position:top left;display:block;}
+.mpin{position:absolute;transform:translate(-50%,-50%);min-width:32px;height:24px;padding:0 6px;border-radius:999px;font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--danger-border);background:var(--danger-bg);color:var(--danger-text);
+  box-shadow:0 2px 4px rgba(0,0,0,.12),0 0 2px rgba(0,0,0,.12);}
+.mpin.k{background:var(--note-bg);border-color:var(--note-border);color:var(--note-text);}
+.mpin.hl{outline:2px solid var(--brand);outline-offset:2px;}
+.pins-title{font-size:18px;font-weight:700;margin:24px 0 12px;}
+.pin-cards{display:grid;grid-template-columns:1fr;gap:8px;}
+@container pf (min-width:1024.02px){ .pin-cards{grid-template-columns:1fr 1fr;} }
+.pin-card{border:1px solid var(--border-primary);border-radius:4px;padding:12px 16px;display:flex;flex-direction:column;gap:6px;}
+.pin-card.hl{outline:2px solid var(--brand);outline-offset:1px;}
+.pin-card .h{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;}
+.pin-card .d{font-size:14px;color:var(--text-secondary);}
+.pin-card .acts{display:flex;gap:12px;flex-wrap:wrap;}
+.pin-card .acts a,.pin-card .acts button{font-size:14px;font-weight:600;color:var(--brand);background:none;border:none;padding:4px 0;cursor:pointer;text-decoration:none;}
+.ptag{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:24px;padding:0 6px;border-radius:999px;font-size:12px;font-weight:700;
+  border:1px solid var(--danger-border);background:var(--danger-bg);color:var(--danger-text);}
+.ptag.k{background:var(--note-bg);border-color:var(--note-border);color:var(--note-text);}
+.ptag.d{background:var(--tertiary);border-color:var(--border-primary);color:var(--neutral-text);}
+.empty-shot{padding:40px 20px;text-align:center;font-size:16px;color:var(--text-secondary);border:1px dashed var(--border-primary);border-radius:4px;}
+
+/* ---------- 모달 · 바텀시트 (3-3 · 3-5) ---------- */
+.overlay{position:absolute;left:0;right:0;background:rgba(20,20,22,0.5);display:flex;align-items:center;justify-content:center;padding:40px 20px;z-index:10;}
+.modal{background:var(--card);border-radius:14px;width:min(480px,100%);box-shadow:var(--shadow);max-height:100%;display:flex;flex-direction:column;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 16px;border-bottom:1px solid var(--border-primary);margin:0 20px;padding-left:0;padding-right:0;flex-shrink:0;}
+.modal-header h3{margin:0;font-size:20px;}
+.modal-close{width:40px;height:40px;margin-right:-8px;background:none;border:none;cursor:pointer;color:var(--text-primary);display:flex;align-items:center;justify-content:center;}
+.modal-body{padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:16px;font-size:16px;line-height:1.5;}
+.modal-actions{display:flex;justify-content:center;gap:12px;padding:0 20px 20px;flex-shrink:0;}
+.modal-actions .btn{flex:0 1 150px;min-width:0;}
+.overlay.is-sheet{align-items:flex-end;padding:0;}
+.overlay.is-sheet .modal{width:100%;border-radius:40px 40px 0 0;max-height:90%;padding-top:12px;}
+.overlay.is-sheet .modal-header{padding-top:20px;border-bottom:none;}
+.overlay.is-sheet .modal-body{padding-top:0;}
+.overlay.is-sheet .modal-actions{padding:32px 20px;gap:8px;}
+.overlay.is-sheet .modal-actions .btn{flex:1;height:54px;font-size:18px;}
+.field{display:flex;flex-direction:column;gap:8px;position:relative;}
+.field > label,.field .flabel{font-size:14px;font-weight:600;color:var(--text-secondary);}
+.selectf{height:48px;border:1px solid var(--border-active);border-radius:4px;background:var(--card);padding:0 12px;font-size:16px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;color:var(--text-primary);text-align:left;width:100%;}
+.selectf.ph{color:var(--text-disabled);border-color:var(--border-dark);}
+.selectf.open{border:2px solid var(--brand);padding:0 11px;}
+.selectf.open svg{transform:rotate(180deg);}
+@container pf (min-width:1024.02px){ .selectf{height:40px;font-size:14px;} }
+.opt-panel{position:absolute;top:calc(100% + 8px);left:0;right:0;background:var(--card);border:1px solid var(--border-dark);border-radius:4px;
+  padding:8px;z-index:5;max-height:210px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;box-shadow:0 2px 4px rgba(0,0,0,.12),0 0 2px rgba(0,0,0,.12);}
+.opt-row{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:10px 8px 10px 12px;border-radius:4px;font-size:16px;cursor:pointer;background:none;border:none;text-align:left;width:100%;color:var(--text-primary);}
+.opt-row:hover,.opt-row.sel{background:var(--tint);}
+.opt-row.sel{color:var(--brand);font-weight:700;}
+.opt-row:disabled{color:var(--text-disabled);cursor:default;background:none;}
+@container pf (min-width:1024.02px){ .opt-row{min-height:36px;padding:8px 8px 8px 12px;font-size:14px;} }
+.sheet-opts{display:flex;flex-direction:column;gap:6px;}
+.sheet-opts .opt-row.sel{color:var(--default-text);}
+.kv-box{background:var(--secondary-bg);border-radius:4px;padding:12px 16px;display:flex;flex-direction:column;gap:4px;font-size:16px;}
+.kv-box .r{display:flex;gap:16px;}
+.kv-box .k{width:80px;flex-shrink:0;color:var(--text-secondary);}
+.m-prod{display:flex;gap:12px;align-items:center;}
+.m-prod .thumb{width:80px;height:80px;}
+.m-prod .nm{font-size:16px;font-weight:600;}
+.counter{text-align:right;font-size:14px;color:var(--text-tertiary);margin-top:-8px;}
+.m-note{font-size:14px;color:var(--text-secondary);}
+.check-row{display:flex;gap:8px;align-items:flex-start;font-size:16px;cursor:pointer;min-height:44px;padding-top:10px;}
+.check-row input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--brand);flex-shrink:0;}
+.toast{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);width:80%;max-width:520px;min-height:62px;padding:8px 16px;
+  border-radius:8px;border:1px solid #43a047;background:var(--success-bg);display:flex;align-items:center;gap:8px;font-size:16px;font-weight:600;
+  box-shadow:0 2px 4px rgba(0,0,0,.12),0 0 2px rgba(0,0,0,.12);z-index:20;}
+.policy-link{font-size:14px;color:var(--text-secondary);margin:16px auto 40px;max-width:960px;padding:0 4px;}
+.policy-link a{color:var(--brand);font-weight:600;}
+</style>
+</head>
+<body class="q-on u-on n-on">
+<div class="proto-note">
+  <b>주문요청관리 상세 — 구입</b> (4-5) · 보기를 바꿔 같은 단계를 비교합니다.
+  <b>① 현행</b> = 개발 화면 캡처(2026-10-07) + 문제 핀 · <b>② 화면 정책 적용</b> = 기능은 현행 그대로 두고 화면 정책(3장·4-2·4-3·5장)과 확정 표기(D-01 상품 유형 '구입')만 적용 ·
+  <b>③ + 기획 개선안</b> = 2026.10 기획서(확인 중)를 주문확인중에만 얹은 화면 — 정책 아님, 비주얼 임시.
+</div>
+
+<div class="ctrl-card">
+  <div class="ctrl-now" id="ctrl-now"></div>
+  <div class="ctrl-body">
+    <div class="ctrl-row"><span class="ctrl-label">보기</span>
+      <div class="segc" id="seg-view">
+        <button data-v="current"><b>① 현행</b><small>개발 화면 캡처 + 문제 핀</small></button>
+        <button data-v="policy"><b>② 화면 정책 적용</b><small>기능은 그대로, 화면 정책만</small></button>
+        <button data-v="plan" class="plan"><b>③ + 기획 개선안</b><small>확인 중 · 주문확인중에만</small></button>
+      </div></div>
+    <div class="ctrl-row"><span class="ctrl-label">단계</span>
+      <div class="flow-ui" id="seg-step"><button data-s="list"><i>1</i>리스트</button><span class="sx"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button data-s="received"><i>2</i>주문접수</button><span class="sx"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button data-s="confirming"><i>3</i>주문확인중</button><span class="sx"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button data-s="preparing"><i>4</i>상품준비</button><span class="sx"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button data-s="shipped"><i>5</i>출고완료</button><span class="sx"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><button data-s="delivered"><i>6</i>배송완료</button><span class="branch">분기</span><button data-s="cancel" class="cancel"><i><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></i>주문취소</button></div></div>
+    <div class="ctrl-row"><span class="ctrl-label">폭</span>
+      <div class="wgroups" id="preset-row">
+        <div class="wg"><span class="wg-l"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M11 18h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> 모바일</span><div class="segc sm">
+          <button class="preset-btn" data-w="320">320</button><button class="preset-btn" data-w="360">360</button><button class="preset-btn" data-w="768">768</button><button class="preset-btn" data-w="1024">1024</button></div></div>
+        <div class="wg"><span class="wg-l"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2" stroke="currentColor" stroke-width="2"/><path d="M9 20h6M12 16v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> PC</span><div class="segc sm">
+          <button class="preset-btn" data-w="1025">1025</button><button class="preset-btn" data-w="1440">1440</button></div></div>
+      </div></div>
+  </div>
+  <div class="ctx-wrap" id="ctx-wrap">
+    <div class="ctrl-row" id="row-example"><span class="ctrl-label">행 예시</span>
+      <div class="chips" id="seg-example"><button data-e="basic">기본</button><button data-e="option">옵션 있음</button><button data-e="added">추가상품</button><button data-e="dup">같은 상품 다른 옵션</button></div></div>
+    <div class="ctrl-row" id="row-cancel"><span class="ctrl-label">취소 시점</span>
+      <div class="chips" id="seg-cancel"><button data-c="before">주문 전 취소</button><button data-c="after">주문 후 취소</button></div></div>
+    <div class="ctrl-row" id="row-modal"><span class="ctrl-label">팝업</span><div class="chips" id="modal-btns"></div></div>
+  </div>
+  <div class="scen">
+    <div class="scen-g scen-head"><span>③ 기획 개선안 — 시나리오 버튼을 누르면 조작이 자동으로 재현됩니다</span>
+      <div class="segc sm" id="seg-ux"><button data-ux="0">기획서 원안</button><button data-ux="1">UX 제안 적용</button></div></div>
+    <div class="scen-g chips">
+      <button onclick="runScenario(1)">① 옵션 변경</button><button onclick="runScenario(2)">② 수량 변경</button>
+      <button onclick="runScenario(3)">③ 상품 삭제</button><button onclick="runScenario(4)">④ 상품 추가</button>
+      <button onclick="runScenario(5)">⑤ 추가 상품 삭제</button><button onclick="runScenario(6)">⑥ 주문하기</button>
+      <button class="reset" onclick="resetPlan(true)">처음부터</button>
+    </div>
+    <div class="scen-g legend-g" id="legend-g"></div>
+  </div>
+  <div class="lists">
+    <div class="lists-head"><span>배지</span>
+      <label class="switch q"><input type="checkbox" id="q-toggle" checked> Q 기획 미결</label>
+      <label class="switch u"><input type="checkbox" id="u-toggle" checked> U UX 제안</label>
+      <label class="switch n"><input type="checkbox" id="n-toggle" checked> N 디자인 노트</label></div>
+    <details class="lists-d"><summary id="lists-sum"></summary>
+      <div class="qpart"><div class="lp-t q">Q — 기획이 정할 미결 항목 · 누르면 정해야 할 것 · 현행 · 기획서 원안 / UX 제안</div><div class="qlist" id="qlist"></div></div>
+      <div class="lp-t u">U — UI/UX가 제안하는 개선 요청(②·③ 화면에 표시, 정책 조항 아님) · 누르면 현행 문제 · 제안 · 이유</div><div class="qlist" id="ulist"></div>
+    </details>
+    <details class="lists-d npart"><summary id="n-sum"></summary><div class="qlist" id="nlist"></div></details>
+  </div>
+</div>
+
+<div id="frame-outer">
+<div id="frame" style="container-type:inline-size;container-name:pf;">
+<div id="frame-chrome"><div id="page"></div></div>
+</div>
+</div>
+
+<div class="policy-link">→ 정책 조항 <a href="../index.html#4-5" target="_top">4-5 주문요청관리 상세 — 구입</a> · 참고 문서 <a href="purchase-order-analysis.html">구입 주문 히스토리·문제 분석</a></div>
+
+<script>
+/* =====================================================================
+   데이터
+   ===================================================================== */
+var ASSET = 'assets/purchase-order/';
+/* 본인부담률 — 조회 전에는 주문 요청 시점 값(예시 15%), 조회 후에는 조회 결과(감경 6%)로 다시 계산(U5-1) */
+var RATE_BEFORE = 0.15, RATE_AFTER = 0.06;
+function rate(){ return cur().lookedUp ? RATE_AFTER : RATE_BEFORE; }
+function rateLabel(){ return Math.round(rate()*100)+'%'; }
+/* 요양정보 조회 결과(가상) — 품목명은 개발 화면 구조, 수치는 예시 */
+var SALE_ITEMS = [['이동변기','1개/5년','-','급여불가'],['자세변환용구','5개','-',5],['목욕의자','1개/5년','-','급여불가'],['성인용보행기','2개/5년','1개','급여불가'],
+  ['안전손잡이','10개','-',10],['요실금팬티','4개','-','급여불가'],['미끄럼방지용품_양말','6개','-','급여불가'],['경사로(실내용)','6개/2년','-',6],
+  ['미끄럼방지용품_매트,액','5개','-','급여불가'],['구강세척기','1개/5년','-','급여불가'],['간이변기','2개','-',2],['배회감지기(태그형)','2개/2년','-',2],
+  ['지팡이','1개/2년','-','급여불가'],['고관절보호대','1개/2년','-','급여불가'],['욕창예방매트리스','1개/3년','1개',0],['기저귀센서','1개/3년','-',1],
+  ['욕창예방방석','1개/3년','1개',0],['이승보조기기','1개/5년','-',1]];
+var RENT_ITEMS = [['수동휠체어','1개','-','1개'],['전동침대','1개','-','1개'],['수동침대','1개','-','1개'],['이동욕조','1개','-','급여불가'],
+  ['목욕리프트','1개','-','1개'],['배회감지기(GPS형)','1개','-','급여불가']];
+function saleItem(cat){ for(var i=0;i<SALE_ITEMS.length;i++){ if(SALE_ITEMS[i][0] === cat) return SALE_ITEMS[i]; } return null; }
+var CATALOG = {
+  sock:{name:'위풋 논슬립 돌돌이 양말 양면', img:'양말', cat:'미끄럼방지용품_양말', opts:[{k:'색상',v:['베이지','자주','회색']},{k:'사이즈',v:['S(230~255mm)','M(260~280mm)']}], price:14500},
+  lp:  {name:'LP-011 보나수 30cc', img:'LP-011', cat:'요실금팬티', opts:[{k:'색상',v:['베이지','연베이지']},{k:'사이즈',v:['L(100)','XXL(110)']}], price:42100},
+  hd:  {name:'HD-B-001', img:'HD-B-001', cat:'간이변기', opts:[], price:11000},
+  ash: {name:'ASH-106', img:'ASH-106', cat:'자세변환용구', opts:[], price:42100},
+  msh: {name:'MSH 안전손잡이 부품', img:'MSH 부품', opts:[{k:'구성',v:['MSH용 안전핀너트']}], price:0, part:true},
+  soom:{name:'SOOM M-130cc (남성용)', img:'SOOM', cat:'요실금팬티', opts:[], price:9800, soldout:true}
+};
+var SAMPLES = {   /* ② 행 예시 · ③ 샘플 주문(상품 3개, 옵션 있는 상품 2개) */
+  basic: [['ash',[],1],['hd',[],1]],
+  option:[['sock',['베이지','M(260~280mm)'],1],['lp',['베이지','XXL(110)'],1],['hd',[],1]],
+  added: [['sock',['베이지','M(260~280mm)'],1],['lp',['베이지','XXL(110)'],1],['hd',[],1],['msh',['MSH용 안전핀너트'],1,true]],
+  dup:   [['sock',['베이지','M(260~280mm)'],1],['hd',[],1],['sock',['자주','S(230~255mm)'],1,true]]
+};
+/* ③ 미결 항목(Q) — 제목은 Confluence 02 질문 요약, 임시안은 v3 지시문 [B. 개선안 모드] 번호 */
+var QINFO = {
+  Q1:{t:'추가 후 삭제 처리', ask:'추가했다가 삭제한 상품을 \'삭제\'로 남길지, 목록에서 바로 뺄지', now:'추가 후 삭제한 상품도 삭제 사유 목록에 나옴(C1)', tmp:'목록에서 바로 제거(삭제 상태 없음)', no:'5'},
+  Q2:{t:'복원 기준', ask:'[복원]하면 최초 주문 상태로 돌아갈지, 삭제 직전 상태로 돌아갈지', now:'복원 없음 — 삭제하면 행이 바로 사라짐(A1)', tmp:'삭제 직전 상태로(바꾼 수량·옵션 유지)', no:'6'},
+  Q3:{t:'삭제 행의 스텝퍼·옵션 [변경] 비활성 여부', who:'기획 결정', plan:'기획서 화면은 삭제 행 스텝퍼가 활성처럼 그려짐', ask:'삭제된 행의 스텝퍼·옵션 [변경]은 비활성인가요?', now:'행 즉시 제거(삭제 상태 없음)', tmp:'비활성, [복원]만 활성', no:'4'},
+  Q4:{t:'사유 모달 버튼명', plan:'[취소] [저장]', ask:'주문 변경 사유 모달의 실행 버튼 이름', now:'상품 삭제 사유 모달 [취소] [저장]', tmp:'[취소] [주문하기] — 사유 입력 + 동의 체크 시 활성', no:'12'},
+  Q5:{t:'글자 수', plan:'0/20자', ask:'변경 사유 최대 글자 수', now:'20자(퍼블은 200자)', tmp:'100자', no:'12'},
+  Q6:{t:'주문 후 이력 노출', ask:'최초 주문 대비 변경 내역을 어디에, 언제까지 보여줄지', now:'주문 후 최종 상품만 표시(C5)', tmp:'변경하면 \'최초 주문\' 박스 고정(모두 되돌리면 숨김) + 상품준비 이후 \'주문 변경 내역\' 접기 영역', no:'2 · 14'},
+  Q7:{t:'상품준비 이후 칩 명칭', who:'기획 결정', ask:'상품준비 이후 칩 명칭을 대여 상태칩(출고준비중 등)과 통일할지', now:'구입: 상품준비 · 출고완료 · 배송완료 / 대여: 출고준비중 · 출고완료 · 배송완료', tmp:'이 화면은 현행 구입 명칭(상품준비) 그대로'},
+  Q9:{t:'옵션 표기', plan:'베이지 / L(95) — 값만, 슬래시 앞뒤 공백', ask:'옵션을 \'값/값\'으로 쓸지, \'항목 값 · 항목 값\'으로 쓸지', now:'베이지/M(260~280mm)', tmp:'색상 베이지 · 사이즈 M(260~280mm) — 항목 연하게, 값 진하게', no:'9'},
+  Q10:{t:'합계 명칭', ask:'합계 이름', now:'총 판매 금액', tmp:'총 구입 금액(D-01 \'구입\' 표기에 맞춤)', no:'11'},
+  Q11:{t:'행 BG 컬러 토큰', plan:'변경 연두 · 삭제 분홍 · 추가 하늘', who:'UI/UX 결정(기획 질문 아님)', state:'토큰 조회 대기', ask:'변경·삭제·추가 행 배경에 쓸 DS 토큰', now:'행 배경 없음', tmp:'지금 색은 임시 — 디자인 시점에 DS 토큰 조회 후 확정', no:'4'},
+  Q17:{t:'옵션 변경의 데이터 구분', who:'개발 확인', ask:'옵션 변경을 데이터상 \'삭제+추가\'가 아닌 \'변경\'으로 구분할 수 있는지', now:'옵션 변경 = 기존 옵션 삭제 + 새 옵션 추가(B2) → 행이 맨 아래로 이동(A3), 원래 옵션이 삭제 사유 목록에 나옴(C1)', tmp:'\'변경\'으로 구분된다고 보고 같은 자리에서 옵션만 바뀌게 표시'},
+  Q20:{t:'전체 되돌리기', ask:'변경을 한 번에 최초 주문으로 되돌리는 기능을 둘지', now:'되돌리기·초기화 없음(B1)', tmp:'\'변경 주문\' 타이틀 오른쪽 [최초 주문으로 되돌리기]', no:'3'},
+  Q21:{t:'확정 시점 저장', ask:'변경을 누를 때마다 저장할지, [주문하기] 때 한 번에 저장할지', now:'누를 때마다 즉시 서버 저장(B1)', tmp:'화면 안에서만 유지, [주문하기] 때 확정', no:'13'}
+};
+/* UX 제안(U) — UI/UX가 제안하는 개선 요청(기획 미결 Q와 다름). CLAUDE.md 조항에는 넣지 않는다 */
+var UINFO = {
+  U1:{t:'요양정보 조회 여부·일시 표시', prob:'조회 전후로 수급자 정보와 말풍선만 바뀌고, 조회했는지·언제 했는지가 화면에 남지 않는다', prop:'[조회] 옆에 \'조회완료\' 배지 + 조회 일시', why:'안내 문구가 "주문 전 요양정보를 다시 확인"을 요구하는데, 다시 조회할지 판단할 근거가 화면에 없다'},
+  U2:{t:'옵션 변경 모달에 현재 옵션 표시', prob:'모달 상단에 썸네일 + 상품명만 있어 무엇을 바꾸는지 모른다(A6과 같은 문제)', prop:'상품명 아래 "현재 옵션 · 수량", 이미 바꾼 상품이면 "고객 주문" 한 줄 더. 셀렉트는 현재 값 선택, 바꾼 항목만 굵게, 같은 값이면 [확인] 비활성', why:'기억에 의존하지 않고 모달 안에서 변경 전후를 비교한다'},
+  U3:{t:'변경 행을 색 말고도 구분', prob:'행 배경색만으로 구분하고, 변경의 연두는 주문확인중·주문완료·추가상품 칩과 같은 초록 계열이라 A4 문제가 다시 생기고 \'정상\'으로 읽힌다', prop:'변경 = caution(오렌지) 계열 임시, 행 앞 텍스트 뱃지(변경·삭제·추가), 바뀐 값 표시(수량 1 → 2, 옵션은 이전 값 취소선 + 새 값), 상단 범례', why:'색 + 글자 두 가지로 알려야 놓치지 않는다. 실제 토큰은 Q11에서 확정'},
+  U4:{t:'상품 추가 검색 개선', prob:'무엇으로 검색하는지 모르고, 결과에 가격·옵션·이미 주문 목록에 있는지가 없다', prop:'placeholder 예시, 포커스하면 입력 전에도 목록(최대 5개), 결과 행에 가격·옵션 유무·품절·"주문 목록에 있음", 결과 없음 문구', why:'헛검색과 같은 상품 중복 추가(dev_08)를 줄인다'},
+  'U5-1':{t:'요양정보와 주문 상품 연결', prob:'사업소가 조회 결과 표와 주문 목록을 눈으로 대조해야 한다', prop:'조회 후 급여불가 품목 행에 "요양정보상 급여불가 품목입니다" + 본인부담률을 조회 결과(감경 6%)로 다시 계산', why:'주문불가 사유를 주문하기 전에 화면에서 바로 발견한다'},
+  'U5-2':{t:'사용한도 초과 경고', prob:'수량이 판매가능 수를 넘어도 화면에서 알 수 없다', prop:'스텝퍼 아래 경고(막지는 않음)', why:'주문 후 급여 처리 문제를 예방한다 — 막을지 여부는 기획 확인 필요'},
+  'U5-3':{t:'개선안 삭제 확인 모달 생략', prob:'[복원]이 있는데도 "정말 삭제하시겠습니까?"를 한 번 더 묻는다', prop:'[삭제]를 누르면 바로 삭제 상태로', why:'되돌릴 수 있는 동작에 확인 모달은 과하다'},
+  'U5-4':{t:'변경 사유 모달에 금액 변화', prob:'변경 목록만 있고 금액이 어떻게 바뀌는지 없다', prop:'"총 구입 금액 A → B / 본인부담금 a → b"', why:'수급자 동의에서 가장 중요한 정보다'},
+  'U5-5':{t:'이탈 방지', prob:'(Q21 확정 시점 저장일 때) 변경한 채로 [주문목록]·뒤로가기를 누르면 변경이 사라진다', prop:'"변경한 내용이 저장되지 않습니다. 나가시겠습니까?" 확인', why:'실수로 작업을 잃지 않게 한다'},
+  'U6':{t:'문구·표기 교정', prob:'주문불가 문구가 \'본인부담율 및 주문가능\'으로 표준 표기(본인부담률·주문 가능)와 다르고, 변경 사유 안내 문구가 기획서 화면과 설명에서 서로 다르다', prop:'\'본인부담률 및 주문 가능 품목\'으로 교정, 사유 입력 안내는 "변경 사유를 입력해 주세요. 수급자에게 안내되는 문구이니 신중하게 적어주세요."로 통일', why:'같은 용어를 화면마다 다르게 쓰면 신뢰가 떨어진다'},
+  'U7':{t:'최초 주문 / 변경 주문 구분 방식', prob:'\'최초 주문\' 박스와 \'변경 주문\' 목록으로 같은 상품 목록을 두 번 보여주고, 무엇이 바뀌었는지 보려면 위아래를 오가며 비교해야 한다', prop:'목록은 하나만. 위에 변경 요약 바("고객 요청에서 N건 변경됨 · 변경 n · 삭제 n · 추가 n") + [고객 요청 원본 보기]로 접어 둔 원본 표, 섹션 오른쪽에 [최초 주문으로 되돌리기]. 변경이 없으면 현행과 같음. 모바일은 원본을 바텀시트로', why:'비교 대상(원본)은 필요할 때만 펼치고, 변경 내용은 행 안에서 바로 읽게 해 화면 길이와 비교 거리를 줄인다'},
+  'U5-6':{t:'주문취소 사유 전체 보기', prob:'주문 후 취소의 사유가 한 줄 말줄임(K4)', prop:'말줄임 사유에 DS 팝오버(PC 호버) / 바텀시트(모바일)', why:'\'확인 필요\' 항목에 대한 제안안'}
+};
+/* 디자인 노트(N) — ③ UX 제안 화면의 주요 결정. 현행 문제 코드 → 결정 → 근거 */
+var NINFO = {
+  N1:{t:'요약 바 + 원본 표', code:['A1','A2','C5'], dec:'목록은 하나만 두고, 위에 변경 요약 바와 접어 둔 \'고객 요청 원본(읽기 전용)\' 표를 둔다. 변경이 없으면 둘 다 숨긴다.', why:'같은 목록을 두 번 보여주면 화면이 길어지고 비교 거리가 멀다. 원본은 필요할 때만 펼친다.'},
+  N2:{t:'행 뱃지 · 전후 비교', code:['A2','A4'], dec:'바뀐 행 앞에 \'변경·삭제·추가\' 텍스트 뱃지, 행 안에 바뀐 값만 "전 → 후"(옵션은 이전 값 취소선).', why:'색에 의존하지 않고 글자로 변경을 읽게 한다. 흑백 인쇄·색각 차이에서도 구분된다.'},
+  N3:{t:'변경 색 caution', code:['A4'], dec:'변경 = caution(오렌지), 삭제 = danger, 추가 = info — 5장 상태칩 단계를 그대로 쓴다.', why:'초록은 주문확인중·주문완료·추가상품 칩과 겹쳐 \'정상\'으로 읽힌다. 실제 토큰은 Q11에서 확정.'},
+  N4:{t:'삭제 확인 모달 생략', code:['A1','B1'], dec:'[삭제]를 누르면 바로 삭제 상태(행 유지 + 취소선)로 바뀌고 [복원]이 생긴다.', why:'되돌릴 수 있는 동작에 확인 모달을 더하면 마찰만 늘어난다.'},
+  N5:{t:'옵션 모달 현재값 표시', code:['A6'], dec:'상품명 아래 현재 옵션·수량, 바꾼 상품이면 고객 주문 줄. 바꾼 항목은 굵게, 같은 값이면 [확인] 비활성.', why:'무엇을 바꾸는지 기억에 의존하지 않게 한다.'},
+  N6:{t:'사유 모달 금액 변화', code:['C2','C3'], dec:'변경 목록 아래 총 구입 금액·본인부담금의 전 → 후.', why:'수급자에게 동의를 받을 때 가장 먼저 확인하는 정보다.'},
+  N7:{t:'조회완료 배지', code:[], dec:'[조회] 옆 \'조회완료\' + 조회 일시.', why:'안내 문구가 주문 전 재확인을 요구하는데, 다시 조회할지 판단할 근거를 화면에 남긴다(진행 조건 — 요양정보 조회 필수).'}
+};
+function nn(id){ return '<span class="n-badge" role="button" tabindex="0" title="디자인 노트 '+id+' '+NINFO[id].t+'" onclick="event.stopPropagation();openN(\''+id+'\')">'+id+'</span>'; }
+function openN(id){ if(S.modal && S.modal.type !== 'nInfo'){ S.modal2 = {type:'nInfo', data:{n:id}}; drawModal2(); } else openModal('nInfo',{n:id}); }
+var STEPS = ['list','received','confirming','preparing','shipped','delivered','cancel'];
+var STEP_LABEL = {list:'리스트',received:'주문접수',confirming:'주문확인중',preparing:'상품준비',shipped:'출고완료',delivered:'배송완료',cancel:'주문취소'};
+var CHIP = {received:'c-received',confirming:'c-confirming',preparing:'c-preparing',shipped:'c-shipped',delivered:'c-delivered',cancel:'c-cancel'};
+var CANCEL_FULL = '관리자 상세화면에서 강제로 취소를 진행했습니다. (예시 문구 — 전체 사유는 개발 확인 필요)';
+var CANCEL_REASONS = ['수급자 단순변심','수급자 계약 불가 상태','수급자 연락 불가','수량 또는 옵션 변경','대대여로 진행'];
+var LIST_ROWS = [   /* [NO, 수급자, 요양인정번호, 휴대폰, 돌봄주문번호, 주문번호, 상태, 주문일시, 취소 시점] — 가짜 데이터 */
+  [102,'홍*동','L123456****','010-****-5678','DB6100710412203','-','received','2026-10-07 11:02'],
+  [101,'박*순','L252700****','010-****-1204','DB6100710375068','-','confirming','2026-10-07 10:38'],
+  [100,'박*순','L252700****','010-****-1204','DB6100709190077','-','cancel','2026-10-07 09:19','before'],
+  [99,'김*자','L232202****','010-****-3321','DB6100709012271','2026100709070312','preparing','2026-10-07 09:03'],
+  [98,'이*호','L198765****','010-****-7788','DB6100708355501','2026100708484163','shipped','2026-10-07 08:38'],
+  [97,'최*희','L334455****','010-****-9012','DB6100617162670','2026100617215516','delivered','2026-10-06 17:18'],
+  [96,'정*숙','L556677****','010-****-4455','DB6100616373553','2026100616402288','cancel','2026-10-06 16:49','after'],
+  [95,'한*수','L778899****','010-****-6677','DB6100902118420','2026090211305512','delivered','2026-09-02 11:05']
+];
+var STATUS_OPTS = ['전체','주문접수','주문확인중','상품준비','출고중','출고완료','배송완료','취소요청','주문취소'];   /* DS Status chip-Order 기준 */
+var KEY_OPTS = ['전체','수급자','요양인정번호','휴대폰번호','돌봄주문번호','주문번호'];
+var PERIODS = {'일주일':['2026-09-30','2026-10-07'],'이번달':['2026-10-01','2026-10-07'],'지난달':['2026-09-01','2026-09-30'],'3개월':['2026-07-07','2026-10-07'],'1년':['2025-10-07','2026-10-07']};
+var STATUS_TEXT = {received:'주문접수',confirming:'주문확인중',preparing:'상품준비',shipped:'출고완료',delivered:'배송완료',cancel:'주문취소'};
+var TEXT_STATUS = {}; Object.keys(STATUS_TEXT).forEach(function(k){ TEXT_STATUS[STATUS_TEXT[k]] = k; });
+
+/* ① 현행 — 단계별 캡처와 문제 핀 (x·y = 이미지 안 위치 %) */
+var SHOTS = {
+  'dev-01-received.jpg':'개발 · 주문접수(정보확인 전)', 'dev-02-confirming-added.jpg':'개발 · 주문확인중 + 추가상품',
+  'dev-03-delete-row-removed.jpg':'개발 · 삭제 후 행 즉시 제거', 'dev-04-delete-reason-20.jpg':'개발 · 상품 삭제 사유(20자)',
+  'dev-05-option-label.jpg':'개발 · 옵션 표기', 'dev-06-option-modal-empty.jpg':'개발 · 옵션 수정 모달(빈 상태)',
+  'dev-07-add-product-modal.jpg':'개발 · 상품 추가 모달', 'dev-08-same-product-twice.jpg':'개발 · 같은 상품 다른 옵션 중복 추가',
+  'dev-09-option-change-moves-down.jpg':'개발 · 옵션 변경 후 행이 맨 아래로', 'dev-10-delete-confirm.jpg':'개발 · 상품 삭제 확인',
+  'dev-11-delete-reason-scope.jpg':'개발 · 삭제 사유 목록 포함 범위', 'dev-12-cancel-reason.jpg':'개발 · 주문취소 사유',
+  'dev-13-list.jpg':'개발 · 리스트', 'dev-14-order-confirm-mo.png':'개발 · 주문하기 확인(모바일)',
+  'dev-15-delete-reason-added-then-deleted.png':'개발 · 삭제 사유에 추가 후 삭제 상품 포함', 'dev-16-preparing.png':'개발 · 상품준비',
+  'dev-17-delivered.png':'개발 · 배송완료', 'dev-18-care-info-not-allowed.png':'개발 · 요양정보조회 · 주문불가(PC·모바일)',
+  'dev-19-cancel.png':'개발 · 주문취소 (왼쪽 주문 전 취소 / 오른쪽 주문 후 취소)',
+  'publish-302-mo-390.jpg':'퍼블 302 · 모바일 390 (참고 — 경고 바·되돌리기는 개발 화면에 없음)'
+};
+var CUR = {
+  list:{ pc:['dev-13-list.jpg'], mo:[], pins:[
+    {id:'D1',k:'d',t:'구입/대여 탭 없음',d:'2026.08 대대여 연동에서 추가 예정 — 4-2 조항 기준'},
+    {id:'D2',k:'d',t:'타이틀 \'주문요청 관리\' + [사용방법 확인하기], 브레드크럼 \'돌봄앱 운영관리\'',d:'4-2와 다른 점 (4-2 메모)'},
+    {id:'D3',k:'d',t:'컬럼명 \'주문서번호\'',d:'4-2는 \'돌봄주문번호\''},
+    {id:'D4',k:'d',t:'모바일 리스트 미캡처',d:'② 화면 정책 적용에서 4-2 카드로 확인'} ]},
+  received:{ pc:['dev-01-received.jpg'], mo:[], pins:[
+    {id:'M1',k:'m',t:'모바일: 정보 표가 라벨/값 상하 스택',d:'정책 적용안 — 라벨 + 값 2열(3-1·3-11)',shot:'publish-302-mo-390.jpg'},
+    {id:'M2',k:'m',t:'모바일: 버튼이 주문정보 타이틀 오른쪽',d:'정책 적용안 — 페이지 타이틀 아래 한 줄(3-4 예외)',shot:'dev-14-order-confirm-mo.png',x:68,y:25.3} ]},
+  confirming:{ pc:['dev-02-confirming-added.jpg','dev-05-option-label.jpg','dev-09-option-change-moves-down.jpg','dev-03-delete-row-removed.jpg','dev-06-option-modal-empty.jpg','dev-07-add-product-modal.jpg','dev-08-same-product-twice.jpg','dev-10-delete-confirm.jpg','dev-04-delete-reason-20.jpg','dev-11-delete-reason-scope.jpg','dev-15-delete-reason-added-then-deleted.png','dev-12-cancel-reason.jpg','dev-18-care-info-not-allowed.png'],
+    mo:['dev-14-order-confirm-mo.png','publish-302-mo-390.jpg','dev-18-care-info-not-allowed.png'], pins:[
+    {id:'A5',t:'모든 행에 \'주문확인중\' 반복',d:'주문 전에는 정보 가치 없음',shot:'dev-02-confirming-added.jpg',x:17.5,y:56.3,plan:''},
+    {id:'A4',t:'\'추가상품\'이 상태칩 자리에 같은 초록',d:'상태와 변경 유형이 같은 모양. DS Status chip-Order의 \'추가상품\'은 회색(Neutral)',shot:'dev-02-confirming-added.jpg',x:17,y:78.6,plan:'scenario=4'},
+    {id:'B3',t:'수량은 스텝퍼 후 [변경]을 눌러야 반영',d:'미반영 체크 없음 — 바꾼 줄 알고 그대로 주문될 수 있음',shot:'dev-02-confirming-added.jpg',x:57.6,y:59.4,plan:'scenario=2'},
+    {id:'K2',k:'k',t:'부품: 유형(\'판매\') 미표시, 급여가 0원',d:'확인 필요',shot:'dev-02-confirming-added.jpg',x:84.5,y:80.3},
+    {id:'A2',t:'옵션·수량 변경 후 행에 표시 없음',d:'수급자 요청분과 사업소 변경분 구분 불가',shot:'dev-02-confirming-added.jpg',plan:'scenario=2'},
+    {id:'K1',k:'k',t:'옵션이 길면 \'| 수정 >\'이 다음 줄로',d:'확인 필요 — 구분선 \'|\'가 줄 앞에 남음',shot:'dev-05-option-label.jpg'},
+    {id:'A3',t:'옵션 변경한 행이 목록 맨 아래로 이동',d:'추가 상품처럼 보이고 순서가 깨짐 (의도 여부 확인 필요)',shot:'dev-09-option-change-moves-down.jpg',plan:'scenario=1'},
+    {id:'A6',t:'옵션 수정 모달이 빈 상태로 열림',d:'현재 옵션을 기억해야 수정 가능',shot:'dev-06-option-modal-empty.jpg',plan:'scenario=1'},
+    {id:'A1',t:'삭제하면 행이 즉시 사라짐',d:'무엇을 뺐는지 화면에서 확인 불가',shot:'dev-03-delete-row-removed.jpg',plan:'scenario=3'},
+    {id:'B1',t:'변경·추가·삭제가 즉시 서버 저장',d:'목록 이동 후 재진입해도 유지 — 주문하기 전인데도 실수 복구 불가',shot:'dev-11-delete-reason-scope.jpg',plan:'scenario=3'},
+    {id:'C1',t:'삭제 사유 목록에 옵션 변경 전 옵션·추가 후 삭제 상품까지 포함',d:'실제로 없던 \'삭제\'가 안내됨',shot:'dev-15-delete-reason-added-then-deleted.png',plan:'scenario=6'},
+    {id:'C3',t:'삭제 사유 20자 제한, 동의 확인 장치 없음',d:'맥락 전달 불가',shot:'dev-04-delete-reason-20.jpg',plan:'scenario=6'},
+    {id:'C4',t:'확인 모달 "수량이나 옵션을 바꿀 수 없으니…"',d:'상품 추가·삭제 언급 없음',shot:'dev-14-order-confirm-mo.png',x:48,y:46.7,plan:'scenario=6'},
+    {id:'M1',k:'m',t:'모바일: 정보 표가 라벨/값 상하 스택, 행마다 회색 라벨 바',d:'정책 적용안 — 라벨 + 값 2열(3-1·3-11)',shot:'publish-302-mo-390.jpg'},
+    {id:'M2',k:'m',t:'모바일: 주문취소/주문하기가 주문정보 타이틀 오른쪽',d:'정책 적용안 — 페이지 타이틀 아래 한 줄, 폭 나눔, MD 48(3-4 예외)',shot:'dev-14-order-confirm-mo.png',x:76,y:25.3},
+    {id:'M3',k:'m',t:'모바일: 긴 상태칩 내부 줄바꿈',d:'정책 적용안 — 칩 한 줄 유지(5장)',shot:'publish-302-mo-390.jpg'},
+    {id:'M4',k:'m',t:'모바일: 상품 행이 세로 나열, 버튼 좌측 단독',d:'정책 적용안 — 4-3 상품 카드 구조',shot:'publish-302-mo-390.jpg'},
+    {id:'M5',k:'m',t:'모바일: 입력이 있는 팝업도 md 모달',d:'정책 적용안 — 상품 추가·삭제 사유·주문취소는 바텀시트, 옵션 수정은 모달(3-3)',shot:'dev-14-order-confirm-mo.png'} ]},
+  preparing:{ pc:['dev-16-preparing.png'], mo:[], pins:[
+    {id:'C5',t:'상품준비 이후에는 최종 상품만 표시',d:'사후 변경 확인 불가 → 문의·분쟁 근거 없음',shot:'dev-16-preparing.png',x:15,y:45,plan:'scenario=6'} ]},
+  shipped:{ pc:[], mo:[], pins:[
+    {id:'K3',k:'k',t:'출고완료 화면 미캡처',d:'확인 필요 — 칩은 DS BrandSub'} ]},
+  delivered:{ pc:['dev-17-delivered.png'], mo:[], pins:[
+    {id:'C5',t:'배송완료에도 최종 상품만 표시',d:'사후 변경 확인 불가',shot:'dev-17-delivered.png',plan:'scenario=6'} ]},
+  cancel:{ pc:['dev-19-cancel.png'], mo:[], pins:[
+    {id:'K4',k:'k',t:'주문 후 취소: 상품 행의 취소 사유가 한 줄 말줄임(…)',d:'확인 필요 — 전체 사유를 어디서 보는지',shot:'dev-19-cancel.png',x:61.5,y:36.6},
+    {id:'D5',k:'d',t:'취소 후에도 수급자·배송정보 마스킹, 금액은 급여가(정가)만',d:'현행 — 주문 전·후 취소 모두 같음. 상단 버튼 없음',shot:'dev-19-cancel.png',x:56,y:22} ]}
+};
+
+/* =====================================================================
+   상태
+   ===================================================================== */
+var S = {
+  view:'plan', step:'confirming', example:'option', pin:null, shot:null, cancelVar:'before', ux:false, origOpen:false,
+  lf:{period:'3개월', status:'전체', key:'전체', q:'', open:true, openSel:null, applied:{period:'3개월', status:'전체', key:'전체', q:''}},   /* 리스트 검색 */
+  pol:null,   /* ② 현행 동작 */
+  plan:null,  /* ③ 개선안 */
+  modal:null
+};
+var uidSeq = 1;
+function mkItem(r){ return {uid:uidSeq++, pid:r[0], opt:r[1].slice(), qty:r[2], pend:r[2], added:!!r[3], deleted:false}; }
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+function newPol(ex){ return {items:SAMPLES[ex].map(mkItem), delLog:[], moved:{}, lookedUp:false, ordered:false, finalItems:null, editDv:false, acc:{}, msg:''}; }
+function newPlan(){ var it = SAMPLES.option.map(mkItem); return {items:it, orig:clone(it), lookedUp:false, ordered:false, finalItems:null, reason:'', changes:[], editDv:false, acc:{}, histOpen:true}; }
+S.pol = newPol('option'); S.plan = newPlan();
+function cur(){ return S.view === 'plan' ? S.plan : S.pol; }
+function uxOn(){ return S.view === 'policy' || (S.view === 'plan' && S.ux); }   /* U 제안 표시: ② 항상, ③은 [UX 제안 적용] ON */
+function planUx(){ return S.view === 'plan' && S.ux; }
+function uMark(id){ return S.view === 'plan' && !S.ux ? u(id) : ''; }   /* 기획서 원안 화면: 제안 내용은 적용하지 않고 위치만 U 배지로 표시 */
+/* ③ 옵션 표기 — 기획서 원안: 값만 ' / ' (Figma 28658:65) / UX 제안(Q9): 항목명 · 값 */
+function optShow(pid, opt, html){
+  if(!planUx()) return esc(opt.join(' / '));
+  var p = CATALOG[pid];
+  return p.opts.map(function(o,i){ return html ? '<span class="opair"><span class="ok">'+o.k+'</span> <span class="ov">'+esc(opt[i])+'</span></span>' : o.k+' '+opt[i]; }).join(html ? '<span class="ok">·</span>' : ' · ');
+}
+
+/* =====================================================================
+   유틸
+   ===================================================================== */
+var ICON = {
+  chev:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  up:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  right:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  back:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  close:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  plus:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  minus:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  info:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor"/></svg>',
+  search:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4.5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  cal:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9H21M8 3V6M16 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  check:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5 9-10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  ok:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#166534"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+};
+function won(n){ return n.toLocaleString('ko-KR') + '원'; }
+function isMO(){ return document.getElementById('frame').getBoundingClientRect().width <= 1024; }
+function esc(t){ return String(t).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function q(n){ return '<span class="q-badge" role="button" tabindex="0" title="'+(QINFO[n]?n+' '+QINFO[n].t+' — 눌러서 보기':n)+'" onclick="event.stopPropagation();openQ(\''+n+'\')">'+n+'</span>'; }
+function openQ(n){ openModal('qInfo',{q:n}); }
+function u(n){ return '<span class="u-badge" role="button" tabindex="0" title="'+(UINFO[n]?n+' '+UINFO[n].t+' — 눌러서 보기':n)+'" onclick="event.stopPropagation();openU(\''+n+'\')">'+n+'</span>'; }
+function openU(n){ if(S.modal && S.modal.type !== 'uInfo'){ S.modal2 = {type:'uInfo', data:{u:n}}; drawModal2(); } else openModal('uInfo',{u:n}); }
+function findQ(n){ var els = document.querySelectorAll('#page .q-badge'), hit = null;
+  els.forEach(function(e){ if(e.textContent === n){ e.classList.add('q-hl'); if(!hit) hit = e; setTimeout(function(){ e.classList.remove('q-hl'); }, 2400); } });
+  if(hit) hit.scrollIntoView({block:'center', behavior:'smooth'}); else showToast(n+'은 지금 화면에 없습니다 — 해당 시나리오나 ⑥ 주문하기 뒤 상품준비에서 보입니다'); }
+function note(t){ return '<span class="note-badge">'+(t||'확인 필요')+'</span>'; }
+function optStr(it){ return it.opt.join('/'); }               /* 현행 표기: 옵션1/옵션2 (공백 없음) */
+function optPlan(it){ return optShow(it.pid, it.opt, true); }
+function optPlanOld(it){                                        /* (이전) 항목명 표기 */
+  var p = CATALOG[it.pid];
+  return p.opts.map(function(o,i){ return '<span class="opair"><span class="ok">'+o.k+'</span> <span class="ov">'+esc(it.opt[i])+'</span></span>'; }).join('<span class="ok">·</span>');
+}
+function optPlain(pid, opt){ var p = CATALOG[pid]; return p.opts.map(function(o,i){ return o.k+' '+opt[i]; }).join(' · '); }
+function amount(it){ return CATALOG[it.pid].price * it.qty; }
+function findItem(st, uid){ for(var i=0;i<st.items.length;i++){ if(st.items[i].uid === uid) return st.items[i]; } return null; }
+
+/* =====================================================================
+   렌더 — 컨트롤
+   ===================================================================== */
+function syncControls(){
+  document.body.classList.toggle('v-plan', S.view === 'plan');
+  document.body.classList.toggle('v-cur', S.view === 'current');
+  document.body.classList.toggle('ux-on', planUx());
+  document.querySelectorAll('#seg-ux button').forEach(function(b){ b.classList.toggle('active', (b.getAttribute('data-ux') === '1') === S.ux); });
+  document.querySelectorAll('#seg-view button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-v') === S.view); });
+  document.querySelectorAll('#seg-step button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-s') === S.step); });
+  document.querySelectorAll('#seg-example button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-e') === S.example); });
+  document.querySelectorAll('#seg-cancel button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-c') === S.cancelVar); });
+  var showEx = S.view === 'policy' && S.step === 'confirming', showCancel = S.view !== 'current' && S.step === 'cancel';
+  document.getElementById('row-example').style.display = showEx ? '' : 'none';
+  document.getElementById('row-cancel').style.display = showCancel ? '' : 'none';
+  var m = [];
+  if(S.view !== 'current' && S.step === 'confirming'){
+    m = S.view === 'plan'
+      ? [['요양정보 조회','lookup'],['옵션 변경','optEdit'],['상품 추가','add'],['주문 변경 사유','changeReason'],['주문하기 확인','confirmNoChange'],['변경불가','dupNotAllowed'],['나가기 확인','leave'],['주문취소','cancel'],['주문불가','notAllowed']]
+      : [['요양정보 조회','lookup'],['옵션 수정','optEdit'],['상품 추가','add'],['상품 삭제','del'],['상품 삭제 사유','delReason'],['주문하기 확인','confirm'],['주문취소','cancel'],['주문불가','notAllowed']];
+  } else if(S.view !== 'current' && S.step === 'received'){ m = [['주문취소','cancel']]; }
+  else if(S.view !== 'current' && S.step === 'list'){ m = [['상태 선택 시트(모바일)','lfStatus'],['검색 시트(모바일)','lfSearch']]; }
+  document.getElementById('modal-btns').innerHTML = m.map(function(x){ return '<button class="pop" onclick="openModal(\''+x[1]+'\',{demo:true})">'+x[0]+'</button>'; }).join('');
+  document.getElementById('row-modal').style.display = m.length ? '' : 'none';
+  document.getElementById('ctx-wrap').style.display = (showEx || showCancel || m.length) ? '' : 'none';
+  updateNow(); updateLists();
+}
+function updateNow(){
+  var el = document.getElementById('ctrl-now'); if(!el) return;
+  var w = Math.round(document.getElementById('frame').getBoundingClientRect().width);
+  var vlabel = {current:'① 현행', policy:'② 화면 정책 적용', plan:'③ + 기획 개선안 (확인 중)'}[S.view];
+  var step = STEP_LABEL[S.step] + (S.step === 'cancel' && S.view !== 'current' ? ' · ' + (S.cancelVar === 'after' ? '주문 후 취소' : '주문 전 취소') : '');
+  el.innerHTML = '<span>지금 보는 화면</span><span class="tag '+(S.view==='plan'?'plan':(S.view==='current'?'cur':''))+'">'+vlabel+'</span>'+
+    (S.view === 'plan' ? '<span class="tag '+(S.ux?'':'cur')+'">'+(S.ux ? 'UX 제안 적용' : '기획서 원안')+'</span>' : '')+
+    '<b>'+step+'</b><span>·</span><b>'+w+'px</b><span>'+(w > 1024 ? 'PC (1025px 이상)' : '모바일 (1024px 이하)')+'</span>';
+}
+
+/* =====================================================================
+   렌더 — 페이지
+   ===================================================================== */
+function render(){
+  syncControls();
+  var page = document.getElementById('page'), h = '';
+  if(S.view === 'current') h = renderCurrent();
+  else if(S.step === 'list') h = (S.view === 'plan' ? planFallback() : '') + renderList();
+  else {
+    var planHere = S.view === 'plan' && (S.step === 'confirming' || (S.step === 'preparing' && S.plan.ordered));
+    if(S.view === 'plan' && !planHere) h += planFallback();
+    if(planHere) h += '<div class="view-banner">'+ICON.info+'<span>개선안 — 기획 확인 중. 비주얼은 Figma 디자인 후 확정. Q 배지는 미결 항목 (2026.10 운영 건 IS-1276 · 정책 조항 아님)</span></div>';
+    h += renderDetail(planHere);
+  }
+  page.innerHTML = h;
+  if(S.modal) drawModal();
+}
+function planFallback(){
+  return '<div class="view-banner">'+ICON.info+'<span>③ 기획 개선안은 <b>주문확인중</b>(과 ⑥ 주문하기 뒤 상품준비)에만 있습니다 — 이 단계는 ② 화면 정책 적용으로 보여줍니다.</span></div>';
+}
+
+/* ---------- 리스트 (4-2 · 3-7 검색 동작) ---------- */
+function lfRows(){
+  var a = S.lf.applied, pr = PERIODS[a.period] || PERIODS['3개월'];
+  return LIST_ROWS.filter(function(r){
+    var d = r[7].slice(0,10);
+    if(a.period !== '직접선택' && (d < pr[0] || d > pr[1])) return false;
+    if(a.status !== '전체' && STATUS_TEXT[r[6]] !== a.status) return false;
+    if(a.q){
+      var idx = {'수급자':[1],'요양인정번호':[2],'휴대폰번호':[3],'돌봄주문번호':[4],'주문번호':[5]}[a.key] || [1,2,3,4,5];
+      if(!idx.some(function(i){ return r[i].toLowerCase().indexOf(a.q.toLowerCase()) >= 0; })) return false;
+    }
+    return true;
+  });
+}
+var TRI_UP = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-7 6 7z" fill="currentColor"/></svg>';
+var TRI_DN = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 7 6-7z" fill="currentColor"/></svg>';
+function lfSelect(key, opts){
+  var v = S.lf[key], open = S.lf.openSel === key;
+  return '<span class="selwrap"><button type="button" class="s-field'+(open?' open':'')+'" onclick="lfToggle(\''+key+'\')"><span>'+v+'</span>'+ICON.chev+'</button>'+
+    (open ? '<div class="opt-panel">'+opts.map(function(o){ return '<button class="opt-row'+(o===v?' sel':'')+'" onclick="lfPick(\''+key+'\',\''+o+'\')"><span>'+o+'</span>'+(o===v?ICON.check:'')+'</button>'; }).join('')+'</div>' : '')+'</span>';
+}
+function renderList(){
+  var lf = S.lf, a = lf.applied, rows = lfRows(), pr = PERIODS[lf.period] || PERIODS['3개월'];
+  var trs = rows.length ? rows.map(function(r){
+    return '<tr onclick="goRow(\''+r[6]+'\',\''+(r[8]||'')+'\')"><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td>'+
+      (r[5] === '-' ? '-' : '<a href="javascript:void(0)" onclick="event.stopPropagation()"><u>'+r[5]+'</u></a>')+'</td><td><span class="chip sm '+CHIP[r[6]]+'">'+STATUS_TEXT[r[6]]+'</span></td><td>'+r[7]+'</td></tr>';
+  }).join('') : '<tr class="empty-row"><td colspan="8">검색 조건에 맞는 주문 요청 내역이 없습니다.</td></tr>';
+  var cards = rows.length ? rows.map(function(r){
+    return '<div class="ocard" onclick="goRow(\''+r[6]+'\',\''+(r[8]||'')+'\')"><div class="top"><span class="chip sm '+CHIP[r[6]]+'">'+STATUS_TEXT[r[6]]+'</span><span class="date">'+r[7]+'</span></div>'+
+      '<div class="name">'+r[1]+' · '+r[2]+'</div><div class="sub">돌봄주문 : '+r[4]+'</div></div>';
+  }).join('') : '<div class="empty-list">검색 조건에 맞는 주문 요청 내역이 없습니다.</div>';
+  var tags = [];
+  if(a.period !== '3개월') tags.push(['period', a.period]);
+  if(a.status !== '전체') tags.push(['status', a.status]);
+  if(a.q) tags.push(['q', (a.key !== '전체' ? a.key+' : ' : '')+a.q]);
+  var small = function(svg){ return svg.replace('width="24" height="24"','width="20" height="20"'); };
+  return '<div class="pc-only">'+
+      '<div class="l-head"><div class="l-title">주문요청관리</div><div class="breadcrumb">돌봄앱 운영관리 '+ICON.right+' 주문요청관리</div></div>'+
+      '<div class="l-tabs"><div class="l-tab active">구입 주문</div><div class="l-tab">대여 주문</div></div>'+
+      '<div class="s-panel">'+
+        '<button class="s-fold" onclick="S.lf.open=!S.lf.open;S.lf.openSel=null;render()">'+(lf.open ? '접기 '+TRI_UP : '상세 '+TRI_DN)+'</button>'+
+        '<div class="s-row h64"><span class="s-label">주문일</span><span class="s-field">'+pr[0]+' '+ICON.cal+'</span><span>~</span><span class="s-field">'+pr[1]+' '+ICON.cal+'</span>'+
+          '<span class="segm">'+['3개월','일주일','이번달','지난달','1년'].map(function(x){ return '<button class="'+(lf.period===x?'on':'')+'" onclick="S.lf.period=\''+x+'\';render()">'+x+'</button>'; }).join('')+'</span></div>'+
+        (lf.open ?
+        '<div class="s-row"><span class="s-label">주문상태</span>'+lfSelect('status', STATUS_OPTS)+'<span class="s-help">선택된 상태값이 포함된 모든 주문건이 검색됩니다.</span></div>'+
+        '<div class="s-row h64"><span class="s-label">검색어</span>'+lfSelect('key', KEY_OPTS)+'<input class="s-input" placeholder="검색어 입력" value="'+esc(lf.q)+'" oninput="S.lf.q=this.value" onkeydown="if(event.key===\'Enter\')lfApply()"></div>' : '')+
+        '<div class="s-btns"><button class="btn btn-sm btn-outline" onclick="lfReset()">초기화</button><button class="btn btn-sm btn-filled" onclick="lfApply()">검색</button></div>'+
+      '</div>'+
+      '<div class="tbl"><table><thead><tr><th>NO</th><th>수급자</th><th>요양인정번호</th><th>휴대폰번호</th><th>돌봄주문번호</th><th>주문번호</th><th>주문상태</th><th>주문일시</th></tr></thead><tbody>'+trs+'</tbody></table></div>'+
+      '<div class="pager"><span class="pg arrow">'+ICON.back+'</span>'+(rows.length?'<span class="pg on">1</span>':'')+'<span class="pg arrow" style="transform:scaleX(-1)">'+ICON.back+'</span></div>'+
+    '</div>'+
+    '<div class="mo-only">'+
+      '<div class="mo-title">주문요청관리</div>'+
+      '<div class="mo-toggle-wrap"><div class="mo-toggle"><div class="knob"></div><span class="on">구입</span><span>대여</span></div></div>'+
+      '<div class="chip-row"><button class="f-chip'+(a.status!=='전체'?' on':'')+'" onclick="openModal(\'lfStatus\')">'+(a.status==='전체'?'상태 : 전체':a.status)+' '+small(ICON.chev)+'</button>'+
+        '<button class="f-chip search" onclick="openModal(\'lfSearch\')">'+small(ICON.search)+' 검색</button></div>'+
+      (tags.length ? '<div class="tag-row">'+tags.map(function(t){ return '<button class="atag" onclick="lfClear(\''+t[0]+'\')">'+esc(t[1])+' '+small(ICON.close)+'</button>'; }).join('')+
+        '<button class="tag-reset" onclick="lfReset()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>초기화</button></div>' : '')+
+      '<div class="count">전체 '+rows.length+'건</div>'+
+      '<div class="ocards">'+cards+'</div>'+
+      (rows.length ? '<div class="cpager"><span class="ar">'+ICON.back+'</span><span class="txt"><b>1</b><span>/</span><span>1</span></span><span class="ar" style="transform:scaleX(-1)">'+ICON.back+'</span></div>' : '')+
+    '</div>';
+}
+function lfToggle(k){ S.lf.openSel = S.lf.openSel === k ? null : k; render(); }
+function lfPick(k, v){ S.lf[k] = v; S.lf.openSel = null; render(); }
+function lfApplyKeep(){ var l = S.lf; l.applied = {period:l.period, status:l.status, key:l.key, q:(l.q||'').trim()}; render(); }
+function lfApply(){ var l = S.lf; l.openSel = null; l.applied = {period:l.period, status:l.status, key:l.key, q:l.q.trim()}; render(); }
+function lfReset(){ var l = S.lf; l.period = '3개월'; l.status = '전체'; l.key = '전체'; l.q = ''; l.openSel = null; lfApply(); }
+function lfClear(k){ var l = S.lf;
+  if(k === 'period') l.period = '3개월'; if(k === 'status') l.status = '전체'; if(k === 'q'){ l.q = ''; l.key = '전체'; }
+  lfApply(); }
+function goRow(st, cv){
+  S.step = st; if(st === 'cancel') S.cancelVar = cv || 'before';
+  if(S.view === 'plan' && st !== 'confirming') S.view = 'policy';
+  render(); scrollTop();
+}
+
+/* ---------- 상세 ---------- */
+function renderDetail(plan){
+  var st = cur(), step = S.step;
+  var pre = step === 'received', conf = step === 'confirming', after = ['preparing','shipped','delivered'].indexOf(step) >= 0;
+  var cancel = step === 'cancel', cAfter = cancel && S.cancelVar === 'after';
+  var masked = pre || cancel;                     /* 현행: 취소 후에도 마스킹(Figma 12032:10031) */
+  var h = '';
+  /* 타이틀 + 버튼 */
+  var btns = '', bubble = '';
+  if(pre){ btns = '<button class="btn btn-outline" onclick="openModal(\'cancel\')">주문취소</button><button class="btn btn-filled" onclick="confirmInfo()">주문정보확인</button>';
+           bubble = '<div class="bubble">주문정보 확인 버튼을 눌러야 정보를 확인할 수 있습니다.</div>'; }
+  if(conf){ btns = '<button class="btn btn-outline" onclick="openModal(\'cancel\')">주문취소</button><button class="btn btn-filled" onclick="startOrder()">주문하기</button>';
+            if(!st.lookedUp) bubble = '<div class="bubble">요양정보를 조회해야 주문이 가능합니다.</div>'; }
+  h += '<div class="d-head"><div><div class="d-title-row"><button class="back-btn" aria-label="뒤로" onclick="goList()">'+ICON.back+'</button><span class="d-title">주문 상세보기</span></div>'+
+       '<div class="breadcrumb">돌봄앱 운영관리 '+ICON.right+' 주문요청 관리 '+ICON.right+' 주문 상세보기</div></div>'+
+       (btns ? '<div class="d-actions">'+bubble+'<div class="btns">'+btns+'</div></div>' : '')+'</div>';
+  if(st.msg && !plan){ h += '<div class="result-box">'+st.msg+'</div>'; }
+  if(after && step === 'preparing' && st.ordered){ h += '<div class="result-box">구입 주문완료 결과 화면 '+note()+' — 대여(4-3)는 완료 안내 박스가 있으나 구입은 미캡처. 여기서는 바로 상품준비로 보여줍니다.</div>'; }
+
+  /* 주문정보 */
+  var orderNo = (after || cAfter) ? '<a href="javascript:void(0)"><u>2026100710412033</u></a> (2026-10-07 10:41:20)' : '- -';
+  h += sec('order','주문정보', st,
+    '<div class="info-grid">'+
+      tr('돌봄주문번호','DB6100710375068')+tr('주문정보확인','2026-10-07 09:03:08')+
+      tr('주문번호',orderNo)+tr('주문상태','<span class="chip '+CHIP[step]+'">'+STEP_LABEL[step]+'</span>')+
+    '</div>');
+  /* 수급자 정보 */
+  var known = after || (conf && st.lookedUp);      /* 현행: 주문확인중은 요양정보 조회 전 성별·나이·요양인정번호 '-' (Figma 12030:9930) */
+  var lookup = conf ? ' <button class="mini-btn" onclick="openModal(\'lookup\')">조회</button>'+(st.lookedUp && uxOn() ? ' <span class="done-tag">조회완료</span><span class="done-at">'+st.lookupAt+'</span>'+u('U1')+(planUx() ? nn('N7') : '') : uMark('U1')) : (after ? ' <button class="mini-btn">조회</button>' : '');
+  h += sec('recipient','수급자 정보', st,
+    '<div class="info-grid">'+
+      tr('수급자', masked ? '홍*동 (-, -)' : (known ? '홍길동 (여, 80세)' : '홍길동 (-, -)'))+tr('요양인정번호', masked ? '- -' : (known ? 'L0000000000' : '-')+lookup)+
+      tr('연락처', masked ? '010-****-0000' : '010-0000-0000')+tr('보호자', masked ? '김*호 (- / 자녀)' : '김보호 (010-0000-0000 / 자녀)')+
+    '</div>'+
+    '<div class="notice">※ 보호자(수급자)의 주문요청 시점과 이로움에 주문 시점 사이에 수급자의 계약 조건이 변경될 수 있습니다. <u>주문 전, 반드시 요양정보를 다시 확인하시기 바랍니다.</u></div>');
+  /* 주문상품 */
+  h += '<div class="sec"><div class="sec-head"><div class="sec-title">주문상품</div>'+
+    (plan && conf && planUx() && planChanged() ? '<button class="text-btn" onclick="resetPlan(false)">최초 주문으로 되돌리기'+q('Q20')+'</button>' : '')+'</div>';
+  if(plan && conf) h += renderPlanProducts();
+  else if(plan && step === 'preparing') h += renderFinal(st.finalItems, step, true);
+  else if(conf) h += renderPolProducts();
+  else if(pre) h += renderReceived();
+  else if(cancel) h += renderCancel(cAfter);
+  else h += renderFinal(st.ordered ? st.finalItems : null, step, false);
+  h += '</div>';
+  /* 배송정보 */
+  h += renderDelivery(st, masked, conf);
+  h += '<div class="list-btn-wrap"><button class="btn btn-filled" onclick="goList()">주문목록</button>'+(plan && conf && planChanged() ? (planUx() ? u('U5-5') : uMark('U5-5')) : '')+'</div>';
+  return h;
+}
+function sec(key, title, st, body){
+  var closed = st.acc[key];
+  return '<div class="sec'+(closed?' collapsed':'')+'"><div class="sec-head"><div class="sec-title">'+title+'</div>'+
+    '<button class="acc-btn" aria-label="'+title+' 접기/펼치기" aria-expanded="'+(!closed)+'" onclick="toggleAcc(\''+key+'\')">'+ICON.up+'</button></div>'+
+    '<div class="sec-body">'+body+'</div></div>';
+}
+function tr(k, v){ return '<div class="text-row"><div class="th">'+k+'</div><div class="td">'+v+'</div></div>'; }
+function toggleAcc(k){ var st = cur(); st.acc[k] = !st.acc[k]; render(); }
+
+function priceBox(it, onlyList){
+  var a = amount(it);
+  return '<div class="pprice"><div class="price-row"><span class="label">급여가(정가)</span><span class="value">'+won(a)+'</span></div>'+
+    (onlyList ? '' : '<div class="price-row danger"><span class="label">본인부담금('+rateLabel()+')</span><span class="value">'+won(Math.round(a*rate()))+'</span></div>')+'</div>';
+}
+function thumb(it){ return '<div class="thumb">'+CATALOG[it.pid].img+'</div>'; }
+function lookupWarn(it){    /* U5-1 급여불가 품목 */
+  if(!cur().lookedUp || S.step !== 'confirming' || !uxOn()) return '';
+  var si = saleItem(CATALOG[it.pid].cat);
+  return si && si[3] === '급여불가' ? '<div class="warn-line">요양정보상 급여불가 품목입니다'+u('U5-1')+'</div>' : '';
+}
+function qtyWarn(it, q){    /* U5-2 사용한도 초과 — 막지 않음 */
+  if(!cur().lookedUp || S.step !== 'confirming' || !uxOn()) return '';
+  var si = saleItem(CATALOG[it.pid].cat);
+  return si && typeof si[3] === 'number' && q > si[3] ? '<div class="warn-line sm">판매가능 '+si[3]+'개를 넘었습니다 '+note('기획 확인 필요')+u('U5-2')+'</div>' : '';
+}
+
+/* 주문접수: 상태칩 · 상품명 · 판매 · 수량 N개 · 급여가(정가)만 */
+function renderReceived(){
+  var items = SAMPLES.basic.map(mkItem);
+  return '<div>'+items.map(function(it){
+    return '<div class="prow"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips"><span class="chip c-received">주문접수</span></div>'+
+      '<div class="pname">'+CATALOG[it.pid].name+'</div></div></div><div class="ptype">구입</div>'+
+      '<div class="pqty"><span class="lbl">수량</span> <b>'+it.qty+'개</b></div>'+priceBox(it,true)+'<div class="pact"></div></div>';
+  }).join('')+'</div>';
+}
+
+/* ② 주문확인중 — 현행 동작(즉시 저장·행 즉시 제거·옵션 변경 시 맨 아래) + 화면 정책 */
+function renderPolProducts(){
+  var st = S.pol;
+  var rows = st.items.map(function(it){
+    var p = CATALOG[it.pid];
+    var chip = it.added ? '<span class="chip c-added">추가상품</span>' : '<span class="chip c-confirming">주문확인중</span>';
+    var opt = p.opts.length ? '<div class="popt"><span>'+esc(optStr(it))+'</span><span class="sep">|</span><button class="text-btn" onclick="openModal(\'optEdit\',{uid:'+it.uid+'})">수정 '+ICON.right+'</button>'+
+      (optStr(it).length > 14 ? note('줄바꿈 확인 필요') : '')+'</div>' : '';
+    var notes = '';
+    if(st.moved[it.uid]) notes += '<div class="row-note">'+note()+' 옵션 변경 후 이 행이 목록 맨 아래로 이동(현행 동작, 의도 여부 확인 중)</div>';
+    if(p.part) notes += '<div class="row-note">'+note()+' 부품: 급여가 0원 (현행은 유형도 미표시)</div>';
+    return '<div class="prow" data-uid="'+it.uid+'"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips">'+chip+'</div>'+
+      '<div class="pname">'+p.name+'</div>'+opt+notes+lookupWarn(it)+'</div></div>'+
+      '<div class="ptype">구입</div>'+
+      '<div class="pqty"><span class="stepper"><button aria-label="수량 빼기" '+(it.pend<=1?'disabled':'')+' onclick="polPend('+it.uid+',-1)">'+ICON.minus+'</button><span>'+it.pend+'</span><button aria-label="수량 더하기" onclick="polPend('+it.uid+',1)">'+ICON.plus+'</button></span>'+
+        '<button class="btn btn-sm btn-gray" onclick="polQty('+it.uid+')">변경</button>'+qtyWarn(it, it.pend)+'</div>'+
+      priceBox(it)+
+      '<div class="pact"><button class="btn btn-sm btn-gray" onclick="openModal(\'del\',{uid:'+it.uid+'})">삭제</button></div></div>';
+  }).join('');
+  return '<div>'+rows+'</div><div class="add-row"><button class="text-btn" style="font-size:18px" onclick="openModal(\'add\')">상품추가 '+ICON.plus+'</button></div>'+
+    totalBar(st.items, '총 판매 금액');
+}
+function totalBar(items, label, extra, onlyList){
+  var sum = 0; items.forEach(function(it){ if(!it.deleted) sum += amount(it); });
+  return '<div class="total-bar"><div class="ttl">'+label+(extra||'')+'</div><div class="rows"><div class="row"><span class="label">급여가(정가)</span><span class="value">'+won(sum)+'</span></div>'+
+    (onlyList ? '' : '<div class="row danger"><span class="label">본인부담금('+rateLabel()+')'+(S.step === 'confirming' && cur().lookedUp ? (uxOn() ? u('U5-1') : uMark('U5-1')) : '')+'</span><span class="value">'+won(Math.round(sum*rate()))+'</span></div>')+'</div></div>';
+}
+/* 주문취소 — 주문 전 취소 / 주문 후 취소 (현행: Figma 12032:10031) */
+function renderCancel(afterOrder){
+  var items = (afterOrder ? [['lp',['연베이지','L(100)'],1],['ash',[],1],['hd',[],1]] : [['sock',['회색','M(260~280mm)'],1]]).map(mkItem);
+  var rows = items.map(function(it, i){
+    var p = CATALOG[it.pid];
+    var reason = afterOrder ? '<span class="cancel-reason"><span class="rpop" tabindex="0" onclick="if(isMO())openModal(\'reasonSheet\')">관리자 상세화면에서 강제로 취소를 …'+
+      '<span class="pop" role="tooltip"><b>취소 사유</b>'+CANCEL_FULL+'</span></span>'+(i === 0 ? note('전체 사유 노출 확인 필요')+u('U5-6') : '')+'</span>' : '';
+    return '<div class="prow"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips"><span class="chip c-cancel">주문취소</span>'+reason+'</div>'+
+      '<div class="pname">'+p.name+'</div>'+(p.opts.length ? '<div class="popt"><span>'+esc(optStr(it))+'</span></div>' : '')+'</div></div>'+
+      '<div class="ptype">구입</div><div class="pqty"><span class="lbl">수량</span> <b>'+it.qty+'개</b></div>'+priceBox(it,true)+'<div class="pact"></div></div>';
+  }).join('');
+  return '<div>'+rows+'</div>'+totalBar(items, '총 판매 금액', '', true);
+}
+
+/* 상품준비 이후 — 최종 상품만 (조회 전용) */
+function renderFinal(items, step, plan){
+  if(!items) items = SAMPLES.option.map(mkItem);
+  var rows = items.map(function(it){
+    var p = CATALOG[it.pid];
+    var opt = p.opts.length ? '<div class="popt">'+(plan ? optPlan(it) : esc(optStr(it)))+'</div>' : '';   /* ③는 원안/제안 표기 */
+    return '<div class="prow"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips"><span class="chip '+CHIP[step]+'">'+STEP_LABEL[step]+'</span>'+(plan ? q('Q7') : '')+'</div>'+
+      '<div class="pname">'+p.name+'</div>'+opt+'</div></div><div class="ptype">구입</div>'+
+      '<div class="pqty"><span class="lbl">수량</span> <b>'+it.qty+'개</b></div>'+priceBox(it)+'<div class="pact"></div></div>';
+  }).join('');
+  var h = '<div>'+rows+'</div>'+totalBar(items, plan ? '총 구입 금액' : '총 판매 금액', plan ? q('Q10') : '');
+  if(step === 'shipped') h += '<div class="row-note" style="margin-top:12px">'+note()+' 출고완료 화면은 미캡처 — 칩은 DS BrandSub</div>';
+  if(plan && planUx()){
+    var chs = S.plan.changes;
+    h += chs.length ? '<div class="hist-ux"><div class="hist-ttl">주문 변경 내역</div>'+sumBar(chs, S.plan.orig, 'after')+'<div class="kv-box">'+changeListHtml(chs)+'<div><b>변경 사유</b> '+esc(S.plan.reason)+'</div></div></div>' : '';
+  } else if(plan){
+    var ch = S.plan.changes;
+    h += '<div class="hist'+(S.plan.histOpen?'':' closed')+'"><button class="hist-head" onclick="S.plan.histOpen=!S.plan.histOpen;render()"><span>주문 변경 내역'+q('Q6')+'</span>'+ICON.up+'</button>'+
+      '<div class="hist-body">'+(ch.length ? changeListHtml(ch)+'<div><b>변경 사유</b> '+esc(S.plan.reason)+'</div>' : '<div>최초 주문 그대로 주문했습니다.</div>')+'</div></div>';
+  }
+  return h;
+}
+
+/* ③ 주문확인중 — 개선안 1~13 */
+function planState(it){
+  if(it.added) return 'add';
+  if(it.deleted) return 'del';
+  var o = null; S.plan.orig.forEach(function(x){ if(x.uid === it.uid) o = x; });
+  if(o && (o.qty !== it.qty || o.opt.join('|') !== it.opt.join('|'))) return 'chg';
+  return '';
+}
+function planChanged(){ return S.plan.items.some(function(it){ return planState(it) !== ''; }) || S.plan.items.length !== S.plan.orig.length; }
+function renderPlanProducts(){
+  var st = S.plan, h = '';
+  var ux = planUx();
+  if(planChanged() && !ux){        /* 기획서 원안: 최초 주문 박스 + 변경 주문 */
+    h += '<div class="orig-ttl">최초 주문 (고객 요청)'+q('Q6')+uMark('U7')+'</div><div class="orig-box">'+
+      st.orig.map(function(o){ var p = CATALOG[o.pid];
+        return '<div class="orig-line"><span>'+p.name+(p.opts.length?' • '+optShow(o.pid,o.opt):'')+' • '+o.qty+'개</span><span class="amt">'+won(p.price*o.qty)+'</span></div>'; }).join('')+'</div>';
+    h += '<div class="chg-head"><span class="ttl">변경 주문 (사업소 조정)</span><button class="text-btn" onclick="resetPlan(false)">최초 주문으로 되돌리기'+q('Q20')+'</button></div>';
+  }
+  if(planChanged() && ux) h += sumBar(planChanges(), st.orig, 'conf');    /* UX 제안(U7): 요약 바 + 접어 둔 원본 표 */
+  var KLBL = {chg:'변경', del:'삭제', add:'추가'};
+  h += '<div>'+st.items.map(function(it){
+    var p = CATALOG[it.pid], ps = planState(it), del = ps === 'del';
+    var oo = S.plan.orig.filter(function(x){ return x.uid === it.uid; })[0];
+    var diff = '', qtyWas = ux && ps === 'chg' && oo && oo.qty !== it.qty ? '<div class="qty-was">고객 요청 '+oo.qty+'개</div>' : '';
+    var o0 = S.plan.orig.filter(function(x){ return x.uid === it.uid; })[0], optChanged = o0 && o0.opt.join('|') !== it.opt.join('|');
+    var lock = del && ux;           /* Q3: 기획서 원안은 삭제 행 스텝퍼가 활성으로 그려짐, UX 제안은 비활성·[복원]만 활성 */
+    var optTxt = ux && ps === 'chg' && oo && oo.opt.join('|') !== it.opt.join('|')
+      ? p.opts.map(function(o,i){ return '<span class="opair"><span class="ok">'+o.k+'</span> '+(oo.opt[i] !== it.opt[i] ? '<s>'+esc(oo.opt[i])+'</s> ' : '')+'<span class="ov">'+esc(it.opt[i])+'</span></span>'; }).join('<span class="ok">·</span>')
+      : optPlan(it);
+    var opt = p.opts.length ? '<div class="popt">'+optTxt+q('Q9')+(optChanged ? q('Q17') : '')+'<button class="text-btn" '+(lock?'disabled':'')+' onclick="openModal(\'optEdit\',{uid:'+it.uid+'})">변경 '+ICON.right+'</button></div>' : '';
+    var qtyCtl = p.rental ? '<span class="lbl">수량</span> <b>1개</b>' :
+      '<span class="stepper"><button aria-label="수량 빼기" '+(lock||it.qty<=1?'disabled':'')+' onclick="planQty('+it.uid+',-1)">'+ICON.minus+'</button><span>'+it.qty+'</span><button aria-label="수량 더하기" '+(lock?'disabled':'')+' onclick="planQty('+it.uid+',1)">'+ICON.plus+'</button></span>';
+    var act = del ? '<button class="btn btn-sm btn-gray" onclick="planRestore('+it.uid+')">복원'+q('Q2')+'</button>'
+                  : (ux ? '<button class="btn btn-sm btn-gray" onclick="planDeleteNow('+it.uid+')">삭제</button>'+u('U5-3')+(it === st.items.filter(function(x){ return !x.deleted; })[0] ? nn('N4') : '')
+                        : '<button class="btn btn-sm btn-gray" onclick="openModal(\'del\',{uid:'+it.uid+'})">삭제</button>'+(it === st.items.filter(function(x){ return !x.deleted; })[0] ? uMark('U5-3') : ''));
+    var firstChg = ux && ps && st.items.filter(function(x){ return planState(x); })[0] === it;
+    return '<div class="prow '+ps+'" data-uid="'+it.uid+'"><div class="prow-main">'+thumb(it)+'<div class="pinfo">'+
+      (ux && ps ? '<div class="pchips"><span class="chip sm c-k-'+ps+'">'+KLBL[ps]+'</span>'+(firstChg ? nn('N2')+nn('N3') : '')+'</div>' : '')+
+      '<div class="pname">'+p.name+'</div>'+opt+(diff ? '<div class="diff-line">'+diff+'</div>' : '')+(ps==='del'?'<div class="row-note">'+q('Q3')+'</div>':'')+(del || !ux ? '' : lookupWarn(it))+'</div></div>'+
+      '<div class="ptype">구입</div><div class="pqty">'+qtyCtl+qtyWas+(del || !ux ? '' : qtyWarn(it, it.qty))+'</div>'+priceBox(it)+'<div class="pact">'+act+'</div></div>';
+  }).join('')+'</div>';
+  h += '<div class="add-row"><button class="text-btn" style="font-size:18px" onclick="openModal(\'add\')">상품추가 '+ICON.plus+'</button></div>';
+  var b0 = 0, b1 = 0; st.orig.forEach(function(x){ b0 += CATALOG[x.pid].price * x.qty; }); st.items.forEach(function(x){ if(!x.deleted) b1 += CATALOG[x.pid].price * x.qty; });
+  h += totalBar(st.items, '총 구입 금액', q('Q10')+(ux && b1 !== b0 ? '<span class="vs-orig">고객 요청 대비 '+(b1 > b0 ? '+' : '−')+won(Math.abs(b1 - b0))+'</span>' : ''));
+  h += '<div class="row-note" style="margin-top:12px">'+q('Q21')+' 변경은 이 화면 안에서만 유지되고 [주문하기] 때 확정됩니다(새로고침하면 처음 상태).'+q('Q11')+'</div>';
+  return h;
+}
+
+/* U7 — 변경 요약 바 + 고객 요청 원본(읽기 전용) */
+function origTable(orig){
+  var DONE = {chg:['c-k-chg','변경'], del:['c-k-del','삭제'], '':['c-k-keep','유지']};
+  return '<div class="origtbl"><div class="ot-cap">고객 요청 원본(읽기 전용)</div><table><thead><tr><th>상품명</th><th>옵션</th><th>수량</th><th>금액</th><th>처리</th></tr></thead><tbody>'+
+    orig.map(function(o){ var p = CATALOG[o.pid], it = findItem(S.plan, o.uid), d = DONE[it ? planState(it) : 'del'] || DONE[''];
+      return '<tr><td>'+p.name+'</td><td>'+(p.opts.length ? optShow(o.pid, o.opt) : '-')+'</td><td>'+o.qty+'개</td><td>'+won(p.price*o.qty)+'</td><td><span class="chip sm '+d[0]+'">'+d[1]+'</span></td></tr>'; }).join('')+
+    '</tbody></table></div>';
+}
+function sumBar(changes, orig, where){
+  var c = {chg:0, del:0, add:0}; changes.forEach(function(x){ c[x.k]++; });
+  var open = S.origOpen && !isMO();
+  return '<div class="sumbar"><div class="sb-t"><b>고객 요청에서 '+changes.length+'건 변경됨</b><span>· 변경 '+c.chg+' · 삭제 '+c.del+' · 추가 '+c.add+'</span>'+q('Q6')+u('U7')+(where === 'conf' ? nn('N1') : '')+'</div>'+
+    '<button class="text-btn sb-btn" onclick="toggleOrig()">고객 요청 원본 '+(open ? '접기' : '보기')+' <span class="sb-chev'+(open?' up':'')+'">'+ICON.chev.replace('width="24" height="24"','width="16" height="16"')+'</span></button></div>'+
+    (open ? origTable(orig) : '');
+}
+function toggleOrig(){ if(isMO()){ openModal('origSheet'); return; } S.origOpen = !S.origOpen; render(); }
+
+/* 배송정보 */
+function renderDelivery(st, masked, conf){
+  var h = '<div class="sec"><div class="sec-head"><div class="sec-title">배송정보</div>'+
+    (conf ? (st.editDv ? '<button class="btn btn-sm btn-gray" onclick="toggleDv()">취소하기</button><button class="btn btn-sm btn-filled" onclick="toggleDv()">저장하기</button>'
+                       : '<button class="btn btn-sm btn-gray" onclick="toggleDv()">변경하기</button>') : '')+'</div>';
+  if(conf && st.editDv){
+    h += dvRow('이름',true,'<input class="input" value="홍길동" enterkeyhint="next">')+
+      dvRow('주소',true,'<div class="zip-row"><input class="input" value="00000" readonly><button class="btn btn-sm btn-gray">우편번호</button></div><input class="input" value="서울특별시 중구 가상로 00" readonly><input class="input" placeholder="상세주소 입력" enterkeyhint="next">')+
+      dvRow('휴대폰번호',true,'<input class="input" value="010-0000-0000" inputmode="tel" enterkeyhint="next">')+
+      dvRow('배송요청사항',false,'<input class="input" value="배송 전 미리 연락해주세요." enterkeyhint="done">');
+  } else {
+    h += pr('이름', masked ? '홍*동' : '홍길동')+pr('주소', masked ? '-' : '(00000) 서울특별시 중구 가상로 00')+
+      pr('휴대폰번호', masked ? '-' : '010-0000-0000')+pr('배송요청사항','배송 전 미리 연락해주세요.');
+  }
+  return h + '</div>';
+}
+function pr(k,v){ return '<div class="plain-row"><div class="th">'+k+'</div><div class="td">'+v+'</div></div>'; }
+function dvRow(k,req,c){ return '<div class="dv-row"><div class="dv-label">'+k+(req?'<span class="req">*</span>':'')+'</div><div class="dv-content">'+c+'</div></div>'; }
+function toggleDv(){ var st = cur(); st.editDv = !st.editDv; render(); }
+
+/* ---------- ① 현행 ---------- */
+function renderCurrent(){
+  var c = CUR[S.step], mo = isMO();
+  var list = mo ? (c.mo.length ? c.mo : c.pc) : c.pc;
+  var pins = c.pins.filter(function(p){ return mo || p.k !== 'm'; });
+  if(S.pin){ pins.forEach(function(p){ if(p.id === S.pin && p.shot) S.shot = p.shot; }); }
+  var main = (S.shot && (c.pc.concat(c.mo)).indexOf(S.shot) >= 0) ? S.shot : list[0];
+  var h = '<div class="view-banner policy">'+ICON.info+'<span>현행 — 개발 화면 캡처(2026-10-07)'+(mo && !c.mo.length && list.length ? ' · 이 단계는 모바일 캡처가 없어 PC 캡처로 보여줍니다' : '')+'. 핀을 누르면 문제 설명으로 이동합니다.</span></div><div class="cur-wrap">';
+  if(main){
+    var onImg = pins.filter(function(p){ return p.shot === main && p.x != null; });
+    h += '<div class="shot-main"><img src="'+ASSET+main+'" alt="'+SHOTS[main]+'">'+
+      onImg.map(function(p){ return '<button class="mpin'+(p.k==='k'?' k':'')+(S.pin===p.id?' hl':'')+'" style="left:'+p.x+'%;top:'+p.y+'%" onclick="pickPin(\''+p.id+'\')">'+p.id+'</button>'; }).join('')+'</div>'+
+      '<div class="shot-cap">'+SHOTS[main]+'</div>';
+    var all = mo ? list : c.pc;
+    if(all.length > 1) h += '<div class="shot-strip">'+all.map(function(f){ return '<button class="'+(f===main?'on':'')+'" onclick="pickShot(\''+f+'\')" title="'+SHOTS[f]+'"><img src="'+ASSET+f+'" alt="'+SHOTS[f]+'" loading="lazy"></button>'; }).join('')+'</div>';
+  } else {
+    h += '<div class="empty-shot">'+STEP_LABEL[S.step]+' 화면은 캡처가 없습니다 '+note()+'</div>';
+  }
+  if(pins.length){
+    h += '<div class="pins-title">'+(S.step === 'list' ? '4-2와 다른 점' : '문제 지점')+'</div><div class="pin-cards">'+pins.map(function(p){
+      var tag = '<span class="ptag'+(p.k==='k'?' k':(p.k==='d'?' d':''))+'">'+p.id+'</span>';
+      var acts = '';
+      if(p.shot) acts += '<button onclick="pickPin(\''+p.id+'\')">화면 보기</button>';
+      if(/^[ABC]/.test(p.id)) acts += '<a href="purchase-order-analysis.html#'+p.id+'">분석 문서</a>';
+      if(p.plan !== undefined && p.plan !== '') acts += '<a href="?view=plan&amp;step=confirming&amp;'+p.plan+'">개선안에서 보기</a>';
+      if(p.k === 'm') acts += '<a href="?view=policy&amp;step='+S.step+'&amp;w=360">정책 적용 화면</a>';
+      return '<div class="pin-card'+(S.pin===p.id?' hl':'')+'" id="pin-'+p.id+'"><div class="h">'+tag+p.t+'</div><div class="d">'+p.d+'</div>'+(acts?'<div class="acts">'+acts+'</div>':'')+'</div>';
+    }).join('')+'</div>';
+  }
+  return h + '</div>';
+}
+function pickShot(f){ S.shot = f; S.pin = null; render(); }
+function pickPin(id){
+  S.pin = id; S.shot = null; render();
+  var el = document.getElementById('pin-'+id); if(el) el.scrollIntoView({block:'nearest', behavior:'smooth'});
+}
+
+/* =====================================================================
+   동작 — ② 현행 동작
+   ===================================================================== */
+function polPend(uid, d){ var it = findItem(S.pol, uid); it.pend = Math.max(1, it.pend + d); render(); }
+function polQty(uid){ var it = findItem(S.pol, uid); it.qty = it.pend; render(); showToast('수량이 변경되었습니다. (즉시 저장)'); }
+function polChangeOpt(uid, opt){
+  var st = S.pol, i = st.items.findIndex(function(x){ return x.uid === uid; }), it = st.items[i];
+  st.delLog.push({pid:it.pid, opt:it.opt.slice(), why:'옵션 변경 전'});      /* 현행: 옵션 변경 = 기존 삭제 + 새로 추가 */
+  st.items.splice(i,1);
+  var n = {uid:uidSeq++, pid:it.pid, opt:opt, qty:it.qty, pend:it.qty, added:it.added, deleted:false};
+  st.items.push(n); st.moved[n.uid] = true;
+}
+function polDelete(uid){
+  var st = S.pol, i = st.items.findIndex(function(x){ return x.uid === uid; }), it = st.items[i];
+  st.delLog.push({pid:it.pid, opt:it.opt.slice(), why: it.added ? '추가 후 삭제' : ''});
+  st.items.splice(i,1);
+}
+function polAdd(pid, opt){ S.pol.items.push({uid:uidSeq++, pid:pid, opt:opt, qty:1, pend:1, added:true, deleted:false}); }
+
+/* =====================================================================
+   동작 — ③ 개선안
+   ===================================================================== */
+function planQty(uid, d){ var it = findItem(S.plan, uid); it.qty = Math.max(1, it.qty + d); render(); }
+function planDelete(uid){
+  var st = S.plan, it = findItem(st, uid);
+  if(it.added){ st.items = st.items.filter(function(x){ return x.uid !== uid; }); }   /* 5. 추가 후 삭제 = 즉시 제거 */
+  else it.deleted = true;
+}
+function planDeleteNow(uid){ planDelete(uid); render(); showToast('삭제했습니다 — [복원]으로 되돌릴 수 있어요'); }
+function planRestore(uid){ findItem(S.plan, uid).deleted = false; render(); }          /* 6. 삭제 직전 상태로 */
+function planAdd(pid, opt){ S.plan.items.push({uid:uidSeq++, pid:pid, opt:opt, qty:1, pend:1, added:true, deleted:false}); }
+function resetPlan(withRender){
+  var keepLookup = S.plan.lookedUp;
+  S.plan = newPlan(); S.plan.lookedUp = keepLookup;
+  if(S.view === 'plan' && S.step !== 'confirming') S.step = 'confirming';
+  if(withRender !== false) render(); else render();
+}
+function planChanges(){
+  var out = [];
+  S.plan.items.forEach(function(it){
+    var ps = planState(it), p = CATALOG[it.pid];
+    if(!ps) return;
+    var name = p.name + (p.opts.length && planUx() ? ' ('+optShow(it.pid,it.opt)+')' : '');
+    if(ps === 'del'){ var o0 = S.plan.orig.filter(function(x){ return x.uid === it.uid; })[0]; name = p.name + (p.opts.length && planUx() ? ' ('+optShow(o0.pid,o0.opt)+')' : ''); out.push({k:'del', name:name}); }
+    else if(ps === 'add') out.push({k:'add', name:planUx() ? name+' · '+it.qty+'개' : name});
+    else {
+      var o = S.plan.orig.filter(function(x){ return x.uid === it.uid; })[0], parts = [];
+      if(o.qty !== it.qty) parts.push('수량: '+o.qty+' → '+it.qty);                          /* 수량 → 옵션 순 */
+      if(o.opt.join('|') !== it.opt.join('|')) parts.push(planUx() ? '옵션: '+optShow(o.pid,o.opt)+' → '+optShow(it.pid,it.opt) : o.opt.join('/')+' → '+it.opt.join('/'));   /* 원안: 베이지/L(100) → 베이지/L(95) */
+      out.push({k:'chg', name:p.name, sub:parts.join(', ')});
+    }
+  });
+  return out;
+}
+function changeListHtml(list){
+  var lbl = {chg:'변경', del:'삭제', add:'추가'};
+  return list.map(function(c){ return '<div class="chg-item"><span class="chip sm c-k-'+c.k+'">'+lbl[c.k]+'</span><div class="what"><span>'+esc(c.name)+'</span>'+(c.sub?'<span class="sub">'+esc(c.sub)+'</span>':'')+'</div></div>'; }).join('');
+}
+
+/* =====================================================================
+   공통 동작
+   ===================================================================== */
+function confirmInfo(){ S.step = 'confirming'; render(); scrollTop(); }
+function finishLookup(){ var st = cur(); st.lookedUp = true; st.lookupAt = '2026-10-07 10:42'; }
+function goList(){
+  if(planUx() && S.step === 'confirming' && planChanged()){ openModal('leave'); return; }   /* U5-5 */
+  goStep('list');
+}
+function goStep(s){ S.step = s; render(); scrollTop(); }
+function startOrder(){
+  var st = cur();
+  if(!st.lookedUp){ openModal('notAllowed'); return; }
+  if(S.view === 'plan'){ openModal(planChanged() ? 'changeReason' : 'confirmNoChange'); return; }
+  if(st.delLog.length) openModal('delReason'); else openModal('confirm');
+}
+function finishOrder(){
+  var st = cur();
+  if(S.view === 'plan'){
+    st.changes = planChanges();
+    st.finalItems = st.items.filter(function(it){ return !it.deleted; }).map(function(it){ return clone(it); });
+  } else {
+    st.finalItems = st.items.map(function(it){ return clone(it); });
+    st.msg = '';
+  }
+  st.ordered = true; S.step = 'preparing'; closeModal(); render(); scrollTop();
+}
+function cancelDone(){ closeModal(); S.cancelVar = S.step === 'received' || S.step === 'confirming' ? 'before' : 'after'; S.step = 'cancel'; if(S.view === 'plan') S.view = 'policy'; render(); scrollTop(); showToast('주문이 취소되었습니다.'); }
+function scrollTop(){ var f = document.getElementById('frame'); var y = f.getBoundingClientRect().top + window.scrollY - 8; if(window.scrollY > y) window.scrollTo(0, y); }
+function showToast(msg){
+  var old = document.getElementById('toast'); if(old) old.remove();
+  var t = document.createElement('div'); t.className = 'toast'; t.id = 'toast'; t.innerHTML = ICON.ok + '<span>'+esc(msg)+'</span>';
+  var page = document.getElementById('page'), pr = page.getBoundingClientRect();
+  var bottomVisible = Math.min(pr.bottom, window.innerHeight) - pr.top;      /* 보이는 영역 아래쪽에 */
+  t.style.top = Math.max(0, bottomVisible - 90) + 'px'; t.style.bottom = 'auto';
+  page.appendChild(t); setTimeout(function(){ t.remove(); }, 2000);           /* 9-3: 닫기 없으면 2초 */
+}
+
+/* =====================================================================
+   모달 · 바텀시트
+   ===================================================================== */
+function openModal(type, data){
+  data = data || {};
+  var st = cur();
+  if(data.demo && (type === 'optEdit' || type === 'del')){
+    var cand = st.items.filter(function(it){ return !it.deleted && (type === 'del' || CATALOG[it.pid].opts.length); })[0];
+    if(!cand){ showToast('대상 상품이 없습니다'); return; }
+    data.uid = cand.uid;
+  }
+  var m = {type:type, data:data, sel:{}, text:'', checked:false, query:'', pick:null, optSheet:null, openSel:null};
+  if(type === 'optEdit'){
+    var it = findItem(st, data.uid), p = CATALOG[it.pid];
+    p.opts.forEach(function(o,i){ m.sel[o.k] = it.opt[i]; });     /* ③ 7 · U2: 현재 옵션이 선택된 상태로 열림(현행은 빈 상태 — ① A6) */
+  }
+  if(type === 'cancel') m.sel['취소 사유'] = null;
+  if(type === 'lfStatus') m.sel.status = S.lf.applied.status;
+  if(type === 'lfSearch'){ m.period = S.lf.applied.period; m.sel['주문 진행상태'] = S.lf.applied.status; m.text = S.lf.applied.q; }
+  S.modal = m; drawModal();
+}
+function closeModal(){
+  var m = S.modal, filled = m && m.type === 'lookup' && m.result;
+  closeFloat(); closeModal2();
+  S.modal = null; var ov = document.getElementById('overlay'); if(ov) ov.remove();
+  if(filled){ finishLookup(); render(); showToast('요양정보를 조회했습니다.'); }    /* 모달을 닫으면 수급자 정보 채움 · 말풍선 사라짐 */
+}
+function modalSpec(){
+  var m = S.modal, st = cur(), plan = S.view === 'plan';
+  var t = m.type, sheet = false, title = '', body = '', acts = '', cls = '';
+  if(m.optSheet){   /* 바텀시트 안 셀렉트 → 옵션 시트(3-3) */
+    var os = m.optSheet;
+    return {sheet:true, title:os.label, body:'<div class="sheet-opts">'+os.options.map(function(v){
+        return '<button class="opt-row'+(os.temp===v?' sel':'')+'" onclick="S.modal.optSheet.temp=\''+v.replace(/'/g,"\\'")+'\';drawModal()"><span>'+esc(v)+'</span>'+(os.temp===v?ICON.check:'')+'</button>'; }).join('')+'</div>',
+      acts:'<button class="btn btn-filled" '+(os.temp?'':'disabled')+' onclick="var o=S.modal.optSheet;S.modal.sel[o.key]=o.temp;S.modal.optSheet=null;drawModal()">선택완료</button>', back:true};
+  }
+  if(t === 'optEdit'){
+    var it = findItem(st, m.data.uid), p = CATALOG[it.pid];
+    title = plan ? '옵션 변경' : '옵션 수정';
+    var oo = plan ? S.plan.orig.filter(function(x){ return x.uid === it.uid; })[0] : null;
+    var custLine = oo && oo.opt.join('|') !== it.opt.join('|') ? '<div class="m-cust">고객 주문: '+optShow(oo.pid, oo.opt)+' · 수량 '+oo.qty+'개</div>' : '';
+    body = '<div class="m-prod">'+thumb(it)+'<div><div class="nm">'+p.name+uMark('U2')+'</div>'+
+        (uxOn() ? '<div class="m-cur">현재 옵션: '+(plan ? optShow(it.pid, it.opt) : esc(optPlain(it.pid, it.opt)))+' · 수량 '+it.qty+'개'+u('U2')+(planUx() ? nn('N5') : '')+'</div>'+custLine : '')+'</div></div>'+
+      p.opts.map(function(o,i){ return selectField(o.k, o.k, o.v, null, uxOn() && m.sel[o.k] !== it.opt[i]); }).join('');
+    var same = uxOn() && p.opts.every(function(o,i){ return m.sel[o.k] === it.opt[i]; });     /* U2: 같은 값이면 [확인] 비활성 */
+    var ready = !same && p.opts.every(function(o){ return m.sel[o.k]; });
+    acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" '+(ready?'':'disabled')+' onclick="applyOpt()">확인</button>';
+  } else if(t === 'add'){
+    sheet = true; title = '상품 추가';
+    var qq = m.query.toLowerCase();
+    var res = Object.keys(CATALOG).filter(function(k){ return !qq || CATALOG[k].name.toLowerCase().indexOf(qq) >= 0 || k.indexOf(qq) >= 0; }).slice(0, 5);
+    var inList = function(k){ return st.items.some(function(x){ return x.pid === k && !x.deleted; }); };
+    var U4 = uxOn(), showRes = !m.pick && (m.query || (U4 && m.showAll));
+    body = '<div class="field"><label for="add-q">상품명'+(U4 ? u('U4') : uMark('U4'))+'</label><div style="position:relative"><input id="add-q" class="input" type="search" placeholder="'+(U4 ? '상품명 또는 상품코드 (예: 양말, 보나수)' : '상품명을 입력하세요')+'" enterkeyhint="search" value="'+esc(m.pick ? CATALOG[m.pick].name : m.query)+'" oninput="addQuery(this.value)" onfocus="this.select();'+(U4 ? 'if(!S.modal.showAll){S.modal.showAll=true;drawModal(true);}' : '')+'" style="padding-right:48px">'+
+      '<button class="modal-close" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);margin:0" aria-label="검색" onclick="document.activeElement.blur()">'+ICON.search+'</button></div>'+
+      (showRes ? '<div class="opt-panel res-panel">'+(res.length ? res.map(function(k){ var c = CATALOG[k];
+        var meta = [won(c.price), c.opts.length ? '옵션 있음' : '옵션 없음'];
+        if(!U4) return '<button class="opt-row" '+(c.soldout?'disabled':'')+' onclick="addPick(\''+k+'\')"><span>'+c.name+(c.soldout?' (일시품절)':'')+'</span></button>';
+        return '<button class="opt-row res-row" '+(c.soldout?'disabled':'')+' onclick="addPick(\''+k+'\')"><span class="rn">'+c.name+'</span><span class="rm">'+meta.join(' · ')+
+          (c.soldout ? ' · <b class="r-out">일시품절</b>' : '')+(inList(k) ? ' · <b class="r-in">주문 목록에 있음</b>' : '')+'</span></button>'; }).join('')
+        : '<div class="opt-row" style="cursor:default">'+(U4 ? '검색 결과가 없습니다. 상품명을 다시 확인해 주세요.' : '검색 결과가 없습니다.')+'</div>')+'</div>' : '')+'</div>';
+    if(m.pick) body += CATALOG[m.pick].opts.map(function(o){ return selectField(o.k, o.k, o.v); }).join('');
+    body += '<div class="m-note">급여상품(판매·대여)·부품만 노출 · 품절·일시품절은 선택 불가 · 같은 상품을 다른 옵션으로 여러 번 추가 가능</div>';
+    acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="applyAdd()">상품 추가</button>';
+  } else if(t === 'del'){
+    var it2 = findItem(st, m.data.uid), p2 = CATALOG[it2.pid];
+    title = '상품 삭제';
+    body = '<div class="kv-box"><div class="r"><span class="k">상품명</span><span>'+p2.name+(p2.opts.length?' '+(plan?optPlain(it2.pid,it2.opt):optStr(it2)):'')+'</span></div></div><div>해당 상품을 정말 삭제하시겠습니까?</div>';
+    acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="applyDelete()">확인</button>';
+  } else if(t === 'delReason'){
+    sheet = true; title = '상품 삭제 사유';
+    var log = st.delLog.length ? st.delLog : [{pid:'hd', opt:[], why:''}];
+    body = '<div class="kv-box">'+log.map(function(d){ var c = CATALOG[d.pid];
+        return '<div class="r"><span class="k">상품명</span><span>'+c.name+(d.opt.length?' '+d.opt.join('/'):'')+(d.why?' '+note(d.why+' — 목록 포함(현행)'):'')+'</span></div>'; }).join('')+'</div>'+
+      '<div class="field"><label for="dr">상세 사유</label><textarea id="dr" class="input" maxlength="20" placeholder="주문상품을 삭제한 사유를 입력해 주세요." oninput="S.modal.text=this.value;document.getElementById(\'dr-c\').textContent=this.value.length+\'/20자\'">'+esc(m.text)+'</textarea></div>'+
+      '<div class="counter" id="dr-c">'+m.text.length+'/20자</div><div class="m-note">※ 수급자에게 안내되는 문구이니 신중하게 적어주세요.</div>';
+    acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="'+(m.data.demo?'closeModal()':'S.modal=null;openModal(\'confirm\')')+'">저장</button>';
+  } else if(t === 'confirm'){
+    title = '주문하기';
+    body = '<div>주문 완료 후에는 수량이나 옵션을 바꿀 수 없으니, 다시 한번 확인해 주세요.</div><div>총 <b style="color:var(--brandsub-text)">'+st.items.length+'</b> 건의 상품을 주문하시겠습니까?</div>';
+    acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="'+(m.data.demo?'closeModal()':'finishOrder()')+'">확인</button>';
+  } else if(t === 'confirmNoChange'){
+    title = '주문하기';
+    body = '<div>주문 후에는 상품 정보를 변경할 수 없습니다. 이대로 주문을 진행하시겠습니까?</div>';
+    acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="'+(m.data.demo?'closeModal()':'finishOrder()')+'">주문하기</button>';
+  } else if(t === 'changeReason'){
+    sheet = true; title = '주문 변경 사유';
+    var ch = planChanges(); if(!ch.length) ch = [{k:'chg', name:'예시 상품', sub:'수량: 1 → 2'}];
+    var ok = m.text.trim().length > 0 && m.checked;
+    var sumOf = function(items){ var a = 0; items.forEach(function(x){ if(!x.deleted) a += CATALOG[x.pid].price * x.qty; }); return a; };
+    var b0 = sumOf(S.plan.orig), b1 = sumOf(S.plan.items), ux2 = planUx() || !plan, maxc = ux2 ? 100 : 20;
+    m.maxc = maxc;
+    body = '<div class="kv-box">'+changeListHtml(ch)+'</div>'+
+      (ux2 ? '<div class="amt-box"><div><span>총 구입 금액</span><b>'+won(b0)+' → '+won(b1)+'</b></div><div><span>본인부담금('+rateLabel()+')</span><b class="dg">'+won(Math.round(b0*rate()))+' → '+won(Math.round(b1*rate()))+'</b></div><div class="amt-bd">'+u('U5-4')+(planUx() ? nn('N6') : '')+'</div></div>' : '')+
+      (ux2 ? '' : '<div class="amt-bd">'+uMark('U5-4')+'</div>')+
+      '<div class="field"><label for="cr">상세 사유'+q('Q5')+(ux2 ? u('U6') : uMark('U6'))+'</label><textarea id="cr" class="input" maxlength="'+maxc+'" placeholder="'+(ux2 ? '변경 사유를 입력해 주세요. 수급자에게 안내되는 문구이니 신중하게 적어주세요.' : '입력하신 주문 변경 사유는 수급자에게 노출됩니다!')+'" oninput="S.modal.text=this.value;crSync()">'+esc(m.text)+'</textarea></div>'+
+      '<div class="counter" id="cr-c">'+m.text.length+'/'+maxc+'자</div>'+
+      '<label class="check-row"><input type="checkbox" id="cr-ck" '+(m.checked?'checked':'')+' onchange="S.modal.checked=this.checked;crSync()"><span>수급자에게 주문정보 변경에 대한 동의를 받았습니다. 주문 후에는 상품 정보를 변경할 수 없습니다.</span></label>';
+    acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" id="cr-go" '+(ok?'':'disabled')+' onclick="S.plan.reason=S.modal.text;'+(m.data.demo?'closeModal()':'finishOrder()')+'">'+(ux2 ? '주문하기' : '저장')+q('Q4')+'</button>';
+  } else if(t === 'dupNotAllowed'){
+    title = '변경불가'; body = '<div>이미 포함된 상품 및 옵션입니다.</div>';
+    acts = '<button class="btn btn-filled" onclick="'+(m.data.back?'S.modal=S.modal.data.back;drawModal()':'closeModal()')+'">확인</button>';
+  } else if(t === 'cancel'){
+    sheet = true; title = '주문취소';
+    body = selectField('취소 사유','취소 사유', CANCEL_REASONS, '사유를 선택해 주세요')+
+      '<div class="m-note">'+note()+' 사유 목록 아래쪽 항목은 미캡처 · 구입·대여 취소 사유는 별도 관리(D-02 확정)</div>'+
+      '<div class="field"><label for="cn">상세 사유</label><textarea id="cn" class="input" placeholder="상세 사유를 입력해 주세요." oninput="S.modal.text=this.value">'+esc(m.text)+'</textarea></div>';
+    acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" '+(m.sel['취소 사유']?'':'disabled')+' onclick="'+(m.data.demo?'closeModal()':'cancelDone()')+'">저장</button>';
+  } else if(t === 'qInfo'){
+    var qi = QINFO[m.data.q] || {t:'', ask:'', now:'', tmp:'', no:''};
+    title = m.data.q + ' · ' + qi.t;
+    body = '<div class="qbox"><div class="qk">정해야 할 것</div><div>'+qi.ask+'</div></div>'+
+      '<div class="qgrid"><div class="qbox"><div class="qk">현행</div><div>'+qi.now+'</div></div>'+
+      (qi.plan ? '<div class="qbox"><div class="qk">기획서 원안</div><div>'+qi.plan+'</div></div><div class="qbox tmp"><div class="qk">UX 제안</div><div>'+qi.tmp+'</div></div></div>'
+               : '<div class="qbox tmp"><div class="qk">이 화면의 임시안</div><div>'+qi.tmp+'</div></div></div>')+
+      '<div class="m-note">'+[qi.who ? '구분: '+qi.who : '', qi.state ? '상태: '+qi.state : '', qi.no ? '기획서 개선안 '+qi.no+'번' : '', '질문 원문은 Confluence 02 질문·결정 기록'].filter(Boolean).join(' · ')+'</div>';
+    acts = '<button class="btn btn-gray" onclick="closeModal();findQ(\''+m.data.q+'\')">화면에서 찾기</button><button class="btn btn-filled" onclick="closeModal()">확인</button>';
+  } else if(t === 'lfStatus'){
+    sheet = true; title = '주문상태 선택';
+    body = '<div class="sheet-opts">'+STATUS_OPTS.map(function(v){ var on = m.sel.status === v;
+      return '<button class="opt-row'+(on?' sel':'')+'" onclick="S.modal.sel.status=\''+v+'\';drawModal()"><span>'+v+'</span>'+(on?ICON.check:'')+'</button>'; }).join('')+'</div>';
+    acts = '<button class="btn btn-filled" onclick="S.lf.status=S.modal.sel.status;closeModal();lfApplyKeep()">선택완료</button>';
+  } else if(t === 'lfSearch'){
+    sheet = true; title = '검색';
+    var pr = PERIODS[m.period], direct = m.period === '직접선택';
+    body = '<div class="sheet-sec"><div class="sheet-sec-t">주문 요청일</div><div class="pgrid">'+
+        ['일주일','이번달','지난달','3개월','1년','직접선택'].map(function(x){ return '<button class="pbtn'+(m.period===x?' on':'')+'" onclick="S.modal.period=\''+x+'\';drawModal()">'+x+'</button>'; }).join('')+'</div>'+
+        '<div class="drange"><span class="box'+(direct?' on':'')+'" onclick="'+(direct?'showToast(\'날짜 칸을 누르면 달력 시트가 열립니다(3-7) — 이 시안에서는 생략\')':'')+'">'+(pr?pr[0]:'yyyy-mm-dd')+' '+ICON.cal+'</span><span>~</span><span class="box'+(direct?' on':'')+'">'+(pr?pr[1]:'yyyy-mm-dd')+' '+ICON.cal+'</span></div></div>'+
+      '<div class="sheet-sec"><div class="sheet-sec-t">주문 진행상태</div>'+selectField('주문 진행상태','', STATUS_OPTS)+'</div>'+
+      '<div class="sheet-sec"><div class="sheet-sec-t">상세검색</div><input id="lf-q" class="input" type="search" enterkeyhint="search" placeholder="수급자명, 주문번호, 요양인정번호 검색" value="'+esc(m.text)+'" oninput="S.modal.text=this.value"></div>';
+    acts = '<button class="btn btn-gray" style="flex:0 0 120px" onclick="S.modal.period=\'3개월\';S.modal.sel[\'주문 진행상태\']=\'전체\';S.modal.text=\'\';drawModal()">초기화</button>'+
+      '<button class="btn btn-filled" onclick="var m=S.modal;S.lf.period=m.period;S.lf.status=m.sel[\'주문 진행상태\']||\'전체\';S.lf.key=\'전체\';S.lf.q=m.text;closeModal();lfApplyKeep()">검색</button>';
+  } else if(t === 'lookup'){
+    title = '요양정보조회'; cls = 'xl';
+    body = '<div class="lk-box"><div class="lk-r"><span>상담받을 연락처</span><b class="lk-phone">010-0000-0000</b></div>'+
+      '<div class="lk-grid"><div class="lk-r"><span>수급자 성명</span><b>홍길동</b></div><div class="lk-r"><span>생년월일</span><b>19460101</b></div>'+
+      '<div class="lk-r"><span>인정유효기간 시작일</span><b>20250413</b></div><div class="lk-r"><span>인정등급</span><b>4등급</b></div></div></div>'+
+      '<div class="lk-go"><button class="btn btn-sm btn-filled" onclick="S.modal2={type:\'certPw\',data:{},pw:\'\'};drawModal2()">조회</button></div>';
+    if(m.result){
+      var tbl = function(rows, last){ var half = Math.ceil(rows.length/2), cols = [rows.slice(0,half), rows.slice(half)];
+        return '<div class="lk-tables">'+cols.map(function(c){ return '<table class="lk-t"><thead><tr><th>품목명</th><th>사용한도</th><th>계약완료</th><th>'+last+'</th></tr></thead><tbody>'+
+          c.map(function(r){ var no = r[3] === '급여불가'; return '<tr'+(no?' class="no"':'')+'><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td class="'+(no?'no':(r[3]===0?'':'ok'))+'">'+(typeof r[3]==='number'?r[3]+'개':r[3])+'</td></tr>'; }).join('')+
+          '</tbody></table>'; }).join('')+'</div>'; };
+      body += '<div class="lk-res" id="lk-res"><div class="lk-title">홍길동 (1946년생/여)님의 요양정보</div>'+
+        '<div class="lk-bar"><span>조회기준일 2026-10-07</span><span><button class="btn btn-sm lk-save">이미지 저장</button><button class="btn btn-sm btn-filled">인쇄</button></span></div>'+
+        '<div class="lk-card"><div><span>장기요양 인정번호</span><b>L0000000000</b></div><div><span>생년월일</span><b>1946-01-01</b></div><div><span>등급/본인부담률</span><b>4등급 / 감경6%</b></div>'+
+        '<div><span>유효기간</span><b>2025-04-13 ~ 2030-04-12</b></div><div><span>적용구간</span><b>2026-04-13 ~ 2027-04-12</b></div><div><span>급여잔액</span><b><em>1,234,560원</em>(365,440원 사용)</b></div></div>'+
+        '<div class="lk-sec">판매 급여 품목</div>'+tbl(SALE_ITEMS,'판매가능')+'<div class="lk-sec">대여 급여 품목</div>'+tbl(RENT_ITEMS,'대여가능')+
+        '<div class="m-note">가상 데이터 · 표는 모달 xl, 모바일은 화면 폭에 맞춤(3-3) — 모달을 닫으면 수급자 정보가 채워집니다</div></div>';
+    }
+    acts = '';
+  } else if(t === 'uInfo'){
+    var ui = UINFO[m.data.u] || {t:'', prob:'', prop:'', why:''};
+    title = m.data.u + ' · ' + ui.t;
+    body = '<div class="ubox"><div class="uk">현행 문제</div><div>'+ui.prob+'</div></div><div class="ubox prop"><div class="uk">제안</div><div>'+ui.prop+'</div></div>'+
+      '<div class="ubox"><div class="uk">이유</div><div>'+ui.why+'</div></div><div class="m-note">UX 제안(U) — UI/UX가 제안하는 개선 요청. 기획 미결 항목(Q)과 다르며, 정책 조항이 아님</div>';
+    acts = '<button class="btn btn-filled" onclick="'+(m.nested?'closeModal2()':'closeModal()')+'">확인</button>';
+  } else if(t === 'leave'){
+    title = '나가기';
+    body = '<div>변경한 내용이 저장되지 않습니다. 나가시겠습니까?</div><div class="m-note">Q21 확정 시점 저장일 때의 안'+u('U5-5')+'</div>';
+    acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="closeModal();resetPlan(false);goStep(\'list\')">나가기</button>';
+  } else if(t === 'origSheet'){
+    sheet = true; title = '고객 요청 원본';
+    body = origTable(S.plan.orig);
+    acts = '<button class="btn btn-filled" onclick="closeModal()">확인</button>';
+  } else if(t === 'nInfo'){
+    var ni = NINFO[m.data.n]; title = '디자인 노트 ' + m.data.n + ' · ' + ni.t;
+    body = nBody(m.data.n);
+    acts = '<button class="btn btn-filled" onclick="closeModal()">확인</button>';
+  } else if(t === 'reasonSheet'){
+    sheet = true; title = '취소 사유';
+    body = '<div>'+CANCEL_FULL+'</div><div class="m-note">'+note('전체 문구 확인 필요')+u('U5-6')+'</div>';
+    acts = '<button class="btn btn-filled" onclick="closeModal()">확인</button>';
+  } else if(t === 'notAllowed'){
+    title = '주문불가';
+    body = (uxOn() ? '<div>요양정보를 조회하여 본인부담률 및 주문 가능 품목 등을 확인 후 주문해 주세요.'+u('U6')+'</div>' : '<div>요양정보를 조회하여 본인부담율 및 주문가능 품목 등을 확인 후 주문해 주세요.'+uMark('U6')+'</div>')+'<div class="m-note">'+note()+' 다른 주문불가 유형(급여 잔액 부족 등)은 미캡처</div>';
+    acts = '<button class="btn btn-filled" onclick="closeModal()">확인</button>';
+  }
+  return {sheet:sheet, title:title, body:body, acts:acts, cls:cls};
+}
+function selectField(key, label, options, ph, changed){
+  var m = S.modal, v = m.sel[key], open = m.openSel === key;
+  return '<div class="field">'+(label?'<span class="flabel">'+label+'</span>':'')+'<button type="button" data-key="'+esc(key)+'" class="selectf'+(v?'':' ph')+(open?' open':'')+(changed?' changed':'')+'" onclick="openSelect(\''+key.replace(/'/g,"\\'")+'\')">'+
+    '<span>'+esc(v || ph || '선택하세요')+'</span>'+ICON.chev+'</button></div>';     /* 옵션 목록은 모달 본문 밖(body)에 띄운다 — placeFloat */
+}
+/* PC: 모달 안 셀렉트 목록을 모달 위 레이어에 띄움. 아래 공간이 모자라면 위로, 최대 240px, 본문 스크롤·창 크기 변경 시 닫힘 */
+function closeFloat(){ var f = document.getElementById('floatsel'); if(f) f.remove(); }
+function placeFloat(){
+  closeFloat();
+  var m = S.modal; if(!m || !m.openSel || isMO()) return;
+  var btn = null; document.querySelectorAll('#overlay .selectf').forEach(function(b){ if(b.getAttribute('data-key') === m.openSel) btn = b; });
+  if(!btn) return;
+  var key = m.openSel, v = m.sel[key], r = btn.getBoundingClientRect();
+  var f = document.createElement('div'); f.id = 'floatsel'; f.className = 'float-panel';
+  f.innerHTML = selectOptions(key).map(function(o){ return '<button class="opt-row'+(v===o?' sel':'')+'" onclick="pickSelect(\''+key.replace(/'/g,"\\'")+'\',\''+o.replace(/'/g,"\\'")+'\')"><span>'+esc(o)+'</span>'+(v===o?ICON.check:'')+'</button>'; }).join('');
+  f.style.left = r.left + 'px'; f.style.width = r.width + 'px'; f.style.top = '-9999px';
+  document.body.appendChild(f);
+  var h = f.offsetHeight, below = window.innerHeight - r.bottom - 8;
+  f.style.top = (below < h && r.top - 8 > below ? Math.max(8, r.top - 8 - h) : r.bottom + 8) + 'px';
+}
+var lastWH = [window.innerWidth, window.innerHeight];
+window.addEventListener('resize', function(){      /* 실제로 크기가 바뀐 경우에만 닫음(모바일 주소창 등으로 오는 같은 크기 resize는 무시) */
+  var wh = [window.innerWidth, window.innerHeight], changed = wh[0] !== lastWH[0] || wh[1] !== lastWH[1]; lastWH = wh;
+  if(changed && S.modal && S.modal.openSel){ S.modal.openSel = null; drawModal(); } });
+document.addEventListener('mousedown', function(e){
+  if(!S.modal || !S.modal.openSel) return;
+  if(e.target.closest('#floatsel') || e.target.closest('.selectf')) return;
+  S.modal.openSel = null; drawModal();
+});
+function selectOptions(key){
+  var m = S.modal;
+  if(key === '취소 사유') return CANCEL_REASONS;
+  if(key === '주문 진행상태') return STATUS_OPTS;
+  var pid = m.type === 'add' ? m.pick : findItem(cur(), m.data.uid).pid, out = [];
+  CATALOG[pid].opts.forEach(function(o){ if(o.k === key) out = o.v; });
+  return out;
+}
+function openSelect(key){
+  var m = S.modal, spec = modalSpec();
+  if(isMO()){ m.optSheet = {key:key, label:key, options:selectOptions(key), temp:m.sel[key]}; m.openSel = null; }   /* 모바일은 옵션 시트 */
+  else m.openSel = m.openSel === key ? null : key;
+  drawModal();
+}
+function pickSelect(key, v){ S.modal.sel[key] = v; S.modal.openSel = null; closeFloat(); drawModal(); }
+function addQuery(v){
+  var m = S.modal; m.query = v; m.pick = null; m.sel = {};
+  clearTimeout(addQuery._t); addQuery._t = setTimeout(function(){ drawModal(true); }, 300);    /* 3-3: 약 0.3초 간격 갱신 */
+}
+function addPick(k){ var m = S.modal; m.pick = k; m.sel = {}; CATALOG[k].opts.forEach(function(o){ m.sel[o.k] = null; }); if(document.activeElement) document.activeElement.blur(); drawModal(); }
+function crSync(){
+  var m = S.modal, c = document.getElementById('cr-c'), b = document.getElementById('cr-go');
+  if(c) c.textContent = m.text.length + '/' + (m.maxc || 100) + '자';
+  if(b) b.disabled = !(m.text.trim().length > 0 && m.checked);
+}
+function drawModal(keepFocus){
+  var m = S.modal; if(!m) return;
+  var spec = modalSpec(), sheet = spec.sheet && isMO();
+  var page = document.getElementById('page'), ov = document.getElementById('overlay');
+  var focusId = keepFocus && document.activeElement ? document.activeElement.id : null, caret = focusId ? document.activeElement.selectionStart : null;
+  if(!ov){ ov = document.createElement('div'); ov.id = 'overlay'; page.appendChild(ov);
+    ov.addEventListener('click', function(e){ if(e.target === ov) closeModal(); }); }
+  ov.className = 'overlay' + (sheet ? ' is-sheet' : '');
+  var keepScroll = ov.querySelector('.modal-body') ? ov.querySelector('.modal-body').scrollTop : 0;
+  ov.innerHTML = '<div class="modal'+(spec.cls?' '+spec.cls:'')+'" role="dialog" aria-modal="true"><div class="modal-header"><h3>'+spec.title+'</h3>'+
+    '<button class="modal-close" aria-label="닫기" onclick="'+(spec.back?'S.modal.optSheet=null;drawModal()':'closeModal()')+'">'+ICON.close+'</button></div>'+
+    '<div class="modal-body">'+spec.body+'</div>'+(spec.acts?'<div class="modal-actions">'+spec.acts+'</div>':'')+'</div>';
+  placeSticky(ov, sheet);
+  var mb = ov.querySelector('.modal-body'); if(mb){ mb.scrollTop = keepScroll;
+    mb.addEventListener('scroll', function(){ if(S.modal && S.modal.openSel){ S.modal.openSel = null; closeFloat(); var b = ov.querySelector('.selectf.open'); if(b) b.classList.remove('open'); } }); }
+  if(focusId){ var el = document.getElementById(focusId); if(el){ el.focus(); try{ el.setSelectionRange(caret, caret); }catch(e){} } }
+  placeFloat();
+}
+/* 위에 겹치는 두 번째 모달 — 공인인증서 비밀번호(현행: 요양정보조회 위에 겹침), 모달 안 U 설명 */
+/* 딤은 미리보기 화면(#page) 전체를 덮고(프레임 안 스크롤 잠금), 문서 페이지는 계속 스크롤된다.
+   모달은 sticky로 보이는 화면 가운데(시트는 아래)에 머물고, 최대 높이 = 보이는 화면 높이 − 상하 여백, 넘치면 본문만 스크롤 */
+function placeSticky(ov, sheet, noScroll){
+  var md = ov.querySelector('.modal'); if(!md) return;
+  ov.setAttribute('data-sheet', sheet ? '1' : '');
+  var vh = window.innerHeight, page = document.getElementById('page'), pr = page.getBoundingClientRect();
+  if(!noScroll && pr.top > 0 && pr.top > vh * 0.4){ window.scrollBy(0, pr.top - 8); pr = page.getBoundingClientRect(); }   /* 미리보기 화면이 아래쪽이면 끌어올림 */
+  md.style.maxHeight = Math.min(sheet ? Math.round(vh * 0.9) : vh - 80, page.offsetHeight - 16) + 'px';
+  var h = md.offsetHeight, y = sheet ? -pr.top + vh - h : -pr.top + Math.max(40, Math.round((vh - h) / 2));
+  y = Math.max(0, Math.min(y, page.offsetHeight - h));                 /* 미리보기 화면 안에서만 */
+  md.style.top = y + 'px';
+}
+function replaceModals(){ ['overlay','overlay2'].forEach(function(id){ var o = document.getElementById(id); if(o) placeSticky(o, o.getAttribute('data-sheet') === '1', true); }); }
+window.addEventListener('scroll', function(){ if(S.modal || S.modal2) requestAnimationFrame(replaceModals); }, {passive:true});
+window.addEventListener('resize', function(){ if(S.modal || S.modal2) replaceModals(); });
+window.addEventListener('scroll', function(){ if(S.modal && S.modal.openSel){ S.modal.openSel = null; closeFloat(); var b = document.querySelector('#overlay .selectf.open'); if(b) b.classList.remove('open'); } }, {passive:true});
+function closeModal2(){ S.modal2 = null; var o = document.getElementById('overlay2'); if(o) o.remove(); }
+function drawModal2(){
+  var m = S.modal2; if(!m) return;
+  var page = document.getElementById('page'), ov = document.getElementById('overlay2'), base = document.getElementById('overlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'overlay2'; page.appendChild(ov); }
+  var title, body, acts, sheet = false;
+  if(m.type === 'certPw'){
+    sheet = isMO(); title = '공인인증서 비밀번호';
+    body = '<div>요양정보조회를 이용하시려면<br>공인인증서 비밀번호를 입력하셔야합니다.</div>'+
+      '<div class="pw-wrap"><input id="pw" class="input" type="password" autocomplete="off" placeholder="비밀번호" value="'+esc(m.pw)+'" oninput="S.modal2.pw=this.value;pwSync()" enterkeyhint="done">'+
+      '<button class="pw-x" id="pw-x" aria-label="지우기" '+(m.pw?'':'hidden')+' onclick="S.modal2.pw=\'\';var i=document.getElementById(\'pw\');i.value=\'\';pwSync();i.focus()">'+ICON.close+'</button></div>';
+    acts = '<button class="btn btn-gray" onclick="closeModal2()">취소</button><button class="btn btn-filled" id="pw-ok" '+(m.pw?'':'disabled')+' onclick="closeModal2();S.modal.result=true;drawModal();var r=document.getElementById(\'lk-res\');if(r)r.scrollIntoView({block:\'start\',behavior:\'smooth\'})">확인</button>';
+  } else if(m.type === 'nInfo'){
+    title = '디자인 노트 ' + m.data.n + ' · ' + NINFO[m.data.n].t; body = nBody(m.data.n);
+    acts = '<button class="btn btn-filled" onclick="closeModal2()">확인</button>';
+  } else {
+    var ui = UINFO[m.data.u]; title = m.data.u + ' · ' + ui.t;
+    body = '<div class="ubox"><div class="uk">현행 문제</div><div>'+ui.prob+'</div></div><div class="ubox prop"><div class="uk">제안</div><div>'+ui.prop+'</div></div><div class="ubox"><div class="uk">이유</div><div>'+ui.why+'</div></div>';
+    acts = '<button class="btn btn-filled" onclick="closeModal2()">확인</button>';
+  }
+  ov.className = 'overlay overlay2' + (sheet ? ' is-sheet' : '');
+  ov.innerHTML = '<div class="modal" role="dialog" aria-modal="true"><div class="modal-header"><h3>'+title+'</h3><button class="modal-close" aria-label="닫기" onclick="closeModal2()">'+ICON.close+'</button></div>'+
+    '<div class="modal-body">'+body+'</div><div class="modal-actions">'+acts+'</div></div>';
+  placeSticky(ov, sheet);
+  var i = document.getElementById('pw'); if(i) i.focus();
+}
+function nBody(id){
+  var ni = NINFO[id];
+  return '<div class="ubox"><div class="uk">현행 문제</div><div>'+(ni.code.length ? ni.code.map(function(c){ return '<a class="ncode" href="purchase-order-analysis.html#'+c+'" target="_blank">'+c+'</a>'; }).join(' ') : '요양정보 조회 진행 조건(4-5)')+'</div></div>'+
+    '<div class="ubox prop"><div class="uk">디자인 결정</div><div>'+ni.dec+'</div></div><div class="ubox"><div class="uk">근거</div><div>'+ni.why+'</div></div>';
+}
+function pwSync(){ var v = S.modal2.pw; document.getElementById('pw-ok').disabled = !v; document.getElementById('pw-x').hidden = !v; }
+function applyOpt(){
+  var m = S.modal, st = cur(), it = findItem(st, m.data.uid), p = CATALOG[it.pid];
+  var opt = p.opts.map(function(o){ return m.sel[o.k]; });
+  if(m.data.demo){ closeModal(); return; }
+  if(S.view === 'plan'){
+    var dup = st.items.some(function(x){ return x.uid !== it.uid && !x.deleted && x.pid === it.pid && x.opt.join('|') === opt.join('|'); });
+    if(dup){ var back = m; S.modal = {type:'dupNotAllowed', data:{back:back}, sel:{}, text:''}; drawModal(); return; }
+    it.opt = opt;                                           /* 8. 위치 유지 */
+  } else polChangeOpt(it.uid, opt);
+  closeModal(); render(); if(S.view !== 'plan') showToast('옵션이 변경되었습니다. (즉시 저장)');
+}
+function applyAdd(){
+  var m = S.modal;
+  if(!m.pick){ alertInline('상품을 선택해주세요.'); return; }
+  var p = CATALOG[m.pick], opt = p.opts.map(function(o){ return m.sel[o.k]; });
+  if(opt.some(function(v){ return !v; })){ alertInline('옵션을 선택해주세요.'); return; }
+  if(m.data.demo){ closeModal(); return; }
+  if(S.view === 'plan') planAdd(m.pick, opt); else polAdd(m.pick, opt);
+  closeModal(); render();
+}
+function alertInline(msg){ showToast(msg); }
+function applyDelete(){
+  var m = S.modal;
+  if(m.data.demo){ closeModal(); return; }
+  if(S.view === 'plan') planDelete(m.data.uid); else polDelete(m.data.uid);
+  closeModal(); render();
+}
+
+/* =====================================================================
+   시나리오 ①~⑥ (③ 개선안 · 주문확인중)
+   ===================================================================== */
+function flash(uid){ var el = document.querySelector('.prow[data-uid="'+uid+'"]'); if(el){ el.scrollIntoView({block:'center', behavior:'smooth'}); } }
+function runScenario(n, instant){
+  if(S.view !== 'plan'){ S.view = 'plan'; }
+  if(S.step !== 'confirming'){ S.step = 'confirming'; }
+  if(S.plan.ordered) resetPlan();
+  closeModal(); render();
+  var it = S.plan.items, wait = instant ? 0 : 700;
+  var byPid = function(pid, added){ return it.filter(function(x){ return x.pid === pid && !!x.added === !!added && !x.deleted; })[0]; };
+  if(n === 1){ var a = byPid('sock'); if(!a){ showToast('옵션 상품이 없습니다 — 처음부터'); return; }
+    if(instant){ a.opt = ['회색', a.opt[1]]; render(); return; }
+    openModal('optEdit',{uid:a.uid}); setTimeout(function(){ if(S.modal){ S.modal.sel['색상'] = '회색'; drawModal(); } }, wait);
+    setTimeout(function(){ if(S.modal) applyOpt(); flash(a.uid); }, wait*2); }
+  if(n === 2){ var b = byPid('hd'); if(b){ b.qty += 1; render(); flash(b.uid); } }
+  if(n === 3){ var c = byPid('lp'); if(!c){ showToast('삭제할 상품이 없습니다 — 처음부터'); return; }
+    if(instant || S.ux){ planDelete(c.uid); render(); flash(c.uid); if(!instant) showToast('삭제했습니다 — [복원]으로 되돌릴 수 있어요'); return; }
+    openModal('del',{uid:c.uid}); setTimeout(function(){ if(S.modal) applyDelete(); flash(c.uid); }, wait*1.5); }   /* 원안: 삭제 확인 모달 */
+  if(n === 4){ if(instant){ planAdd('ash', []); render(); return; }
+    openModal('add'); setTimeout(function(){ if(S.modal){ S.modal.query = 'ASH'; drawModal(); } }, wait);
+    setTimeout(function(){ if(S.modal) addPick('ash'); }, wait*2);
+    setTimeout(function(){ if(S.modal) applyAdd(); var x = S.plan.items[S.plan.items.length-1]; if(x) flash(x.uid); }, wait*3); }
+  if(n === 5){ var d = byPid('ash', true); if(!d){ planAdd('ash', []); d = S.plan.items[S.plan.items.length-1]; render(); }
+    flash(d.uid);
+    if(S.ux){ setTimeout(function(){ planDelete(d.uid); render(); showToast('추가했다 삭제한 상품은 목록에서 바로 제거됩니다 (Q1)'); }, wait*1.5); return; }
+    setTimeout(function(){ openModal('del',{uid:d.uid}); }, wait);
+    setTimeout(function(){ if(S.modal) applyDelete(); showToast('추가했다 삭제한 상품은 목록에서 바로 제거됩니다 (Q1)'); }, wait*2.5); }
+  if(n === 6){ S.plan.lookedUp = true; S.plan.lookupAt = '2026-10-07 10:42'; render(); setTimeout(startOrder, instant ? 0 : 300); }
+}
+
+/* =====================================================================
+   이벤트 · 폭 프리셋 · URL
+   ===================================================================== */
+document.querySelectorAll('#seg-view button').forEach(function(b){ b.addEventListener('click', function(){
+  S.view = b.getAttribute('data-v'); S.pin = null; S.shot = null; closeModal(); render(); }); });
+document.querySelectorAll('#seg-step button').forEach(function(b){ b.addEventListener('click', function(){
+  S.step = b.getAttribute('data-s'); S.pin = null; S.shot = null; closeModal(); render(); }); });
+document.querySelectorAll('#seg-example button').forEach(function(b){ b.addEventListener('click', function(){
+  S.example = b.getAttribute('data-e'); var lk = S.pol.lookedUp; S.pol = newPol(S.example); S.pol.lookedUp = lk; closeModal(); render(); }); });
+document.getElementById('qlist').innerHTML = Object.keys(QINFO).map(function(k){ var x = QINFO[k];
+  return '<button class="qitem" onclick="openQ(\''+k+'\')"><b>'+k+'</b><span>'+x.t+(x.who?' <em class="qwho">'+x.who+'</em>':'')+'<small>현행 '+x.now+' → 임시안 '+x.tmp+'</small></span></button>'; }).join('');
+document.getElementById('ulist').innerHTML = Object.keys(UINFO).map(function(k){ var x = UINFO[k];
+  return '<button class="qitem uitem" onclick="openU(\''+k+'\')"><b>'+k+'</b><span>'+x.t+'<small>현행 '+x.prob+' → 제안 '+x.prop+'</small></span></button>'; }).join('');
+document.getElementById('u-toggle').addEventListener('change', function(){ document.body.classList.toggle('u-on', this.checked); });
+document.getElementById('n-toggle').addEventListener('change', function(){ document.body.classList.toggle('n-on', this.checked); });
+document.getElementById('nlist').innerHTML = Object.keys(NINFO).map(function(k){ var x = NINFO[k];
+  return '<button class="qitem nitem" onclick="openN(\''+k+'\')"><b>'+k+'</b><span>'+x.t+'<small>'+(x.code.length ? x.code.join('·')+' → ' : '')+x.dec+'</small></span></button>'; }).join('');
+function setBadges(on){ ['q','u','n'].forEach(function(k){ document.body.classList.toggle(k+'-on', on); document.getElementById(k+'-toggle').checked = on; }); }
+document.querySelectorAll('#seg-ux button').forEach(function(b){ b.addEventListener('click', function(){ S.ux = b.getAttribute('data-ux') === '1'; setBadges(!S.ux); closeModal(); render(); }); });   /* UX 제안 화면은 배지 기본 OFF */
+function updateLists(){
+  var plan = S.view === 'plan';
+  document.getElementById('lists-sum').textContent = (plan ? '미결 Q '+Object.keys(QINFO).length+' · ' : '')+'UX 제안 U '+Object.keys(UINFO).length;
+  document.getElementById('n-sum').textContent = '디자인 노트 N '+Object.keys(NINFO).length;
+  document.querySelector('.qpart').style.display = plan ? '' : 'none';
+  document.querySelector('.npart').style.display = planUx() ? '' : 'none';
+  document.querySelector('.switch.q').style.display = plan ? '' : 'none';
+  document.querySelector('.switch.n').style.display = planUx() ? '' : 'none';
+  var lg = document.getElementById('legend-g');
+  lg.innerHTML = '<span class="lg-t">행 구분</span>'+(S.ux
+    ? '<span class="bar bar-chg"></span>변경 <span class="bar bar-del"></span>삭제 <span class="bar bar-add"></span>추가<span class="lg-n">왼쪽 막대 + 행 뱃지 + 연한 배경 — 색은 임시, 토큰은 Q11</span>'+q('Q11')+u('U3')
+    : '<span class="sw sw-chg"></span>변경 <span class="sw sw-del"></span>삭제 <span class="sw sw-add"></span>추가<span class="lg-n">배경색만 — 기획서 원안(연두·분홍·하늘)</span>'+q('Q11')+u('U3'));
+}
+document.querySelectorAll('#seg-cancel button').forEach(function(b){ b.addEventListener('click', function(){ S.cancelVar = b.getAttribute('data-c'); render(); }); });
+document.getElementById('q-toggle').addEventListener('change', function(){ document.body.classList.toggle('q-on', this.checked); });
+
+var frameEl = document.getElementById('frame'), presetButtons = document.querySelectorAll('.preset-btn'), lastMO = null;
+function setWidth(w){
+  presetButtons.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-w') === String(w)); });
+  frameEl.style.width = w + 'px';
+}
+presetButtons.forEach(function(b){ b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); }); });
+function updateReadout(){
+  var w = Math.round(frameEl.getBoundingClientRect().width);
+  updateNow();
+  var mo = w <= 1024;
+  if(lastMO !== null && mo !== lastMO){ if(S.view === 'current') render(); else if(S.modal) drawModal(); }   /* 현행 캡처 PC↔MO 교체, 모달↔시트 */
+  lastMO = mo;
+}
+if(window.ResizeObserver) new ResizeObserver(updateReadout).observe(frameEl);
+
+(function init(){
+  var p = new URLSearchParams(location.search);
+  if(['current','policy','plan'].indexOf(p.get('view')) >= 0) S.view = p.get('view');
+  if(STEPS.indexOf(p.get('step')) >= 0) S.step = p.get('step');
+  if(p.get('pin')) S.pin = p.get('pin');
+  if(p.get('cv') === 'after') S.cancelVar = 'after';
+  if(p.get('ux') === '1'){ S.ux = true; setBadges(p.get('badges') === '1'); }
+  if(p.get('orig') === '1') S.origOpen = true;
+  if(p.get('looked')){ cur().lookedUp = true; cur().lookupAt = '2026-10-07 10:42'; }
+  setWidth(p.get('w') || 1025);
+  render(); updateReadout();
+  if(p.get('apply')){ p.get('apply').split('').forEach(function(n){ runScenario(+n, true); }); }   /* 시나리오를 즉시 적용(문서 링크·캡처용) */
+  var sc = parseInt(p.get('scenario'), 10);
+  if(sc >= 1 && sc <= 6){
+    if(sc === 6){ runScenario(1, true); runScenario(2, true); runScenario(3, true); runScenario(4, true); runScenario(6); }
+    else setTimeout(function(){ runScenario(sc); }, 300);
+  }
+  if(S.pin){ setTimeout(function(){ var el = document.getElementById('pin-'+S.pin); if(el) el.scrollIntoView({block:'center'}); }, 300); }
+  if(p.get('jump')){ setTimeout(function(){ var t = null; document.querySelectorAll('#page .sec-title').forEach(function(e){ if(e.textContent.indexOf(p.get('jump')) === 0) t = e; }); if(t) window.scrollTo(0, t.getBoundingClientRect().top + window.scrollY - 160); }, 400); }
+  /* 팝업 바로 열기 링크: ?open=lookup|optEdit|add|cancel…&pick=sock&sel=last&result=1 */
+  var op = p.get('open');
+  if(op){ setTimeout(function(){
+    var fr = document.getElementById('frame'); window.scrollTo(0, fr.getBoundingClientRect().top + window.scrollY - 4);
+    openModal(op, op === 'optEdit' ? {demo:true} : {});
+    if(p.get('pick') && S.modal && S.modal.type === 'add') addPick(p.get('pick'));
+    if(p.get('result') && S.modal && S.modal.type === 'lookup'){ S.modal.result = true; drawModal(); var r = document.getElementById('lk-res'), mb = document.querySelector('#overlay .modal-body'); if(r && mb) mb.scrollTop += r.getBoundingClientRect().top - mb.getBoundingClientRect().top - 8; }
+    if(p.get('cert') && S.modal && S.modal.type === 'lookup'){ S.modal2 = {type:'certPw', data:{}, pw:p.get('cert')}; drawModal2(); }
+    if(p.get('sel') === 'last'){ var b = document.querySelectorAll('#overlay .selectf'); if(b.length) b[b.length-1].click(); }
+  }, 400); }
+})();
+</script>
+</body>
+</html>

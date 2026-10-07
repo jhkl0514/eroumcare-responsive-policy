@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko" data-mode="light">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>구입 주문 히스토리·문제 분석</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg?v=7">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png?v=7">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png?v=5">
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa; --disabled-bg:#eee;
+  --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999; --btn-text:#555;
+  --border-primary:#bdbdbd; --border-secondary:#eee; --border-tertiary:#e0e0e0; --border-dark:#616161;
+  --brand:#323da3; --brand-subtle:#e3e5f5; --tint:#eff1fd;
+  /* 5장 상태칩 단계 재사용 — 새 색 없음 */
+  --success-bg:#e8f5e9; --success-border:#c8e6c9; --success-text:#166534;
+  --danger-bg:#ffebee; --danger-border:#ffcdd2; --danger-text:#c62828;
+  --info-bg:#eff6ff; --info-border:#dbeafe; --info-text:#1e40af;
+  /* 확인 필요(노랑) — 4-3 프로토타입 .bug-note 값 */
+  --note-bg:#fff7e6; --note-border:#ffd699; --note-text:#b45309;
+  --shadow:0 1px 2px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.05);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text-primary);line-height:1.6;
+  font-family:'SUIT','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;}
+#wrap{max-width:1000px;margin:0 auto;padding:20px 16px 64px;}
+a{color:var(--brand);}
+
+.ref-banner{display:flex;gap:10px;align-items:flex-start;background:var(--note-bg);border:1px solid var(--note-border);
+  color:var(--note-text);border-radius:8px;padding:12px 16px;font-size:14px;font-weight:600;margin-bottom:20px;}
+.ref-banner svg{flex-shrink:0;margin-top:1px;}
+.ref-banner a{color:var(--note-text);}
+h1{font-size:24px;margin:0 0 4px;}
+.meta{font-size:14px;color:var(--text-secondary);margin-bottom:24px;}
+
+section{background:var(--card);border-radius:8px;box-shadow:var(--shadow);padding:24px 20px;margin-bottom:16px;}
+h2{font-size:20px;margin:0 0 16px;padding-bottom:8px;border-bottom:1px solid var(--border-dark);}
+h3{font-size:18px;margin:24px 0 12px;}
+
+p{margin:0 0 8px;font-size:16px;}
+ul.plain{margin:0;padding-left:20px;font-size:16px;}
+ul.plain li{margin-bottom:6px;}
+
+/* 한눈에 보기 */
+.glance{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.glance-item{background:var(--secondary-bg);border-radius:4px;padding:12px 16px;}
+.glance-item .k{font-size:14px;font-weight:600;color:var(--text-secondary);}
+.glance-item .v{font-size:16px;}
+@media (max-width:640px){ .glance{grid-template-columns:1fr;} }
+
+/* 연표 */
+.timeline{position:relative;margin:0;padding:0;list-style:none;}
+.timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--border-secondary);}
+.tl-item{position:relative;padding:0 0 18px 32px;}
+.tl-item::before{content:"";position:absolute;left:0;top:6px;width:16px;height:16px;border-radius:999px;
+  background:var(--card);border:2px solid var(--brand);}
+.tl-item.gap::before{border-color:var(--danger-text);}
+.tl-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.tl-date{font-size:14px;font-weight:700;}
+.tl-kind{font-size:14px;color:var(--text-secondary);border:1px solid var(--border-primary);border-radius:4px;padding:0 6px;line-height:22px;}
+.tl-who{font-size:14px;color:var(--text-tertiary);}
+.tl-body{font-size:16px;margin-top:2px;}
+.tl-ship{font-size:14px;color:var(--text-secondary);margin-top:2px;}
+.tl-ship b{color:var(--danger-text);}
+
+/* 흐름 */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;}
+.flow-step{flex:1 1 150px;background:var(--secondary-bg);border:1px solid var(--border-secondary);border-radius:4px;padding:12px;}
+.flow-step .n{font-size:14px;font-weight:700;color:var(--brand);}
+.flow-step .t{font-size:16px;font-weight:600;}
+.flow-step .d{font-size:14px;color:var(--text-secondary);margin-top:4px;}
+.flow-arrow{display:flex;align-items:center;color:var(--text-tertiary);}
+@media (max-width:640px){ .flow{flex-direction:column;} .flow-arrow{justify-content:center;transform:rotate(90deg);} }
+.flow-notes{margin-top:12px;display:grid;gap:6px;}
+.flow-note{font-size:14px;color:var(--text-secondary);display:flex;gap:8px;}
+.flow-note .num{flex-shrink:0;width:22px;height:22px;border-radius:999px;background:var(--danger-bg);color:var(--danger-text);
+  border:1px solid var(--danger-border);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+/* 문제 카드 */
+.group-head{display:flex;align-items:center;gap:8px;margin:24px 0 12px;}
+.group-head:first-of-type{margin-top:0;}
+.group-letter{width:32px;height:32px;border-radius:4px;background:var(--brand);color:#fff;font-weight:700;
+  display:flex;align-items:center;justify-content:center;}
+.group-title{font-size:18px;font-weight:700;}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+@media (max-width:720px){ .cards{grid-template-columns:1fr;} }
+.card{border:1px solid var(--border-primary);border-radius:4px;padding:16px;display:flex;flex-direction:column;gap:8px;scroll-margin-top:16px;}
+.card:target{outline:2px solid var(--brand);outline-offset:2px;}
+.card-head{display:flex;align-items:center;gap:8px;}
+.pin{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:24px;padding:0 6px;border-radius:999px;
+  background:var(--danger-bg);border:1px solid var(--danger-border);color:var(--danger-text);font-size:12px;font-weight:700;}
+.card-title{font-size:16px;font-weight:700;}
+.card-row{font-size:14px;color:var(--text-secondary);}
+.card-row b{color:var(--text-primary);font-weight:600;}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;}
+.thumb{width:120px;height:84px;border:1px solid var(--border-secondary);border-radius:4px;overflow:hidden;cursor:zoom-in;
+  background:var(--tertiary);padding:0;}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:top left;display:block;}
+.card-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;}
+.link-btn{display:inline-flex;align-items:center;gap:4px;height:36px;padding:0 12px;border-radius:4px;font-size:14px;font-weight:600;
+  text-decoration:none;border:1px solid var(--border-primary);color:var(--text-primary);background:var(--card);}
+.link-btn.plan{background:var(--tint);border-color:var(--tint);color:var(--brand);}
+
+/* 해결 범위 */
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th{background:var(--tertiary);text-align:left;font-weight:600;padding:12px;border-bottom:1px solid var(--border-primary);}
+td{padding:12px;border-bottom:1px solid var(--border-secondary);vertical-align:top;}
+.tbl-wrap{overflow-x:auto;}
+.badge{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid;white-space:nowrap;}
+.badge.ok{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text);}
+.badge.part{background:var(--note-bg);border-color:var(--note-border);color:var(--note-text);}
+.badge.gap{background:var(--danger-bg);border-color:var(--danger-border);color:var(--danger-text);}
+.callout{margin-top:12px;background:var(--tint);border-radius:4px;padding:12px 16px;font-size:16px;font-weight:600;color:var(--brand);}
+
+.q-list{display:grid;gap:8px;}
+.q-row{display:flex;gap:12px;font-size:16px;}
+.q-row .k{flex:0 0 48px;font-weight:700;color:var(--text-secondary);}
+.foot{font-size:14px;color:var(--text-secondary);margin-top:8px;}
+.foot a{font-weight:600;}
+
+/* 확대 보기 */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:50;}
+.lightbox.open{display:flex;}
+.lightbox figure{margin:0;max-width:min(1200px,100%);max-height:100%;display:flex;flex-direction:column;gap:8px;}
+.lightbox img{max-width:100%;max-height:calc(100vh - 100px);object-fit:contain;background:#fff;border-radius:4px;}
+.lightbox figcaption{color:#fff;font-size:14px;}
+.lb-close{position:absolute;top:12px;right:12px;width:48px;height:48px;border:none;background:none;color:#fff;cursor:pointer;}
+</style>
+</head>
+<body>
+<div id="wrap">
+
+<div class="ref-banner">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor"/></svg>
+  <div>참고 문서 — 정책 아님. 확정 규칙은 <a href="../index.html#4-5" target="_top">4-5 주문요청관리 상세 — 구입</a>.</div>
+</div>
+
+<h1>구입 주문 히스토리·문제 분석</h1>
+<div class="meta">주문요청관리(구입 주문) · 기준일 2026-10-07 · 원본: Confluence "주문요청관리(구입) 정리" 00~03 · 근거 화면: 개발 화면 캡처(2026-10-06~07)</div>
+
+<!-- 1. 한눈에 보기 -->
+<section id="glance">
+  <h2>한눈에 보기</h2>
+  <div class="glance">
+    <div class="glance-item"><div class="k">무엇</div><div class="v">이로움돌봄에서 수급자(보호자)가 요청한 복지용구 주문을, 매칭된 사업소가 이로움케어에서 확인·변경·주문하는 화면</div></div>
+    <div class="glance-item"><div class="k">시작</div><div class="v">2024.05 돌봄주문 프로젝트 [P4] 복지용구 주문 → 2025.02.04 배포, 02.06 정식 오픈</div></div>
+    <div class="glance-item"><div class="k">운영</div><div class="v">2025~2026 운영 개선 6건 · 기획자 5명 · 문서와 Figma 파일 7곳에 분산</div></div>
+    <div class="glance-item"><div class="k">지금</div><div class="v">2026.10 UI 개선(IS-1276 / OECS-1951) 기획 진행 중 + 2026.08 대여 주문(대대여 연동) 추가로 구입/대여 탭 구조</div></div>
+  </div>
+</section>
+
+<!-- 2. 연표 -->
+<section id="timeline">
+  <h2>연표</h2>
+  <ol class="timeline" id="timeline-list"></ol>
+</section>
+
+<!-- 3. 현행 흐름 -->
+<section id="flow">
+  <h2>현행 흐름</h2>
+  <div class="flow" id="flow-steps"></div>
+  <div class="flow-notes">
+    <div class="flow-note"><span class="num">1</span><span>주문확인중의 옵션 변경·수량·추가·삭제는 <b>누를 때마다 즉시 서버에 저장</b>된다</span></div>
+    <div class="flow-note"><span class="num">2</span><span>화면에 변경 흔적이 거의 남지 않는다</span></div>
+    <div class="flow-note"><span class="num">3</span><span>[주문하기] 때 삭제 상품이 있으면 상품 삭제 사유 모달(20자)</span></div>
+    <div class="flow-note"><span class="num">4</span><span>확인 모달 "총 N건…"</span></div>
+    <div class="flow-note"><span class="num">5</span><span>주문 후에는 최종 상품만 남는다</span></div>
+  </div>
+  <h3>진행 조건 — 요양정보 조회</h3>
+  <p>주문확인중에서 요양인정번호 [조회]가 필수다(요양정보조회 모달 → 공인인증서 비밀번호 입력). 조회 전에 [주문하기]를 누르면 주문불가 모달이 뜬다.</p>
+  <div class="thumbs" data-thumbs="dev-18-care-info-not-allowed.png"></div>
+</section>
+
+<!-- 4. 문제 분석 -->
+<section id="problems">
+  <h2>문제 분석</h2>
+  <div id="problem-groups"></div>
+</section>
+
+<!-- 5. 2026.10 해결 범위 -->
+<section id="coverage">
+  <h2>2026.10 기획서 해결 범위</h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>문제</th><th>기획서 해결</th><th>판정</th><th>남는 공백</th></tr></thead>
+    <tbody id="coverage-body"></tbody>
+  </table></div>
+  <div class="callout">이번 개선은 2024.07 최초 정책("변경 전/후 각각 표시")의 복원이다.</div>
+</section>
+
+<!-- 6. 결정 기록 -->
+<section id="decisions">
+  <h2>결정 기록</h2>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>번호</th><th>결정</th><th>일자</th></tr></thead>
+    <tbody>
+      <tr><td><b>D-01</b></td><td>상품 유형 표기: 구입 상품 '구입', 대여 상품 '대여' (2026.08 대대여 기획의 '판매' 대체)</td><td>2026-10-06</td></tr>
+      <tr><td><b>D-02</b></td><td>주문취소 사유는 구입·대여 별도 처리</td><td>2026-10-06</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 7. 열린 질문 -->
+<section id="questions">
+  <h2>열린 질문 (요약)</h2>
+  <div class="q-list">
+    <div class="q-row"><span class="k">기획</span><span>Q1 추가 후 삭제 처리 · Q2 복원 기준 · Q4 사유 모달 버튼명 · Q5 글자 수 · Q6 주문 후 이력 노출 · Q7 상태칩 명칭 · Q8 옵션 불일치 알림 존폐 · Q9 옵션 표기 · Q10 합계 명칭 · <b>Q20 전체 되돌리기</b> · <b>Q21 확정 시점 저장</b></span></div>
+    <div class="q-row"><span class="k">개발</span><span>Q13~Q19 (옵션 관리 반영, 2025 변경 건, 행 이동, 부품 0원, 변경=삭제+추가, 퍼블 불일치, 옵션 줄바꿈)</span></div>
+  </div>
+  <p class="foot">상세는 Confluence 02 질문·결정 기록. 화면으로 비교: <a href="order-detail-purchase.html?view=current&amp;step=confirming">현행</a> · <a href="order-detail-purchase.html?view=plan&amp;step=confirming">개선안(기획 확인 중)</a></p>
+</section>
+
+<p class="foot">→ 정책 조항 <a href="../index.html#4-5" target="_top">4-5 주문요청관리 상세 — 구입</a> · 프로토타입 <a href="order-detail-purchase.html">order-detail-purchase.html</a></p>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="스크린샷 확대">
+  <button class="lb-close" type="button" aria-label="닫기" onclick="closeLightbox()"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <figure><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure>
+</div>
+
+<script>
+var ASSET = 'assets/purchase-order/';
+var SHOT_LABEL = {
+  'dev-02-confirming-added.jpg':'개발 · 주문확인중 + 추가상품',
+  'dev-03-delete-row-removed.jpg':'개발 · 삭제 후 행 즉시 제거',
+  'dev-04-delete-reason-20.jpg':'개발 · 상품 삭제 사유(20자)',
+  'dev-06-option-modal-empty.jpg':'개발 · 옵션 수정 모달 빈 상태',
+  'dev-09-option-change-moves-down.jpg':'개발 · 옵션 변경 후 행 맨 아래로',
+  'dev-11-delete-reason-scope.jpg':'개발 · 삭제 사유 목록 포함 범위',
+  'dev-14-order-confirm-mo.png':'개발 · 주문하기 확인(모바일)',
+  'dev-15-delete-reason-added-then-deleted.png':'개발 · 삭제 사유에 추가 후 삭제 상품 포함',
+  'dev-16-preparing.png':'개발 · 상품준비',
+  'dev-17-delivered.png':'개발 · 배송완료',
+  'dev-18-care-info-not-allowed.png':'개발 · 요양정보조회 · 주문불가'
+};
+
+var TIMELINE = [
+  ['2024.05.28','프로젝트','돌봄주문 프로젝트 킥오프','기획','—'],
+  ['2024.07.29','기획','CARE 수급자주문관리 정책. <b>"변경 전 주문상품과 변경 후 주문상품이 각각 보여져야 함"</b> 명시','기획','변경 전/후 표시 <b>미구현</b>',true],
+  ['2024.08.26~09.13','디자인','리스트·상세·주문불가 모달·삭제 취소 모달, 상태값 16종','디자인','부분'],
+  ['2024.10.23','기획 변경','삭제 상품 취소(복원) 기능 제외','—','디자인엔 잔존'],
+  ['2025.01.08','기획 변경','주문하기 확인 문구 변경 (OECS-1640)','기획','반영'],
+  ['2025.01.13','기획 변경','품절 태그·팝업 (BTS-143)','기획','확인 필요'],
+  ['2025.02.04','배포','1차 배포 (02.06 정식 오픈)','—','반영'],
+  ['2025.02.11','기획','옵션·수량 변경 모달 + 취소 사유 \'수량 또는 옵션 변경\'','기획','반영 → 2026.04 교체'],
+  ['2025.03','기획','주문거부(HOLDING)','기획','확인 필요'],
+  ['2026.03.20','기획','상품 옵션 관리 개선 (IS-578) + 주문상세 옵션 불일치 알림','기획','알림 <b>미반영</b>',true],
+  ['2026.04 초','디자인','옵션 불일치 경고 바','디자인','<b>미반영</b>',true],
+  ['2026.04','기획','주문 추가 — 상품 추가, 행 스텝퍼+[변경], 정보 표 분리','확인 필요','반영'],
+  ['2026.04.20','디자인','PC 상품 추가 기능 (OEOS-466)','디자인','2026.05.11 배포'],
+  ['2026.08.18','기획','돌봄 대대여 사업소 연동 — 구입/대여 탭','기획','개발 중'],
+  ['2026.10.01','기획','주문요청관리 UI 개선 — 최초 vs 변경 주문, 행 BG, 복원, 주문 변경 사유','기획','디자인 예정']
+];
+
+var FLOW = [
+  ['1','주문접수','마스킹 상태'],
+  ['2','주문확인중','[주문정보확인] 후. 요양정보 조회 필수 · 수정 작업'],
+  ['3','상품준비','[주문하기] 후'],
+  ['4','출고완료',''],
+  ['5','배송완료','']
+];
+
+/* view: current=현행 스크린샷, plan=개선안(기획 확인 중) */
+var GROUPS = [
+  { key:'A', title:'인지 — 무엇이 바뀌었는지 알 수 없음', items:[
+    {id:'A1', t:'삭제하면 행이 즉시 사라짐', p:'무엇을 뺐는지 화면에서 확인 불가', shots:['dev-03-delete-row-removed.jpg'], cur:'step=confirming&pin=A1', plan:'scenario=3'},
+    {id:'A2', t:'옵션·수량 변경 후 행에 표시 없음', p:'수급자 요청분과 사업소 변경분 구분 불가', shots:[], cur:'step=confirming&pin=A2', plan:'scenario=2'},
+    {id:'A3', t:'옵션 변경한 행이 목록 맨 아래로 이동', p:'추가 상품처럼 보이고 순서가 깨짐', shots:['dev-09-option-change-moves-down.jpg'], cur:'step=confirming&pin=A3', plan:'scenario=1'},
+    {id:'A4', t:'\'추가상품\'이 상태칩 자리에 같은 초록으로 표시', p:'상태와 변경 유형이 같은 모양 (DS Status chip-Order의 \'추가상품\'은 회색 Neutral)', shots:['dev-02-confirming-added.jpg'], cur:'step=confirming&pin=A4', plan:'scenario=4'},
+    {id:'A5', t:'모든 행에 \'주문확인중\' 반복', p:'주문 전에는 정보 가치 없음', shots:['dev-02-confirming-added.jpg'], cur:'step=confirming&pin=A5', plan:''},
+    {id:'A6', t:'옵션 수정 모달이 빈 상태로 열림', p:'현재 옵션을 기억해야 수정 가능', shots:['dev-06-option-modal-empty.jpg'], cur:'step=confirming&pin=A6', plan:'scenario=1'}
+  ]},
+  { key:'B', title:'시스템 — 되돌릴 수 없음', items:[
+    {id:'B1', t:'변경·추가·삭제가 즉시 서버 저장 (목록 이동 후 재진입해도 유지)', p:'주문하기 전인데도 실수 복구 불가', shots:['dev-11-delete-reason-scope.jpg','dev-15-delete-reason-added-then-deleted.png'], cur:'step=confirming&pin=B1', plan:'scenario=3'},
+    {id:'B2', t:'옵션 변경이 데이터상 \'삭제 + 추가\'', p:'\'변경\' 개념 없음 → A3, C1의 원인으로 추정', shots:[], cur:'step=confirming&pin=B1', plan:'scenario=1'},
+    {id:'B3', t:'수량은 스텝퍼 후 [변경]을 눌러야 반영, 미반영 체크 없음', p:'바꾼 줄 알고 그대로 주문될 수 있음', shots:[], cur:'step=confirming&pin=B3', plan:'scenario=2'}
+  ]},
+  { key:'C', title:'고지·이력 — 수급자에게 변경이 전달되지 않음', items:[
+    {id:'C1', t:'삭제 사유 목록에 추가 후 삭제 상품, 옵션 변경 전·후 옵션까지 포함', p:'실제로 없던 \'삭제\'가 안내됨', shots:['dev-11-delete-reason-scope.jpg','dev-15-delete-reason-added-then-deleted.png'], cur:'step=confirming&pin=C1', plan:'scenario=6'},
+    {id:'C2', t:'옵션·수량 변경, 상품 추가는 사유 없음', p:'동의가 필요한 변경인데 기록 없음', shots:[], cur:'step=confirming&pin=C1', plan:'scenario=6'},
+    {id:'C3', t:'사유 20자 제한, 동의 확인 장치 없음', p:'맥락 전달 불가', shots:['dev-04-delete-reason-20.jpg'], cur:'step=confirming&pin=C1', plan:'scenario=6'},
+    {id:'C4', t:'확인 모달 "수량이나 옵션을 바꿀 수 없으니…"', p:'상품 추가·삭제 언급 없음', shots:['dev-14-order-confirm-mo.png'], cur:'step=confirming&pin=C4', plan:'scenario=6'},
+    {id:'C5', t:'상품준비 ~ 배송완료에는 최종 상품만 표시', p:'사후 변경 확인 불가 → 문의·분쟁 근거 없음', shots:['dev-16-preparing.png','dev-17-delivered.png'], cur:'step=preparing&pin=C5', plan:'scenario=6'}
+  ]}
+];
+
+var COVERAGE = [
+  ['A1, A2, A4','최초 주문 박스 + 행 BG','ok','—'],
+  ['A5','주문 전 상태칩 제거','ok','—'],
+  ['A6','현재 옵션 선택 상태로 열기','ok','—'],
+  ['B3','[변경] 버튼 제거','part','저장 시점 (B1 연결)'],
+  ['C1~C3','주문 변경 사유 모달 (변경 목록 + 동의 체크)','part','글자 수'],
+  ['A3, B2','언급 없음','gap','데이터상 \'변경\' 구분 필요'],
+  ['B1','개별 [복원]','gap','전체 되돌리기 없음, 즉시 저장 구조 유지'],
+  ['C4','사유 저장 시 확인 생략','part','변경 없는 경우 문구 범위'],
+  ['C5','언급 없음','gap','주문 후 변경 이력 노출']
+];
+var BADGE = { ok:'해결', part:'부분', gap:'공백' };
+
+function shotThumb(f){
+  return '<button type="button" class="thumb" onclick="openLightbox(\''+f+'\')" aria-label="'+(SHOT_LABEL[f]||f)+' 크게 보기"><img src="'+ASSET+f+'" alt="'+(SHOT_LABEL[f]||f)+'" loading="lazy"></button>';
+}
+document.getElementById('timeline-list').innerHTML = TIMELINE.map(function(r){
+  return '<li class="tl-item'+(r[5]?' gap':'')+'"><div class="tl-head"><span class="tl-date">'+r[0]+'</span><span class="tl-kind">'+r[1]+'</span><span class="tl-who">'+r[3]+'</span></div>'+
+    '<div class="tl-body">'+r[2]+'</div><div class="tl-ship">상용 반영: '+r[4]+'</div></li>';
+}).join('');
+var ARROW = '<div class="flow-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+document.getElementById('flow-steps').innerHTML = FLOW.map(function(s){
+  return '<div class="flow-step"><div class="n">'+s[0]+'</div><div class="t">'+s[1]+'</div>'+(s[2]?'<div class="d">'+s[2]+'</div>':'')+'</div>';
+}).join(ARROW);
+document.getElementById('problem-groups').innerHTML = GROUPS.map(function(g){
+  return '<div class="group-head"><span class="group-letter">'+g.key+'</span><span class="group-title">'+g.title+'</span></div><div class="cards">'+
+    g.items.map(function(it){
+      return '<div class="card" id="'+it.id+'"><div class="card-head"><span class="pin">'+it.id+'</span><span class="card-title">'+it.t+'</span></div>'+
+        '<div class="card-row"><b>문제</b> '+it.p+'</div>'+
+        (it.shots.length?'<div class="thumbs">'+it.shots.map(shotThumb).join('')+'</div>':'')+
+        '<div class="card-links"><a class="link-btn" href="order-detail-purchase.html?view=current&amp;'+it.cur.replace(/&/g,'&amp;')+'">현행에서 보기</a>'+
+        (it.plan?'<a class="link-btn plan" href="order-detail-purchase.html?view=plan&amp;step=confirming&amp;'+it.plan+'">개선안에서 보기</a>':'')+'</div></div>';
+    }).join('')+'</div>';
+}).join('');
+document.getElementById('coverage-body').innerHTML = COVERAGE.map(function(r){
+  return '<tr><td><b>'+r[0]+'</b></td><td>'+r[1]+'</td><td><span class="badge '+r[2]+'">'+BADGE[r[2]]+'</span></td><td>'+r[3]+'</td></tr>';
+}).join('');
+document.querySelectorAll('[data-thumbs]').forEach(function(el){
+  el.innerHTML = el.getAttribute('data-thumbs').split(',').map(shotThumb).join('');
+});
+
+var lb = document.getElementById('lightbox');
+function openLightbox(f){
+  document.getElementById('lb-img').src = ASSET + f;
+  document.getElementById('lb-img').alt = SHOT_LABEL[f] || f;
+  document.getElementById('lb-cap').textContent = SHOT_LABEL[f] || f;
+  lb.classList.add('open');
+}
+function closeLightbox(){ lb.classList.remove('open'); }
+lb.addEventListener('click', function(e){ if(e.target === lb) closeLightbox(); });
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>

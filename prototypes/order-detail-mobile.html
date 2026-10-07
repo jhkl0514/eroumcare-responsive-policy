@@ -51,7 +51,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
   .title-action-wrap{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 4px;}
   .page-head{padding:0;}
   .action-row{padding:0;width:auto;flex:none;}
-  .action-row .btn{flex:0 0 auto;width:auto;display:inline-block;padding:10px 20px;white-space:nowrap;}
+  .title-action-wrap .action-row .btn{flex:0 0 auto;width:auto;padding:0 20px;white-space:nowrap;}
   .bug-note{margin:8px 20px 0;}
   .bottom-actions{display:none;}
 }
@@ -75,6 +75,8 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .btn{border-radius:4px;font-size:14px;font-weight:600;padding:12px 0;flex:1;text-align:center;cursor:pointer;border:1px solid transparent;}
 .btn-outline{background:var(--card);color:var(--text-primary);border-color:var(--border-primary);}
 .btn-filled{background:var(--brand);color:#fff;}
+/* 주문취소/주문하기: 모바일은 타이틀 아래 한 줄·폭 나눔, PC는 타이틀 오른쪽 Hug — 둘 다 MD 48 (3-4 예외, 2026-10-07) */
+.action-row .btn{height:48px;display:flex;align-items:center;justify-content:center;padding:0;}
 .bug-note{margin:4px 20px 0;font-size:14px;color:#b45309;background:#fff7e6;border:1px solid #ffd699;
   border-radius:6px;padding:8px 10px;line-height:1.5;}
 
