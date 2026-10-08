@@ -353,7 +353,7 @@ textarea.input:focus{padding:11px;}
 .f-chip.search{margin-left:auto;margin-right:20px;padding:4px 12px;}
 .count{height:56px;display:flex;align-items:center;padding-left:20px;font-size:16px;color:var(--text-secondary);}
 .ocards{display:flex;flex-direction:column;gap:12px;padding:0 20px;}
-.ocard{border-radius:8px;box-shadow:0 0 1px rgba(0,0,0,.2),0 2px 16px rgba(0,0,0,.08);padding:16px 16px 24px 16px;
+.ocard{border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08),0 0 .5px rgba(0,0,0,.2);padding:16px 16px 24px 16px;
   display:flex;flex-direction:column;gap:6px;cursor:pointer;background:var(--card);border:1px solid transparent;}
 .ocard:active{background:var(--tint);border-color:var(--default-text);}
 .ocard .top{display:flex;justify-content:space-between;align-items:center;gap:8px;}
@@ -397,8 +397,8 @@ textarea.input:focus{padding:11px;}
 .mx-seg button.on{background:var(--border-tertiary);color:var(--text-primary);font-weight:600;}
 .mix-bar .mx-n{flex-basis:100%;font-size:14px;color:var(--text-secondary);}
 .chips-in{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;}
-.pcards{display:flex;flex-direction:column;gap:8px;padding:0 20px;}
-.pcard{background:var(--card);border:1px solid var(--border-tertiary);border-radius:8px;padding:16px 16px 24px;display:flex;flex-direction:column;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.pcards{display:flex;flex-direction:column;gap:12px;padding:0 20px;}   /* 카드 목록 공통 — 운영 Figma m_Order/Order_listCard(5798:49474): 카드 사이 12 · radius 8 · 그림자 */
+.pcard{background:var(--card);border:1px solid transparent;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08),0 0 .5px rgba(0,0,0,.2);padding:16px 16px 24px;display:flex;flex-direction:column;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .pcard:active,.pcard.is-press{background:var(--tint);border-color:var(--default-text);}
 .pc-head{display:flex;align-items:center;justify-content:space-between;gap:4px 8px;flex-wrap:wrap;}
 .pc-head .chips-in{flex-wrap:nowrap;} .pc-head .pc-date{margin-left:auto;}   /* 칩 둘은 한 줄, 폭이 모자라면 일시가 다음 줄 */
@@ -583,13 +583,11 @@ body:not(.n-on) .n-badge{display:none;}
 .ncode{color:var(--brand);font-weight:700;margin-right:6px;}
 /* 변경 행 색: 기획서 원안 = 연두(success), UX 제안 = caution */
 .prow.chg{background:var(--success-bg);}
-/* UX 제안: 배경 한 단계 연하게(기존 토큰을 흰색과 50% 혼합 — 임시, Q11) + 왼쪽 3px 색 막대 */
-body.ux-on .prow.chg,body.ux-on .prow.del,body.ux-on .prow.add{background:none;}   /* ④: 배경은 '행 배경' 옵션으로 켤 때만 */
-body.ux-on.bg-chg .prow.chg,body.ux-on.bg-all .prow.chg{background:color-mix(in srgb, var(--caution-bg) 50%, #fff);}
-body.ux-on.bg-del .prow.del,body.ux-on.bg-all .prow.del{background:color-mix(in srgb, var(--danger-bg) 50%, #fff);}
-body.ux-on.bg-add .prow.add,body.ux-on.bg-all .prow.add{background:color-mix(in srgb, var(--info-bg) 50%, #fff);}
-.bar{display:inline-block;width:3px;height:16px;border-radius:2px;margin-left:8px;vertical-align:middle;}
-.bar-chg{background:var(--caution-text);} .bar-del{background:var(--danger-text);} .bar-add{background:var(--info-text);}
+/* ④ UX 제안: 행 배경 = 기존 토큰을 흰색과 50% 혼합한 연한 색(임시 — DS에 연한 토큰 없음, Q11). 왼쪽 막대는 쓰지 않음 */
+body.ux-on .prow.chg{background:color-mix(in srgb, var(--caution-bg) 50%, #fff);}
+body.ux-on .prow.del{background:color-mix(in srgb, var(--danger-bg) 50%, #fff);}
+body.ux-on .prow.add{background:color-mix(in srgb, var(--info-bg) 50%, #fff);}
+.sw-ux-chg{background:color-mix(in srgb, var(--caution-bg) 50%, #fff);} .sw-ux-del{background:color-mix(in srgb, var(--danger-bg) 50%, #fff);} .sw-ux-add{background:color-mix(in srgb, var(--info-bg) 50%, #fff);}
 .c-k-keep{background:var(--card);border-color:var(--border-primary);color:var(--neutral-text);}
 .qty-was{font-size:12px;color:var(--text-tertiary);width:100%;text-align:center;}
 .vs-orig{font-size:12px;font-weight:500;color:var(--text-secondary);margin-left:8px;}
@@ -860,10 +858,12 @@ var QINFO = {
   Q7:{t:'상품준비 이후 칩 명칭', who:'기획 결정', ask:'상품준비 이후 칩 명칭을 대여 상태칩(출고준비중 등)과 통일할지', now:'구입: 상품준비 · 출고완료 · 배송완료 / 대여: 출고준비중 · 출고완료 · 배송완료', tmp:'이 화면은 현행 구입 명칭(상품준비) 그대로'},
   Q9:{t:'옵션 표기', plan:'베이지 / L(95) — 값만, 슬래시 앞뒤 공백', ask:'옵션을 \'값/값\'으로 쓸지, \'항목 값 · 항목 값\'으로 쓸지', now:'베이지/M(260~280mm)', tmp:'색상 베이지 · 사이즈 M(260~280mm) — 항목 연하게, 값 진하게', no:'9'},
   Q10:{t:'합계 명칭', ask:'합계 이름', now:'총 판매 금액', tmp:'총 구입 금액(D-01 \'구입\' 표기에 맞춤)', no:'11'},
-  Q11:{t:'행 BG 컬러 토큰', plan:'변경 연두 · 삭제 분홍 · 추가 하늘', who:'UI/UX 결정(기획 질문 아님)', state:'토큰 조회 대기', ask:'변경·삭제·추가 행 배경에 쓸 DS 토큰', now:'행 배경 없음', tmp:'지금 색은 임시 — 디자인 시점에 DS 토큰 조회 후 확정', no:'4'},
+  Q11:{t:'행 BG 컬러 토큰', plan:'변경 연두 · 삭제 분홍 · 추가 하늘', who:'UI/UX 결정(기획 질문 아님)', state:'UI/UX 결정 — 토큰 확정 필요', ask:'변경·삭제·추가 행 배경에 쓸 DS 토큰(DS에 연한 배경 토큰이 없음)', now:'행 배경 없음', tmp:'④: caution·danger·info 배경을 흰색과 50% 혼합한 임시색 + 행 앞 뱃지. ③ 원안은 기획서 색', no:'4'},
   Q17:{t:'옵션 변경의 데이터 구분', who:'개발 확인', ask:'옵션 변경을 데이터상 \'삭제+추가\'가 아닌 \'변경\'으로 구분할 수 있는지', now:'옵션 변경 = 기존 옵션 삭제 + 새 옵션 추가(B2) → 행이 맨 아래로 이동(A3), 원래 옵션이 삭제 사유 목록에 나옴(C1)', tmp:'\'변경\'으로 구분된다고 보고 같은 자리에서 옵션만 바뀌게 표시'},
   Q22:{t:'삭제 상품과 같은 옵션 — 막고 복원 안내', who:'기획 결정 · 개발 확인', ask:'삭제 상태 상품과 같은 옵션으로의 변경·추가를 막고 \'복원\'으로 안내해도 되는지. 현행 개발이 중복 자체를 막는지 확인 필요', now:'원안: [확인] 후 \'변경불가\' 모달(삭제 행은 검사에서 제외). 현행 개발은 같은 상품 다른 옵션 중복 추가 가능(dev-08)', tmp:'삭제 행과 겹치면 [확인] 비활성 + [복원하기] 안내'},
   Q23:{t:'상품별 상태가 다를 때 대표 배지', who:'개발 확인', done:true, ans:'주문 1건당 1개, 상품 중 가장 앞 단계(상품준비 < 출고중 < 출고완료 < 배송완료). 일부만 취소된 상품은 제외, 전부 취소일 때만 주문취소. 상품 행 배지는 그 상품 자신의 상태(부분 취소 상품은 주문취소). +2개 상태·상품별 처리 중은 미사용 (2026-10-08)', ask:'상품별 상태가 다를 때 상단 주문상태(대표 배지)는 어떤 기준으로 표시하나요? (개발 확인)', now:'답변 완료', tmp:'현행 규칙으로 자동 계산'},
+  Q24:{t:'주문 변경 사유 목록 순서', who:'기획 결정', plan:'기획서 캡처는 변경 → 삭제 → 추가 순(순서 규칙은 미명시)', ask:'주문 변경 사유 모달의 변경 항목을 어떤 순서로 보여주나요? (유형 순 / 최초 주문 순)', now:'상품 삭제 사유 모달 — 삭제 상품만', tmp:'③ 원안은 기획서 캡처 순서(변경 → 삭제 → 추가), ④는 최초 주문 순 → 추가 순(UI/UX 결정)'},
+  Q25:{t:'사유 모달 — 같은 상품 여러 장 구분', who:'기획 결정', plan:'삭제·추가 카드는 상품명만', ask:'같은 상품이 다른 옵션으로 여러 장 있을 때 삭제·추가 카드에 옵션을 표시하나요? (상품명만이면 수급자 안내 문구에서 구분이 안 됨)', now:'—', tmp:'④: 옵션 있는 상품은 둘째 줄에 옵션(U10)'},
   Q20:{t:'전체 되돌리기', ask:'변경을 한 번에 최초 주문으로 되돌리는 기능을 둘지', now:'되돌리기·초기화 없음(B1)', tmp:'\'변경 주문\' 타이틀 오른쪽 [최초 주문으로 되돌리기]', no:'3'},
   Q21:{t:'확정 시점 저장', ask:'변경을 누를 때마다 저장할지, [주문하기] 때 한 번에 저장할지', now:'누를 때마다 즉시 서버 저장(B1)', tmp:'화면 안에서만 유지, [주문하기] 때 확정', no:'13'}
 };
@@ -879,6 +879,7 @@ var UINFO = {
   'U5-5':{t:'이탈 방지', prob:'(Q21 확정 시점 저장일 때) 변경한 채로 [주문목록]·뒤로가기를 누르면 변경이 사라진다', prop:'"변경한 내용이 저장되지 않습니다. 나가시겠습니까?" 확인', why:'실수로 작업을 잃지 않게 한다'},
   'U8':{t:'비밀번호 보기', prob:'공인인증서 비밀번호를 입력할 때 친 글자를 확인할 수 없어 틀리기 쉽다', prop:'입력칸 오른쪽에 눈 모양 버튼 — 누르면 글자 보이기/숨기기 (지우기 X는 그대로)', why:'긴 인증서 비밀번호를 한 번에 맞게 입력하도록 돕는다'},
   'U9':{t:'중복 옵션 — 모달 대신 인라인 안내', prob:'[확인]을 누른 뒤에야 \'변경불가\' 모달로 알려 주는 사후 오류이고, 모달 위에 모달이 떠 문맥이 끊긴다', prop:'옵션을 고르는 순간 모달 안에서 알리고 [확인]·[상품 추가]를 막는다. 목록의 행과 겹치면 "수량은 목록에서 조정", 삭제한 행과 겹치면 [복원하기]로 다음 행동을 안내. 검사 대상은 삭제 상태 행까지(수정 중인 자기 행 제외), 옵션 없는 상품은 검색 결과에서 바로 표시', why:'미리 막을 수 있는 오류는 사후 경고보다 예방이 낫고, 모달 중첩을 없앤다'},
+  'U10':{t:'사유 모달 삭제·추가 카드에 옵션 줄', prob:'같은 상품이 다른 옵션으로 여러 장이면 삭제·추가 카드가 상품명만이라 어떤 옵션인지 모른다', prop:'옵션 있는 상품은 삭제·추가 카드도 변경 카드처럼 둘째 줄에 옵션 표시. 목록 순서는 최초 주문 순 → 추가 순', why:'수급자에게 안내되는 변경 내역이라 어느 상품인지 분명해야 하고, 화면의 주문상품 목록 순서와 같아야 대조가 쉽다'},
   'U6':{t:'문구·표기 교정', prob:'주문불가 문구가 \'본인부담율 및 주문가능\'으로 표준 표기(본인부담률·주문 가능)와 다르고, 변경 사유 안내 문구가 기획서 화면과 설명에서 서로 다르다', prop:'\'본인부담률 및 주문 가능 품목\'으로 교정, 사유 입력 안내는 "변경 사유를 입력해 주세요. 수급자에게 안내되는 문구이니 신중하게 적어주세요."로 통일', why:'같은 용어를 화면마다 다르게 쓰면 신뢰가 떨어진다'},
   'U7':{t:'최초 주문 / 변경 주문 구분 방식', prob:'\'최초 주문\' 박스와 \'변경 주문\' 목록으로 같은 상품 목록을 두 번 보여주고, 무엇이 바뀌었는지 보려면 위아래를 오가며 비교해야 한다', prop:'목록은 하나만. 위에 변경 요약 바("고객 요청에서 N건 변경됨 · 변경 n · 삭제 n · 추가 n") + [고객 요청 원본 보기]로 접어 둔 원본 표, 섹션 오른쪽에 [최초 주문으로 되돌리기]. 변경이 없으면 현행과 같음. 모바일은 원본을 바텀시트로', why:'비교 대상(원본)은 필요할 때만 펼치고, 변경 내용은 행 안에서 바로 읽게 해 화면 길이와 비교 거리를 줄인다'},
   'U5-6':{t:'주문취소 사유 전체 보기', prob:'주문 후 취소의 사유가 한 줄 말줄임(K4)', prop:'말줄임 사유에 DS 팝오버(PC 호버) / 바텀시트(모바일)', why:'\'확인 필요\' 항목에 대한 제안안'}
@@ -933,8 +934,8 @@ var LIST_ROWS = (function(){   /* [NO, 수급자, 요양인정번호, 휴대폰,
   return out;
 })();
 var STATUS_OPTS = ['전체','주문접수','주문확인중','상품준비','출고중','출고완료','배송완료','취소요청','주문취소'];   /* 5장 구입 칩 표 순서 */
-var KEY_OPTS = ['전체','요양인정번호','수급자 성명','휴대폰번호','주문서번호','주문번호'];
-var KEY_COL = {'수급자 성명':[1],'요양인정번호':[2],'휴대폰번호':[3],'주문서번호':[4],'주문번호':[5]};
+var KEY_OPTS = ['전체','요양인정번호','수급자 성명','휴대폰번호','돌봄주문번호','주문번호'];   /* 옵션 이름 = 표 컬럼 이름(3-7) — 결정(UI/UX, 10/08) */
+var KEY_COL = {'수급자 성명':[1],'요양인정번호':[2],'휴대폰번호':[3],'돌봄주문번호':[4],'주문번호':[5]};
 var SIZE_OPTS = ['20개씩','50개씩','100개씩'];
 var PERIODS = {'1개월':['2026-09-07','2026-10-07'],'6개월':['2026-04-07','2026-10-07'],'일주일':['2026-09-30','2026-10-07'],'이번달':['2026-10-01','2026-10-07'],'지난달':['2026-09-01','2026-09-30'],'3개월':['2026-07-07','2026-10-07'],'1년':['2025-10-07','2026-10-07']};
 var STATUS_TEXT = {received:'주문접수',confirming:'주문확인중',preparing:'상품준비',shipped:'출고완료',delivered:'배송완료',cancel:'주문취소'};
@@ -966,7 +967,7 @@ var CUR = {
       html:'<div class="cur-pager"><span class="pg">'+'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="#bdbdbd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'+'</span><span class="pg on">1</span><span class="pg">2</span><span class="pg">3</span><span class="pg">4</span><span class="pg">5</span><span class="pg">6</span><span class="pg"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cp-tag">재현 · 캡처 없음</span></div>'} ]},
   received:{ pc:['dev-01-received.jpg'], mo:[], pins:[
     {id:'E1',t:'빈 값마다 \'-\' 반복 — 칸 단위 \'-\' 하나로 정리 필요',d:'예: 수급자 "김*환 (-, -)", 요양인정번호 "- -", 보호자 "(- / 관계)". 정책 적용안(3-1) — 칸 전체가 비면 \'-\' 하나, 일부만 비면 빈 부분 생략·괄호째 생략',shot:'dev-01-received.jpg'},
-    {id:'M1',k:'m',t:'모바일: 정보 표가 라벨/값 상하 스택',d:'정책 적용안 — 라벨 + 값 2열(3-1·3-11)',shot:'publish-302-mo-390.jpg'},
+    {id:'M1',k:'m',t:'모바일: 정보 표 라벨이 정책 규격과 다름 — 라벨 왼쪽·값 오른쪽 한 줄씩, 라벨 배경 없음',d:'정책 적용안 — 라벨(80~128, 배경 #f5f5f5) + 값 1쌍/행(3-1·3-11)',shot:'dev-14-order-confirm-mo.png'},
     {id:'M2',k:'m',t:'모바일: 버튼이 주문정보 타이틀 오른쪽',d:'정책 적용안 — 페이지 타이틀 아래 한 줄(3-4 예외)',shot:'dev-14-order-confirm-mo.png',x:68,y:25.3} ]},
   confirming:{ pc:['dev-02-confirming-added.jpg','dev-05-option-label.jpg','dev-09-option-change-moves-down.jpg','dev-03-delete-row-removed.jpg','dev-06-option-modal-empty.jpg','dev-07-add-product-modal.jpg','dev-08-same-product-twice.jpg','dev-10-delete-confirm.jpg','dev-04-delete-reason-20.jpg','dev-11-delete-reason-scope.jpg','dev-15-delete-reason-added-then-deleted.png','dev-12-cancel-reason.jpg','dev-18-care-info-not-allowed.png'],
     mo:['dev-14-order-confirm-mo.png','publish-302-mo-390.jpg','dev-18-care-info-not-allowed.png'], pins:[
@@ -982,7 +983,7 @@ var CUR = {
     {id:'C1',t:'삭제 사유 목록에 옵션 변경 전 옵션·추가 후 삭제 상품까지 포함',d:'실제로 없던 \'삭제\'가 안내됨',shot:'dev-15-delete-reason-added-then-deleted.png',plan:'scenario=6'},
     {id:'C3',t:'삭제 사유 20자 제한, 동의 확인 장치 없음',d:'맥락 전달 불가',shot:'dev-04-delete-reason-20.jpg',plan:'scenario=6'},
     {id:'C4',t:'확인 모달 "수량이나 옵션을 바꿀 수 없으니…"',d:'상품 추가·삭제 언급 없음',shot:'dev-14-order-confirm-mo.png',x:48,y:46.7,plan:'scenario=6'},
-    {id:'M1',k:'m',t:'모바일: 정보 표가 라벨/값 상하 스택, 행마다 회색 라벨 바',d:'정책 적용안 — 라벨 + 값 2열(3-1·3-11)',shot:'publish-302-mo-390.jpg'},
+    {id:'M1',k:'m',t:'모바일: 정보 표 라벨이 정책 규격과 다름 — 라벨 왼쪽·값 오른쪽 한 줄씩, 라벨 배경 없음',d:'정책 적용안 — 라벨(80~128, 배경 #f5f5f5) + 값 1쌍/행(3-1·3-11)',shot:'dev-14-order-confirm-mo.png'},
     {id:'M2',k:'m',t:'모바일: 주문취소/주문하기가 주문정보 타이틀 오른쪽',d:'정책 적용안 — 페이지 타이틀 아래 한 줄, 폭 나눔, MD 48(3-4 예외)',shot:'dev-14-order-confirm-mo.png',x:76,y:25.3},
     {id:'M3',k:'m',t:'모바일: 긴 상태칩 내부 줄바꿈',d:'정책 적용안 — 칩 한 줄 유지(5장)',shot:'publish-302-mo-390.jpg'},
     {id:'M4',k:'m',t:'모바일: 상품 행이 세로 나열, 버튼 좌측 단독',d:'정책 적용안 — 4-3 상품 카드 구조',shot:'publish-302-mo-390.jpg'},
@@ -1082,7 +1083,7 @@ function syncControls(){
   document.querySelectorAll('#seg-step button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-s') === S.step); });
   document.querySelectorAll('#seg-example button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-e') === S.example); });
   document.querySelectorAll('#seg-cancel button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-c') === S.cancelVar); });
-  var showEx = S.view === 'policy' && S.step === 'confirming', showCancel = S.view !== 'current' && S.step === 'cancel', showBg = planUx() && S.step === 'confirming';
+  var showEx = S.view === 'policy' && S.step === 'confirming', showCancel = S.view !== 'current' && S.step === 'cancel', showBg = false;   /* ④ 행 배경은 항상 표시 — 켜고 끄는 옵션 없음 */
   document.getElementById('row-bg').style.display = showBg ? '' : 'none';
   document.querySelectorAll('#seg-bg button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-bg') === S.bg); });
   ['chg','del','add','all'].forEach(function(k){ document.body.classList.toggle('bg-'+k, S.bg === k); });
@@ -1257,7 +1258,7 @@ function renderList(){
       '<div class="mo-seg-wrap"><div class="mo-seg" role="tablist"><button class="mo-seg-item active" role="tab" aria-selected="true">구입 주문</button><button class="mo-seg-item" role="tab" aria-selected="false" onclick="goRental()">대여 주문</button></div></div>'+
       '<div class="mf-row"><div class="mf-scroll">'+
         '<button class="f-chip'+(a.period!=='3개월'?' on':'')+'" onclick="openModal(\'lfPeriod\')">'+esc(a.period || '직접 선택')+' '+small(ICON.chev)+'</button>'+
-        '<button class="f-chip'+(a.status!=='전체'?' on':'')+'" onclick="openModal(\'lfStatus\')">상태 : '+a.status+' '+small(ICON.chev)+'</button></div>'+
+        '<button class="f-chip'+(a.status!=='전체'?' on':'')+'" onclick="openModal(\'lfStatus\')">'+(a.status==='전체' ? '상태 : 전체' : a.status)+' '+small(ICON.chev)+'</button></div>'+
         '<span class="mf-fade"></span><button class="f-chip mf-search" onclick="openModal(\'lfSearch\')">'+ICON.filter+' 검색</button></div>'+
       '<div class="mt-row"><div class="mt-scroll">'+tags.map(function(t){ return '<button class="mtag" onclick="lfClear(\''+t[0]+'\')" aria-label="'+esc(t[1])+' 조건 해제">'+esc(t[1])+' '+small(ICON.close)+'</button>'; }).join('')+'</div>'+
         '<span class="mt-fade"></span><button class="mt-reset" onclick="lfReset()">'+ICON.reset24+'초기화</button></div>'+
@@ -1265,8 +1266,8 @@ function renderList(){
       '<div class="pcards">'+cards+'</div>'+
       (rows.length ? '<div class="cpager"><button class="ar" aria-label="이전 페이지" '+(lf.mpage<=1?'disabled':'')+' onclick="lfGoM('+(lf.mpage-1)+')">'+AR32+'</button>'+
         '<span class="txt" aria-live="polite"><b>'+lf.mpage+'</b><span>/</span><span>'+mpages+'</span></span>'+
-        '<button class="ar" aria-label="다음 페이지" '+(lf.mpage>=mpages?'disabled':'')+' onclick="lfGoM('+(lf.mpage+1)+')"><span style="display:flex;transform:scaleX(-1)">'+AR32+'</span></button></div>'+
-        '<div class="cp-note">'+note('모바일 \'20개씩\' 셀렉트·\'전체 n/N\' 노출 여부 — 3-6 정책에 없음, 확인 필요')+'</div>' : '')+     /* 0건이면 페이지네이션 숨김(3-6) */
+        '<button class="ar" aria-label="다음 페이지" '+(lf.mpage>=mpages?'disabled':'')+' onclick="lfGoM('+(lf.mpage+1)+')"><span style="display:flex;transform:scaleX(-1)">'+AR32+'</span></button></div>'
+        : '')+     /* 0건이면 페이지네이션 숨김(3-6) */
     '</div>';
 }
 function goRental(){ showToast('대여 주문은 4-2 대여 리스트로 이동합니다'); setTimeout(function(){ location.href = 'order-list-adaptive.html'; }, 900); }
@@ -1652,8 +1653,9 @@ function planChanges(){
     var ps = planState(it), p = CATALOG[it.pid];
     if(!ps) return;
     var name = p.name + (p.opts.length && planUx() ? ' ('+optShow(it.pid,it.opt)+')' : '');
-    if(ps === 'del'){ var o0 = S.plan.orig.filter(function(x){ return x.uid === it.uid; })[0]; name = p.name + (p.opts.length && planUx() ? ' ('+optShow(o0.pid,o0.opt)+')' : ''); out.push({k:'del', name:name}); }
-    else if(ps === 'add') out.push({k:'add', name:planUx() ? name+' · '+it.qty+'개' : name});
+    if(ps === 'del'){ var o0 = S.plan.orig.filter(function(x){ return x.uid === it.uid; })[0];
+      out.push({k:'del', name:p.name, sub:p.opts.length && planUx() ? optShow(o0.pid,o0.opt) : ''}); }      /* U10: ④는 옵션 줄 */
+    else if(ps === 'add') out.push({k:'add', name:planUx() ? p.name+' · '+it.qty+'개' : p.name, sub:p.opts.length && planUx() ? optShow(it.pid,it.opt) : ''});
     else {
       var o = S.plan.orig.filter(function(x){ return x.uid === it.uid; })[0], parts = [];
       var ux = planUx(), optCh = o.opt.join('|') !== it.opt.join('|');
@@ -1668,7 +1670,7 @@ function planChanges(){
 function rcListHtml(list){      /* 원안: 항목마다 연한 회색 카드 + [배지] 상품명, 변경만 둘째 줄 */
   var lbl = {chg:'변경', del:'삭제', add:'추가'};
   var names = list.map(function(c){ return c.name; }), dupName = names.some(function(n,i){ return names.indexOf(n) !== i; });
-  if(dupName) return rcListHtml2(list, lbl)+'<div class="m-note">'+note('같은 상품이 여러 장이면 상품명만으로 구분 안 됨(삭제·추가 카드에 옵션 없음) — 확인 필요')+'</div>';
+  if(dupName) return rcListHtml2(list, lbl)+'<div class="m-note">'+note('확인 필요')+' 같은 상품이 여러 장이면 상품명만으로 구분 안 됨(삭제·추가 카드에 옵션 없음)'+q('Q25')+uMark('U10')+'</div>';
   return rcListHtml2(list, lbl);
 }
 function rcListHtml2(list, lbl){
@@ -1825,9 +1827,12 @@ function modalSpec(){
     sheet = true; title = '주문 변경 사유';
     var ch = planChanges(); if(!ch.length) ch = [{k:'chg', name:'예시 상품', sub:'수량: 1 → 2'}];
     var ok = m.text.trim().length > 0 && m.checked;
-    var ordNote = '<div class="m-note">목록 순서: 최초 주문 순 → 추가 상품 순 '+note('기획서 미명시 — 확인 필요')+'</div>';
+    var ordNote = plan && !planUx() ? '<div class="m-note">목록 순서: 기획서 캡처 순서(변경 → 삭제 → 추가) '+note('확인 필요')+q('Q24')+'</div>'
+                                    : '<div class="m-note">목록 순서: 최초 주문 순 → 추가 상품 순'+(planUx() ? u('U10') : '')+'</div>';   /* 결정(UI/UX, 10/08): ④는 최초 주문 순 */
     if(plan && !planUx()){          /* ③ 원안 — 기획서(Figma 28694:1285) 그대로 */
       m.maxc = 20;
+      var KO = {chg:0, del:1, add:2};
+      ch = ch.slice().sort(function(a, b){ return KO[a.k] - KO[b.k]; });     /* ③ 원안: 기획서 캡처 순서(변경 → 삭제 → 추가) — Q24 */
       body = rcListHtml(ch)+ordNote.replace('</div>', uMark('U5-4')+'</div>')+
         '<div class="rc-label">상세 사유'+q('Q5')+uMark('U6')+'</div>'+
         '<div class="rc-ta"><textarea id="cr" maxlength="20" placeholder="입력하신 주문 변경 사유는 수급자에게 노출됩니다!" oninput="S.modal.text=this.value;crSync()">'+esc(m.text)+'</textarea><div class="cnt" id="cr-c">'+m.text.length+'/20자</div></div>'+
@@ -2201,7 +2206,7 @@ function updateLists(){
   document.querySelector('.switch.n').style.display = planUx() ? '' : 'none';
   var lg = document.getElementById('legend-g');
   lg.innerHTML = '<span class="lg-t">행 구분</span>'+(S.ux
-    ? '<span class="chip sm c-k-chg">변경</span><span class="chip sm c-k-del">삭제</span><span class="chip sm c-k-add">추가</span><span class="lg-n">행 앞 텍스트 뱃지로 구분 · 배경은 위 \'행 배경\'에서 켜기(색은 임시, Q11)</span>'+q('Q11')+u('U3')
+    ? '<span class="sw sw-ux-chg"></span><span class="chip sm c-k-chg">변경</span> <span class="sw sw-ux-del"></span><span class="chip sm c-k-del">삭제</span> <span class="sw sw-ux-add"></span><span class="chip sm c-k-add">추가</span><span class="lg-n">행 배경 + 행 앞 뱃지 · 색은 임시(Q11)</span>'+q('Q11')+u('U3')
     : '<span class="sw sw-chg"></span>변경 <span class="sw sw-del"></span>삭제 <span class="sw sw-add"></span>추가<span class="lg-n">배경색만 — 기획서 원안(연두·분홍·하늘)</span>'+q('Q11')+u('U3')+
       '<span class="lg-t" style="margin-left:12px">사유 모달 배지</span><span class="rc-legend"><span class="rc-b chg">변경</span><span class="rc-b del">삭제</span><span class="rc-b add">추가</span></span><span class="lg-n">기획서 색(원안) — 글자색이 5장 토큰과 다름(변경 #43a047 · 삭제 #e53935 · 추가 #1477f8, 5장은 #166534 · #c62828 · #1e40af)</span>');
 }
@@ -2242,7 +2247,7 @@ if(window.ResizeObserver) new ResizeObserver(updateReadout).observe(frameEl);
   if(p.get('cv') === 'after') S.cancelVar = 'after';
   if(p.get('ux') === '1'){ S.ux = true; setBadges(p.get('badges') === '1'); }
   if(p.get('orig') === '1') S.origOpen = true;
-  if(['chg','del','add','all'].indexOf(p.get('bg')) >= 0) S.bg = p.get('bg');
+  /* 행 배경 옵션 삭제(UI/UX 결정 10/08) — bg 파라미터 무시 */
   if(RCASE[p.get('rcase')]){ setTimeout(function(){ runCase(p.get('rcase')); }, 300); }
   if(p.get('looked') === '0'){ S.plan.lookedUp = false; }
   else if(p.get('looked')){ cur().lookedUp = true; cur().lookupAt = '2026-10-07 10:42'; }

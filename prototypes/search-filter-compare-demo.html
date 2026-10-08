@@ -163,7 +163,7 @@ button,input,select{font-family:inherit;}
 .tag-scroll{display:flex;gap:4px;align-items:center;height:100%;padding:8px 100px 8px 20px;overflow-x:auto;scrollbar-width:none;}
 .tag-scroll::-webkit-scrollbar{display:none;}
 .tag{flex:0 0 auto;height:32px;display:inline-flex;align-items:center;gap:4px;padding:4px 4px 4px 8px;border:none;background:none;
-  font-size:14px;font-weight:600;line-height:20px;color:#141e76;background:#eff1fd;border-radius:999px;padding:4px 8px 4px 12px;cursor:pointer;white-space:nowrap;}   /* 적용 태그 기본색 #eff1fd(3-7·3-10 통일) */
+  font-size:14px;font-weight:600;line-height:20px;color:#09af00;cursor:pointer;white-space:nowrap;}   /* 적용 태그: 초록 글자 + X, 배경 없음(3-7, 결정 10/08 — Figma) */
 .tag-row .fc-fade{right:78px;}
 .tag-reset{position:absolute;right:12px;top:8px;height:32px;display:inline-flex;align-items:center;gap:4px;padding:4px 8px;
   border:none;background:#fafafa;font-size:14px;line-height:20px;color:var(--text-primary);cursor:pointer;}
@@ -174,7 +174,7 @@ button,input,select{font-family:inherit;}
 
 /* 카드 리스트(목업) */
 .card-list{display:flex;flex-direction:column;gap:12px;padding:0 20px 24px;}
-.m-card{background:#fff;border:1px solid var(--border-secondary);border-radius:8px;box-shadow:var(--shadow);padding:24px 16px;}
+.m-card{background:#fff;border:1px solid transparent;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08),0 0 .5px rgba(0,0,0,.2);padding:24px 16px;}
 .m-card .l1{display:flex;align-items:center;gap:8px;font-size:16px;line-height:24px;color:var(--text-secondary);}
 .m-card .lt{font-size:14px;line-height:20px;padding:1px 6px;border-radius:4px;border:1px solid;}
 .lt.r{background:#ffebee;border-color:#ffcdd2;color:#c62828;}
