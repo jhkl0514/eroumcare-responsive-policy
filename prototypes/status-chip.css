@@ -2,7 +2,7 @@
    값은 CLAUDE.md 5장 표와 같다. 화면에서는 색을 따로 쓰지 않고 상태 이름만 넣는다.
    사용: <span class="chip" data-status="주문접수">주문접수</span>
          테이블 안 배지(3-9): <span class="chip sm" data-status="주문접수">주문접수</span>
-         여러 상태(구입 리스트 전용): <span class="chip" data-status="다중상태">+2개 상태</span> */
+   DS에 있으나 미사용(개발 확인 2026-10-08): '+2개 상태', '상품별 처리 중', 주문취소 주체별 3종 */
 .chip[data-status]{display:inline-flex;align-items:center;justify-content:center;gap:4px;height:32px;padding:4px 12px;box-sizing:border-box;
   border-radius:999px;border:1px solid transparent;font-size:14px;font-weight:600;line-height:20px;white-space:nowrap;flex-shrink:0;}
 .chip[data-status].sm{height:24px;padding:2px 8px;font-size:12px;font-weight:500;line-height:18px;}
@@ -29,7 +29,5 @@
 /* Neutral */
 .chip:is([data-status="취소완료"],[data-status="회수취소완료"])
   {background:#f5f5f5;border-color:#bdbdbd;color:#555555;}
-/* Neutral · Transparent — 구입 리스트 '+N개 상태' */
-.chip[data-status="다중상태"]{background:#f5f5f5;border-color:transparent;color:#616161;}
 /* Neutral · White — 구입 '추가상품' */
 .chip[data-status="추가상품"]{background:#ffffff;border-color:#bdbdbd;color:#555555;}

@@ -170,7 +170,7 @@ label-value 나열형 데이터(주문 정보, 회수 신청 정보 등).
 | 회수취소 | `#ffebee` | `#ffcdd2` | `#c62828` |
 | 회수취소완료 | `#f5f5f5` | `#bdbdbd` | `#555555` |
 
-**구입 주문상태칩** (`Status chip-Order`, DS `13139:11578`): 주문접수 Info · 주문확인중 Success · 상품준비 Caution · 출고중·출고완료 BrandSub · 배송완료 Default · 취소요청 Caution · **주문취소 Danger(표기 하나 — DS 사업소·관리자·수급자 3종 안 씀)** · +N개 상태 Neutral·Transparent(`#f5f5f5`/없음/`#616161`, 사용 조건 미확인 — 화면에 쓰지 않음) · 추가상품 Neutral·White(`#fff`/`#bdbdbd`/`#555`). A/S(`13027:12231`)·반품(`13079:12197`) 칩은 CLAUDE.md 5장. 코드는 공통 `prototypes/status-chip.css` — `<span class="chip" data-status="상태명">`, 화면별 색 하드코딩 금지.
+**구입 주문상태칩** (`Status chip-Order`, DS `13139:11578`): 주문접수 Info · 주문확인중 Success · 상품준비 Caution · 출고중·출고완료 BrandSub · 배송완료 Default · 취소요청 Caution · **주문취소 Danger(표기 하나)** · 추가상품 Neutral·White(`#fff`/`#bdbdbd`/`#555`). A/S(`13027:12231`)·반품(`13079:12197`) 칩은 CLAUDE.md 5장. DS에 있으나 미사용: +2개 상태, 상품별 처리 중, 주문취소 주체별 3종. 상품별 상태가 다르면 대표 배지 = 가장 앞 단계(일부 취소 제외, 전부 취소면 주문취소), 상품 행은 자기 상태(4-5). 코드는 공통 `prototypes/status-chip.css` — `<span class="chip" data-status="상태명">`, 화면별 색 하드코딩 금지.
 
 **빈 값 표기**(3-1 정책 적용안): 칸 전체가 비면 '-' 하나, 일부만 비면 빈 부분 생략, 괄호 안이 모두 비면 괄호째 생략(예: "홍*동 (-, -)" → "홍*동", "김*호 (- / 자녀)" → "김*호 (자녀)").
 

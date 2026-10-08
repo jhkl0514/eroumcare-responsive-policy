@@ -389,13 +389,13 @@ textarea.input:focus{padding:11px;}
 .mt-reset{position:absolute;right:12px;top:8px;height:32px;display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border:none;background:var(--secondary-bg);cursor:pointer;font-family:inherit;font-size:14px;color:var(--text-primary);}
 .mt-fade{position:absolute;top:0;right:78px;width:28px;height:100%;pointer-events:none;background:linear-gradient(90deg,rgba(250,250,250,0),rgba(250,250,250,.8) 25%,#fafafa 50%);}
 .l-note{margin:16px 40px 0;} .l-note.mo{margin:0 20px 12px;} .l-note .note-badge{white-space:normal;height:auto;}
+.q-done{color:var(--success-text);font-weight:700;}
 .mix-bar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 16px;padding:10px 12px;border:1px dashed var(--note-border);background:var(--note-bg);border-radius:6px;font-size:14px;}
 .mix-bar .mx-t{font-weight:700;color:var(--note-text);}
 .mx-seg{display:inline-flex;border:1px solid var(--border-dark);border-radius:4px;padding:2px;background:var(--card);}
 .mx-seg button{height:28px;padding:0 10px;border:none;background:none;border-radius:2px;font-size:14px;color:var(--text-secondary);cursor:pointer;font-family:inherit;}
 .mx-seg button.on{background:var(--border-tertiary);color:var(--text-primary);font-weight:600;}
 .mix-bar .mx-n{flex-basis:100%;font-size:14px;color:var(--text-secondary);}
-.rep-q{display:inline-flex;gap:4px;margin-left:6px;vertical-align:middle;}
 .chips-in{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;}
 .pcards{display:flex;flex-direction:column;gap:8px;padding:0 20px;}
 .pcard{background:var(--card);border:1px solid var(--border-tertiary);border-radius:8px;padding:16px 16px 24px;display:flex;flex-direction:column;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
@@ -863,7 +863,7 @@ var QINFO = {
   Q11:{t:'행 BG 컬러 토큰', plan:'변경 연두 · 삭제 분홍 · 추가 하늘', who:'UI/UX 결정(기획 질문 아님)', state:'토큰 조회 대기', ask:'변경·삭제·추가 행 배경에 쓸 DS 토큰', now:'행 배경 없음', tmp:'지금 색은 임시 — 디자인 시점에 DS 토큰 조회 후 확정', no:'4'},
   Q17:{t:'옵션 변경의 데이터 구분', who:'개발 확인', ask:'옵션 변경을 데이터상 \'삭제+추가\'가 아닌 \'변경\'으로 구분할 수 있는지', now:'옵션 변경 = 기존 옵션 삭제 + 새 옵션 추가(B2) → 행이 맨 아래로 이동(A3), 원래 옵션이 삭제 사유 목록에 나옴(C1)', tmp:'\'변경\'으로 구분된다고 보고 같은 자리에서 옵션만 바뀌게 표시'},
   Q22:{t:'삭제 상품과 같은 옵션 — 막고 복원 안내', who:'기획 결정 · 개발 확인', ask:'삭제 상태 상품과 같은 옵션으로의 변경·추가를 막고 \'복원\'으로 안내해도 되는지. 현행 개발이 중복 자체를 막는지 확인 필요', now:'원안: [확인] 후 \'변경불가\' 모달(삭제 행은 검사에서 제외). 현행 개발은 같은 상품 다른 옵션 중복 추가 가능(dev-08)', tmp:'삭제 행과 겹치면 [확인] 비활성 + [복원하기] 안내'},
-  Q23:{t:'상품별 상태가 다를 때 대표 배지', who:'개발 확인', ask:'상품별 상태가 다를 때 상단 주문상태(대표 배지)는 어떤 기준으로 표시하나요? (개발 확인)', now:'미확인 — 개발 화면 캡처는 모두 같은 상태', tmp:'가장 앞 단계(프로토타입 기본) — 가장 뒤 단계·가장 많은 상태로 바꿔 볼 수 있음. 구입 리스트 주문상태도 같은 기준'},
+  Q23:{t:'상품별 상태가 다를 때 대표 배지', who:'개발 확인', done:true, ans:'주문 1건당 1개, 상품 중 가장 앞 단계(상품준비 < 출고중 < 출고완료 < 배송완료). 일부만 취소된 상품은 제외, 전부 취소일 때만 주문취소. 상품 행 배지는 그 상품 자신의 상태(부분 취소 상품은 주문취소). +2개 상태·상품별 처리 중은 미사용 (2026-10-08)', ask:'상품별 상태가 다를 때 상단 주문상태(대표 배지)는 어떤 기준으로 표시하나요? (개발 확인)', now:'답변 완료', tmp:'현행 규칙으로 자동 계산'},
   Q20:{t:'전체 되돌리기', ask:'변경을 한 번에 최초 주문으로 되돌리는 기능을 둘지', now:'되돌리기·초기화 없음(B1)', tmp:'\'변경 주문\' 타이틀 오른쪽 [최초 주문으로 되돌리기]', no:'3'},
   Q21:{t:'확정 시점 저장', ask:'변경을 누를 때마다 저장할지, [주문하기] 때 한 번에 저장할지', now:'누를 때마다 즉시 서버 저장(B1)', tmp:'화면 안에서만 유지, [주문하기] 때 확정', no:'13'}
 };
@@ -899,15 +899,17 @@ function openN(id){ if(S.modal && S.modal.type !== 'nInfo'){ S.modal2 = {type:'n
 var STEPS = ['list','received','confirming','preparing','shipped','delivered','cancel'];
 var STEP_LABEL = {list:'리스트',received:'주문접수',confirming:'주문확인중',preparing:'상품준비',shipped:'출고완료',delivered:'배송완료',cancel:'주문취소'};
 function chip(status, sm){ return '<span class="chip'+(sm?' sm':'')+'" data-status="'+status+'">'+status+'</span>'; }   /* 상태칩 — 공통 status-chip.css */
-/* 상품별 상태가 다를 때 — ③·④ 상품준비·출고완료·배송완료 (Q23: 대표 배지 기준 개발 확인) */
+/* 상품별 상태가 다를 때 — 현행 규칙(개발 확인 2026-10-08, Q23 답변):
+   대표 배지 = 주문 1건당 1개, 상품 중 가장 앞 단계(상품준비 < 출고중 < 출고완료 < 배송완료).
+   일부만 취소된 상품은 계산에서 제외, 전부 취소일 때만 '주문취소'. 상품 행 배지는 그 상품 자신의 상태 */
 var STAGE = ['상품준비','출고중','출고완료','배송완료'];
-var MIXSET = {preparing:['상품준비','출고중','출고중','출고완료'], shipped:['출고중','출고완료','출고완료','배송완료'], delivered:['출고중','출고완료','배송완료','배송완료']};   /* 상품 4개 기준 — 대표 배지 후보 3개가 갈리게 */
+var MIXCASE = {a:['상품준비','출고중','배송완료'], b:['주문취소','출고완료','배송완료'], c:['주문취소','주문취소','주문취소']};
+var MIXCASE_LABEL = {a:'a 단계 섞임', b:'b 부분 취소', c:'c 전부 취소'};
 function repOf(list){
-  var idx = list.map(function(x){ return STAGE.indexOf(x); });
-  if(S.rep === 'back') return STAGE[Math.max.apply(null, idx)];
-  if(S.rep === 'most'){ var cnt = {}, best = null; list.forEach(function(x){ cnt[x] = (cnt[x]||0) + 1; });
-    STAGE.forEach(function(x){ if(cnt[x] && (best === null || cnt[x] > cnt[best])) best = x; }); return best; }   /* 같은 수면 앞 단계 */
-  return STAGE[Math.min.apply(null, idx)];
+  var live = list.filter(function(x){ return x !== '주문취소'; });
+  if(!live.length) return '주문취소';
+  var idx = live.map(function(x){ return STAGE.indexOf(x); }).filter(function(n){ return n >= 0; });   /* 취소요청 포함 여부는 확인 필요 */
+  return idx.length ? STAGE[Math.min.apply(null, idx)] : live[0];
 }
 var CANCEL_FULL = '관리자 상세화면에서 강제로 취소를 진행했습니다. (예시 문구 — 전체 사유는 개발 확인 필요)';
 var CANCEL_REASONS = ['수급자 단순변심','수급자 계약 불가 상태','수급자 연락 불가','수량 또는 옵션 변경','대대여로 진행'];
@@ -916,7 +918,7 @@ var LIST_ROWS = (function(){   /* [NO, 수급자, 요양인정번호, 휴대폰,
   var head = [['received'],['confirming'],['cancel','before'],['preparing'],['shipped'],['delivered'],['cancel','after'],['delivered']];
   var cyc = ['delivered','delivered','shipped','delivered','cancel','preparing','delivered','confirming','delivered','received'];
   var pad = function(n, k){ n = String(n); while(n.length < k) n = '0' + n; return n; };
-  var MIXED = {98:MIXSET.preparing, 97:MIXSET.shipped, 93:MIXSET.delivered};   /* 상품별 상태가 다른 주문 예시 */
+  var MIXED = {98:'a', 97:'b', 93:'c'};   /* 상품별 상태가 다른 주문 예시 — 상세의 a·b·c 케이스와 같음 */
   var prods = ['위풋 논슬립 돌돌이 양말 양면','LP-011 보나수 30cc','HD-B-001','ASH-106','SOOM M-130cc (남성용)'];
   var t0 = new Date(2026, 9, 7, 11, 2).getTime(), out = [];
   for(var i = 0; i < 101; i++){
@@ -926,7 +928,7 @@ var LIST_ROWS = (function(){   /* [NO, 수급자, 요양인정번호, 휴대폰,
     var ordered = st === 'preparing' || st === 'shipped' || st === 'delivered' || (st === 'cancel' && cv === 'after');
     out.push([no, names[i % names.length], 'L'+pad((123456 + i * 7919) % 1000000, 6)+'****', '010-****-'+pad((1000 + i * 1111) % 10000, 4),
       'DB61007'+pad(100 + no, 8), ordered ? '20261007'+pad(no, 8) : '-', st, dt, cv, prods[i % prods.length] + (i % 3 ? ' 외\u00a0'+(i % 3)+'건' : ''),
-      MIXED[no] || null]);   /* r[10] = 상품별 상태가 다른 주문의 상품 상태 목록 — 리스트 주문상태는 대표 배지 기준(Q23)을 따름 */
+      MIXED[no] || null]);   /* r[10] = 상품별 상태 케이스(a·b·c) — 리스트 주문상태 = 대표 배지 */
   }
   return out;
 })();
@@ -1001,7 +1003,7 @@ var CUR = {
    상태
    ===================================================================== */
 var S = {
-  view:'plan', step:'confirming', mix:false, rep:'front', bg:'none', example:'option', pin:null, shot:null, cancelVar:'before', ux:false, origOpen:false,
+  view:'plan', step:'confirming', mix:false, mixCase:'a', bg:'none', example:'option', pin:null, shot:null, cancelVar:'before', ux:false, origOpen:false,
   lf:{period:'3개월', from:'2026-07-07', to:'2026-10-07', status:'전체', key:'전체', q:'', open:true, openSel:null, cal:null, page:1, size:'20개씩', mpage:1,
       applied:{period:'3개월', from:'2026-07-07', to:'2026-10-07', status:'전체', key:'전체', q:''}},   /* 리스트 검색 */
   pol:null,   /* ② 현행 동작 */
@@ -1138,8 +1140,7 @@ function planFallback(){
 }
 
 /* ---------- 리스트 (4-2 · 3-7 검색 동작 · 3-6 페이지네이션) ---------- */
-function rowStatus(r){ return r[10] ? repOf(r[10]) : STATUS_TEXT[r[6]]; }
-var REP_LABEL = {front:'가장 앞 단계', back:'가장 뒤 단계', most:'가장 많은 상태'};
+function rowStatus(r){ return r[10] ? repOf(MIXCASE[r[10]]) : STATUS_TEXT[r[6]]; }
 function lfRows(){
   var a = S.lf.applied;
   return LIST_ROWS.filter(function(r){
@@ -1214,11 +1215,11 @@ function renderList(){
   var mpages = Math.max(1, Math.ceil(rows.length / 20)); if(lf.mpage > mpages) lf.mpage = mpages;
   var mRows = rows.slice((lf.mpage-1)*20, lf.mpage*20);
   var trs = rows.length ? pageRows.map(function(r){
-    return '<tr onclick="goRow(\''+r[6]+'\',\''+(r[8]||'')+'\','+(r[10]?1:0)+')"><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td>'+
+    return '<tr onclick="goRow(\''+r[6]+'\',\''+(r[8]||'')+'\','+(r[10]?'\''+r[10]+'\'':0)+')"><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td>'+
       (r[5] === '-' ? '-' : '<a href="javascript:void(0)" onclick="event.stopPropagation()"><u>'+r[5]+'</u></a>')+'</td><td>'+chip(rowStatus(r),true)+'</td><td>'+r[7]+'</td></tr>';
   }).join('') : '<tr class="empty-row"><td colspan="8">검색 조건에 맞는 주문 요청 내역이 없습니다.</td></tr>';
   var cards = rows.length ? mRows.map(function(r){       /* Figma m_Order/Order_listCard — 상태칩 + 일시 / 구분선 / 이름·L번호 · 돌봄주문 · 상품정보 · 주문번호(주문 이후만) */
-    return '<div class="pcard" role="button" tabindex="0" onclick="goRow(\''+r[6]+'\',\''+(r[8]||'')+'\','+(r[10]?1:0)+')"><div class="pc-head">'+chip(rowStatus(r))+'<span class="pc-date">'+r[7]+'</span></div>'+
+    return '<div class="pcard" role="button" tabindex="0" onclick="goRow(\''+r[6]+'\',\''+(r[8]||'')+'\','+(r[10]?'\''+r[10]+'\'':0)+')"><div class="pc-head">'+chip(rowStatus(r))+'<span class="pc-date">'+r[7]+'</span></div>'+
       '<div class="pc-sep"></div><div class="pc-body"><div class="pc-name"><b>'+r[1]+'</b><span>'+r[2]+'</span></div>'+
       '<div class="pc-row"><span class="lb">돌봄주문 :</span><span>'+r[4]+'</span></div><div class="pc-row"><span class="lb">상품정보 :</span><span>'+esc(r[9])+'</span></div>'+
       (r[5] !== '-' ? '<div class="pc-row"><span class="lb">주문번호 :</span><a href="javascript:void(0)" onclick="event.stopPropagation()">'+r[5]+'</a></div>' : '')+'</div></div>';
@@ -1244,7 +1245,7 @@ function renderList(){
           '<button type="button" class="s-x" id="lf-x" aria-label="지우기" '+(lf.q?'':'hidden')+' onmousedown="event.preventDefault()" onclick="lfQclear()">'+ICON.close+'</button></span></div>' : '')+
         '<div class="s-btns"><button class="btn btn-sm btn-outline" onclick="lfReset()">초기화</button><button class="btn btn-sm btn-filled" onclick="lfApply()">검색</button></div>'+
       '</div>'+
-      '<div class="l-note">'+note('주문 98·97·93은 상품별 상태가 다름 — 주문상태는 상세 ③·④의 대표 배지 기준(지금: '+REP_LABEL[S.rep]+')을 따름 · 확인 필요')+q('Q23')+'</div>'+
+      '<div class="l-note">'+note('주문 98·97·93은 상품별 상태가 다름(상세 케이스 a·b·c) — 주문상태 = 대표 배지(가장 앞 단계, 일부 취소 제외, 전부 취소면 주문취소)')+'</div>'+
       '<div class="tbl"><table><thead><tr><th>NO</th><th>수급자</th><th>요양인정번호</th><th>휴대폰번호</th><th>돌봄주문번호</th><th>주문번호</th><th>주문상태</th><th>주문일시</th></tr></thead><tbody>'+trs+'</tbody></table></div>'+
       '<div class="pgbar'+(lf.openSel==='size'?' sel-open':'')+'"><div class="pg-left">전체 <b>'+pageRows.length+'</b>/'+rows.length+'</div>'+
         '<div class="pager"><button class="pg arrow" aria-label="이전 페이지" '+(lf.page<=1?'disabled':'')+' onclick="lfGo('+(lf.page-1)+')">'+ICON.back+'</button>'+nums+
@@ -1283,7 +1284,7 @@ function lfClear(k){ var l = S.lf;
   lfApply(); }
 function goRow(st, cv, mixed){
   S.step = st; if(st === 'cancel') S.cancelVar = cv || 'before';
-  S.mix = !!mixed;
+  S.mix = !!mixed; if(mixed) S.mixCase = mixed;
   if(S.view === 'plan' && ['confirming','preparing','shipped','delivered'].indexOf(st) < 0) S.view = 'policy';
   render(); scrollTop();
 }
@@ -1307,13 +1308,13 @@ function renderDetail(plan){
   if(st.msg && !plan){ h += '<div class="result-box">'+st.msg+'</div>'; }
   if(after && step === 'preparing' && st.ordered){ h += '<div class="result-box">구입 주문완료 결과 화면 '+note()+' — 대여(4-3)는 완료 안내 박스가 있으나 구입은 미캡처. 여기서는 바로 상품준비로 보여줍니다.</div>'; }
 
-  if(plan && after) h += mixBar();
+  if(after) h += mixBar();
   /* 주문정보 */
   var orderNo = (after || cAfter) ? joinParts('<a href="javascript:void(0)"><u>2026100710412033</u></a>', ['2026-10-07 10:41:20']) : '-';
   h += sec('order','주문정보', st,
     '<div class="info-grid">'+
       tr('돌봄주문번호','DB6100710375068')+tr('주문정보확인','2026-10-07 09:03:08')+
-      tr('주문번호',orderNo)+tr('주문상태',(plan && after && S.mix ? chip(repOf(itemStatuses(planFinal(), step)))+'<span class="rep-q">'+note('확인 필요')+q('Q23')+'</span>' : chip(STEP_LABEL[step])))+
+      tr('주문번호',orderNo)+tr('주문상태',(after && S.mix ? chip(repOf(itemStatuses(detailItems(plan), step))) : chip(STEP_LABEL[step])))+
     '</div>');
   /* 수급자 정보 */
   var known = after || (conf && st.lookedUp);      /* 현행: 주문확인중은 요양정보 조회 전 성별·나이·요양인정번호 '-' (Figma 12030:9930) */
@@ -1422,13 +1423,14 @@ function renderCancel(afterOrder){
 
 /* 상품준비 이후 — 최종 상품만 (조회 전용) */
 function planFinal(){ return S.plan.finalItems || S.plan.items.filter(function(it){ return !it.deleted; }); }
-function itemStatuses(items, step){ return items.map(function(it, i){ return S.view === 'plan' && S.mix && MIXSET[step] ? MIXSET[step][Math.min(i, MIXSET[step].length - 1)] : STEP_LABEL[step]; }); }
-function mixBar(){
+function detailItems(plan){ return plan ? planFinal() : (S.pol.ordered ? S.pol.finalItems : SAMPLES.option.map(mkItem)); }
+function itemStatuses(items, step){ var c = MIXCASE[S.mixCase]; return items.map(function(it, i){ return S.mix ? c[Math.min(i, c.length - 1)] : STEP_LABEL[step]; }); }
+function mixBar(){       /* ②·③·④ 상품준비 이후 — 상품별 상태 재현 */
   return '<div class="mix-bar"><span class="mx-t">상품 상태</span><span class="mx-seg">'+[[false,'상품 상태 같음'],[true,'상품 상태 다름']].map(function(x){
       return '<button class="'+(S.mix===x[0]?'on':'')+'" onclick="S.mix='+x[0]+';render()">'+x[1]+'</button>'; }).join('')+'</span>'+
-    (S.mix ? '<span class="mx-t">대표 배지 기준</span><span class="mx-seg">'+['front','back','most'].map(function(k){
-      return '<button class="'+(S.rep===k?'on':'')+'" onclick="S.rep=\''+k+'\';render()">'+REP_LABEL[k]+'</button>'; }).join('')+'</span>'+note('확인 필요')+q('Q23')+
-      '<div class="mx-n">'+note('확인 필요')+' 상품별 상태로 \'주문취소\'·\'취소요청\'(부분 취소)이 나올 수 있는지 — 이 화면에는 넣지 않음</div>' : '')+'</div>';
+    (S.mix ? '<span class="mx-seg">'+['a','b','c'].map(function(k){
+      return '<button class="'+(S.mixCase===k?'on':'')+'" onclick="S.mixCase=\''+k+'\';render()">'+MIXCASE_LABEL[k]+'</button>'; }).join('')+'</span>'+
+      '<div class="mx-n">대표 배지 = 상품 중 가장 앞 단계 · 일부만 취소된 상품은 제외, 전부 취소면 주문취소 · 상품 행은 자기 상태 (현행 — 개발 확인 10/08) · '+note('확인 필요')+' 취소요청 상품이 섞였을 때 대표 배지 계산에 포함되는지</div>' : '')+'</div>';
 }
 function renderFinal(items, step, plan){
   if(!items) items = SAMPLES.option.map(mkItem);
@@ -1856,6 +1858,7 @@ function modalSpec(){
     var qi = QINFO[m.data.q] || {t:'', ask:'', now:'', tmp:'', no:''};
     title = m.data.q + ' · ' + qi.t;
     body = '<div class="qbox"><div class="qk">정해야 할 것</div><div>'+qi.ask+'</div></div>'+
+      (qi.done ? '<div class="qbox tmp"><div class="qk">답변 완료</div><div>'+qi.ans+'</div></div>' : '')+
       '<div class="qgrid"><div class="qbox"><div class="qk">현행</div><div>'+qi.now+'</div></div>'+
       (qi.plan ? '<div class="qbox"><div class="qk">기획서 원안</div><div>'+qi.plan+'</div></div><div class="qbox tmp"><div class="qk">UX 제안</div><div>'+qi.tmp+'</div></div></div>'
                : '<div class="qbox tmp"><div class="qk">이 화면의 임시안</div><div>'+qi.tmp+'</div></div></div>')+
@@ -2179,7 +2182,7 @@ document.querySelectorAll('#seg-step button').forEach(function(b){ b.addEventLis
 document.querySelectorAll('#seg-example button').forEach(function(b){ b.addEventListener('click', function(){
   S.example = b.getAttribute('data-e'); var lk = S.pol.lookedUp; S.pol = newPol(S.example); S.pol.lookedUp = lk; closeModal(); render(); }); });
 document.getElementById('qlist').innerHTML = Object.keys(QINFO).map(function(k){ var x = QINFO[k];
-  return '<button class="qitem" onclick="openQ(\''+k+'\')"><b>'+k+'</b><span>'+x.t+(x.who?' <em class="qwho">'+x.who+'</em>':'')+'<small>현행 '+x.now+' → 임시안 '+x.tmp+'</small></span></button>'; }).join('');
+  return '<button class="qitem" onclick="openQ(\''+k+'\')"><b>'+k+'</b><span>'+x.t+(x.who?' <em class="qwho">'+x.who+'</em>':'')+(x.done ? '<small><b class="q-done">답변 완료</b> '+x.ans+'</small>' : '<small>현행 '+x.now+' → 임시안 '+x.tmp+'</small>')+'</span></button>'; }).join('');
 document.getElementById('ulist').innerHTML = Object.keys(UINFO).map(function(k){ var x = UINFO[k];
   return '<button class="qitem uitem" onclick="openU(\''+k+'\')"><b>'+k+'</b><span>'+x.t+'<small>현행 '+x.prob+' → 제안 '+x.prop+'</small></span></button>'; }).join('');
 document.getElementById('u-toggle').addEventListener('change', function(){ document.body.classList.toggle('u-on', this.checked); });
