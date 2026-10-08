@@ -8,6 +8,7 @@
 <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=7">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png?v=7">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=5">
+<link rel="stylesheet" href="status-chip.css">
 <style>
 :root{
   --bg:#f4f5f7; --card:#ffffff; --tertiary:#f5f5f5; --secondary-bg:#fafafa; --disabled-bg:#eee;
@@ -136,13 +137,7 @@ body:not(.q-on) .q-badge{display:none;}
 .chip{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:600;
   border:1px solid;white-space:nowrap;line-height:20px;}
 .chip.sm{height:24px;padding:0 8px;font-size:12px;font-weight:500;}
-.c-received{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text);}
-.c-confirming{background:var(--success-bg);border-color:var(--success-border);color:var(--success-text);}
-.c-preparing,.c-cancelreq{background:var(--caution-bg);border-color:var(--caution-border);color:var(--caution-text);}
-.c-shipped{background:var(--brandsub-bg);border-color:var(--brandsub-border);color:var(--brandsub-text);}
-.c-delivered{background:var(--default-bg);border-color:var(--default-border);color:var(--default-text);}
-.c-cancel{background:var(--danger-bg);border-color:var(--danger-border);color:var(--danger-text);}
-.c-added{background:var(--card);border-color:var(--border-primary);color:var(--neutral-text);}
+/* 상태칩 색은 status-chip.css(5장 DS) — data-status로 지정 */
 
 /* ---------- 버튼 (3-4: SM 36 / MD 48, PC·모바일 같음) ---------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:4px;font-size:14px;font-weight:600;
@@ -333,10 +328,19 @@ textarea.input:focus{padding:11px;}
 .tbl tbody tr{cursor:pointer;}
 .tbl tbody tr:hover{background:var(--tint);}
 .tbl td a{color:var(--text-primary);}
-.pager{display:flex;justify-content:center;align-items:center;gap:4px;padding:24px 0 40px;}
-.pager .pg{width:32px;height:32px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.pgbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:24px 40px 0;padding-bottom:40px;}   /* 3-6 조합형: 전체 n/N · 번호 · N개씩 */
+.pgbar.sel-open{padding-bottom:150px;}
+.pg-left{flex:1;font-size:14px;color:var(--text-secondary);} .pg-left b{color:var(--text-primary);font-weight:600;}
+.pg-right{flex:1;display:flex;justify-content:flex-end;}
+.pg-right .selwrap{position:relative;display:inline-block;} .pg-right .s-field{width:120px;cursor:pointer;font-family:inherit;border-color:transparent;background:transparent;}   /* 닫힘: 테두리 없음 / 열림: 2px 브랜드 */
+.pg-right .s-field.open{border:2px solid var(--brand);padding:0 11px;} .pg-right .opt-panel{top:calc(100% + 8px);}
+.pager{display:flex;justify-content:center;align-items:center;gap:4px;}
+.pager .pg{width:32px;height:32px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;border:none;background:none;
+  color:var(--text-primary);cursor:pointer;font-family:inherit;padding:0;}
+.pager button.pg:hover{background:var(--tint);}
 .pager .pg.on{background:var(--tint);color:var(--default-text);font-weight:600;}
-.pager .pg.arrow{color:var(--text-disabled);}
+.pager .pg.dots{cursor:default;color:var(--text-tertiary);}
+.pager .pg.arrow:disabled{color:var(--text-disabled);cursor:default;background:none;}
 .mo-title{padding:20px 20px 12px;font-size:20px;font-weight:700;}
 .mo-toggle-wrap{background:var(--secondary-bg);padding:0 20px 8px;}
 .mo-toggle{position:relative;display:flex;height:52px;background:var(--disabled-bg);border-radius:4px;padding:4px;}
@@ -356,20 +360,107 @@ textarea.input:focus{padding:11px;}
 .ocard .date{font-size:14px;color:var(--text-tertiary);}
 .ocard .name{font-size:16px;font-weight:700;}
 .ocard .sub{font-size:16px;color:var(--btn-text);}
-.cpager{display:flex;justify-content:center;align-items:center;padding:32px 0;}
-.cpager .ar{width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--text-disabled);}
-.cpager .ar.on{color:var(--text-primary);}
-.cpager .txt{font-size:18px;padding:0 8px;display:flex;gap:8px;}
-.cpager .txt b{font-weight:600;}
+.cpager{display:flex;justify-content:center;align-items:center;padding:32px 0 8px;}   /* 3-6 축약형 */
+.cpager .ar{width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--text-primary);border:none;background:none;
+  border-radius:4px;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.cpager .ar:active:not(:disabled){background:var(--tint);}
+.cpager .ar:disabled{color:var(--text-disabled);cursor:default;}
+.cpager .txt{font-size:18px;line-height:26px;padding:0 8px;display:flex;gap:8px;}
+.cpager .txt b{font-weight:600;color:var(--text-primary);}
 .cpager .txt span{color:var(--text-tertiary);}
+/* 모바일 리스트 — Figma 5798:49453(대여 주문 화면) 구성. 토글은 4-2 대여 리스트(order-list-adaptive) .mo-seg 재사용 */
+.mo-seg-wrap{background:var(--secondary-bg);padding:12px 20px 0;}
+.mo-seg{background:var(--disabled-bg);padding:4px;border-radius:999px;display:flex;}
+.mo-seg-item{flex:1;text-align:center;padding:10px;font-size:16px;font-weight:600;color:var(--text-secondary);border-radius:999px;border:none;background:none;cursor:pointer;font-family:inherit;}
+.mo-seg-item.active{background:var(--brand);color:#fff;font-weight:700;cursor:default;}
+.mf-row,.mt-row{position:relative;background:var(--secondary-bg);border-bottom:1px solid var(--border-secondary);}
+.mf-row{height:56px;}
+.mf-scroll,.mt-scroll{display:flex;align-items:center;height:100%;overflow-x:auto;scrollbar-width:none;padding-left:20px;}
+.mf-scroll::-webkit-scrollbar,.mt-scroll::-webkit-scrollbar{display:none;}
+.mf-scroll{gap:6px;padding-right:110px;}
+.mf-row .f-chip{flex-shrink:0;padding:4px 12px 4px 16px;gap:4px;}
+.mf-search{position:absolute;right:12px;top:12px;margin:0;gap:4px;padding:4px 16px !important;}
+.mf-fade{position:absolute;top:0;right:84px;width:28px;height:100%;pointer-events:none;background:linear-gradient(90deg,rgba(250,250,250,0),rgba(250,250,250,.8) 25%,#fafafa 50%);}
+.mt-row{height:48px;}
+.mt-scroll{gap:4px;padding-right:110px;}
+.mtag{flex-shrink:0;display:inline-flex;align-items:center;gap:4px;height:32px;padding:4px 4px 4px 8px;border:none;background:none;cursor:pointer;font-family:inherit;
+  font-size:14px;font-weight:600;line-height:20px;color:var(--brandsub-text);white-space:nowrap;}
+.mtag svg{color:var(--text-secondary);}
+.mt-reset{position:absolute;right:12px;top:8px;height:32px;display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border:none;background:var(--secondary-bg);cursor:pointer;font-family:inherit;font-size:14px;color:var(--text-primary);}
+.mt-fade{position:absolute;top:0;right:78px;width:28px;height:100%;pointer-events:none;background:linear-gradient(90deg,rgba(250,250,250,0),rgba(250,250,250,.8) 25%,#fafafa 50%);}
+.l-note{margin:16px 40px 0;} .l-note.mo{margin:0 20px 12px;} .l-note .note-badge{white-space:normal;height:auto;}
+.mix-bar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 16px;padding:10px 12px;border:1px dashed var(--note-border);background:var(--note-bg);border-radius:6px;font-size:14px;}
+.mix-bar .mx-t{font-weight:700;color:var(--note-text);}
+.mx-seg{display:inline-flex;border:1px solid var(--border-dark);border-radius:4px;padding:2px;background:var(--card);}
+.mx-seg button{height:28px;padding:0 10px;border:none;background:none;border-radius:2px;font-size:14px;color:var(--text-secondary);cursor:pointer;font-family:inherit;}
+.mx-seg button.on{background:var(--border-tertiary);color:var(--text-primary);font-weight:600;}
+.mix-bar .mx-n{flex-basis:100%;font-size:14px;color:var(--text-secondary);}
+.rep-q{display:inline-flex;gap:4px;margin-left:6px;vertical-align:middle;}
+.chips-in{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.pcards{display:flex;flex-direction:column;gap:8px;padding:0 20px;}
+.pcard{background:var(--card);border:1px solid var(--border-tertiary);border-radius:8px;padding:16px 16px 24px;display:flex;flex-direction:column;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.pcard:active,.pcard.is-press{background:var(--tint);border-color:var(--default-text);}
+.pc-head{display:flex;align-items:center;justify-content:space-between;gap:4px 8px;flex-wrap:wrap;}
+.pc-head .chips-in{flex-wrap:nowrap;} .pc-head .pc-date{margin-left:auto;}   /* 칩 둘은 한 줄, 폭이 모자라면 일시가 다음 줄 */
+.pc-date{font-size:16px;line-height:24px;color:var(--btn-text);white-space:nowrap;}
+.pc-sep{height:1px;background:var(--border-secondary);}
+.pc-body{display:flex;flex-direction:column;gap:4px;}
+.pc-name{display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;}
+.pc-name b{font-size:20px;line-height:30px;font-weight:700;}
+.pc-name span{font-size:18px;line-height:26px;color:var(--text-secondary);}
+.pc-row{display:flex;gap:4px;font-size:18px;line-height:26px;color:var(--text-primary);word-break:keep-all;}
+.pc-row .lb{color:var(--btn-text);flex-shrink:0;}
+.pc-row a{color:var(--text-primary);text-decoration:underline;}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.m-inwrap{position:relative;}
+.m-inwrap .input{padding-right:48px;}
+.m-inwrap .s-x{right:8px;width:40px;height:40px;}
+input[type=search]::-webkit-search-cancel-button{display:none;}
+.cur-pager{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:8px;}
+.cur-pager .pg{width:32px;height:32px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid var(--border-tertiary);background:var(--card);}
+.cur-pager .pg.on{font-weight:700;border-color:var(--border-active);}
+.cur-pager .cp-tag{font-size:12px;color:var(--text-tertiary);margin-left:6px;}
+.cp-note{text-align:center;padding:0 20px 32px;}
+.cp-note .note-badge{white-space:normal;height:auto;}
 
 /* 리스트 검색 동작 (3-7) */
 .s-row .selwrap{position:relative;display:inline-block;}
 .s-row button.s-field{cursor:pointer;font-family:inherit;}
 .s-row button.s-field.open{border:2px solid var(--brand);padding:0 11px;}
 .s-row .opt-panel{top:calc(100% + 8px);min-width:160px;}
+.s-row .opt-panel,.pg-right .opt-panel{max-height:214px;}   /* PC 옵션 행 36 × 5 + 간격 4 × 4 + 패딩 8 × 2 + 테두리 */
 .s-input{height:40px;width:264px;border:1px solid var(--border-dark);border-radius:4px;padding:0 12px;font-size:14px;font-family:inherit;color:var(--text-primary);background:var(--card);}
 .s-input::placeholder{color:var(--text-disabled);}
+.s-inwrap{position:relative;display:inline-flex;}
+.s-input{padding-right:40px;}
+.s-input:focus{outline:none;border:2px solid var(--brand);padding:0 39px 0 11px;}        /* DS 포커스 — 셀렉트 열림과 같은 색 */
+.s-x{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:32px;height:32px;border:none;background:none;padding:4px;cursor:pointer;color:var(--text-secondary);display:flex;align-items:center;justify-content:center;}
+.s-x[hidden]{display:none;}
+.dwrap{position:relative;display:inline-block;}
+.s-field.dt{cursor:pointer;font-family:inherit;}
+.s-field.dt.open{border:2px solid var(--brand);padding:0 11px;}
+.dcal-pop{position:absolute;top:calc(100% + 8px);left:0;z-index:30;width:382px;padding:16px;background:var(--card);border:1px solid var(--border-dark);border-radius:4px;
+  box-shadow:0 2px 4px rgba(0,0,0,.12),0 0 2px rgba(0,0,0,.12);}
+/* 달력 — DS calendar_Default */
+.cal{display:flex;flex-direction:column;gap:12px;width:100%;}
+.cal-head{display:flex;align-items:center;justify-content:space-between;}
+.cal-nav{width:40px;height:40px;padding:8px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-primary);}
+.cal-title{font-size:18px;font-weight:900;line-height:26px;letter-spacing:-.27px;color:var(--text-primary);}
+.cal-week{display:flex;background:var(--tertiary);border-radius:4px;}
+.cal-week span{flex:1;padding:2px 0;text-align:center;font-size:12px;font-weight:500;line-height:18px;color:var(--text-primary);}
+.cal-days{display:flex;flex-direction:column;gap:4px;}
+.cal-row{display:flex;height:40px;}
+.cal-cell{flex:1;display:flex;align-items:center;justify-content:center;padding:2px;}
+.cal-day{width:32px;height:32px;border:none;border-radius:999px;background:none;cursor:pointer;font-size:14px;font-weight:600;line-height:20px;color:#555;font-family:inherit;padding:0;}
+.cal-day:hover{background:#f2fde4;color:var(--text-primary);}
+.cal-day.out{color:var(--text-disabled);cursor:default;background:none;}
+.cal-day.on{background:#90ee02;color:var(--text-primary);}
+.drange .box[role=button]{cursor:pointer;}
+.drange .box{white-space:nowrap;gap:4px;min-width:0;}
+/* 드롭다운 목록 공용 스크롤바 — 얇은 회색 둥근 막대, 목록 안쪽 여백 안에 표시 */
+.thin-scroll::-webkit-scrollbar{width:12px;}
+.thin-scroll::-webkit-scrollbar-track{background:transparent;}
+.thin-scroll::-webkit-scrollbar-thumb{background:var(--border-primary);border-radius:999px;border:4px solid transparent;background-clip:padding-box;}
 .segm button{width:68px;height:32px;border:none;background:none;font-size:14px;color:var(--text-secondary);cursor:pointer;font-family:inherit;border-radius:2px;}
 .segm button.on{background:var(--border-tertiary);color:var(--text-primary);font-weight:600;}
 .s-panel{position:relative;}
@@ -534,6 +625,15 @@ body.ux-on .c-k-chg,.legend-g .c-k-chg{background:var(--caution-bg);border-color
 .overlay.is-sheet{padding:0;}
 .overlay.is-sheet > .modal{width:100%;margin:0;}
 
+/* U9 인라인 안내 — 기존 입력 필드 에러 스타일(3-0: 2px #e53935 + 빨간 문구) */
+.selectf.err{border:2px solid var(--text-danger);padding:0 11px;}
+.f-err{display:flex;gap:6px;align-items:flex-start;font-size:14px;color:var(--text-danger);margin-top:-8px;}
+.f-err svg{flex-shrink:0;margin-top:2px;} .f-err b{font-weight:600;}
+.f-sub{color:var(--text-secondary);font-size:14px;margin-top:2px;} .f-sub .text-btn{padding:0 0 0 4px;font-size:14px;}
+.opt-row .an{font-style:normal;color:var(--text-tertiary);font-size:12px;margin-left:4px;}
+.opt-row.is-off{cursor:default;background:none;color:var(--text-disabled);} .opt-row.is-off .text-btn{padding:0;font-size:12px;}
+.restored-note{grid-column:1 / -1;font-size:14px;color:var(--text-secondary);padding:4px 0 0;}
+
 /* ---------- ① 현행 (스크린샷 + 핀) ---------- */
 .cur-wrap{padding:20px;}
 @container pf (min-width:1024.02px){ .cur-wrap{padding:24px 40px 40px;} }
@@ -611,6 +711,33 @@ body.ux-on .c-k-chg,.legend-g .c-k-chg{background:var(--caution-bg);border-color
   box-shadow:0 2px 4px rgba(0,0,0,.12),0 0 2px rgba(0,0,0,.12);z-index:20;}
 .policy-link{font-size:14px;color:var(--text-secondary);margin:16px auto 40px;max-width:960px;padding:0 4px;}
 .policy-link a{color:var(--brand);font-weight:600;}
+/* ③·④ 요양정보 조회 상태 토글 · 변경 사유 케이스 */
+.lk-toggle{height:28px;padding:0 10px;border-radius:4px;border:1px solid var(--note-border);background:var(--card);color:var(--note-text);font-size:12px;font-weight:600;cursor:pointer;}
+.rc-wrap{display:flex;flex-direction:column;gap:6px;}
+.rc-sep{align-self:center;font-size:12px;font-weight:700;color:var(--text-tertiary);margin:0 2px 0 6px;}
+.rc-cap{font-size:12px;color:var(--text-secondary);}
+/* ③ 원안 '주문 변경 사유' — 기획서(Figma 28694:1285) 값. 배지 글자색은 기획서 색(원안 전용, 5장과 다름) */
+.rc-list{display:flex;flex-direction:column;gap:4px;max-height:236px;overflow-y:scroll;padding-right:6px;}
+.rc-list::-webkit-scrollbar{width:3px;} .rc-list::-webkit-scrollbar-thumb{background:var(--border-primary);border-radius:999px;} .rc-list::-webkit-scrollbar-track{background:var(--secondary-bg);border-radius:999px;}
+.rc-card{background:#fafafa;border-radius:4px;padding:8px 16px;}
+.rc-row{display:flex;align-items:center;gap:12px;padding:8px 0;}
+.rc-row .nm{font-size:16px;font-weight:700;line-height:24px;color:var(--text-primary);}
+.rc-sub{padding:8px 0;font-size:16px;line-height:24px;color:var(--text-primary);}
+.rc-b{flex-shrink:0;height:32px;padding:2px 8px;border-radius:4px;border:1px solid;display:inline-flex;align-items:center;font-size:12px;font-weight:500;line-height:18px;white-space:nowrap;}
+.rc-b.chg{background:#e8f5e9;border-color:#c8e6c9;color:#43a047;}
+.rc-b.del{background:#ffebee;border-color:#ffcdd2;color:#e53935;}
+.rc-b.add{background:#eff6ff;border-color:#dbeafe;color:#1477f8;}
+.rc-label{font-size:18px;font-weight:700;line-height:26px;margin-top:8px;}
+.rc-ta{border:1px solid var(--border-dark);border-radius:4px;padding:20px 20px 12px;display:flex;flex-direction:column;gap:4px;}
+.rc-ta textarea{border:none;outline:none;resize:none;height:72px;font:inherit;font-size:16px;line-height:24px;color:var(--text-primary);background:#fff;padding:0;}
+.rc-ta textarea::placeholder{color:#bdbdbd;}
+.rc-ta:focus-within{border:2px solid var(--brand);padding:19px 19px 11px;}
+.rc-ta .cnt{text-align:right;font-size:14px;color:var(--text-tertiary);}
+.rc-ck{display:flex;gap:8px;align-items:flex-start;font-size:14px;line-height:20px;color:#616161;cursor:pointer;min-height:44px;padding-top:4px;}
+.rc-ck input{width:20px;height:20px;margin:0;accent-color:var(--brand);flex-shrink:0;}
+.m-note .note-badge{white-space:normal;height:auto;}
+.rc-legend{display:inline-flex;align-items:center;gap:4px;margin-left:6px;}
+.rc-legend .rc-b{height:24px;padding:0 6px;}
 </style>
 </head>
 <body class="q-on u-on n-on">
@@ -648,14 +775,21 @@ body.ux-on .c-k-chg,.legend-g .c-k-chg{background:var(--caution-bg);border-color
     <div class="ctrl-row" id="row-cancel"><span class="ctrl-label">취소 시점</span>
       <div class="chips" id="seg-cancel"><button data-c="before">주문 전 취소</button><button data-c="after">주문 후 취소</button></div></div>
     <div class="ctrl-row" id="row-modal"><span class="ctrl-label">팝업</span><div class="chips" id="modal-btns"></div></div>
+    <div class="ctrl-row" id="row-rc"><span class="ctrl-label">변경 사유<br>케이스</span>
+      <div class="rc-wrap"><div class="chips" id="seg-rc">
+        <button data-k="a">a 수량만</button><button data-k="b">b 옵션만</button><button data-k="c">c 수량+옵션</button><button data-k="d">d 삭제만</button>
+        <button data-k="e">e 추가만</button><button data-k="f">f 혼합</button><button data-k="g">g 항목 많음</button><button data-k="h">h 변경 없음</button>
+        <span class="rc-sep">목록 제외</span><button data-k="i">i 추가 후 삭제</button><button data-k="j">j 삭제 후 복원</button><button data-k="k">k 되돌린 변경</button></div>
+        <div class="rc-cap" id="rc-cap"></div></div></div>
   </div>
   <div class="scen">
     <div class="scen-g scen-head"><span>③ 기획 개선안 — 시나리오 버튼을 누르면 조작이 자동으로 재현됩니다</span>
-</div>
+      <button class="lk-toggle" id="lk-toggle" onclick="toggleLooked()"></button></div>
     <div class="scen-g chips">
       <button onclick="runScenario(1)">① 옵션 변경</button><button onclick="runScenario(2)">② 수량 변경</button>
       <button onclick="runScenario(3)">③ 상품 삭제</button><button onclick="runScenario(4)">④ 상품 추가</button>
       <button onclick="runScenario(5)">⑤ 추가 상품 삭제</button><button onclick="runScenario(6)">⑥ 주문하기</button>
+      <button onclick="runScenario(7)">⑦ 중복 옵션 선택</button><button onclick="runScenario(8)">⑧ 삭제 행과 중복</button>
       <button class="reset" onclick="resetPlan(true)">처음부터</button>
     </div>
     <div class="scen-g legend-g" id="legend-g"></div>
@@ -712,7 +846,8 @@ var SAMPLES = {   /* ② 행 예시 · ③ 샘플 주문(상품 3개, 옵션 있
   basic: [['ash',[],1],['hd',[],1]],
   option:[['sock',['베이지','M(260~280mm)'],1],['lp',['베이지','XXL(110)'],1],['hd',[],1]],
   added: [['sock',['베이지','M(260~280mm)'],1],['lp',['베이지','XXL(110)'],1],['hd',[],1],['msh',['MSH용 안전핀너트'],1,true]],
-  dup:   [['sock',['베이지','M(260~280mm)'],1],['hd',[],1],['sock',['자주','S(230~255mm)'],1,true]]
+  dup:   [['sock',['베이지','M(260~280mm)'],1],['hd',[],1],['sock',['자주','S(230~255mm)'],1,true]],
+  plan:  [['sock',['베이지','M(260~280mm)'],1],['sock',['회색','M(260~280mm)'],1],['lp',['베이지','XXL(110)'],1],['hd',[],1]]   /* ③·④: 같은 상품 다른 옵션 두 행(U9 시연) */
 };
 /* ③ 미결 항목(Q) — 제목은 Confluence 02 질문 요약, 임시안은 v3 지시문 [B. 개선안 모드] 번호 */
 var QINFO = {
@@ -727,6 +862,8 @@ var QINFO = {
   Q10:{t:'합계 명칭', ask:'합계 이름', now:'총 판매 금액', tmp:'총 구입 금액(D-01 \'구입\' 표기에 맞춤)', no:'11'},
   Q11:{t:'행 BG 컬러 토큰', plan:'변경 연두 · 삭제 분홍 · 추가 하늘', who:'UI/UX 결정(기획 질문 아님)', state:'토큰 조회 대기', ask:'변경·삭제·추가 행 배경에 쓸 DS 토큰', now:'행 배경 없음', tmp:'지금 색은 임시 — 디자인 시점에 DS 토큰 조회 후 확정', no:'4'},
   Q17:{t:'옵션 변경의 데이터 구분', who:'개발 확인', ask:'옵션 변경을 데이터상 \'삭제+추가\'가 아닌 \'변경\'으로 구분할 수 있는지', now:'옵션 변경 = 기존 옵션 삭제 + 새 옵션 추가(B2) → 행이 맨 아래로 이동(A3), 원래 옵션이 삭제 사유 목록에 나옴(C1)', tmp:'\'변경\'으로 구분된다고 보고 같은 자리에서 옵션만 바뀌게 표시'},
+  Q22:{t:'삭제 상품과 같은 옵션 — 막고 복원 안내', who:'기획 결정 · 개발 확인', ask:'삭제 상태 상품과 같은 옵션으로의 변경·추가를 막고 \'복원\'으로 안내해도 되는지. 현행 개발이 중복 자체를 막는지 확인 필요', now:'원안: [확인] 후 \'변경불가\' 모달(삭제 행은 검사에서 제외). 현행 개발은 같은 상품 다른 옵션 중복 추가 가능(dev-08)', tmp:'삭제 행과 겹치면 [확인] 비활성 + [복원하기] 안내'},
+  Q23:{t:'상품별 상태가 다를 때 대표 배지', who:'개발 확인', ask:'상품별 상태가 다를 때 상단 주문상태(대표 배지)는 어떤 기준으로 표시하나요? (개발 확인)', now:'미확인 — 개발 화면 캡처는 모두 같은 상태', tmp:'가장 앞 단계(프로토타입 기본) — 가장 뒤 단계·가장 많은 상태로 바꿔 볼 수 있음. 구입 리스트 주문상태도 같은 기준'},
   Q20:{t:'전체 되돌리기', ask:'변경을 한 번에 최초 주문으로 되돌리는 기능을 둘지', now:'되돌리기·초기화 없음(B1)', tmp:'\'변경 주문\' 타이틀 오른쪽 [최초 주문으로 되돌리기]', no:'3'},
   Q21:{t:'확정 시점 저장', ask:'변경을 누를 때마다 저장할지, [주문하기] 때 한 번에 저장할지', now:'누를 때마다 즉시 서버 저장(B1)', tmp:'화면 안에서만 유지, [주문하기] 때 확정', no:'13'}
 };
@@ -741,6 +878,7 @@ var UINFO = {
   'U5-4':{t:'변경 사유 모달에 금액 변화', prob:'변경 목록만 있고 금액이 어떻게 바뀌는지 없다', prop:'"총 구입 금액 A → B / 본인부담금 a → b"', why:'수급자 동의에서 가장 중요한 정보다'},
   'U5-5':{t:'이탈 방지', prob:'(Q21 확정 시점 저장일 때) 변경한 채로 [주문목록]·뒤로가기를 누르면 변경이 사라진다', prop:'"변경한 내용이 저장되지 않습니다. 나가시겠습니까?" 확인', why:'실수로 작업을 잃지 않게 한다'},
   'U8':{t:'비밀번호 보기', prob:'공인인증서 비밀번호를 입력할 때 친 글자를 확인할 수 없어 틀리기 쉽다', prop:'입력칸 오른쪽에 눈 모양 버튼 — 누르면 글자 보이기/숨기기 (지우기 X는 그대로)', why:'긴 인증서 비밀번호를 한 번에 맞게 입력하도록 돕는다'},
+  'U9':{t:'중복 옵션 — 모달 대신 인라인 안내', prob:'[확인]을 누른 뒤에야 \'변경불가\' 모달로 알려 주는 사후 오류이고, 모달 위에 모달이 떠 문맥이 끊긴다', prop:'옵션을 고르는 순간 모달 안에서 알리고 [확인]·[상품 추가]를 막는다. 목록의 행과 겹치면 "수량은 목록에서 조정", 삭제한 행과 겹치면 [복원하기]로 다음 행동을 안내. 검사 대상은 삭제 상태 행까지(수정 중인 자기 행 제외), 옵션 없는 상품은 검색 결과에서 바로 표시', why:'미리 막을 수 있는 오류는 사후 경고보다 예방이 낫고, 모달 중첩을 없앤다'},
   'U6':{t:'문구·표기 교정', prob:'주문불가 문구가 \'본인부담율 및 주문가능\'으로 표준 표기(본인부담률·주문 가능)와 다르고, 변경 사유 안내 문구가 기획서 화면과 설명에서 서로 다르다', prop:'\'본인부담률 및 주문 가능 품목\'으로 교정, 사유 입력 안내는 "변경 사유를 입력해 주세요. 수급자에게 안내되는 문구이니 신중하게 적어주세요."로 통일', why:'같은 용어를 화면마다 다르게 쓰면 신뢰가 떨어진다'},
   'U7':{t:'최초 주문 / 변경 주문 구분 방식', prob:'\'최초 주문\' 박스와 \'변경 주문\' 목록으로 같은 상품 목록을 두 번 보여주고, 무엇이 바뀌었는지 보려면 위아래를 오가며 비교해야 한다', prop:'목록은 하나만. 위에 변경 요약 바("고객 요청에서 N건 변경됨 · 변경 n · 삭제 n · 추가 n") + [고객 요청 원본 보기]로 접어 둔 원본 표, 섹션 오른쪽에 [최초 주문으로 되돌리기]. 변경이 없으면 현행과 같음. 모바일은 원본을 바텀시트로', why:'비교 대상(원본)은 필요할 때만 펼치고, 변경 내용은 행 안에서 바로 읽게 해 화면 길이와 비교 거리를 줄인다'},
   'U5-6':{t:'주문취소 사유 전체 보기', prob:'주문 후 취소의 사유가 한 줄 말줄임(K4)', prop:'말줄임 사유에 DS 팝오버(PC 호버) / 바텀시트(모바일)', why:'\'확인 필요\' 항목에 대한 제안안'}
@@ -753,28 +891,50 @@ var NINFO = {
   N4:{t:'삭제 확인 모달 생략', code:['A1','B1'], dec:'[삭제]를 누르면 바로 삭제 상태(행 유지 + 취소선)로 바뀌고 [복원]이 생긴다.', why:'되돌릴 수 있는 동작에 확인 모달을 더하면 마찰만 늘어난다.'},
   N5:{t:'옵션 모달 현재값 표시', code:['A6'], dec:'상품명 아래 현재 옵션·수량, 바꾼 상품이면 고객 주문 줄. 바꾼 항목은 굵게, 같은 값이면 [확인] 비활성.', why:'무엇을 바꾸는지 기억에 의존하지 않게 한다.'},
   N6:{t:'사유 모달 금액 변화', code:['C2','C3'], dec:'변경 목록 아래 총 구입 금액·본인부담금의 전 → 후.', why:'수급자에게 동의를 받을 때 가장 먼저 확인하는 정보다.'},
+  N8:{t:'중복 검사에 삭제 행 포함', code:['A3','B2'], dec:'삭제 상태 행도 중복 검사에 넣어 처음부터 막고 [복원하기]로 안내한다. 수정 중이던 행은 그대로 둔다.', why:'삭제 행을 빼면 복원할 때 중복이 생겨 복원을 막아야 하는 막다른 상태가 된다. 수정 중인 행은 사용자 의도를 알 수 없어 자동으로 지우지 않는다.'},
   N7:{t:'조회완료 배지', code:[], dec:'[조회] 옆 \'조회완료\' + 조회 일시.', why:'안내 문구가 주문 전 재확인을 요구하는데, 다시 조회할지 판단할 근거를 화면에 남긴다(진행 조건 — 요양정보 조회 필수).'}
 };
 function nn(id){ return '<span class="n-badge" role="button" tabindex="0" title="디자인 노트 '+id+' '+NINFO[id].t+'" onclick="event.stopPropagation();openN(\''+id+'\')">'+id+'</span>'; }
 function openN(id){ if(S.modal && S.modal.type !== 'nInfo'){ S.modal2 = {type:'nInfo', data:{n:id}}; drawModal2(); } else openModal('nInfo',{n:id}); }
 var STEPS = ['list','received','confirming','preparing','shipped','delivered','cancel'];
 var STEP_LABEL = {list:'리스트',received:'주문접수',confirming:'주문확인중',preparing:'상품준비',shipped:'출고완료',delivered:'배송완료',cancel:'주문취소'};
-var CHIP = {received:'c-received',confirming:'c-confirming',preparing:'c-preparing',shipped:'c-shipped',delivered:'c-delivered',cancel:'c-cancel'};
+function chip(status, sm){ return '<span class="chip'+(sm?' sm':'')+'" data-status="'+status+'">'+status+'</span>'; }   /* 상태칩 — 공통 status-chip.css */
+/* 상품별 상태가 다를 때 — ③·④ 상품준비·출고완료·배송완료 (Q23: 대표 배지 기준 개발 확인) */
+var STAGE = ['상품준비','출고중','출고완료','배송완료'];
+var MIXSET = {preparing:['상품준비','출고중','출고중','출고완료'], shipped:['출고중','출고완료','출고완료','배송완료'], delivered:['출고중','출고완료','배송완료','배송완료']};   /* 상품 4개 기준 — 대표 배지 후보 3개가 갈리게 */
+function repOf(list){
+  var idx = list.map(function(x){ return STAGE.indexOf(x); });
+  if(S.rep === 'back') return STAGE[Math.max.apply(null, idx)];
+  if(S.rep === 'most'){ var cnt = {}, best = null; list.forEach(function(x){ cnt[x] = (cnt[x]||0) + 1; });
+    STAGE.forEach(function(x){ if(cnt[x] && (best === null || cnt[x] > cnt[best])) best = x; }); return best; }   /* 같은 수면 앞 단계 */
+  return STAGE[Math.min.apply(null, idx)];
+}
 var CANCEL_FULL = '관리자 상세화면에서 강제로 취소를 진행했습니다. (예시 문구 — 전체 사유는 개발 확인 필요)';
 var CANCEL_REASONS = ['수급자 단순변심','수급자 계약 불가 상태','수급자 연락 불가','수량 또는 옵션 변경','대대여로 진행'];
-var LIST_ROWS = [   /* [NO, 수급자, 요양인정번호, 휴대폰, 돌봄주문번호, 주문번호, 상태, 주문일시, 취소 시점] — 가짜 데이터 */
-  [102,'홍*동','L123456****','010-****-5678','DB6100710412203','-','received','2026-10-07 11:02'],
-  [101,'박*순','L252700****','010-****-1204','DB6100710375068','-','confirming','2026-10-07 10:38'],
-  [100,'박*순','L252700****','010-****-1204','DB6100709190077','-','cancel','2026-10-07 09:19','before'],
-  [99,'김*자','L232202****','010-****-3321','DB6100709012271','2026100709070312','preparing','2026-10-07 09:03'],
-  [98,'이*호','L198765****','010-****-7788','DB6100708355501','2026100708484163','shipped','2026-10-07 08:38'],
-  [97,'최*희','L334455****','010-****-9012','DB6100617162670','2026100617215516','delivered','2026-10-06 17:18'],
-  [96,'정*숙','L556677****','010-****-4455','DB6100616373553','2026100616402288','cancel','2026-10-06 16:49','after'],
-  [95,'한*수','L778899****','010-****-6677','DB6100902118420','2026090211305512','delivered','2026-09-02 11:05']
-];
-var STATUS_OPTS = ['전체','주문접수','주문확인중','상품준비','출고중','출고완료','배송완료','취소요청','주문취소'];   /* DS Status chip-Order 기준 */
-var KEY_OPTS = ['전체','수급자','요양인정번호','휴대폰번호','돌봄주문번호','주문번호'];
-var PERIODS = {'일주일':['2026-09-30','2026-10-07'],'이번달':['2026-10-01','2026-10-07'],'지난달':['2026-09-01','2026-09-30'],'3개월':['2026-07-07','2026-10-07'],'1년':['2025-10-07','2026-10-07']};
+var LIST_ROWS = (function(){   /* [NO, 수급자, 요양인정번호, 휴대폰, 주문서번호, 주문번호, 상태, 주문일시, 취소 시점] — 가상 데이터 101건 */
+  var names = ['홍*동','박*순','김*자','이*호','최*희','정*숙','한*수','윤*영','장*철','오*미'];
+  var head = [['received'],['confirming'],['cancel','before'],['preparing'],['shipped'],['delivered'],['cancel','after'],['delivered']];
+  var cyc = ['delivered','delivered','shipped','delivered','cancel','preparing','delivered','confirming','delivered','received'];
+  var pad = function(n, k){ n = String(n); while(n.length < k) n = '0' + n; return n; };
+  var MIXED = {98:MIXSET.preparing, 97:MIXSET.shipped, 93:MIXSET.delivered};   /* 상품별 상태가 다른 주문 예시 */
+  var prods = ['위풋 논슬립 돌돌이 양말 양면','LP-011 보나수 30cc','HD-B-001','ASH-106','SOOM M-130cc (남성용)'];
+  var t0 = new Date(2026, 9, 7, 11, 2).getTime(), out = [];
+  for(var i = 0; i < 101; i++){
+    var no = 101 - i, h = head[i] || [cyc[i % cyc.length], (i % 2 ? 'after' : 'before')];
+    var st = h[0], cv = st === 'cancel' ? h[1] : '', d = new Date(t0 - i * 21.4 * 3600000 - (i % 7) * 600000);
+    var dt = d.getFullYear()+'-'+pad(d.getMonth()+1,2)+'-'+pad(d.getDate(),2)+' '+pad(d.getHours(),2)+':'+pad(d.getMinutes(),2);
+    var ordered = st === 'preparing' || st === 'shipped' || st === 'delivered' || (st === 'cancel' && cv === 'after');
+    out.push([no, names[i % names.length], 'L'+pad((123456 + i * 7919) % 1000000, 6)+'****', '010-****-'+pad((1000 + i * 1111) % 10000, 4),
+      'DB61007'+pad(100 + no, 8), ordered ? '20261007'+pad(no, 8) : '-', st, dt, cv, prods[i % prods.length] + (i % 3 ? ' 외\u00a0'+(i % 3)+'건' : ''),
+      MIXED[no] || null]);   /* r[10] = 상품별 상태가 다른 주문의 상품 상태 목록 — 리스트 주문상태는 대표 배지 기준(Q23)을 따름 */
+  }
+  return out;
+})();
+var STATUS_OPTS = ['전체','주문접수','주문확인중','상품준비','출고중','출고완료','배송완료','취소요청','주문취소'];   /* 5장 구입 칩 표 순서 */
+var KEY_OPTS = ['전체','요양인정번호','수급자 성명','휴대폰번호','주문서번호','주문번호'];
+var KEY_COL = {'수급자 성명':[1],'요양인정번호':[2],'휴대폰번호':[3],'주문서번호':[4],'주문번호':[5]};
+var SIZE_OPTS = ['20개씩','50개씩','100개씩'];
+var PERIODS = {'1개월':['2026-09-07','2026-10-07'],'6개월':['2026-04-07','2026-10-07'],'일주일':['2026-09-30','2026-10-07'],'이번달':['2026-10-01','2026-10-07'],'지난달':['2026-09-01','2026-09-30'],'3개월':['2026-07-07','2026-10-07'],'1년':['2025-10-07','2026-10-07']};
 var STATUS_TEXT = {received:'주문접수',confirming:'주문확인중',preparing:'상품준비',shipped:'출고완료',delivered:'배송완료',cancel:'주문취소'};
 var TEXT_STATUS = {}; Object.keys(STATUS_TEXT).forEach(function(k){ TEXT_STATUS[STATUS_TEXT[k]] = k; });
 
@@ -790,6 +950,7 @@ var SHOTS = {
   'dev-15-delete-reason-added-then-deleted.png':'개발 · 삭제 사유에 추가 후 삭제 상품 포함', 'dev-16-preparing.png':'개발 · 상품준비',
   'dev-17-delivered.png':'개발 · 배송완료', 'dev-18-care-info-not-allowed.png':'개발 · 요양정보조회 · 주문불가(PC·모바일)',
   'dev-19-cancel.png':'개발 · 주문취소 (왼쪽 주문 전 취소 / 오른쪽 주문 후 취소)',
+  'dev-20-shipped-pc.png':'개발 · 출고완료(PC)', 'dev-20-shipped-mo.png':'개발 · 출고완료(모바일)',
   'publish-302-mo-390.jpg':'퍼블 302 · 모바일 390 (참고 — 경고 바·되돌리기는 개발 화면에 없음)'
 };
 var CUR = {
@@ -797,8 +958,12 @@ var CUR = {
     {id:'D1',k:'d',t:'구입/대여 탭 없음',d:'2026.08 대대여 연동에서 추가 예정 — 4-2 조항 기준'},
     {id:'D2',k:'d',t:'타이틀 \'주문요청 관리\' + [사용방법 확인하기], 브레드크럼 \'돌봄앱 운영관리\'',d:'4-2와 다른 점 (4-2 메모)'},
     {id:'D3',k:'d',t:'컬럼명 \'주문서번호\'',d:'4-2는 \'돌봄주문번호\''},
-    {id:'D4',k:'d',t:'모바일 리스트 미캡처',d:'② 화면 정책 적용에서 4-2 카드로 확인'} ]},
+    {id:'D4',k:'d',t:'모바일 리스트 미캡처',d:'② 화면 정책 적용에서 4-2 카드로 확인'},
+    {id:'M7',k:'m',t:'모바일 리스트 Figma 미반영 — 카드 정보 부족, 상태 아래 구분선 없음, 필터·적용 조건·초기화 누락',d:'현행 개발 모바일 리스트 기준(모바일 캡처 없음). Figma 5798:49453: 필터 줄(기간·상태·검색) → 적용 조건 태그 + 초기화 → 건수 → 카드(상태칩·일시 / 구분선 / 이름·L번호 · 돌봄주문 · 상품정보 · 주문번호)'},
+    {id:'M6',k:'m',t:'모바일 페이지네이션 정책(3-6 축약형) 미적용 — 개선 필요',d:'현행 개발 모바일 리스트는 숫자 버튼 ‹ 1 2 3 4 5 6 › (모바일 캡처 없음 — 아래는 모양만 재현). 정책은 축약형 ‹ 1 / 6 › — 화살표 48·아이콘 32, 가운데 글자는 표시용',
+      html:'<div class="cur-pager"><span class="pg">'+'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="#bdbdbd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'+'</span><span class="pg on">1</span><span class="pg">2</span><span class="pg">3</span><span class="pg">4</span><span class="pg">5</span><span class="pg">6</span><span class="pg"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="cp-tag">재현 · 캡처 없음</span></div>'} ]},
   received:{ pc:['dev-01-received.jpg'], mo:[], pins:[
+    {id:'E1',t:'빈 값마다 \'-\' 반복 — 칸 단위 \'-\' 하나로 정리 필요',d:'예: 수급자 "김*환 (-, -)", 요양인정번호 "- -", 보호자 "(- / 관계)". 정책 적용안(3-1) — 칸 전체가 비면 \'-\' 하나, 일부만 비면 빈 부분 생략·괄호째 생략',shot:'dev-01-received.jpg'},
     {id:'M1',k:'m',t:'모바일: 정보 표가 라벨/값 상하 스택',d:'정책 적용안 — 라벨 + 값 2열(3-1·3-11)',shot:'publish-302-mo-390.jpg'},
     {id:'M2',k:'m',t:'모바일: 버튼이 주문정보 타이틀 오른쪽',d:'정책 적용안 — 페이지 타이틀 아래 한 줄(3-4 예외)',shot:'dev-14-order-confirm-mo.png',x:68,y:25.3} ]},
   confirming:{ pc:['dev-02-confirming-added.jpg','dev-05-option-label.jpg','dev-09-option-change-moves-down.jpg','dev-03-delete-row-removed.jpg','dev-06-option-modal-empty.jpg','dev-07-add-product-modal.jpg','dev-08-same-product-twice.jpg','dev-10-delete-confirm.jpg','dev-04-delete-reason-20.jpg','dev-11-delete-reason-scope.jpg','dev-15-delete-reason-added-then-deleted.png','dev-12-cancel-reason.jpg','dev-18-care-info-not-allowed.png'],
@@ -822,11 +987,12 @@ var CUR = {
     {id:'M5',k:'m',t:'모바일: 입력이 있는 팝업도 md 모달',d:'정책 적용안 — 상품 추가·삭제 사유·주문취소는 바텀시트, 옵션 수정은 모달(3-3)',shot:'dev-14-order-confirm-mo.png'} ]},
   preparing:{ pc:['dev-16-preparing.png'], mo:[], pins:[
     {id:'C5',t:'상품준비 이후에는 최종 상품만 표시',d:'사후 변경 확인 불가 → 문의·분쟁 근거 없음',shot:'dev-16-preparing.png',x:15,y:45,plan:'scenario=6'} ]},
-  shipped:{ pc:[], mo:[], pins:[
-    {id:'K3',k:'k',t:'출고완료 화면 미캡처',d:'확인 필요 — 칩은 DS BrandSub'} ]},
+  shipped:{ pc:['dev-20-shipped-pc.png'], mo:['dev-20-shipped-mo.png'], pins:[
+    {id:'C5',t:'출고완료에도 최종 상품만 표시',d:'사후 변경 확인 불가 — 주문상태·상품 행 모두 \'출고완료\' 칩, 버튼은 [주문목록]만',shot:'dev-20-shipped-pc.png',x:15,y:40,plan:'scenario=6'} ]},
   delivered:{ pc:['dev-17-delivered.png'], mo:[], pins:[
     {id:'C5',t:'배송완료에도 최종 상품만 표시',d:'사후 변경 확인 불가',shot:'dev-17-delivered.png',plan:'scenario=6'} ]},
   cancel:{ pc:['dev-19-cancel.png'], mo:[], pins:[
+    {id:'E1',t:'빈 값마다 \'-\' 반복 — 칸 단위 \'-\' 하나로 정리 필요',d:'주문 전 취소의 주문번호·요양인정번호 "- -" 등. 정책 적용안(3-1)',shot:'dev-19-cancel.png'},
     {id:'K4',k:'k',t:'주문 후 취소: 상품 행의 취소 사유가 한 줄 말줄임(…)',d:'확인 필요 — 전체 사유를 어디서 보는지',shot:'dev-19-cancel.png',x:61.5,y:36.6},
     {id:'D5',k:'d',t:'취소 후에도 수급자·배송정보 마스킹, 금액은 급여가(정가)만',d:'현행 — 주문 전·후 취소 모두 같음. 상단 버튼 없음',shot:'dev-19-cancel.png',x:56,y:22} ]}
 };
@@ -835,8 +1001,9 @@ var CUR = {
    상태
    ===================================================================== */
 var S = {
-  view:'plan', step:'confirming', bg:'none', example:'option', pin:null, shot:null, cancelVar:'before', ux:false, origOpen:false,
-  lf:{period:'3개월', status:'전체', key:'전체', q:'', open:true, openSel:null, applied:{period:'3개월', status:'전체', key:'전체', q:''}},   /* 리스트 검색 */
+  view:'plan', step:'confirming', mix:false, rep:'front', bg:'none', example:'option', pin:null, shot:null, cancelVar:'before', ux:false, origOpen:false,
+  lf:{period:'3개월', from:'2026-07-07', to:'2026-10-07', status:'전체', key:'전체', q:'', open:true, openSel:null, cal:null, page:1, size:'20개씩', mpage:1,
+      applied:{period:'3개월', from:'2026-07-07', to:'2026-10-07', status:'전체', key:'전체', q:''}},   /* 리스트 검색 */
   pol:null,   /* ② 현행 동작 */
   plan:null,  /* ③ 개선안 */
   modal:null
@@ -845,7 +1012,7 @@ var uidSeq = 1;
 function mkItem(r){ return {uid:uidSeq++, pid:r[0], opt:r[1].slice(), qty:r[2], pend:r[2], added:!!r[3], deleted:false}; }
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
 function newPol(ex){ return {items:SAMPLES[ex].map(mkItem), delLog:[], moved:{}, lookedUp:false, ordered:false, finalItems:null, editDv:false, acc:{}, msg:''}; }
-function newPlan(){ var it = SAMPLES.option.map(mkItem); return {items:it, orig:clone(it), lookedUp:false, ordered:false, finalItems:null, reason:'', changes:[], editDv:false, acc:{}, histOpen:true}; }
+function newPlan(){ var it = SAMPLES.plan.map(mkItem); return {items:it, orig:clone(it), lookedUp:true, lookupAt:'2026-10-07 10:42', ordered:false,   /* ③·④는 요양정보 조회 완료 상태로 시작 */ finalItems:null, reason:'', changes:[], editDv:false, acc:{}, histOpen:true}; }
 S.pol = newPol('option'); S.plan = newPlan();
 function cur(){ return S.view === 'plan' ? S.plan : S.pol; }
 function uxOn(){ return S.view === 'policy' || (S.view === 'plan' && S.ux); }   /* U 제안 표시: ② 항상, ③은 [UX 제안 적용] ON */
@@ -876,6 +1043,8 @@ var ICON = {
   reset:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   eye:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>',
   eyeOff:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3l18 18M10.6 5.1A10.9 10.9 0 0 1 12 5c6.5 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.2M6.6 6.6C3.8 8.4 2 12 2 12s3.5 7 10 7c1.9 0 3.5-.6 4.9-1.4M9.9 9.9a3 3 0 0 0 4.2 4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  filter:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="7" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="17" r="2" stroke="currentColor" stroke-width="1.5"/></svg>',
+  reset24:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   ok:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#166534"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 };
 function won(n){ return n.toLocaleString('ko-KR') + '원'; }
@@ -920,13 +1089,20 @@ function syncControls(){
   var m = [];
   if(S.view !== 'current' && S.step === 'confirming'){
     m = S.view === 'plan'
-      ? [['요양정보 조회','lookup'],['공인인증서','certDemo'],['옵션 변경','optEdit'],['상품 추가','add'],['주문 변경 사유','changeReason'],['주문하기 확인','confirmNoChange'],['변경불가','dupNotAllowed'],['나가기 확인','leave'],['주문취소','cancel'],['주문불가','notAllowed']]
+      ? [['요양정보 조회','lookup'],['공인인증서','certDemo'],['옵션 변경','optEdit'],['상품 추가','add'],['주문 변경 사유','changeReason'],['주문하기 확인','confirmNoChange'],['변경불가','dupNotAllowed'],['나가기 확인','leave'],['주문취소','cancel']]   /* 주문불가는 ②에서만 — ③·④는 [요양정보 조회 전으로]로 재현 */
       : [['요양정보 조회','lookup'],['공인인증서','certDemo'],['옵션 수정','optEdit'],['상품 추가','add'],['상품 삭제','del'],['상품 삭제 사유','delReason'],['주문하기 확인','confirm'],['주문취소','cancel'],['주문불가','notAllowed']];
   } else if(S.view !== 'current' && S.step === 'received'){ m = [['주문취소','cancel']]; }
   else if(S.view !== 'current' && S.step === 'list'){ m = [['상태 선택 시트(모바일)','lfStatus'],['검색 시트(모바일)','lfSearch']]; }
-  document.getElementById('modal-btns').innerHTML = m.map(function(x){ return '<button class="pop" onclick="openModal(\''+x[1]+'\',{demo:true})">'+x[0]+'</button>'; }).join('');
+  document.getElementById('modal-btns').innerHTML = m.map(function(x){ return '<button class="pop" onclick="'+(x[1] === 'changeReason' ? 'runCase(S.rcase||\'f\')' : 'openModal(\''+x[1]+'\',{demo:true})')+'">'+x[0]+'</button>'; }).join('');
   document.getElementById('row-modal').style.display = m.length ? '' : 'none';
-  document.getElementById('ctx-wrap').style.display = (showEx || showCancel || showBg || m.length) ? '' : 'none';
+  var showRc = S.view === 'plan' && S.step === 'confirming';
+  document.getElementById('row-rc').style.display = showRc ? '' : 'none';
+  document.querySelectorAll('#seg-rc button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-k') === S.rcase); });
+  document.getElementById('rc-cap').textContent = S.rcase ? RCASE[S.rcase][1] : '고르면 그 조합으로 \'주문 변경 사유\'가 열립니다(h는 주문하기 확인). 목록에 넣지 않는 경우는 i·j·k';
+  var lk = document.getElementById('lk-toggle');
+  lk.style.display = showRc ? '' : 'none';
+  lk.textContent = S.plan.lookedUp ? '요양정보 조회 전으로' : '요양정보 조회 완료로';
+  document.getElementById('ctx-wrap').style.display = (showEx || showCancel || showBg || m.length || showRc) ? '' : 'none';
   updateNow(); updateLists();
 }
 function updateNow(){
@@ -948,7 +1124,7 @@ function render(){
   if(S.view === 'current') h = renderCurrent();
   else if(S.step === 'list') h = (S.view === 'plan' ? planFallback() : '') + renderList();
   else {
-    var planHere = S.view === 'plan' && (S.step === 'confirming' || (S.step === 'preparing' && S.plan.ordered));
+    var planHere = S.view === 'plan' && ['confirming','preparing','shipped','delivered'].indexOf(S.step) >= 0;   /* ③·④: 주문확인중 + 주문하기 이후(상품별 상태) */
     if(S.view === 'plan' && !planHere) h += planFallback();
     if(planHere) h += S.ux ? '<div class="view-banner policy">'+ICON.info+'<span>UI/UX 제안 — ③ 기획 개선안 위에 UX 제안(U)을 적용한 화면. 정책 조항 아님, 비주얼 임시 · 배지는 위 \'배지\'에서 켜기</span></div>'
                            : '<div class="view-banner">'+ICON.info+'<span>개선안 — 2026.10 기획서 원안(확인 중). 비주얼은 Figma 디자인 후 확정. Q 배지는 미결 항목 (운영 건 IS-1276 · 정책 조항 아님)</span></div>';
@@ -958,18 +1134,20 @@ function render(){
   if(S.modal) drawModal();
 }
 function planFallback(){
-  return '<div class="view-banner">'+ICON.info+'<span>③ 기획 개선안은 <b>주문확인중</b>(과 ⑥ 주문하기 뒤 상품준비)에만 있습니다 — 이 단계는 ② 화면 정책 적용으로 보여줍니다.</span></div>';
+  return '<div class="view-banner">'+ICON.info+'<span>③ 기획 개선안은 <b>주문확인중</b>과 주문하기 이후(상품준비·출고완료·배송완료)에만 있습니다 — 이 단계는 ② 화면 정책 적용으로 보여줍니다.</span></div>';
 }
 
-/* ---------- 리스트 (4-2 · 3-7 검색 동작) ---------- */
+/* ---------- 리스트 (4-2 · 3-7 검색 동작 · 3-6 페이지네이션) ---------- */
+function rowStatus(r){ return r[10] ? repOf(r[10]) : STATUS_TEXT[r[6]]; }
+var REP_LABEL = {front:'가장 앞 단계', back:'가장 뒤 단계', most:'가장 많은 상태'};
 function lfRows(){
-  var a = S.lf.applied, pr = PERIODS[a.period] || PERIODS['3개월'];
+  var a = S.lf.applied;
   return LIST_ROWS.filter(function(r){
     var d = r[7].slice(0,10);
-    if(a.period !== '직접선택' && (d < pr[0] || d > pr[1])) return false;
-    if(a.status !== '전체' && STATUS_TEXT[r[6]] !== a.status) return false;
+    if(d < a.from || d > a.to) return false;
+    if(a.status !== '전체' && rowStatus(r) !== a.status) return false;
     if(a.q){
-      var idx = {'수급자':[1],'요양인정번호':[2],'휴대폰번호':[3],'돌봄주문번호':[4],'주문번호':[5]}[a.key] || [1,2,3,4,5];
+      var idx = KEY_COL[a.key] || [1,2,3,4,5];        /* 전체 = 모든 열 */
       if(!idx.some(function(i){ return r[i].toLowerCase().indexOf(a.q.toLowerCase()) >= 0; })) return false;
     }
     return true;
@@ -979,62 +1157,134 @@ var TRI_UP = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"
 var TRI_DN = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 7 6-7z" fill="currentColor"/></svg>';
 function lfSelect(key, opts){
   var v = S.lf[key], open = S.lf.openSel === key;
-  return '<span class="selwrap"><button type="button" class="s-field'+(open?' open':'')+'" onclick="lfToggle(\''+key+'\')"><span>'+v+'</span>'+ICON.chev+'</button>'+
-    (open ? '<div class="opt-panel">'+opts.map(function(o){ return '<button class="opt-row'+(o===v?' sel':'')+'" onclick="lfPick(\''+key+'\',\''+o+'\')"><span>'+o+'</span>'+(o===v?ICON.check:'')+'</button>'; }).join('')+'</div>' : '')+'</span>';
+  return '<span class="selwrap"><button type="button" class="s-field'+(open?' open':'')+'" aria-expanded="'+open+'" onclick="lfToggle(\''+key+'\')"><span>'+v+'</span>'+ICON.chev+'</button>'+
+    (open ? '<div class="opt-panel thin-scroll">'+opts.map(function(o){ return '<button class="opt-row'+(o===v?' sel':'')+'" onclick="lfPick(\''+key+'\',\''+o+'\')"><span>'+o+'</span>'+(o===v?ICON.check:'')+'</button>'; }).join('')+'</div>' : '')+'</span>';
 }
+/* 달력 — DS calendar_Default (search-filter-compare-demo.html과 같은 구조). PC 팝오버 / 모바일 바텀시트 */
+function dpad(n){ return (n < 10 ? '0' : '') + n; }
+function dfmt(d){ return d.getFullYear()+'-'+dpad(d.getMonth()+1)+'-'+dpad(d.getDate()); }
+function dparse(v){ var a = v.split('-'); return new Date(+a[0], +a[1]-1, +a[2]); }
+function calHtml(y, m, selected, onNav, onPick){
+  var first = new Date(y, m, 1), start = new Date(y, m, 1 - first.getDay());
+  var h = '<div class="cal"><div class="cal-head"><button type="button" class="cal-nav" aria-label="이전 달" onclick="'+onNav+'(-1,event)">'+ICON.back+'</button>'+
+    '<div class="cal-title">'+y+'-'+dpad(m+1)+'</div><button type="button" class="cal-nav" aria-label="다음 달" onclick="'+onNav+'(1,event)"><span style="display:flex;transform:scaleX(-1)">'+ICON.back+'</span></button></div>'+
+    '<div><div class="cal-week">'+['일','월','화','수','목','금','토'].map(function(d){ return '<span>'+d+'</span>'; }).join('')+'</div><div class="cal-days">';
+  for(var w = 0; w < 6; w++){
+    h += '<div class="cal-row">';
+    for(var d = 0; d < 7; d++){
+      var day = new Date(start.getFullYear(), start.getMonth(), start.getDate() + w*7 + d), v = dfmt(day), inM = day.getMonth() === m;
+      h += '<div class="cal-cell"><button type="button" class="cal-day'+(inM?'':' out')+(v===selected?' on':'')+'"'+(inM ? ' onclick="'+onPick+'(\''+v+'\',event)"' : ' disabled')+' aria-label="'+v+'">'+day.getDate()+'</button></div>';
+    }
+    h += '</div>';
+  }
+  return h + '</div></div></div>';
+}
+function lfDate(which){
+  var lf = S.lf, open = lf.cal && lf.cal.which === which, v = lf[which];
+  return '<span class="dwrap"><button type="button" class="s-field dt'+(open?' open':'')+'" aria-haspopup="dialog" aria-expanded="'+open+'" onclick="lfCalToggle(\''+which+'\',event)"><span>'+v+'</span>'+ICON.cal+'</button>'+
+    (open ? '<div class="dcal-pop" role="dialog" aria-label="'+(which==='from'?'시작일':'종료일')+' 선택">'+calHtml(lf.cal.y, lf.cal.m, v, 'lfCalNav', 'lfCalPick')+'</div>' : '')+'</span>';
+}
+function lfCalToggle(which, e){ e.stopPropagation(); var lf = S.lf; lf.openSel = null;
+  if(lf.cal && lf.cal.which === which) lf.cal = null; else { var d = dparse(lf[which]); lf.cal = {which:which, y:d.getFullYear(), m:d.getMonth()}; }
+  render(); }
+function lfCalNav(dir, e){ e.stopPropagation(); var c = S.lf.cal, d = new Date(c.y, c.m + dir, 1); c.y = d.getFullYear(); c.m = d.getMonth(); render(); }
+function lfCalPick(v, e){ e.stopPropagation(); var lf = S.lf; lf[lf.cal.which] = v;
+  if(lf.from > lf.to) lf.to = lf.from;                     /* 시작일 > 종료일이면 종료일을 시작일로 */
+  lf.period = null; lf.cal = null; render(); }             /* 날짜를 직접 고르면 기간 버튼 선택 해제(3-7) */
+function lfSetPeriod(x){ var lf = S.lf; lf.period = x; lf.from = PERIODS[x][0]; lf.to = PERIODS[x][1]; lf.cal = null; render(); }
+document.addEventListener('mousedown', function(e){       /* 바깥 클릭으로 달력·셀렉트 닫기 */
+  var lf = S.lf, ch = false;
+  if(lf.cal && !e.target.closest('.dwrap')){ lf.cal = null; ch = true; }
+  if(lf.openSel && !e.target.closest('.selwrap')){ lf.openSel = null; ch = true; }
+  if(ch) render();
+});
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && (S.lf.cal || S.lf.openSel) && !S.modal){ S.lf.cal = null; S.lf.openSel = null; render(); } });
+function pageList(cur, total){                               /* 3-6 기본형: 7페이지 이하 전부, 8페이지부터 말줄임 */
+  if(total <= 7){ var a = []; for(var i = 1; i <= total; i++) a.push(i); return a; }
+  if(cur <= 4) return [1,2,3,4,5,'…',total];
+  if(cur >= total - 3) return [1,'…',total-4,total-3,total-2,total-1,total];
+  return [1,'…',cur-1,cur,cur+1,'…',total];
+}
+var AR32 = ICON.back.replace('width="24" height="24"','width="32" height="32"').replace('stroke-width="2"','stroke-width="1.5"');   /* 32로 키워도 선 굵기 2px(24 기준과 같게) */
 function renderList(){
-  var lf = S.lf, a = lf.applied, rows = lfRows(), pr = PERIODS[lf.period] || PERIODS['3개월'];
-  var trs = rows.length ? rows.map(function(r){
-    return '<tr onclick="goRow(\''+r[6]+'\',\''+(r[8]||'')+'\')"><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td>'+
-      (r[5] === '-' ? '-' : '<a href="javascript:void(0)" onclick="event.stopPropagation()"><u>'+r[5]+'</u></a>')+'</td><td><span class="chip sm '+CHIP[r[6]]+'">'+STATUS_TEXT[r[6]]+'</span></td><td>'+r[7]+'</td></tr>';
+  var lf = S.lf, a = lf.applied, rows = lfRows();
+  var size = parseInt(lf.size, 10), pages = Math.max(1, Math.ceil(rows.length / size));
+  if(lf.page > pages) lf.page = pages;
+  var pageRows = rows.slice((lf.page-1)*size, lf.page*size);
+  var mpages = Math.max(1, Math.ceil(rows.length / 20)); if(lf.mpage > mpages) lf.mpage = mpages;
+  var mRows = rows.slice((lf.mpage-1)*20, lf.mpage*20);
+  var trs = rows.length ? pageRows.map(function(r){
+    return '<tr onclick="goRow(\''+r[6]+'\',\''+(r[8]||'')+'\','+(r[10]?1:0)+')"><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td>'+
+      (r[5] === '-' ? '-' : '<a href="javascript:void(0)" onclick="event.stopPropagation()"><u>'+r[5]+'</u></a>')+'</td><td>'+chip(rowStatus(r),true)+'</td><td>'+r[7]+'</td></tr>';
   }).join('') : '<tr class="empty-row"><td colspan="8">검색 조건에 맞는 주문 요청 내역이 없습니다.</td></tr>';
-  var cards = rows.length ? rows.map(function(r){
-    return '<div class="ocard" onclick="goRow(\''+r[6]+'\',\''+(r[8]||'')+'\')"><div class="top"><span class="chip sm '+CHIP[r[6]]+'">'+STATUS_TEXT[r[6]]+'</span><span class="date">'+r[7]+'</span></div>'+
-      '<div class="name">'+r[1]+' · '+r[2]+'</div><div class="sub">돌봄주문 : '+r[4]+'</div></div>';
+  var cards = rows.length ? mRows.map(function(r){       /* Figma m_Order/Order_listCard — 상태칩 + 일시 / 구분선 / 이름·L번호 · 돌봄주문 · 상품정보 · 주문번호(주문 이후만) */
+    return '<div class="pcard" role="button" tabindex="0" onclick="goRow(\''+r[6]+'\',\''+(r[8]||'')+'\','+(r[10]?1:0)+')"><div class="pc-head">'+chip(rowStatus(r))+'<span class="pc-date">'+r[7]+'</span></div>'+
+      '<div class="pc-sep"></div><div class="pc-body"><div class="pc-name"><b>'+r[1]+'</b><span>'+r[2]+'</span></div>'+
+      '<div class="pc-row"><span class="lb">돌봄주문 :</span><span>'+r[4]+'</span></div><div class="pc-row"><span class="lb">상품정보 :</span><span>'+esc(r[9])+'</span></div>'+
+      (r[5] !== '-' ? '<div class="pc-row"><span class="lb">주문번호 :</span><a href="javascript:void(0)" onclick="event.stopPropagation()">'+r[5]+'</a></div>' : '')+'</div></div>';
   }).join('') : '<div class="empty-list">검색 조건에 맞는 주문 요청 내역이 없습니다.</div>';
-  var tags = [];
-  if(a.period !== '3개월') tags.push(['period', a.period]);
+  var tags = [['period', a.period && a.period !== '직접 선택' ? a.period : a.from+' ~ '+a.to]];   /* 기본값(3개월)만 있어도 태그 줄 표시 — 대여 리스트와 같음 */
   if(a.status !== '전체') tags.push(['status', a.status]);
-  if(a.q) tags.push(['q', (a.key !== '전체' ? a.key+' : ' : '')+a.q]);
+  if(a.q) tags.push(['q', a.q]);
   var small = function(svg){ return svg.replace('width="24" height="24"','width="20" height="20"'); };
+  var ph = lf.key === '전체' ? '검색어 입력' : lf.key+' 입력';
+  var nums = pageList(lf.page, pages).map(function(n){ return n === '…' ? '<span class="pg dots">…</span>' :
+    '<button class="pg'+(n===lf.page?' on':'')+'" '+(n===lf.page?'aria-current="page"':'')+' onclick="lfGo('+n+')">'+n+'</button>'; }).join('');
   return '<div class="pc-only">'+
       '<div class="l-head"><div class="l-title">주문요청관리</div><div class="breadcrumb">돌봄앱 운영관리 '+ICON.right+' 주문요청관리</div></div>'+
       '<div class="l-tabs"><div class="l-tab active">구입 주문</div><div class="l-tab">대여 주문</div></div>'+
       '<div class="s-panel">'+
         '<button class="s-fold" onclick="S.lf.open=!S.lf.open;S.lf.openSel=null;render()">'+(lf.open ? '접기 '+TRI_UP : '상세 '+TRI_DN)+'</button>'+
-        '<div class="s-row h64"><span class="s-label">주문일</span><span class="s-field">'+pr[0]+' '+ICON.cal+'</span><span>~</span><span class="s-field">'+pr[1]+' '+ICON.cal+'</span>'+
-          '<span class="segm">'+['3개월','일주일','이번달','지난달','1년'].map(function(x){ return '<button class="'+(lf.period===x?'on':'')+'" onclick="S.lf.period=\''+x+'\';render()">'+x+'</button>'; }).join('')+'</span></div>'+
+        '<div class="s-row h64"><span class="s-label">주문일</span>'+lfDate('from')+'<span>~</span>'+lfDate('to')+
+          '<span class="segm">'+['3개월','일주일','이번달','지난달','1년'].map(function(x){ return '<button class="'+(lf.period===x?'on':'')+'" onclick="lfSetPeriod(\''+x+'\')">'+x+'</button>'; }).join('')+'</span></div>'+
         (lf.open ?
         '<div class="s-row"><span class="s-label">주문상태</span>'+lfSelect('status', STATUS_OPTS)+'<span class="s-help">선택된 상태값이 포함된 모든 주문건이 검색됩니다.</span></div>'+
-        '<div class="s-row h64"><span class="s-label">검색어</span>'+lfSelect('key', KEY_OPTS)+'<input class="s-input" placeholder="검색어 입력" value="'+esc(lf.q)+'" oninput="S.lf.q=this.value" onkeydown="if(event.key===\'Enter\')lfApply()"></div>' : '')+
+        '<div class="s-row h64"><span class="s-label">검색어</span>'+lfSelect('key', KEY_OPTS)+
+          '<span class="s-inwrap"><input class="s-input" id="lf-q" placeholder="'+ph+'" value="'+esc(lf.q)+'" oninput="S.lf.q=this.value;lfQx()" onkeydown="if(event.key===\'Enter\')lfApply()" enterkeyhint="search">'+
+          '<button type="button" class="s-x" id="lf-x" aria-label="지우기" '+(lf.q?'':'hidden')+' onmousedown="event.preventDefault()" onclick="lfQclear()">'+ICON.close+'</button></span></div>' : '')+
         '<div class="s-btns"><button class="btn btn-sm btn-outline" onclick="lfReset()">초기화</button><button class="btn btn-sm btn-filled" onclick="lfApply()">검색</button></div>'+
       '</div>'+
+      '<div class="l-note">'+note('주문 98·97·93은 상품별 상태가 다름 — 주문상태는 상세 ③·④의 대표 배지 기준(지금: '+REP_LABEL[S.rep]+')을 따름 · 확인 필요')+q('Q23')+'</div>'+
       '<div class="tbl"><table><thead><tr><th>NO</th><th>수급자</th><th>요양인정번호</th><th>휴대폰번호</th><th>돌봄주문번호</th><th>주문번호</th><th>주문상태</th><th>주문일시</th></tr></thead><tbody>'+trs+'</tbody></table></div>'+
-      '<div class="pager"><span class="pg arrow">'+ICON.back+'</span>'+(rows.length?'<span class="pg on">1</span>':'')+'<span class="pg arrow" style="transform:scaleX(-1)">'+ICON.back+'</span></div>'+
+      '<div class="pgbar'+(lf.openSel==='size'?' sel-open':'')+'"><div class="pg-left">전체 <b>'+pageRows.length+'</b>/'+rows.length+'</div>'+
+        '<div class="pager"><button class="pg arrow" aria-label="이전 페이지" '+(lf.page<=1?'disabled':'')+' onclick="lfGo('+(lf.page-1)+')">'+ICON.back+'</button>'+nums+
+        '<button class="pg arrow" aria-label="다음 페이지" '+(lf.page>=pages?'disabled':'')+' onclick="lfGo('+(lf.page+1)+')"><span style="display:flex;transform:scaleX(-1)">'+ICON.back+'</span></button></div>'+
+        '<div class="pg-right">'+lfSelect('size', SIZE_OPTS)+'</div></div>'+
     '</div>'+
     '<div class="mo-only">'+
       '<div class="mo-title">주문요청관리</div>'+
-      '<div class="mo-toggle-wrap"><div class="mo-toggle"><div class="knob"></div><span class="on">구입</span><span>대여</span></div></div>'+
-      '<div class="chip-row"><button class="f-chip'+(a.status!=='전체'?' on':'')+'" onclick="openModal(\'lfStatus\')">'+(a.status==='전체'?'상태 : 전체':a.status)+' '+small(ICON.chev)+'</button>'+
-        '<button class="f-chip search" onclick="openModal(\'lfSearch\')">'+small(ICON.search)+' 검색</button></div>'+
-      (tags.length ? '<div class="tag-row">'+tags.map(function(t){ return '<button class="atag" onclick="lfClear(\''+t[0]+'\')">'+esc(t[1])+' '+small(ICON.close)+'</button>'; }).join('')+
-        '<button class="tag-reset" onclick="lfReset()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>초기화</button></div>' : '')+
-      '<div class="count">전체 '+rows.length+'건</div>'+
-      '<div class="ocards">'+cards+'</div>'+
-      (rows.length ? '<div class="cpager"><span class="ar">'+ICON.back+'</span><span class="txt"><b>1</b><span>/</span><span>1</span></span><span class="ar" style="transform:scaleX(-1)">'+ICON.back+'</span></div>' : '')+
+      '<div class="mo-seg-wrap"><div class="mo-seg" role="tablist"><button class="mo-seg-item active" role="tab" aria-selected="true">구입 주문</button><button class="mo-seg-item" role="tab" aria-selected="false" onclick="goRental()">대여 주문</button></div></div>'+
+      '<div class="mf-row"><div class="mf-scroll">'+
+        '<button class="f-chip'+(a.period!=='3개월'?' on':'')+'" onclick="openModal(\'lfPeriod\')">'+esc(a.period || '직접 선택')+' '+small(ICON.chev)+'</button>'+
+        '<button class="f-chip'+(a.status!=='전체'?' on':'')+'" onclick="openModal(\'lfStatus\')">상태 : '+a.status+' '+small(ICON.chev)+'</button></div>'+
+        '<span class="mf-fade"></span><button class="f-chip mf-search" onclick="openModal(\'lfSearch\')">'+ICON.filter+' 검색</button></div>'+
+      '<div class="mt-row"><div class="mt-scroll">'+tags.map(function(t){ return '<button class="mtag" onclick="lfClear(\''+t[0]+'\')" aria-label="'+esc(t[1])+' 조건 해제">'+esc(t[1])+' '+small(ICON.close)+'</button>'; }).join('')+'</div>'+
+        '<span class="mt-fade"></span><button class="mt-reset" onclick="lfReset()">'+ICON.reset24+'초기화</button></div>'+
+      '<div class="count" id="lf-count">'+rows.length+'건</div>'+
+      '<div class="pcards">'+cards+'</div>'+
+      (rows.length ? '<div class="cpager"><button class="ar" aria-label="이전 페이지" '+(lf.mpage<=1?'disabled':'')+' onclick="lfGoM('+(lf.mpage-1)+')">'+AR32+'</button>'+
+        '<span class="txt" aria-live="polite"><b>'+lf.mpage+'</b><span>/</span><span>'+mpages+'</span></span>'+
+        '<button class="ar" aria-label="다음 페이지" '+(lf.mpage>=mpages?'disabled':'')+' onclick="lfGoM('+(lf.mpage+1)+')"><span style="display:flex;transform:scaleX(-1)">'+AR32+'</span></button></div>'+
+        '<div class="cp-note">'+note('모바일 \'20개씩\' 셀렉트·\'전체 n/N\' 노출 여부 — 3-6 정책에 없음, 확인 필요')+'</div>' : '')+     /* 0건이면 페이지네이션 숨김(3-6) */
     '</div>';
 }
-function lfToggle(k){ S.lf.openSel = S.lf.openSel === k ? null : k; render(); }
-function lfPick(k, v){ S.lf[k] = v; S.lf.openSel = null; render(); }
-function lfApplyKeep(){ var l = S.lf; l.applied = {period:l.period, status:l.status, key:l.key, q:(l.q||'').trim()}; render(); }
-function lfApply(){ var l = S.lf; l.openSel = null; l.applied = {period:l.period, status:l.status, key:l.key, q:l.q.trim()}; render(); }
-function lfReset(){ var l = S.lf; l.period = '3개월'; l.status = '전체'; l.key = '전체'; l.q = ''; l.openSel = null; lfApply(); }
+function goRental(){ showToast('대여 주문은 4-2 대여 리스트로 이동합니다'); setTimeout(function(){ location.href = 'order-list-adaptive.html'; }, 900); }
+function lfGo(n){ S.lf.page = n; S.lf.openSel = null; render(); var t = document.querySelector('#page .tbl'); if(t && t.getBoundingClientRect().top < 0) t.scrollIntoView({block:'start'}); }
+function lfGoM(n){ S.lf.mpage = n; render(); var t = document.getElementById('lf-count'); if(t && t.getBoundingClientRect().top < 0) t.scrollIntoView({block:'start'}); }   /* 넘기면 목록 맨 위로(3-6) */
+function lfQx(){ var x = document.getElementById('lf-x'); if(x) x.hidden = !S.lf.q; }
+function lfQclear(){ S.lf.q = ''; var i = document.getElementById('lf-q'); if(i){ i.value = ''; i.focus(); } lfQx(); }   /* 값만 지우고 포커스 유지 */
+function lfToggle(k){ S.lf.openSel = S.lf.openSel === k ? null : k; S.lf.cal = null; render(); }
+function lfPick(k, v){ S.lf[k] = v; S.lf.openSel = null; if(k === 'size') S.lf.page = 1; render(); }
+function lfApplyKeep(){ var l = S.lf; l.applied = {period:l.period, from:l.from, to:l.to, status:l.status, key:l.key, q:(l.q||'').trim()}; l.page = 1; l.mpage = 1; render(); }
+function lfApply(){ S.lf.openSel = null; S.lf.cal = null; lfApplyKeep(); }
+function lfReset(){ var l = S.lf; l.period = '3개월'; l.from = PERIODS['3개월'][0]; l.to = PERIODS['3개월'][1]; l.status = '전체'; l.key = '전체'; l.q = ''; l.openSel = null; lfApply(); }
 function lfClear(k){ var l = S.lf;
-  if(k === 'period') l.period = '3개월'; if(k === 'status') l.status = '전체'; if(k === 'q'){ l.q = ''; l.key = '전체'; }
+  if(k === 'period'){ l.period = '3개월'; l.from = PERIODS['3개월'][0]; l.to = PERIODS['3개월'][1]; } if(k === 'status') l.status = '전체'; if(k === 'q'){ l.q = ''; l.key = '전체'; }
   lfApply(); }
-function goRow(st, cv){
+function goRow(st, cv, mixed){
   S.step = st; if(st === 'cancel') S.cancelVar = cv || 'before';
-  if(S.view === 'plan' && st !== 'confirming') S.view = 'policy';
+  S.mix = !!mixed;
+  if(S.view === 'plan' && ['confirming','preparing','shipped','delivered'].indexOf(st) < 0) S.view = 'policy';
   render(); scrollTop();
 }
 
@@ -1057,27 +1307,28 @@ function renderDetail(plan){
   if(st.msg && !plan){ h += '<div class="result-box">'+st.msg+'</div>'; }
   if(after && step === 'preparing' && st.ordered){ h += '<div class="result-box">구입 주문완료 결과 화면 '+note()+' — 대여(4-3)는 완료 안내 박스가 있으나 구입은 미캡처. 여기서는 바로 상품준비로 보여줍니다.</div>'; }
 
+  if(plan && after) h += mixBar();
   /* 주문정보 */
-  var orderNo = (after || cAfter) ? '<a href="javascript:void(0)"><u>2026100710412033</u></a> (2026-10-07 10:41:20)' : '- -';
+  var orderNo = (after || cAfter) ? joinParts('<a href="javascript:void(0)"><u>2026100710412033</u></a>', ['2026-10-07 10:41:20']) : '-';
   h += sec('order','주문정보', st,
     '<div class="info-grid">'+
       tr('돌봄주문번호','DB6100710375068')+tr('주문정보확인','2026-10-07 09:03:08')+
-      tr('주문번호',orderNo)+tr('주문상태','<span class="chip '+CHIP[step]+'">'+STEP_LABEL[step]+'</span>')+
+      tr('주문번호',orderNo)+tr('주문상태',(plan && after && S.mix ? chip(repOf(itemStatuses(planFinal(), step)))+'<span class="rep-q">'+note('확인 필요')+q('Q23')+'</span>' : chip(STEP_LABEL[step])))+
     '</div>');
   /* 수급자 정보 */
   var known = after || (conf && st.lookedUp);      /* 현행: 주문확인중은 요양정보 조회 전 성별·나이·요양인정번호 '-' (Figma 12030:9930) */
   var lookup = conf ? ' <button class="mini-btn" onclick="openModal(\'lookup\')">'+(st.lookedUp && uxOn() ? '재조회' : '조회')+'</button>'+(st.lookedUp && uxOn() ? ' <span class="lk-done">'+ICON.check.replace('width="24" height="24"','width="16" height="16"')+'조회 완료 · '+st.lookupAt+'</span>'+u('U1')+(planUx() ? nn('N7') : '') : uMark('U1')) : (after ? ' <button class="mini-btn">조회</button>' : '');
   h += sec('recipient','수급자 정보', st,
     '<div class="info-grid">'+
-      tr('수급자', masked ? '홍*동 (-, -)' : (known ? '홍길동 (여, 80세)' : '홍길동 (-, -)'))+tr('요양인정번호', masked ? '- -' : (known ? 'L0000000000' : '-')+lookup)+
-      tr('연락처', masked ? '010-****-0000' : '010-0000-0000')+tr('보호자', masked ? '김*호 (- / 자녀)' : '김보호 (010-0000-0000 / 자녀)')+
+      tr('수급자', joinParts(masked ? '홍*동' : '홍길동', known && !masked ? ['여', '80세'] : []))+tr('요양인정번호', (known && !masked ? 'L0000000000' : '-')+(masked ? '' : lookup))+
+      tr('연락처', masked ? '010-****-0000' : '010-0000-0000')+tr('보호자', joinParts(masked ? '김*호' : '김보호', [masked ? '' : '010-0000-0000', '자녀'], ' / '))+
     '</div>'+
     '<div class="notice">※ 보호자(수급자)의 주문요청 시점과 이로움에 주문 시점 사이에 수급자의 계약 조건이 변경될 수 있습니다. <u>주문 전, 반드시 요양정보를 다시 확인하시기 바랍니다.</u></div>');
   /* 주문상품 */
   h += '<div class="sec"><div class="sec-head"><div class="sec-title">주문상품</div>'+
     (plan && conf && planUx() && planChanged() ? '<button class="text-btn" onclick="resetPlan(false)">최초 주문으로 되돌리기 '+ICON.reset+q('Q20')+'</button>' : '')+'</div>';
   if(plan && conf) h += renderPlanProducts();
-  else if(plan && step === 'preparing') h += renderFinal(st.finalItems, step, true);
+  else if(plan && after) h += renderFinal(planFinal(), step, true);
   else if(conf) h += renderPolProducts();
   else if(pre) h += renderReceived();
   else if(cancel) h += renderCancel(cAfter);
@@ -1093,6 +1344,13 @@ function sec(key, title, st, body){
   return '<div class="sec'+(closed?' collapsed':'')+'"><div class="sec-head"><div class="sec-title">'+title+'</div>'+
     '<button class="acc-btn" aria-label="'+title+' 접기/펼치기" aria-expanded="'+(!closed)+'" onclick="toggleAcc(\''+key+'\')">'+ICON.up+'</button></div>'+
     '<div class="sec-body">'+body+'</div></div>';
+}
+/* 빈 값 표기(3-1 정책 적용안): 칸 전체가 비면 '-' 하나, 일부만 비면 빈 부분 생략, 괄호 안이 모두 비면 괄호째 생략 */
+function isBlank(v){ return v == null || v === '' || v === '-'; }
+function joinParts(main, subs, sep){
+  var m = isBlank(main) ? '' : main, rest = (subs || []).filter(function(x){ return !isBlank(x); });
+  var out = m + (rest.length ? (m ? ' ' : '') + '(' + rest.join(sep || ', ') + ')' : '');
+  return out || '-';
 }
 function tr(k, v){ return '<div class="text-row"><div class="th">'+k+'</div><div class="td">'+v+'</div></div>'; }
 function toggleAcc(k){ var st = cur(); st.acc[k] = !st.acc[k]; render(); }
@@ -1116,7 +1374,7 @@ function qtyWarn(it, q){
 function renderReceived(){
   var items = SAMPLES.basic.map(mkItem);
   return '<div>'+items.map(function(it){
-    return '<div class="prow"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips"><span class="chip c-received">주문접수</span></div>'+
+    return '<div class="prow"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips">'+chip('주문접수')+'</div>'+
       '<div class="pname">'+CATALOG[it.pid].name+'</div></div></div><div class="ptype">구입</div>'+
       '<div class="pqty"><span class="lbl">수량</span> <b>'+it.qty+'개</b></div>'+priceBox(it,true)+'<div class="pact"></div></div>';
   }).join('')+'</div>';
@@ -1127,12 +1385,12 @@ function renderPolProducts(){
   var st = S.pol;
   var rows = st.items.map(function(it){
     var p = CATALOG[it.pid];
-    var chip = it.added ? '<span class="chip c-added">추가상품</span>' : '<span class="chip c-confirming">주문확인중</span>';
+    var chp = it.added ? chip('추가상품') : chip('주문확인중');
     var opt = p.opts.length ? '<div class="popt"><span>'+esc(optStr(it))+'</span><span class="sep">|</span><button class="text-btn" onclick="openModal(\'optEdit\',{uid:'+it.uid+'})">수정 '+ICON.right+'</button>'+
       (optStr(it).length > 14 ? note('줄바꿈 확인 필요') : '')+'</div>' : '';
     var notes = '';
     if(st.moved[it.uid]) notes += '<div class="row-note">'+note()+' 옵션 변경 후 이 행이 목록 맨 아래로 이동(현행 동작, 의도 여부 확인 중)</div>';
-    return '<div class="prow" data-uid="'+it.uid+'"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips">'+chip+'</div>'+
+    return '<div class="prow" data-uid="'+it.uid+'"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips">'+chp+'</div>'+
       '<div class="pname">'+p.name+'</div>'+opt+notes+'</div></div>'+
       '<div class="ptype">구입</div>'+
       '<div class="pqty"><span class="stepper"><button aria-label="수량 빼기" '+(it.pend<=1?'disabled':'')+' onclick="polPend('+it.uid+',-1)">'+ICON.minus+'</button><span>'+it.pend+'</span><button aria-label="수량 더하기" '+(maxQty(it) !== null && it.pend >= maxQty(it) ? 'disabled' : '')+' onclick="polPend('+it.uid+',1)">'+ICON.plus+'</button></span>'+
@@ -1155,7 +1413,7 @@ function renderCancel(afterOrder){
     var p = CATALOG[it.pid];
     var reason = afterOrder ? '<span class="cancel-reason"><span class="rpop" tabindex="0" onclick="if(isMO())openModal(\'reasonSheet\')">관리자 상세화면에서 강제로 취소를 …'+
       '<span class="pop" role="tooltip"><b>취소 사유</b>'+CANCEL_FULL+'</span></span>'+(i === 0 ? note('전체 사유 노출 확인 필요')+u('U5-6') : '')+'</span>' : '';
-    return '<div class="prow"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips"><span class="chip c-cancel">주문취소</span>'+reason+'</div>'+
+    return '<div class="prow"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips">'+chip('주문취소')+''+reason+'</div>'+
       '<div class="pname">'+p.name+'</div>'+(p.opts.length ? '<div class="popt"><span>'+esc(optStr(it))+'</span></div>' : '')+'</div></div>'+
       '<div class="ptype">구입</div><div class="pqty"><span class="lbl">수량</span> <b>'+it.qty+'개</b></div>'+priceBox(it,true)+'<div class="pact"></div></div>';
   }).join('');
@@ -1163,17 +1421,26 @@ function renderCancel(afterOrder){
 }
 
 /* 상품준비 이후 — 최종 상품만 (조회 전용) */
+function planFinal(){ return S.plan.finalItems || S.plan.items.filter(function(it){ return !it.deleted; }); }
+function itemStatuses(items, step){ return items.map(function(it, i){ return S.view === 'plan' && S.mix && MIXSET[step] ? MIXSET[step][Math.min(i, MIXSET[step].length - 1)] : STEP_LABEL[step]; }); }
+function mixBar(){
+  return '<div class="mix-bar"><span class="mx-t">상품 상태</span><span class="mx-seg">'+[[false,'상품 상태 같음'],[true,'상품 상태 다름']].map(function(x){
+      return '<button class="'+(S.mix===x[0]?'on':'')+'" onclick="S.mix='+x[0]+';render()">'+x[1]+'</button>'; }).join('')+'</span>'+
+    (S.mix ? '<span class="mx-t">대표 배지 기준</span><span class="mx-seg">'+['front','back','most'].map(function(k){
+      return '<button class="'+(S.rep===k?'on':'')+'" onclick="S.rep=\''+k+'\';render()">'+REP_LABEL[k]+'</button>'; }).join('')+'</span>'+note('확인 필요')+q('Q23')+
+      '<div class="mx-n">'+note('확인 필요')+' 상품별 상태로 \'주문취소\'·\'취소요청\'(부분 취소)이 나올 수 있는지 — 이 화면에는 넣지 않음</div>' : '')+'</div>';
+}
 function renderFinal(items, step, plan){
   if(!items) items = SAMPLES.option.map(mkItem);
-  var rows = items.map(function(it){
+  var sts = itemStatuses(items, step);
+  var rows = items.map(function(it, ii){
     var p = CATALOG[it.pid];
     var opt = p.opts.length ? '<div class="popt">'+(plan ? optPlan(it) : esc(optStr(it)))+'</div>' : '';   /* ③는 원안/제안 표기 */
-    return '<div class="prow"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips"><span class="chip '+CHIP[step]+'">'+STEP_LABEL[step]+'</span>'+(plan ? q('Q7') : '')+'</div>'+
+    return '<div class="prow"><div class="prow-main">'+thumb(it)+'<div class="pinfo"><div class="pchips">'+chip(sts[ii])+''+(plan ? q('Q7') : '')+'</div>'+
       '<div class="pname">'+p.name+'</div>'+opt+'</div></div><div class="ptype">구입</div>'+
       '<div class="pqty"><span class="lbl">수량</span> <b>'+it.qty+'개</b></div>'+priceBox(it)+'<div class="pact"></div></div>';
   }).join('');
   var h = '<div>'+rows+'</div>'+totalBar(items, plan ? '총 구입 금액' : '총 판매 금액', plan ? q('Q10') : '');
-  if(step === 'shipped') h += '<div class="row-note" style="margin-top:12px">'+note()+' 출고완료 화면은 미캡처 — 칩은 DS BrandSub</div>';
   if(plan && planUx()){
     var chs = S.plan.changes;
     h += chs.length ? '<div class="hist-ux"><div class="hist-ttl">주문 변경 내역</div>'+sumBar(chs, S.plan.orig, 'after')+'<div class="kv-box">'+changeListHtml(chs)+'<div><b>변경 사유</b> '+esc(S.plan.reason)+'</div></div></div>' : '';
@@ -1224,7 +1491,8 @@ function renderPlanProducts(){
     return '<div class="prow '+ps+'" data-uid="'+it.uid+'"><div class="prow-main">'+thumb(it)+'<div class="pinfo">'+
       (ux && ps ? '<div class="pchips"><span class="chip sm c-k-'+ps+'">'+KLBL[ps]+'</span>'+(firstChg ? nn('N2')+nn('N3') : '')+'</div>' : '')+
       '<div class="pname">'+p.name+'</div>'+opt+(diff ? '<div class="diff-line">'+diff+'</div>' : '')+(ps==='del'?'<div class="row-note">'+q('Q3')+'</div>':'')+''+'</div></div>'+
-      '<div class="ptype">구입</div><div class="pqty">'+qtyCtl+qtyWas+(del || !ux ? '' : qtyWarn(it, it.qty))+'</div>'+priceBox(it)+'<div class="pact">'+act+'</div></div>';
+      '<div class="ptype">구입</div><div class="pqty">'+qtyCtl+qtyWas+(del || !ux ? '' : qtyWarn(it, it.qty))+'</div>'+priceBox(it)+'<div class="pact">'+act+'</div>'+
+      (S.restored === it.uid ? '<div class="restored-note">복원했습니다. 필요 없는 상품은 삭제해 주세요.</div>' : '')+'</div>';
   }).join('')+'</div>';
   h += '<div class="add-row"><button class="text-btn" style="font-size:18px" onclick="openModal(\'add\')">상품추가 '+ICON.plus+'</button></div>';
   var b0 = 0, b1 = 0; st.orig.forEach(function(x){ b0 += CATALOG[x.pid].price * x.qty; }); st.items.forEach(function(x){ if(!x.deleted) b1 += CATALOG[x.pid].price * x.qty; });
@@ -1296,7 +1564,7 @@ function renderCurrent(){
       if(/^[ABC]/.test(p.id)) acts += '<a href="purchase-order-analysis.html#'+p.id+'">분석 문서</a>';
       if(p.plan !== undefined && p.plan !== '') acts += '<a href="?view=plan&amp;step=confirming&amp;'+p.plan+'">개선안에서 보기</a>';
       if(p.k === 'm') acts += '<a href="?view=policy&amp;step='+S.step+'&amp;w=360">정책 적용 화면</a>';
-      return '<div class="pin-card'+(S.pin===p.id?' hl':'')+'" id="pin-'+p.id+'"><div class="h">'+tag+p.t+'</div><div class="d">'+p.d+'</div>'+(acts?'<div class="acts">'+acts+'</div>':'')+'</div>';
+      return '<div class="pin-card'+(S.pin===p.id?' hl':'')+'" id="pin-'+p.id+'"><div class="h">'+tag+p.t+'</div><div class="d">'+p.d+'</div>'+(p.html||'')+(acts?'<div class="acts">'+acts+'</div>':'')+'</div>';
     }).join('')+'</div>';
   }
   return h + '</div>';
@@ -1335,6 +1603,38 @@ function planDelete(uid){
   if(it.added){ st.items = st.items.filter(function(x){ return x.uid !== uid; }); }   /* 5. 추가 후 삭제 = 즉시 제거 */
   else it.deleted = true;
 }
+/* U9 중복 검사 — 상품 + 옵션 조합(옵션 없으면 상품). 대상: 목록의 모든 행(유지·변경·추가·삭제 상태), 수정 중인 자기 행 제외.
+   추가했다 삭제한 상품은 이미 목록에서 빠져 있어 대상 아님(Q1) */
+function dupOf(pid, opt, selfUid){
+  var hit = null;
+  S.plan.items.forEach(function(x){ if(!hit && x.uid !== selfUid && x.pid === pid && x.opt.join('|') === opt.join('|')) hit = x; });
+  return hit;
+}
+function dupMsg(hit){
+  var p = CATALOG[hit.pid], o = p.opts.length ? optShow(hit.pid, hit.opt)+' · ' : '';
+  if(hit.deleted) return '<div class="f-err" id="dup-msg" role="alert">'+ICON.info.replace('width="20" height="20"','width="16" height="16"')+'<div><b>삭제한 상품 중에 같은 옵션이 있습니다.</b>'+q('Q22')+
+    '<div class="f-sub">('+p.name+' · '+o+hit.qty+'개 — 삭제됨) <button class="text-btn" onclick="restoreDup('+hit.uid+')">복원하기</button></div></div></div>';
+  return '<div class="f-err" id="dup-msg" role="alert">'+ICON.info.replace('width="20" height="20"','width="16" height="16"')+'<div><b>이미 주문 목록에 있는 상품 및 옵션입니다.</b></div></div>';
+}
+/* 옵션이 1개인 상품: 드롭다운 항목에 미리 표시 */
+function optAnno(key, v){
+  var m = S.modal; if(!m || !planUx() || (m.type !== 'optEdit' && m.type !== 'add')) return null;
+  var pid = m.type === 'add' ? m.pick : findItem(S.plan, m.data.uid).pid; if(!pid || CATALOG[pid].opts.length !== 1) return null;
+  var hit = dupOf(pid, [v], m.type === 'optEdit' ? m.data.uid : -1);
+  if(!hit || (m.type === 'optEdit' && findItem(S.plan, m.data.uid).opt[0] === v)) return null;
+  return hit.deleted ? {t:' (삭제됨)', off:false} : {t:' (주문 목록에 있음)', off:true};
+}
+function restoreDup(uid){
+  closeModal();
+  var it = findItem(S.plan, uid); if(!it) return;
+  it.deleted = false;                                   /* Q2: 삭제 직전 상태로 */
+  S.restored = uid; render();
+  var el = document.querySelector('.prow[data-uid="'+uid+'"]'); if(el){ el.classList.add('flash'); el.scrollIntoView({block:'center', behavior:'smooth'}); setTimeout(function(){ el.classList.remove('flash'); }, 1000); }
+}
+document.addEventListener('click', function(e){      /* 복원 안내는 다음 조작(아무 클릭) 때 사라짐 — 시간으로 사라지지 않음 */
+  if(!S.restored || e.target.closest('.f-sub')) return;
+  S.restored = null; document.querySelectorAll('.restored-note').forEach(function(n){ n.remove(); });
+}, true);
 function planDeleteNow(uid){ planDelete(uid); render(); showToast('삭제했습니다 — [복원]으로 되돌릴 수 있어요'); }
 function planRestore(uid){ findItem(S.plan, uid).deleted = false; render(); }          /* 6. 삭제 직전 상태로 */
 function planAdd(pid, opt){ S.plan.items.push({uid:uidSeq++, pid:pid, opt:opt, qty:1, pend:1, added:true, deleted:false}); }
@@ -1354,12 +1654,23 @@ function planChanges(){
     else if(ps === 'add') out.push({k:'add', name:planUx() ? name+' · '+it.qty+'개' : name});
     else {
       var o = S.plan.orig.filter(function(x){ return x.uid === it.uid; })[0], parts = [];
-      if(o.qty !== it.qty) parts.push('수량: '+o.qty+' → '+it.qty);                          /* 수량 → 옵션 순 */
-      if(o.opt.join('|') !== it.opt.join('|')) parts.push(planUx() ? '옵션: '+optShow(o.pid,o.opt)+' → '+optShow(it.pid,it.opt) : o.opt.join('/')+' → '+it.opt.join('/'));   /* 원안: 베이지/L(100) → 베이지/L(95) */
-      out.push({k:'chg', name:p.name, sub:parts.join(', ')});
+      var ux = planUx(), optCh = o.opt.join('|') !== it.opt.join('|');
+      if(o.qty !== it.qty) parts.push((ux ? '수량 ' : '수량: ')+o.qty+' → '+it.qty);              /* 수량 → 옵션 순 */
+      if(optCh) parts.push(ux ? p.opts.map(function(x,i){ return x.k+' '+(o.opt[i] !== it.opt[i] ? o.opt[i]+' → ' : '')+it.opt[i]; }).join(' · ')   /* ④: 수량 1 → 2 · 색상 베이지 · 사이즈 L(100) → L(95) */
+                             : o.opt.join('/')+' → '+it.opt.join('/'));                            /* 원안(Figma 28694:1285): 수량: 1 → 2, 베이지/L(100) → 베이지/L(95) */
+      out.push({k:'chg', name:p.name, sub:parts.join(ux ? ' · ' : ', ')});
     }
   });
   return out;
+}
+function rcListHtml(list){      /* 원안: 항목마다 연한 회색 카드 + [배지] 상품명, 변경만 둘째 줄 */
+  var lbl = {chg:'변경', del:'삭제', add:'추가'};
+  var names = list.map(function(c){ return c.name; }), dupName = names.some(function(n,i){ return names.indexOf(n) !== i; });
+  if(dupName) return rcListHtml2(list, lbl)+'<div class="m-note">'+note('같은 상품이 여러 장이면 상품명만으로 구분 안 됨(삭제·추가 카드에 옵션 없음) — 확인 필요')+'</div>';
+  return rcListHtml2(list, lbl);
+}
+function rcListHtml2(list, lbl){
+  return '<div class="rc-list">'+list.map(function(c){ return '<div class="rc-card"><div class="rc-row"><span class="rc-b '+c.k+'">'+lbl[c.k]+'</span><span class="nm">'+esc(c.name)+'</span></div>'+(c.sub ? '<div class="rc-sub">'+esc(c.sub)+'</div>' : '')+'</div>'; }).join('')+'</div>';
 }
 function changeListHtml(list){
   var lbl = {chg:'변경', del:'삭제', add:'추가'};
@@ -1424,7 +1735,8 @@ function openModal(type, data){
   if(type === 'cancel') m.sel['취소 사유'] = null;
   if(type === 'add' && uxOn()) m.showAll = true;      /* U4: 열자마자 목록(최대 5개) — 모달이 작아 목록이 안 보이던 문제 */
   if(type === 'lfStatus') m.sel.status = S.lf.applied.status;
-  if(type === 'lfSearch'){ m.period = S.lf.applied.period; m.sel['주문 진행상태'] = S.lf.applied.status; m.text = S.lf.applied.q; }
+  if(type === 'lfPeriod'){ m.period = S.lf.applied.period || '직접 선택'; m.from = S.lf.applied.from; m.to = S.lf.applied.to; }
+  if(type === 'lfSearch'){ m.sel['검색 기준'] = S.lf.applied.key; m.text = S.lf.applied.q; }
   S.modal = m; drawModal();
 }
 function closeModal(){
@@ -1438,8 +1750,8 @@ function modalSpec(){
   var t = m.type, sheet = false, title = '', body = '', acts = '', cls = '';
   if(m.optSheet){   /* 바텀시트 안 셀렉트 → 옵션 시트(3-3) */
     var os = m.optSheet;
-    return {sheet:true, title:os.label, body:'<div class="sheet-opts">'+os.options.map(function(v){
-        return '<button class="opt-row'+(os.temp===v?' sel':'')+'" onclick="S.modal.optSheet.temp=\''+v.replace(/'/g,"\\'")+'\';drawModal()"><span>'+esc(v)+'</span>'+(os.temp===v?ICON.check:'')+'</button>'; }).join('')+'</div>',
+    return {sheet:true, title:os.label, body:'<div class="sheet-opts">'+os.options.map(function(v){ var an = optAnno(os.key, v);
+        return '<button class="opt-row'+(os.temp===v?' sel':'')+'" '+(an && an.off ? 'disabled' : '')+' onclick="S.modal.optSheet.temp=\''+v.replace(/'/g,"\\'")+'\';drawModal()"><span>'+esc(v)+(an ? '<em class="an">'+an.t+'</em>' : '')+'</span>'+(os.temp===v?ICON.check:'')+'</button>'; }).join('')+'</div>',
       acts:'<button class="btn btn-filled" '+(os.temp?'':'disabled')+' onclick="var o=S.modal.optSheet;S.modal.sel[o.key]=o.temp;S.modal.optSheet=null;drawModal()">선택완료</button>', back:true};
   }
   if(t === 'optEdit'){
@@ -1449,9 +1761,14 @@ function modalSpec(){
     var custLine = oo && oo.opt.join('|') !== it.opt.join('|') ? '<div class="m-cust">고객 주문: '+optShow(oo.pid, oo.opt)+' · 수량 '+oo.qty+'개</div>' : '';
     body = '<div class="m-prod">'+thumb(it)+'<div><div class="nm">'+p.name+uMark('U2')+'</div>'+
         (uxOn() ? '<div class="m-cur">현재 옵션: '+(plan ? optShow(it.pid, it.opt) : esc(optPlain(it.pid, it.opt)))+' · 수량 '+it.qty+'개'+u('U2')+(planUx() ? nn('N5') : '')+'</div>'+custLine : '')+'</div></div>'+
-      p.opts.map(function(o,i){ return selectField(o.k, o.k, o.v, null, uxOn() && m.sel[o.k] !== it.opt[i]); }).join('');
+      '';
     var same = uxOn() && p.opts.every(function(o,i){ return m.sel[o.k] === it.opt[i]; });     /* U2: 같은 값이면 [확인] 비활성 */
-    var ready = !same && p.opts.every(function(o){ return m.sel[o.k]; });
+    var full = p.opts.every(function(o){ return m.sel[o.k]; });
+    var dupHit = planUx() && full && !same ? dupOf(it.pid, p.opts.map(function(o){ return m.sel[o.k]; }), it.uid) : null;   /* U9: 셀렉트 값이 바뀔 때마다 */
+    body += p.opts.map(function(o,i){ var last = i === p.opts.length - 1;
+      return selectField(o.k, o.k, o.v, null, uxOn() && m.sel[o.k] !== it.opt[i], last && dupHit); }).join('')+(dupHit ? dupMsg(dupHit) : '')+
+      (planUx() ? '<div class="m-note">'+u('U9')+nn('N8')+'</div>' : '');
+    var ready = !same && full && !dupHit;
     acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" '+(ready?'':'disabled')+' onclick="applyOpt()">확인</button>';
   } else if(t === 'add'){
     sheet = true; title = '상품 추가'; if(uxOn()) cls = 'lg';
@@ -1465,15 +1782,22 @@ function modalSpec(){
       '<button class="modal-close" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);margin:0" aria-label="검색" onclick="document.activeElement.blur()">'+ICON.search+'</button></div>'+
       (showRes ? '<div class="opt-panel res-panel">'+(res.length ? res.map(function(k){ var c = CATALOG[k];
         var meta = [won(c.price), c.opts.length ? '옵션 있음' : '옵션 없음'];
-        var off = c.soldout || noBen(k);
+        var nh = planUx() && !c.opts.length ? dupOf(k, [], -1) : null;          /* U9: 옵션 없는 상품은 결과 행에서 바로 */
+        if(nh && nh.deleted) return '<div class="opt-row res-row is-off" aria-disabled="true"><span class="rn">'+c.name+'</span><span class="rm">'+meta.join(' · ')+' · <b class="r-out">삭제됨</b> · <button class="text-btn" onclick="restoreDup('+nh.uid+')">복원</button></span></div>';
+        var off = c.soldout || noBen(k) || !!nh;
         if(!U4) return '<button class="opt-row" '+(off?'disabled':'')+' onclick="addPick(\''+k+'\')"><span>'+c.name+(c.soldout?' (일시품절)':'')+(noBen(k)?' (급여불가)':'')+'</span></button>';
         return '<button class="opt-row res-row" '+(off?'disabled':'')+' onclick="addPick(\''+k+'\')"><span class="rn">'+c.name+'</span><span class="rm">'+meta.join(' · ')+
-          (c.soldout ? ' · <b class="r-out">일시품절</b>' : '')+(noBen(k) ? ' · <b class="r-out">급여불가</b>' : '')+(inList(k) ? ' · <b class="r-in">주문 목록에 있음</b>' : '')+'</span></button>'; }).join('')
+          (c.soldout ? ' · <b class="r-out">일시품절</b>' : '')+(noBen(k) ? ' · <b class="r-out">급여불가</b>' : '')+(inList(k) ? ' · <b class="r-in">주문 목록에 있음</b>'+(nh ? ' (선택 불가)' : '') : '')+'</span></button>'; }).join('')
         : '<div class="opt-row" style="cursor:default">'+(U4 ? '검색 결과가 없습니다. 상품명을 다시 확인해 주세요.' : '검색 결과가 없습니다.')+'</div>')+'</div>' : '')+'</div>';
-    if(m.pick) body += CATALOG[m.pick].opts.map(function(o){ return selectField(o.k, o.k, o.v); }).join('');
+    var addHit = null;
+    if(m.pick){ var pp = CATALOG[m.pick], fullA = pp.opts.every(function(o){ return m.sel[o.k]; });
+      addHit = planUx() && pp.opts.length && fullA ? dupOf(m.pick, pp.opts.map(function(o){ return m.sel[o.k]; }), -1) : null;
+      body += pp.opts.map(function(o,i){ return selectField(o.k, o.k, o.v, null, false, i === pp.opts.length - 1 && addHit); }).join('')+(addHit ? dupMsg(addHit) : '');
+      if(planUx()) body += '<div class="m-note">'+u('U9')+'</div>'; }
+    m.addHit = addHit;
     body += '<div class="m-note">급여상품(판매·대여)·부품만 노출 · 품절·일시품절은 선택 불가 · 같은 상품을 다른 옵션으로 여러 번 추가 가능'+
       (anyNo && showRes ? '<br>요양정보상 급여불가 품목은 선택 불가 '+note('비활성인지 미노출인지 확인 필요') : '')+'</div>';
-    acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="applyAdd()">상품 추가</button>';
+    acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" '+(addHit ? 'disabled' : '')+' onclick="applyAdd()">상품 추가</button>';
   } else if(t === 'del'){
     var it2 = findItem(st, m.data.uid), p2 = CATALOG[it2.pid];
     title = '상품 삭제';
@@ -1493,16 +1817,26 @@ function modalSpec(){
     acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="'+(m.data.demo?'closeModal()':'finishOrder()')+'">확인</button>';
   } else if(t === 'confirmNoChange'){
     title = '주문하기';
-    body = '<div>주문 후에는 상품 정보를 변경할 수 없습니다. 이대로 주문을 진행하시겠습니까?</div>';
+    body = '<div>주문 후에는 상품 정보를 변경할 수 없습니다.<br>이대로 주문을 진행하시겠습니까?</div>';   /* Figma 28722:822 */
     acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" onclick="'+(m.data.demo?'closeModal()':'finishOrder()')+'">주문하기</button>';
   } else if(t === 'changeReason'){
     sheet = true; title = '주문 변경 사유';
     var ch = planChanges(); if(!ch.length) ch = [{k:'chg', name:'예시 상품', sub:'수량: 1 → 2'}];
     var ok = m.text.trim().length > 0 && m.checked;
+    var ordNote = '<div class="m-note">목록 순서: 최초 주문 순 → 추가 상품 순 '+note('기획서 미명시 — 확인 필요')+'</div>';
+    if(plan && !planUx()){          /* ③ 원안 — 기획서(Figma 28694:1285) 그대로 */
+      m.maxc = 20;
+      body = rcListHtml(ch)+ordNote.replace('</div>', uMark('U5-4')+'</div>')+
+        '<div class="rc-label">상세 사유'+q('Q5')+uMark('U6')+'</div>'+
+        '<div class="rc-ta"><textarea id="cr" maxlength="20" placeholder="입력하신 주문 변경 사유는 수급자에게 노출됩니다!" oninput="S.modal.text=this.value;crSync()">'+esc(m.text)+'</textarea><div class="cnt" id="cr-c">'+m.text.length+'/20자</div></div>'+
+        '<label class="rc-ck"><input type="checkbox" id="cr-ck" '+(m.checked?'checked':'')+' onchange="S.modal.checked=this.checked;crSync()"><span>수급자에게 주문정보 변경에 대한 동의를 받았습니다.<br>주문 후에는 상품 정보를 변경할 수 없습니다.</span></label>';
+      acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" id="cr-go" '+(ok?'':'disabled')+' onclick="S.plan.reason=S.modal.text;'+(m.data.demo?'closeModal()':'finishOrder()')+'">저장'+q('Q4')+'</button>';   /* 저장 성공 시 주문확인 컨펌 생략(기획서 메모) */
+      return {sheet:sheet, title:title, body:body, acts:acts, cls:cls};
+    }
     var sumOf = function(items){ var a = 0; items.forEach(function(x){ if(!x.deleted) a += CATALOG[x.pid].price * x.qty; }); return a; };
     var b0 = sumOf(S.plan.orig), b1 = sumOf(S.plan.items), ux2 = planUx() || !plan, maxc = ux2 ? 100 : 20;
     m.maxc = maxc;
-    body = '<div class="kv-box">'+changeListHtml(ch)+'</div>'+
+    body = '<div class="kv-box">'+changeListHtml(ch)+'</div>'+ordNote+
       (ux2 ? '<div class="amt-box"><div><span>총 구입 금액</span><b>'+won(b0)+' → '+won(b1)+'</b></div><div><span>본인부담금('+rateLabel()+')</span><b class="dg">'+won(Math.round(b0*rate()))+' → '+won(Math.round(b1*rate()))+'</b></div><div class="amt-bd">'+u('U5-4')+(planUx() ? nn('N6') : '')+'</div></div>' : '')+
       (ux2 ? '' : '<div class="amt-bd">'+uMark('U5-4')+'</div>')+
       '<div class="field"><label for="cr">상세 사유'+q('Q5')+(ux2 ? u('U6') : uMark('U6'))+'</label><textarea id="cr" class="input" maxlength="'+maxc+'" placeholder="'+(ux2 ? '변경 사유를 입력해 주세요. 수급자에게 안내되는 문구이니 신중하게 적어주세요.' : '입력하신 주문 변경 사유는 수급자에게 노출됩니다!')+'" oninput="S.modal.text=this.value;crSync()">'+esc(m.text)+'</textarea></div>'+
@@ -1510,7 +1844,7 @@ function modalSpec(){
       '<label class="check-row"><input type="checkbox" id="cr-ck" '+(m.checked?'checked':'')+' onchange="S.modal.checked=this.checked;crSync()"><span>수급자에게 주문정보 변경에 대한 동의를 받았습니다. 주문 후에는 상품 정보를 변경할 수 없습니다.</span></label>';
     acts = '<button class="btn btn-gray" onclick="closeModal()">취소</button><button class="btn btn-filled" id="cr-go" '+(ok?'':'disabled')+' onclick="S.plan.reason=S.modal.text;'+(m.data.demo?'closeModal()':'finishOrder()')+'">'+(ux2 ? '주문하기' : '저장')+q('Q4')+'</button>';
   } else if(t === 'dupNotAllowed'){
-    title = '변경불가'; body = '<div>이미 포함된 상품 및 옵션입니다.</div>';
+    title = '변경불가'; body = '<div>이미 포함된 상품 및 옵션입니다.'+uMark('U9')+'</div>';
     acts = '<button class="btn btn-filled" onclick="'+(m.data.back?'S.modal=S.modal.data.back;drawModal()':'closeModal()')+'">확인</button>';
   } else if(t === 'cancel'){
     sheet = true; title = '주문취소';
@@ -1532,16 +1866,25 @@ function modalSpec(){
     body = '<div class="sheet-opts">'+STATUS_OPTS.map(function(v){ var on = m.sel.status === v;
       return '<button class="opt-row'+(on?' sel':'')+'" onclick="S.modal.sel.status=\''+v+'\';drawModal()"><span>'+v+'</span>'+(on?ICON.check:'')+'</button>'; }).join('')+'</div>';
     acts = '<button class="btn btn-filled" onclick="S.lf.status=S.modal.sel.status;closeModal();lfApplyKeep()">선택완료</button>';
+  } else if(t === 'lfPeriod'){
+    sheet = true; title = '기간';
+    var direct = m.period === '직접 선택';
+    body = '<div class="pgrid">'+['일주일','1개월','3개월','6개월','1년','직접 선택'].map(function(x){ return '<button class="pbtn'+(m.period===x?' on':'')+'" onclick="sheetPeriod(\''+x+'\')">'+x+'</button>'; }).join('')+'</div>'+
+      '<div class="drange"><span class="box'+(direct?' on':'')+'" '+(direct?'role="button" onclick="openCalSheet(\'from\')"':'')+'>'+m.from+' '+ICON.cal+'</span><span>~</span><span class="box'+(direct?' on':'')+'" '+(direct?'role="button" onclick="openCalSheet(\'to\')"':'')+'>'+m.to+' '+ICON.cal+'</span></div>';
+    acts = '<button class="btn btn-filled" onclick="var m=S.modal;S.lf.period=m.period;S.lf.from=m.from;S.lf.to=m.to;closeModal();lfApplyKeep()">선택완료</button>';
   } else if(t === 'lfSearch'){
     sheet = true; title = '검색';
-    var pr = PERIODS[m.period], direct = m.period === '직접선택';
-    body = '<div class="sheet-sec"><div class="sheet-sec-t">주문 요청일</div><div class="pgrid">'+
-        ['일주일','이번달','지난달','3개월','1년','직접선택'].map(function(x){ return '<button class="pbtn'+(m.period===x?' on':'')+'" onclick="S.modal.period=\''+x+'\';drawModal()">'+x+'</button>'; }).join('')+'</div>'+
-        '<div class="drange"><span class="box'+(direct?' on':'')+'" onclick="'+(direct?'showToast(\'날짜 칸을 누르면 달력 시트가 열립니다(3-7) — 이 시안에서는 생략\')':'')+'">'+(pr?pr[0]:'yyyy-mm-dd')+' '+ICON.cal+'</span><span>~</span><span class="box'+(direct?' on':'')+'">'+(pr?pr[1]:'yyyy-mm-dd')+' '+ICON.cal+'</span></div></div>'+
-      '<div class="sheet-sec"><div class="sheet-sec-t">주문 진행상태</div>'+selectField('주문 진행상태','', STATUS_OPTS)+'</div>'+
-      '<div class="sheet-sec"><div class="sheet-sec-t">상세검색</div><input id="lf-q" class="input" type="search" enterkeyhint="search" placeholder="수급자명, 주문번호, 요양인정번호 검색" value="'+esc(m.text)+'" oninput="S.modal.text=this.value"></div>';
-    acts = '<button class="btn btn-gray" style="flex:0 0 120px" onclick="S.modal.period=\'3개월\';S.modal.sel[\'주문 진행상태\']=\'전체\';S.modal.text=\'\';drawModal()">초기화</button>'+
-      '<button class="btn btn-filled" onclick="var m=S.modal;S.lf.period=m.period;S.lf.status=m.sel[\'주문 진행상태\']||\'전체\';S.lf.key=\'전체\';S.lf.q=m.text;closeModal();lfApplyKeep()">검색</button>';
+    var k = m.sel['검색 기준'] || '전체', ph = k === '전체' ? '검색어 입력' : k+' 입력';
+    body = selectField('검색 기준', '검색 기준', KEY_OPTS)+
+      '<div class="field"><label class="flabel" for="lf-mq">검색어</label><div class="m-inwrap"><input id="lf-mq" class="input" type="search" enterkeyhint="search" placeholder="'+ph+'" value="'+esc(m.text)+'" oninput="S.modal.text=this.value;document.getElementById(\'lf-mx\').hidden=!this.value" onkeydown="if(event.key===\'Enter\')this.blur()">'+
+      '<button type="button" class="s-x" id="lf-mx" aria-label="지우기" '+(m.text?'':'hidden')+' onmousedown="event.preventDefault()" onclick="S.modal.text=\'\';var i=document.getElementById(\'lf-mq\');i.value=\'\';i.focus();this.hidden=true">'+ICON.close+'</button></div></div>';
+    acts = '<button class="btn btn-gray" style="flex:0 0 120px" onclick="S.modal.sel[\'검색 기준\']=\'전체\';S.modal.text=\'\';drawModal()">초기화</button>'+
+      '<button class="btn btn-filled" onclick="var m=S.modal;S.lf.key=m.sel[\'검색 기준\']||\'전체\';S.lf.q=m.text;closeModal();lfApplyKeep()">검색</button>';
+  } else if(t === 'calSheet'){        /* 모바일 달력 바텀시트 — 검색 시트 대신 열리고, 선택완료·닫기 시 검색 시트로(3-7) */
+    sheet = true; title = m.data.which === 'from' ? '시작일' : '종료일';
+    body = calHtml(m.cal.y, m.cal.m, m.cal.val, 'mCalNav', 'mCalPick');
+    acts = '<button class="btn btn-filled" onclick="calSheetDone()">선택완료</button>';
+    return {sheet:true, title:title, body:body, acts:acts, cls:'', closeJs:'S.modal=S.modal.data.back;drawModal()'};
   } else if(t === 'lookup'){
     title = '요양정보조회'; cls = 'xl';
     body = '<div class="lk-box"><div class="lk-r"><span>상담받을 연락처</span><b class="lk-phone">010-0000-0000</b></div>'+
@@ -1590,9 +1933,15 @@ function modalSpec(){
   }
   return {sheet:sheet, title:title, body:body, acts:acts, cls:cls};
 }
-function selectField(key, label, options, ph, changed){
+function sheetPeriod(x){ var m = S.modal; m.period = x; if(PERIODS[x]){ m.from = PERIODS[x][0]; m.to = PERIODS[x][1]; } drawModal(); }
+function openCalSheet(which){ var back = S.modal, v = back[which], d = dparse(v);
+  S.modal = {type:'calSheet', data:{which:which, back:back}, sel:{}, text:'', cal:{y:d.getFullYear(), m:d.getMonth(), val:v}}; drawModal(); }
+function mCalNav(dir, e){ var c = S.modal.cal, d = new Date(c.y, c.m + dir, 1); c.y = d.getFullYear(); c.m = d.getMonth(); drawModal(); }
+function mCalPick(v, e){ S.modal.cal.val = v; drawModal(); }
+function calSheetDone(){ var m = S.modal, b = m.data.back; b[m.data.which] = m.cal.val; if(b.from > b.to) b.to = b.from; S.modal = b; drawModal(); }
+function selectField(key, label, options, ph, changed, err){
   var m = S.modal, v = m.sel[key], open = m.openSel === key;
-  return '<div class="field">'+(label?'<span class="flabel">'+label+'</span>':'')+'<button type="button" data-key="'+esc(key)+'" class="selectf'+(v?'':' ph')+(open?' open':'')+(changed?' changed':'')+'" onclick="openSelect(\''+key.replace(/'/g,"\\'")+'\')">'+
+  return '<div class="field">'+(label?'<span class="flabel">'+label+'</span>':'')+'<button type="button" data-key="'+esc(key)+'"'+(err?' aria-invalid="true" aria-describedby="dup-msg"':'')+' class="selectf'+(v?'':' ph')+(open?' open':'')+(changed?' changed':'')+(err?' err':'')+'" onclick="openSelect(\''+key.replace(/'/g,"\\'")+'\')">'+
     '<span>'+esc(v || ph || '선택하세요')+'</span>'+ICON.chev+'</button></div>';     /* 옵션 목록은 모달 본문 밖(body)에 띄운다 — placeFloat */
 }
 /* PC: 모달 안 셀렉트 목록을 모달 위 레이어에 띄움. 아래 공간이 모자라면 위로, 최대 240px, 본문 스크롤·창 크기 변경 시 닫힘 */
@@ -1603,8 +1952,9 @@ function placeFloat(){
   var btn = null; document.querySelectorAll('#overlay .selectf').forEach(function(b){ if(b.getAttribute('data-key') === m.openSel) btn = b; });
   if(!btn) return;
   var key = m.openSel, v = m.sel[key], r = btn.getBoundingClientRect();
-  var f = document.createElement('div'); f.id = 'floatsel'; f.className = 'float-panel';
-  f.innerHTML = selectOptions(key).map(function(o){ return '<button class="opt-row'+(v===o?' sel':'')+'" onclick="pickSelect(\''+key.replace(/'/g,"\\'")+'\',\''+o.replace(/'/g,"\\'")+'\')"><span>'+esc(o)+'</span>'+(v===o?ICON.check:'')+'</button>'; }).join('');
+  var f = document.createElement('div'); f.id = 'floatsel'; f.className = 'float-panel thin-scroll';
+  f.innerHTML = selectOptions(key).map(function(o){ var an = optAnno(key, o);
+    return '<button class="opt-row'+(v===o?' sel':'')+'" '+(an && an.off ? 'disabled' : '')+' onclick="pickSelect(\''+key.replace(/'/g,"\\'")+'\',\''+o.replace(/'/g,"\\'")+'\')"><span>'+esc(o)+(an ? '<em class="an">'+an.t+'</em>' : '')+'</span>'+(v===o?ICON.check:'')+'</button>'; }).join('');
   f.style.left = r.left + 'px'; f.style.width = r.width + 'px'; f.style.top = '-9999px';
   document.body.appendChild(f);
   var h = f.offsetHeight, below = window.innerHeight - r.bottom - 8;
@@ -1623,6 +1973,7 @@ function selectOptions(key){
   var m = S.modal;
   if(key === '취소 사유') return CANCEL_REASONS;
   if(key === '주문 진행상태') return STATUS_OPTS;
+  if(key === '검색 기준') return KEY_OPTS;
   var pid = m.type === 'add' ? m.pick : findItem(cur(), m.data.uid).pid, out = [];
   CATALOG[pid].opts.forEach(function(o){ if(o.k === key) out = o.v; });
   return out;
@@ -1654,7 +2005,7 @@ function drawModal(keepFocus){
   ov.className = 'overlay' + (sheet ? ' is-sheet' : '');
   var keepScroll = ov.querySelector('.modal-body') ? ov.querySelector('.modal-body').scrollTop : 0;
   ov.innerHTML = '<div class="modal'+(spec.cls?' '+spec.cls:'')+'" role="dialog" aria-modal="true"><div class="modal-header"><h3>'+spec.title+'</h3>'+
-    '<button class="modal-close" aria-label="닫기" onclick="'+(spec.back?'S.modal.optSheet=null;drawModal()':'closeModal()')+'">'+ICON.close+'</button></div>'+
+    '<button class="modal-close" aria-label="닫기" onclick="'+(spec.closeJs || (spec.back?'S.modal.optSheet=null;drawModal()':'closeModal()'))+'">'+ICON.close+'</button></div>'+
     '<div class="modal-body">'+spec.body+'</div>'+(spec.acts?'<div class="modal-actions">'+spec.acts+'</div>':'')+'</div>';
   placeSticky(ov, sheet);
   var mb = ov.querySelector('.modal-body'); if(mb){ mb.scrollTop = keepScroll;
@@ -1692,6 +2043,9 @@ function drawModal2(){
       '<button class="pw-x" id="pw-x" aria-label="지우기" '+(m.pw?'':'hidden')+' onclick="S.modal2.pw=\'\';var i=document.getElementById(\'pw\');i.value=\'\';pwSync();i.focus()">'+ICON.close+'</button>'+
       (uxOn() ? '<button class="pw-eye" aria-label="'+(m.show?'비밀번호 숨기기':'비밀번호 보기')+'" onclick="S.modal2.show=!S.modal2.show;drawModal2()">'+(m.show ? ICON.eyeOff : ICON.eye)+'</button>' : '')+'</div>'+(uxOn() ? '<div class="m-note">'+u('U8')+'</div>' : '');
     acts = '<button class="btn btn-gray" onclick="closeModal2()">취소</button><button class="btn btn-filled" id="pw-ok" '+(m.pw?'':'disabled')+' onclick="closeModal2();S.modal.result=true;drawModal();var r=document.getElementById(\'lk-res\');if(r)r.scrollIntoView({block:\'start\',behavior:\'smooth\'})">확인</button>';
+  } else if(m.type === 'dupNA'){
+    title = '변경불가'; body = '<div>이미 포함된 상품 및 옵션입니다.'+uMark('U9')+'</div>';   /* Figma 28714:2570 */
+    acts = '<button class="btn btn-filled" onclick="closeModal2()">확인</button>';
   } else if(m.type === 'nInfo'){
     title = '디자인 노트 ' + m.data.n + ' · ' + NINFO[m.data.n].t; body = nBody(m.data.n);
     acts = '<button class="btn btn-filled" onclick="closeModal2()">확인</button>';
@@ -1718,7 +2072,7 @@ function applyOpt(){
   if(m.data.demo){ closeModal(); return; }
   if(S.view === 'plan'){
     var dup = st.items.some(function(x){ return x.uid !== it.uid && !x.deleted && x.pid === it.pid && x.opt.join('|') === opt.join('|'); });
-    if(dup){ var back = m; S.modal = {type:'dupNotAllowed', data:{back:back}, sel:{}, text:''}; drawModal(); return; }
+    if(dup){ S.modal2 = {type:'dupNA', data:{}}; drawModal2(); return; }     /* 원안: 옵션 모달 위에 겹침 — 닫으면 옵션 모달(선택값 유지) */
     it.opt = opt;                                           /* 8. 위치 유지 */
   } else polChangeOpt(it.uid, opt);
   closeModal(); render(); if(S.view !== 'plan') showToast('옵션이 변경되었습니다. (즉시 저장)');
@@ -1728,6 +2082,7 @@ function applyAdd(){
   if(!m.pick){ alertInline('상품을 선택해주세요.'); return; }
   var p = CATALOG[m.pick], opt = p.opts.map(function(o){ return m.sel[o.k]; });
   if(opt.some(function(v){ return !v; })){ alertInline('옵션을 선택해주세요.'); return; }
+  if(m.addHit) return;                                   /* U9: 중복이면 추가하지 않음 */
   if(m.data.demo){ closeModal(); return; }
   if(S.view === 'plan') planAdd(m.pick, opt); else polAdd(m.pick, opt);
   closeModal(); render();
@@ -1752,24 +2107,64 @@ function runScenario(n, instant){
   var it = S.plan.items, wait = instant ? 0 : 700;
   var byPid = function(pid, added){ return it.filter(function(x){ return x.pid === pid && !!x.added === !!added && !x.deleted; })[0]; };
   if(n === 1){ var a = byPid('sock'); if(!a){ showToast('옵션 상품이 없습니다 — 처음부터'); return; }
-    if(instant){ a.opt = ['회색', a.opt[1]]; render(); return; }
-    openModal('optEdit',{uid:a.uid}); setTimeout(function(){ if(S.modal){ S.modal.sel['색상'] = '회색'; drawModal(); } }, wait);
-    setTimeout(function(){ if(S.modal) applyOpt(); flash(a.uid); }, wait*2); }
+    if(instant){ a.opt = ['자주', a.opt[1]]; render(); return; }
+    openModal('optEdit',{uid:a.uid}); setTimeout(function(){ if(S.modal){ S.modal.sel['색상'] = '자주'; drawModal(); } }, wait); }   /* [확인]은 사용자가 */
   if(n === 2){ var b = byPid('hd'); if(b){ b.qty += 1; render(); flash(b.uid); } }
   if(n === 3){ var c = byPid('lp'); if(!c){ showToast('삭제할 상품이 없습니다 — 처음부터'); return; }
     if(instant || S.ux){ planDelete(c.uid); render(); flash(c.uid); if(!instant) showToast('삭제했습니다 — [복원]으로 되돌릴 수 있어요'); return; }
-    openModal('del',{uid:c.uid}); setTimeout(function(){ if(S.modal) applyDelete(); flash(c.uid); }, wait*1.5); }   /* 원안: 삭제 확인 모달 */
+    openModal('del',{uid:c.uid}); }   /* 원안: 삭제 확인 모달 — [확인]은 사용자가 */
   if(n === 4){ if(instant){ planAdd('ash', []); render(); return; }
     openModal('add'); setTimeout(function(){ if(S.modal){ S.modal.query = 'ASH'; drawModal(); } }, wait);
-    setTimeout(function(){ if(S.modal) addPick('ash'); }, wait*2);
-    setTimeout(function(){ if(S.modal) applyAdd(); var x = S.plan.items[S.plan.items.length-1]; if(x) flash(x.uid); }, wait*3); }
+    setTimeout(function(){ if(S.modal) addPick('ash'); }, wait*2); }   /* [상품 추가]는 사용자가 */
   if(n === 5){ var d = byPid('ash', true); if(!d){ planAdd('ash', []); d = S.plan.items[S.plan.items.length-1]; render(); }
     flash(d.uid);
     if(S.ux){ setTimeout(function(){ planDelete(d.uid); render(); showToast('추가했다 삭제한 상품은 목록에서 바로 제거됩니다 (Q1)'); }, wait*1.5); return; }
-    setTimeout(function(){ openModal('del',{uid:d.uid}); }, wait);
-    setTimeout(function(){ if(S.modal) applyDelete(); showToast('추가했다 삭제한 상품은 목록에서 바로 제거됩니다 (Q1)'); }, wait*2.5); }
+    setTimeout(function(){ openModal('del',{uid:d.uid}); }, wait); }   /* 원안: [확인]은 사용자가 — 확인하면 목록에서 바로 제거(Q1) */
+  if(n === 7 || n === 8){   /* ③ 원안: 옵션 [확인] → '변경불가' 모달(삭제 행은 검사 제외) / ④: U9 인라인 안내 */
+    var bei = it.filter(function(x){ return x.pid === 'sock' && x.opt[0] === '베이지' && !x.deleted; })[0], gr = it.filter(function(x){ return x.pid === 'sock' && x.opt[0] === '회색'; })[0];
+    if(!bei || !gr){ resetPlan(); runScenario(n); return; }
+    if(n === 8 && !gr.deleted){ planDelete(gr.uid); render(); }
+    if(n === 7 && gr.deleted){ gr.deleted = false; render(); }
+    openModal('optEdit',{uid:bei.uid}); setTimeout(function(){ if(S.modal){ S.modal.sel['색상'] = '회색'; drawModal(); } }, instant ? 0 : wait);
+    return; }
   if(n === 6){ S.plan.lookedUp = true; S.plan.lookupAt = '2026-10-07 10:42'; render(); setTimeout(startOrder, instant ? 0 : 300); }
 }
+
+/* 주문 변경 사유 — 경우의 수 (③·④ 공통). i·j·k는 목록에 넣지 않는 경우 + 실제 변경 1건(LP-011 수량) */
+var RCASE = {
+  a:['수량만','a) 변경 — 수량만: HD-B-001 수량 1 → 2'],
+  b:['옵션만','b) 변경 — 옵션만: LP-011 사이즈 XXL(110) → L(100)'],
+  c:['수량+옵션','c) 변경 — 수량 + 옵션: LP-011 수량 1 → 2, 사이즈 XXL(110) → L(100) (기획서 예시와 같은 형태)'],
+  d:['삭제만','d) 삭제만: HD-B-001 삭제'],
+  e:['추가만','e) 추가만: ASH-106(옵션 없음) + 양말 자주·S(옵션 있음) 추가'],
+  f:['혼합','f) 혼합 — 변경 + 삭제 + 추가: 기획서 캡처와 같은 구성(LP-011 변경 · HD-B-001 삭제 · ASH-106 추가)'],
+  g:['항목 많음','g) 항목 많음 — 7건: 목록 영역만 스크롤'],
+  h:['변경 없음','h) 변경 없음 → 사유 모달이 아니라 주문하기 확인 모달'],
+  i:['추가 후 삭제','i) 지팡이 W-01을 추가했다가 삭제 → 목록에 없어야 함(Q1). 목록에는 LP-011 수량 변경만'],
+  j:['삭제 후 복원','j) HD-B-001을 삭제했다가 복원 → 목록에 없어야 함. 목록에는 LP-011 수량 변경만'],
+  k:['되돌린 변경','k) 양말 베이지를 자주로 바꿨다가 베이지로 되돌림 → 목록에 없어야 함. 목록에는 LP-011 수량 변경만']
+};
+function runCase(k){
+  if(S.view !== 'plan') S.view = 'plan';
+  S.step = 'confirming'; S.rcase = k; closeModal(); resetPlan();
+  var it = S.plan.items, pick = function(pid, c){ return it.filter(function(x){ return x.pid === pid && (!c || x.opt[0] === c); })[0]; };
+  var sockB = pick('sock','베이지'), sockG = pick('sock','회색'), lp = pick('lp'), hd = pick('hd');
+  if(k === 'a') hd.qty = 2;
+  if(k === 'b') lp.opt = ['베이지','L(100)'];
+  if(k === 'c' || k === 'f'){ lp.qty = 2; lp.opt = ['베이지','L(100)']; }
+  if(k === 'd' || k === 'f') planDelete(hd.uid);
+  if(k === 'e'){ planAdd('ash', []); planAdd('sock', ['자주','S(230~255mm)']); }
+  if(k === 'f') planAdd('ash', []);
+  if(k === 'g'){ sockB.qty = 3; sockG.opt = ['자주','M(260~280mm)']; lp.opt = ['베이지','L(100)']; planDelete(hd.uid); planAdd('ash', []); planAdd('cane', []); planAdd('sock', ['자주','S(230~255mm)']); }
+  if(k === 'i' || k === 'j' || k === 'k') lp.qty = 2;
+  if(k === 'i'){ planAdd('cane', []); planDelete(S.plan.items[S.plan.items.length-1].uid); }
+  if(k === 'j'){ planDelete(hd.uid); planRestore(hd.uid); }
+  if(k === 'k'){ sockB.opt = ['자주', sockB.opt[1]]; sockB.opt = ['베이지', sockB.opt[1]]; }
+  render(); var fr = document.getElementById('frame'); if(fr.getBoundingClientRect().top < 0) window.scrollTo(0, fr.getBoundingClientRect().top + window.scrollY - 4);
+  openModal(planChanged() ? 'changeReason' : 'confirmNoChange');
+}
+function toggleLooked(){ var st = S.plan; st.lookedUp = !st.lookedUp; if(st.lookedUp) st.lookupAt = '2026-10-07 10:42'; closeModal(); render();
+  showToast(st.lookedUp ? '요양정보 조회 완료 상태로 바꿨습니다' : '요양정보 조회 전 — [주문하기]를 누르면 주문불가'); }
 
 /* =====================================================================
    이벤트 · 폭 프리셋 · URL
@@ -1804,7 +2199,8 @@ function updateLists(){
   var lg = document.getElementById('legend-g');
   lg.innerHTML = '<span class="lg-t">행 구분</span>'+(S.ux
     ? '<span class="chip sm c-k-chg">변경</span><span class="chip sm c-k-del">삭제</span><span class="chip sm c-k-add">추가</span><span class="lg-n">행 앞 텍스트 뱃지로 구분 · 배경은 위 \'행 배경\'에서 켜기(색은 임시, Q11)</span>'+q('Q11')+u('U3')
-    : '<span class="sw sw-chg"></span>변경 <span class="sw sw-del"></span>삭제 <span class="sw sw-add"></span>추가<span class="lg-n">배경색만 — 기획서 원안(연두·분홍·하늘)</span>'+q('Q11')+u('U3'));
+    : '<span class="sw sw-chg"></span>변경 <span class="sw sw-del"></span>삭제 <span class="sw sw-add"></span>추가<span class="lg-n">배경색만 — 기획서 원안(연두·분홍·하늘)</span>'+q('Q11')+u('U3')+
+      '<span class="lg-t" style="margin-left:12px">사유 모달 배지</span><span class="rc-legend"><span class="rc-b chg">변경</span><span class="rc-b del">삭제</span><span class="rc-b add">추가</span></span><span class="lg-n">기획서 색(원안) — 글자색이 5장 토큰과 다름(변경 #43a047 · 삭제 #e53935 · 추가 #1477f8, 5장은 #166534 · #c62828 · #1e40af)</span>');
 }
 document.querySelectorAll('#seg-bg button').forEach(function(b){ b.addEventListener('click', function(){
   S.bg = b.getAttribute('data-bg');
@@ -1815,6 +2211,7 @@ document.querySelectorAll('#seg-bg button').forEach(function(b){ b.addEventListe
   syncControls();
   var r = document.querySelector('#page .prow.chg, #page .prow.del, #page .prow.add'); if(r && S.bg !== 'none') r.scrollIntoView({block:'center', behavior:'smooth'});
 }); });
+document.querySelectorAll('#seg-rc button').forEach(function(b){ b.addEventListener('click', function(){ runCase(b.getAttribute('data-k')); }); });
 document.querySelectorAll('#seg-cancel button').forEach(function(b){ b.addEventListener('click', function(){ S.cancelVar = b.getAttribute('data-c'); render(); }); });
 document.getElementById('q-toggle').addEventListener('change', function(){ document.body.classList.toggle('q-on', this.checked); });
 
@@ -1843,12 +2240,15 @@ if(window.ResizeObserver) new ResizeObserver(updateReadout).observe(frameEl);
   if(p.get('ux') === '1'){ S.ux = true; setBadges(p.get('badges') === '1'); }
   if(p.get('orig') === '1') S.origOpen = true;
   if(['chg','del','add','all'].indexOf(p.get('bg')) >= 0) S.bg = p.get('bg');
-  if(p.get('looked')){ cur().lookedUp = true; cur().lookupAt = '2026-10-07 10:42'; }
+  if(RCASE[p.get('rcase')]){ setTimeout(function(){ runCase(p.get('rcase')); }, 300); }
+  if(p.get('looked') === '0'){ S.plan.lookedUp = false; }
+  else if(p.get('looked')){ cur().lookedUp = true; cur().lookupAt = '2026-10-07 10:42'; }
   setWidth(p.get('w') || 1025);
   render(); updateReadout();
   if(p.get('apply')){ p.get('apply').split('').forEach(function(n){ runScenario(+n, true); }); }   /* 시나리오를 즉시 적용(문서 링크·캡처용) */
   var sc = parseInt(p.get('scenario'), 10);
-  if(sc >= 1 && sc <= 6){
+  if(sc === 7 || sc === 8){ setTimeout(function(){ runScenario(sc); }, 300); }
+  else if(sc >= 1 && sc <= 6){
     if(sc === 6){ runScenario(1, true); runScenario(2, true); runScenario(3, true); runScenario(4, true); runScenario(6); }
     else setTimeout(function(){ runScenario(sc); }, 300);
   }

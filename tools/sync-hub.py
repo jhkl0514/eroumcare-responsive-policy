@@ -5,7 +5,7 @@
   - 왼쪽은 index.html의 SECTIONS 키, 오른쪽은 CLAUDE.md 조항 번호
   - "3-3"처럼 하이픈이 있으면 ### 제목, "5"처럼 숫자만 있으면 ## 제목을 찾는다
   - "9+"처럼 + 를 붙이면 하위 절(###)까지 한 칸에 넣는다(허브에서 9장이 한 칸인 경우)
-  - 변환 범위: 문단, 글머리표(들여쓰기 2칸 = 하위 목록), 표, **굵게**, `코드`, "→ 파일" 줄, "> " 줄(인포 아이콘 안내 상자)
+  - 변환 범위: 문단, 글머리표(들여쓰기 2칸 = 하위 목록), 표, **굵게**, `코드`, "→ 파일" 줄, "> " 줄(인포 아이콘 안내 상자), {chip:상태}(상태칩 미리보기)
 CLAUDE.md를 고친 뒤 이 스크립트로 허브를 맞추면 두 곳이 어긋나지 않는다(스킬 파일은 요약본이라 직접 고친다).
 """
 import re, sys, html as H, os
@@ -17,6 +17,8 @@ def inline(t):
     t = H.escape(t, quote=False)
     t = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', t)
     t = re.sub(r'`([^`]+)`', r'<span class="mono">\1</span>', t)
+    # {chip:상태} / {chip:상태:표기} → 상태칩 미리보기(prototypes/status-chip.css, 5장)
+    t = re.sub(r'\{chip:([^}:]+)(?::([^}]+))?\}', lambda m: '<span class="chip" data-status="' + m.group(1) + '">' + (m.group(2) or m.group(1)) + '</span>', t)
     return t
 
 def conv(body):

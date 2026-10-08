@@ -170,19 +170,9 @@ label-value 나열형 데이터(주문 정보, 회수 신청 정보 등).
 | 회수취소 | `#ffebee` | `#ffcdd2` | `#c62828` |
 | 회수취소완료 | `#f5f5f5` | `#bdbdbd` | `#555555` |
 
-**구입 주문상태칩** (`Status chip-Order` 13종, DS 실측 — 배경·테두리는 DS, 글자색은 같은 Status의 대여 칩 값):
+**구입 주문상태칩** (`Status chip-Order`, DS `13139:11578`): 주문접수 Info · 주문확인중 Success · 상품준비 Caution · 출고중·출고완료 BrandSub · 배송완료 Default · 취소요청 Caution · **주문취소 Danger(표기 하나 — DS 사업소·관리자·수급자 3종 안 씀)** · +N개 상태 Neutral·Transparent(`#f5f5f5`/없음/`#616161`, 사용 조건 미확인 — 화면에 쓰지 않음) · 추가상품 Neutral·White(`#fff`/`#bdbdbd`/`#555`). A/S(`13027:12231`)·반품(`13079:12197`) 칩은 CLAUDE.md 5장. 코드는 공통 `prototypes/status-chip.css` — `<span class="chip" data-status="상태명">`, 화면별 색 하드코딩 금지.
 
-| 상태 | DS Status | 배경 | 테두리 | 텍스트 |
-|---|---|---|---|---|
-| 주문접수 | Info | `#eff6ff` | `#dbeafe` | `#1e40af` |
-| 주문확인중 | Success | `#e8f5e9` | `#c8e6c9` | `#166534` |
-| 상품준비 · 취소요청 | Caution | `#fff8e1` | `#ffb300` | `#ff8f00` |
-| 출고중 · 출고완료 | BrandSub | `#f2fde4` | `#c6f68d` | `#09af00` |
-| 배송완료 | Default | `#e3e5f5` | `#ced2f4` | `#141e76` |
-| 주문취소(사업소·관리자·수급자) | Error | `#ffebee` | `#ffcdd2` | `#c62828` |
-| 상품별 처리 중 | Neutral | `#f5f5f5` | `#bdbdbd` | `#555555` |
-| 다중상태 | Neutral · Transparent | `#f5f5f5` | 없음 | 미확인 |
-| 추가상품 | Neutral | `#ffffff` | `#bdbdbd` | 미확인 (개발 화면은 초록 — DS와 다름) |
+**빈 값 표기**(3-1 정책 적용안): 칸 전체가 비면 '-' 하나, 일부만 비면 빈 부분 생략, 괄호 안이 모두 비면 괄호째 생략(예: "홍*동 (-, -)" → "홍*동", "김*호 (- / 자녀)" → "김*호 (자녀)").
 
 구입 주문 상세는 CLAUDE.md 4-5(라벨 현행/확정/정책 적용안/확인 필요/진행 중). 2026.10 기획 개선안(IS-1276)은 정책이 아니라 프로토타입 `order-detail-purchase.html` ③에서만 본다.
 

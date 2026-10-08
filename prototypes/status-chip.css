@@ -1,0 +1,35 @@
+/* 상태칩 공통 — DS Status chip-Order(구입) · -Rental(대여) · -Return(회수) · -AS · -반품 (DS 64Q1Re56aiAA8Al89pqjnV)
+   값은 CLAUDE.md 5장 표와 같다. 화면에서는 색을 따로 쓰지 않고 상태 이름만 넣는다.
+   사용: <span class="chip" data-status="주문접수">주문접수</span>
+         테이블 안 배지(3-9): <span class="chip sm" data-status="주문접수">주문접수</span>
+         여러 상태(구입 리스트 전용): <span class="chip" data-status="다중상태">+2개 상태</span> */
+.chip[data-status]{display:inline-flex;align-items:center;justify-content:center;gap:4px;height:32px;padding:4px 12px;box-sizing:border-box;
+  border-radius:999px;border:1px solid transparent;font-size:14px;font-weight:600;line-height:20px;white-space:nowrap;flex-shrink:0;}
+.chip[data-status].sm{height:24px;padding:2px 8px;font-size:12px;font-weight:500;line-height:18px;}
+
+/* Info */
+.chip:is([data-status="주문접수"],[data-status="신규배정"],[data-status="회수접수"],[data-status="A/S접수"],[data-status="반품접수"])
+  {background:#eff6ff;border-color:#dbeafe;color:#1e40af;}
+/* Success */
+.chip:is([data-status="주문확인중"],[data-status="회수확인중"],[data-status="A/S접수 확인"],[data-status="반품접수 확인"])
+  {background:#e8f5e9;border-color:#c8e6c9;color:#166534;}
+/* Caution */
+.chip:is([data-status="상품준비"],[data-status="취소요청"],[data-status="출고준비중"],[data-status="회수요청"],[data-status="반품요청"])
+  {background:#fff8e1;border-color:#ffb300;color:#ff8f00;}
+/* BrandSub */
+.chip:is([data-status="출고중"],[data-status="출고완료"],[data-status="주문완료"],[data-status="회수준비중"],[data-status="A/S진행중"],[data-status="회수진행"])
+  {background:#f2fde4;border-color:#c6f68d;color:#09af00;}
+/* Default */
+.chip:is([data-status="배송완료"],[data-status="회수완료"],[data-status="A/S완료"],[data-status="반품완료"],[data-status="반품철회"])
+  {background:#e3e5f5;border-color:#ced2f4;color:#141e76;}
+/* Danger */
+.chip:is([data-status="주문취소"],[data-status="회수취소"],[data-status="A/S접수 취소"],[data-status="A/S접수 불가"],[data-status="A/S 불가"],
+         [data-status="반품접수 취소"],[data-status="반품접수 불가"],[data-status="반품불가"])
+  {background:#ffebee;border-color:#ffcdd2;color:#c62828;}
+/* Neutral */
+.chip:is([data-status="취소완료"],[data-status="회수취소완료"])
+  {background:#f5f5f5;border-color:#bdbdbd;color:#555555;}
+/* Neutral · Transparent — 구입 리스트 '+N개 상태' */
+.chip[data-status="다중상태"]{background:#f5f5f5;border-color:transparent;color:#616161;}
+/* Neutral · White — 구입 '추가상품' */
+.chip[data-status="추가상품"]{background:#ffffff;border-color:#bdbdbd;color:#555555;}

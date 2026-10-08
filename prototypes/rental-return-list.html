@@ -8,6 +8,7 @@
 <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=7">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png?v=7">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=5">
+<link rel="stylesheet" href="status-chip.css">
 <style>
 :root{
   --bg:#f4f5f7; --card:#fff; --tertiary:#f5f5f5; --secondary-bg:#fafafa; --disabled-bg:#eee;
@@ -15,14 +16,6 @@
   --border-primary:#bdbdbd; --border-secondary:#eee; --border-dark:#616161; --border-active:#333;
   --brand:#323da3; --group1:#eff1fd; --group2:#e8f5e9;
   --shadow:0 1px 2px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.05);
-  /* 회수 상태칩 — Figma 원본 대조 확정값(2026-09-22) */
-  --collect-접수-bg:#eff6ff; --collect-접수-border:#dbeafe; --collect-접수-text:#1e40af;
-  --collect-확인중-bg:#e8f5e9; --collect-확인중-border:#c8e6c9; --collect-확인중-text:#166534;
-  --collect-요청-bg:#fff8e1; --collect-요청-border:#ffb300; --collect-요청-text:#ff8f00;
-  --collect-준비중-bg:#f2fde4; --collect-준비중-border:#c6f68d; --collect-준비중-text:#09af00;
-  --collect-완료-bg:#e3e5f5; --collect-완료-border:#ced2f4; --collect-완료-text:#141e76;
-  --collect-취소-bg:#ffebee; --collect-취소-border:#ffcdd2; --collect-취소-text:#c62828;
-  --collect-취소완료-bg:#f5f5f5; --collect-취소완료-border:#bdbdbd; --collect-취소완료-text:#555;
 }
 *{box-sizing:border-box;}
 body{margin:0;background:var(--bg);color:var(--text-primary);
@@ -104,15 +97,7 @@ table.pc-table tr.rowlink:hover{background:#eff1fd;}
 .pagination-size:hover{background:var(--tertiary);}
 
 /* 회수 상태칩 — 공통(PC/모바일) */
-.chip-collect{display:inline-flex;align-items:center;height:32px;padding:4px 12px;border-radius:999px;
-  font-size:14px;font-weight:600;border:1px solid;white-space:nowrap;}
-.chip-collect.접수{background:var(--collect-접수-bg);border-color:var(--collect-접수-border);color:var(--collect-접수-text);}
-.chip-collect.확인중{background:var(--collect-확인중-bg);border-color:var(--collect-확인중-border);color:var(--collect-확인중-text);}
-.chip-collect.요청{background:var(--collect-요청-bg);border-color:var(--collect-요청-border);color:var(--collect-요청-text);}
-.chip-collect.준비중{background:var(--collect-준비중-bg);border-color:var(--collect-준비중-border);color:var(--collect-준비중-text);}
-.chip-collect.완료{background:var(--collect-완료-bg);border-color:var(--collect-완료-border);color:var(--collect-완료-text);}
-.chip-collect.취소{background:var(--collect-취소-bg);border-color:var(--collect-취소-border);color:var(--collect-취소-text);}
-.chip-collect.취소완료{background:var(--collect-취소완료-bg);border-color:var(--collect-취소완료-border);color:var(--collect-취소완료-text);}
+/* 상태칩 — status-chip.css(5장 DS) */
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--tertiary);padding:1px 5px;border-radius:4px;}
 
 /* ---- Mobile ---- */
@@ -239,13 +224,13 @@ table.pc-table tr.rowlink:hover{background:#eff1fd;}
           <div class="pc-tablewrap">
           <table class="pc-table">
             <tr><th>NO</th><th>수급자</th><th>요양인정번호</th><th>연락처</th><th>돌봄 회수 신청번호</th><th>원 주문번호</th><th>회수상태</th><th>회수 신청일</th></tr>
-            <tr class="rowlink"><td>20</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 접수">회수접수</span></td><td>2024-03-02 08:00</td></tr>
-            <tr class="rowlink"><td>19</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 확인중">회수확인중</span></td><td>2024-03-02 08:00</td></tr>
-            <tr class="rowlink"><td>18</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 요청">회수요청</span></td><td>2024-03-02 08:00</td></tr>
-            <tr class="rowlink"><td>17</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 준비중">회수준비중</span></td><td>2024-03-02 08:00</td></tr>
-            <tr class="rowlink"><td>16</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 완료">회수완료</span></td><td>2024-03-02 08:00</td></tr>
-            <tr class="rowlink"><td>15</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 취소">회수취소</span></td><td>2024-03-02 08:00</td></tr>
-            <tr class="rowlink"><td>14</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip-collect 취소완료">회수취소완료</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>20</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip" data-status="회수접수">회수접수</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>19</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip" data-status="회수확인중">회수확인중</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>18</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip" data-status="회수요청">회수요청</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>17</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip" data-status="회수준비중">회수준비중</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>16</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip" data-status="회수완료">회수완료</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>15</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip" data-status="회수취소">회수취소</span></td><td>2024-03-02 08:00</td></tr>
+            <tr class="rowlink"><td>14</td><td>홍*동</td><td>L123456****</td><td>010-****-1234</td><td>COL02609142072F5D3</td><td><a href="javascript:void(0)" class="ord-link" onclick="event.stopPropagation()">ORD-20260310-991</a></td><td><span class="chip" data-status="회수취소완료">회수취소완료</span></td><td>2024-03-02 08:00</td></tr>
           </table>
           <div class="pagination">
             <span class="pagination-total">전체 7/21</span>
@@ -274,43 +259,43 @@ table.pc-table tr.rowlink:hover{background:#eff1fd;}
           <div class="mo-count">전체 21건</div>
           <div class="mo-card-list">
             <div class="mo-card" onclick="alert('회수 상세 이동')">
-              <div class="mo-card-head"><span class="chip-collect 접수">회수접수</span><span class="mo-card-date">2026-06-19 10:20</span></div>
+              <div class="mo-card-head"><span class="chip" data-status="회수접수">회수접수</span><span class="mo-card-date">2026-06-19 10:20</span></div>
               <div class="mo-sep"></div>
               <div class="mo-name-row"><span class="name">홍*동</span><span class="maskedid">L123456****</span></div>
               <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260619-001</span></div>
             </div>
             <div class="mo-card" onclick="alert('회수 상세 이동')">
-              <div class="mo-card-head"><span class="chip-collect 확인중">회수확인중</span><span class="mo-card-date">2026-06-18 14:02</span></div>
+              <div class="mo-card-head"><span class="chip" data-status="회수확인중">회수확인중</span><span class="mo-card-date">2026-06-18 14:02</span></div>
               <div class="mo-sep"></div>
               <div class="mo-name-row"><span class="name">김*자</span><span class="maskedid">L654321****</span></div>
               <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260618-014</span></div>
             </div>
             <div class="mo-card" onclick="alert('회수 상세 이동')">
-              <div class="mo-card-head"><span class="chip-collect 요청">회수요청</span><span class="mo-card-date">2026-06-17 09:11</span></div>
+              <div class="mo-card-head"><span class="chip" data-status="회수요청">회수요청</span><span class="mo-card-date">2026-06-17 09:11</span></div>
               <div class="mo-sep"></div>
               <div class="mo-name-row"><span class="name">박*희</span><span class="maskedid">L112233****</span></div>
               <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260617-009</span></div>
             </div>
             <div class="mo-card" onclick="alert('회수 상세 이동')">
-              <div class="mo-card-head"><span class="chip-collect 준비중">회수준비중</span><span class="mo-card-date">2026-06-15 16:40</span></div>
+              <div class="mo-card-head"><span class="chip" data-status="회수준비중">회수준비중</span><span class="mo-card-date">2026-06-15 16:40</span></div>
               <div class="mo-sep"></div>
               <div class="mo-name-row"><span class="name">이*수</span><span class="maskedid">L998877****</span></div>
               <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260615-002</span></div>
             </div>
             <div class="mo-card" onclick="alert('회수 상세 이동')">
-              <div class="mo-card-head"><span class="chip-collect 완료">회수완료</span><span class="mo-card-date">2026-06-12 11:05</span></div>
+              <div class="mo-card-head"><span class="chip" data-status="회수완료">회수완료</span><span class="mo-card-date">2026-06-12 11:05</span></div>
               <div class="mo-sep"></div>
               <div class="mo-name-row"><span class="name">최*재</span><span class="maskedid">L665544****</span></div>
               <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260612-021</span></div>
             </div>
             <div class="mo-card" onclick="alert('회수 상세 이동')">
-              <div class="mo-card-head"><span class="chip-collect 취소">회수취소</span><span class="mo-card-date">2026-06-10 13:27</span></div>
+              <div class="mo-card-head"><span class="chip" data-status="회수취소">회수취소</span><span class="mo-card-date">2026-06-10 13:27</span></div>
               <div class="mo-sep"></div>
               <div class="mo-name-row"><span class="name">정*현</span><span class="maskedid">L221100****</span></div>
               <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260610-007</span></div>
             </div>
             <div class="mo-card" onclick="alert('회수 상세 이동')">
-              <div class="mo-card-head"><span class="chip-collect 취소완료">회수취소완료</span><span class="mo-card-date">2026-06-08 08:52</span></div>
+              <div class="mo-card-head"><span class="chip" data-status="회수취소완료">회수취소완료</span><span class="mo-card-date">2026-06-08 08:52</span></div>
               <div class="mo-sep"></div>
               <div class="mo-name-row"><span class="name">강*오</span><span class="maskedid">L334455****</span></div>
               <div class="mo-row"><span class="lb">돌봄주문 :</span><span class="val">RET-20260608-003</span></div>
