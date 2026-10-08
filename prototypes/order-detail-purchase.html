@@ -157,8 +157,8 @@ body:not(.q-on) .q-badge{display:none;}
 .back-btn{width:48px;height:48px;margin-left:-14px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:var(--text-primary);}
 .d-title{font-size:20px;font-weight:700;}
 .breadcrumb{display:none;font-size:14px;color:var(--text-secondary);margin-top:8px;align-items:center;gap:4px;flex-wrap:wrap;}
-/* 모바일: 주문취소/주문하기는 타이틀 아래 한 줄, 폭을 나눠 가짐, MD 48 (3-4 예외 — 4-3·4-5) */
-.d-actions{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+/* 주문취소/주문하기: PC는 타이틀 오른쪽(말풍선 위), 모바일은 화면 하단 고정(3-4 공통 — 2026-10-08, 대여 4-3과 같음) */
+.d-actions{display:none;flex-direction:column;gap:8px;margin-top:12px;}
 .d-actions .btns{display:flex;gap:8px;}
 .d-actions .btns .btn{flex:1;}
 .bubble{position:relative;align-self:stretch;background:var(--brandsub-bg);border:1px solid var(--border-dark);border-radius:8px;
@@ -168,10 +168,25 @@ body:not(.q-on) .q-badge{display:none;}
   .back-btn{display:none;}
   .d-title{font-size:24px;}
   .breadcrumb{display:flex;}
-  .d-actions{align-items:flex-end;margin-top:0;}
+  .d-actions{display:flex;align-items:flex-end;margin-top:0;}
   .d-actions .btns .btn{flex:0 0 auto;}
   .bubble{align-self:flex-end;}
 }
+
+/* 모바일 하단 고정 버튼(3-4): 주문취소(회색 채움) 120 + 주 버튼 나머지, LG 54, 말풍선은 주 버튼 위 */
+.bottom-actions{display:flex;gap:8px;align-items:flex-end;padding:32px 20px calc(20px + env(safe-area-inset-bottom, 0px));background:linear-gradient(to bottom, rgba(255,255,255,0), var(--card) 35%);z-index:15;}
+.bottom-actions .btn{height:54px;font-size:18px;padding:0;display:flex;align-items:center;justify-content:center;}
+.bottom-actions .btn-gray{flex:0 0 120px;} .bottom-actions .btn-filled{flex:1;}
+.bottom-actions .bubble{position:absolute;right:20px;left:148px;bottom:calc(20px + 54px + 10px + env(safe-area-inset-bottom, 0px));}
+.bottom-actions .bubble::after{content:'';position:absolute;bottom:-6px;right:24px;width:10px;height:10px;background:var(--brandsub-bg);border-right:1px solid var(--border-dark);border-bottom:1px solid var(--border-dark);transform:rotate(45deg);}
+.bottom-actions.float{position:fixed;bottom:0;}
+body.modal-open #bottom-bar{visibility:hidden;}
+#bottom-slot{position:relative;}
+#bottom-slot .bottom-actions:not(.float){position:absolute;left:0;right:0;bottom:0;}
+@container pf (min-width:1024.02px){ #bottom-slot{display:none;} }
+.btn-list{background:#fff;border:1px solid #616161;border-radius:4px;padding:12px 16px;height:48px;font-size:16px;font-weight:600;line-height:24px;color:#555;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-family:inherit;flex:0 0 auto;white-space:nowrap;}   /* DS Button Outline · Secondary · MD 48 (64Q1Re56aiAA8Al89pqjnV 7697:19573) */
+.dv-actions{display:flex;justify-content:flex-end;gap:6px;padding-top:16px;}
 
 /* ---------- 섹션 ---------- */
 .sec{padding:24px 20px 0;}
@@ -973,7 +988,7 @@ var CUR = {
   received:{ pc:['dev-01-received.jpg'], mo:[], pins:[
     {id:'E1',t:'빈 값마다 \'-\' 반복 — 칸 단위 \'-\' 하나로 정리 필요',d:'예: 수급자 "김*환 (-, -)", 요양인정번호 "- -", 보호자 "(- / 관계)". 정책 적용안(3-1) — 칸 전체가 비면 \'-\' 하나, 일부만 비면 빈 부분 생략·괄호째 생략',shot:'dev-01-received.jpg'},
     {id:'M1',k:'m',t:'모바일: 정보 표 라벨이 정책 규격과 다름 — 라벨 왼쪽·값 오른쪽 한 줄씩, 라벨 배경 없음',d:'정책 적용안 — 라벨(80~128, 배경 #f5f5f5) + 값 1쌍/행(3-1·3-11)',shot:'dev-14-order-confirm-mo.png'},
-    {id:'M2',k:'m',t:'모바일: 버튼이 주문정보 타이틀 오른쪽',d:'정책 적용안 — 페이지 타이틀 아래 한 줄(3-4 예외)',shot:'dev-14-order-confirm-mo.png',x:68,y:25.3} ]},
+    {id:'M2',k:'m',t:'모바일: 버튼이 주문정보 타이틀 오른쪽',d:'정책 적용안 — 화면 하단 고정 — 주문취소(회색 채움) 120 + 주 버튼 나머지, LG 54, 말풍선은 주 버튼 위(3-4)',shot:'dev-14-order-confirm-mo.png',x:68,y:25.3} ]},
   confirming:{ pc:['dev-02-confirming-added.jpg','dev-05-option-label.jpg','dev-09-option-change-moves-down.jpg','dev-03-delete-row-removed.jpg','dev-06-option-modal-empty.jpg','dev-07-add-product-modal.jpg','dev-08-same-product-twice.jpg','dev-10-delete-confirm.jpg','dev-04-delete-reason-20.jpg','dev-11-delete-reason-scope.jpg','dev-15-delete-reason-added-then-deleted.png','dev-12-cancel-reason.jpg','dev-18-care-info-not-allowed.png'],
     mo:['dev-14-order-confirm-mo.png','publish-302-mo-390.jpg','dev-18-care-info-not-allowed.png'], pins:[
     {id:'A5',t:'모든 행에 \'주문확인중\' 반복',d:'주문 전에는 정보 가치 없음',shot:'dev-02-confirming-added.jpg',x:17.5,y:56.3,plan:''},
@@ -989,7 +1004,7 @@ var CUR = {
     {id:'C3',t:'삭제 사유 20자 제한, 동의 확인 장치 없음',d:'맥락 전달 불가',shot:'dev-04-delete-reason-20.jpg',plan:'scenario=6'},
     {id:'C4',t:'확인 모달 "수량이나 옵션을 바꿀 수 없으니…"',d:'상품 추가·삭제 언급 없음',shot:'dev-14-order-confirm-mo.png',x:48,y:46.7,plan:'scenario=6'},
     {id:'M1',k:'m',t:'모바일: 정보 표 라벨이 정책 규격과 다름 — 라벨 왼쪽·값 오른쪽 한 줄씩, 라벨 배경 없음',d:'정책 적용안 — 라벨(80~128, 배경 #f5f5f5) + 값 1쌍/행(3-1·3-11)',shot:'dev-14-order-confirm-mo.png'},
-    {id:'M2',k:'m',t:'모바일: 주문취소/주문하기가 주문정보 타이틀 오른쪽',d:'정책 적용안 — 페이지 타이틀 아래 한 줄, 폭 나눔, MD 48(3-4 예외)',shot:'dev-14-order-confirm-mo.png',x:76,y:25.3},
+    {id:'M2',k:'m',t:'모바일: 주문취소/주문하기가 주문정보 타이틀 오른쪽',d:'정책 적용안 — 화면 하단 고정 — 주문취소(회색 채움) 120 + 주 버튼 나머지, LG 54, 말풍선은 주 버튼 위(3-4)',shot:'dev-14-order-confirm-mo.png',x:76,y:25.3},
     {id:'M3',k:'m',t:'모바일: 긴 상태칩 내부 줄바꿈',d:'정책 적용안 — 칩 한 줄 유지(5장)',shot:'publish-302-mo-390.jpg'},
     {id:'M4',k:'m',t:'모바일: 상품 행이 세로 나열, 버튼 좌측 단독',d:'정책 적용안 — 4-3 상품 카드 구조',shot:'publish-302-mo-390.jpg'},
     {id:'M5',k:'m',t:'모바일: 입력이 있는 팝업도 md 모달',d:'정책 적용안 — 상품 추가·삭제 사유·주문취소는 바텀시트, 옵션 수정은 모달(3-3)',shot:'dev-14-order-confirm-mo.png'} ]},
@@ -1139,8 +1154,22 @@ function render(){
     h += renderDetail(planHere);
   }
   page.innerHTML = h;
+  placeBottom();
   if(S.modal) drawModal();
 }
+/* 하단 고정 버튼 — 미리보기 프레임이 스크롤 영역이 아니라 CSS sticky가 #page 기준으로만 동작해, 스크롤 위치로 화면 아래에 붙임(실제 페이지는 position:sticky) */
+function placeBottom(){
+  var slot = document.getElementById('bottom-slot'), bar = document.getElementById('bottom-bar'); if(!slot || !bar) return;
+  if(getComputedStyle(slot).display === 'none') return;
+  var pg = document.getElementById('page').getBoundingClientRect(), vh = window.innerHeight;
+  bar.classList.remove('float'); bar.style.left = ''; bar.style.width = '';
+  var bh = bar.offsetHeight; slot.style.height = bh + 'px';
+  var sr = slot.getBoundingClientRect(), float = pg.top < vh - bh && sr.top > vh - bh;
+  bar.classList.toggle('float', float);
+  if(float){ bar.style.left = pg.left + 'px'; bar.style.width = pg.width + 'px'; }
+}
+window.addEventListener('scroll', function(){ requestAnimationFrame(placeBottom); }, {passive:true});
+window.addEventListener('resize', placeBottom);
 function planFallback(){
   return '<div class="view-banner">'+ICON.info+'<span>③ 기획 개선안은 <b>주문확인중</b>과 주문하기 이후(상품준비·출고완료·배송완료)에만 있습니다 — 이 단계는 ② 화면 정책 적용으로 보여줍니다.</span></div>';
 }
@@ -1343,7 +1372,8 @@ function renderDetail(plan){
   h += '</div>';
   /* 배송정보 */
   h += renderDelivery(st, masked, conf);
-  h += '<div class="list-btn-wrap"><button class="btn btn-filled" onclick="goList()">주문목록</button>'+(plan && conf && planChanged() ? (planUx() ? u('U5-5') : uMark('U5-5')) : '')+'</div>';
+  h += '<div class="list-btn-wrap"><button class="btn-list" onclick="goList()">주문목록</button>'+(plan && conf && planChanged() ? (planUx() ? u('U5-5') : uMark('U5-5')) : '')+'</div>';
+  if(btns) h += '<div id="bottom-slot"><div class="bottom-actions" id="bottom-bar">'+bubble+btns.replace('btn btn-outline', 'btn btn-gray')+'</div></div>';   /* 모바일 하단 고정 */
   return h;
 }
 function sec(key, title, st, body){
@@ -1529,13 +1559,13 @@ function toggleOrig(){ if(isMO()){ openModal('origSheet'); return; } S.origOpen 
 /* 배송정보 */
 function renderDelivery(st, masked, conf){
   var h = '<div class="sec"><div class="sec-head"><div class="sec-title">배송정보</div>'+
-    (conf ? (st.editDv ? '<button class="btn btn-sm btn-gray" onclick="toggleDv()">취소하기</button><button class="btn btn-sm btn-filled" onclick="toggleDv()">저장하기</button>'
-                       : '<button class="btn btn-sm btn-gray" onclick="toggleDv()">변경하기</button>') : '')+'</div>';
+    (conf && !st.editDv ? '<button class="btn btn-sm btn-gray" onclick="toggleDv()">변경하기</button>' : '')+'</div>';
   if(conf && st.editDv){
     h += dvRow('이름',true,'<input class="input" value="홍길동" enterkeyhint="next">')+
       dvRow('주소',true,'<div class="zip-row"><input class="input" value="00000" readonly><button class="btn btn-sm btn-gray">우편번호</button></div><input class="input" value="서울특별시 중구 가상로 00" readonly><input class="input" placeholder="상세주소 입력" enterkeyhint="next">')+
       dvRow('휴대폰번호',true,'<input class="input" value="010-0000-0000" inputmode="tel" enterkeyhint="next">')+
-      dvRow('배송요청사항',false,'<input class="input" value="배송 전 미리 연락해주세요." enterkeyhint="done">');
+      dvRow('배송요청사항',false,'<input class="input" value="배송 전 미리 연락해주세요." enterkeyhint="done">')+
+      '<div class="dv-actions"><button class="btn btn-sm btn-gray" onclick="toggleDv()">취소하기</button><button class="btn btn-sm btn-filled" onclick="toggleDv()">저장하기</button></div>';   /* Figma: 폼 아래 오른쪽 */
   } else {
     h += pr('이름', masked ? '홍*동' : '홍길동')+pr('주소', masked ? '-' : '(00000) 서울특별시 중구 가상로 00')+
       pr('휴대폰번호', masked ? '-' : '010-0000-0000')+pr('배송요청사항','배송 전 미리 연락해주세요.');
@@ -1752,6 +1782,7 @@ function closeModal(){
   var m = S.modal, filled = m && m.type === 'lookup' && m.result;
   closeFloat(); closeModal2();
   S.modal = null; var ov = document.getElementById('overlay'); if(ov) ov.remove();
+  document.body.classList.remove('modal-open');
   if(filled){ finishLookup(); render(); showToast('요양정보를 조회했습니다.'); }    /* 모달을 닫으면 수급자 정보 채움 · 말풍선 사라짐 */
 }
 function modalSpec(){
@@ -2010,6 +2041,7 @@ function crSync(){
 }
 function drawModal(keepFocus){
   var m = S.modal; if(!m) return;
+  document.body.classList.add('modal-open');   /* 팝업이 열린 동안 하단 고정 바 숨김 */
   var spec = modalSpec(), sheet = spec.sheet && isMO();
   var page = document.getElementById('page'), ov = document.getElementById('overlay');
   var focusId = keepFocus && document.activeElement ? document.activeElement.id : null, caret = focusId ? document.activeElement.selectionStart : null;
@@ -2238,7 +2270,7 @@ function setWidth(w){
 presetButtons.forEach(function(b){ b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); }); });
 function updateReadout(){
   var w = Math.round(frameEl.getBoundingClientRect().width);
-  updateNow();
+  updateNow(); placeBottom();
   var mo = w <= 1024;
   if(lastMO !== null && mo !== lastMO){ if(S.view === 'current') render(); else if(S.modal) drawModal(); }   /* 현행 캡처 PC↔MO 교체, 모달↔시트 */
   lastMO = mo;

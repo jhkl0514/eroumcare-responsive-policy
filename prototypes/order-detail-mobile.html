@@ -76,7 +76,7 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .btn{border-radius:4px;font-size:14px;font-weight:600;padding:12px 0;flex:1;text-align:center;cursor:pointer;border:1px solid transparent;}
 .btn-outline{background:var(--card);color:var(--text-primary);border-color:var(--border-primary);}
 .btn-filled{background:var(--brand);color:#fff;}
-/* 주문취소/주문하기: 모바일은 타이틀 아래 한 줄·폭 나눔, PC는 타이틀 오른쪽 Hug — 둘 다 MD 48 (3-4 예외, 2026-10-07) */
+/* 주문취소/주문하기: PC는 타이틀 오른쪽 Hug MD 48, 모바일은 하단 고정 LG 54(3-4) */
 .action-row .btn{height:48px;display:flex;align-items:center;justify-content:center;padding:0;}
 .bug-note{margin:4px 20px 0;font-size:14px;color:#b45309;background:#fff7e6;border:1px solid #ffd699;
   border-radius:6px;padding:8px 10px;line-height:1.5;}
@@ -220,24 +220,94 @@ textarea.dv-input{height:auto;}
   .select-box{min-height:40px;font-size:14px;}
   .bottom-actions{display:none;}   /* PC는 타이틀 옆 버튼만(3-4) — 뒤쪽 sticky 규칙이 덮어쓰던 것 정정 */
 }
+/* 상태·품목 컨트롤 */
+.ctl{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;}
+.ctl-l{flex:0 0 40px;font-size:14px;font-weight:700;padding-top:7px;}
+.seg{display:flex;flex-wrap:wrap;gap:6px;}
+.seg button{border:1px solid var(--border-primary);background:var(--card);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer;color:var(--text-secondary);font-family:inherit;}
+.seg button.active{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600;}
+.ctl .preset-row{margin:0;}
+/* 버튼 + 말풍선 */
+.act-col{display:flex;flex-direction:column;gap:8px;}
+.bubble{align-self:flex-end;margin:8px 20px 0;background:#f2fde4;border:1px solid #43a047;border-radius:8px;padding:8px 12px;font-size:14px;color:var(--text-primary);}
+@container pf (min-width:1024.02px){ .act-col{align-items:flex-end;} .bubble{margin:0;} }
+/* 정보 표: 모바일 1쌍/행, PC 2쌍/행(3-11) */
+.info-grid{display:grid;grid-template-columns:minmax(0,1fr);}
+@container pf (min-width:1024.02px){ .info-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);} }
+.link2-badge{border:none;background:none;cursor:pointer;padding:0;}
+.tg-pop{position:absolute;right:0;top:44px;z-index:10;width:300px;background:#fff;border:1px solid var(--border-primary);border-radius:16px;padding:20px;box-shadow:0 8px 24px rgba(0,0,0,.2),0 0 4px rgba(0,0,0,.12);}
+.tg-t{font-size:18px;font-weight:700;} .tg-s{font-size:14px;color:var(--text-secondary);margin:4px 0 12px;}
+.tg-row{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--secondary-bg);border-radius:4px;padding:8px 12px;font-size:16px;}
+.olink{color:var(--brand);text-decoration:underline;}
+.chips-row{display:flex;gap:6px;flex-wrap:wrap;}
+.cancel-reason{font-size:14px;color:var(--text-danger);margin-top:6px;}
+.rent-note{background:#fff8e1;border-radius:4px;padding:10px 12px;font-size:14px;margin-top:12px;}
+.prod{display:flex;flex-direction:column;gap:0;margin-top:12px;}
+@container pf (min-width:1024.02px){ .prod{flex-direction:row;align-items:flex-start;gap:24px;} .prod .product-top{flex:1;} .prod-side{flex:0 0 420px;} .prod-side .qty-row{margin-top:0;} }
+.barcode{background:var(--secondary-bg);border-radius:4px;padding:8px 12px;margin-top:10px;font-size:14px;font-weight:600;} .barcode span{font-weight:400;color:var(--text-secondary);margin-left:8px;}
+.x-btn{border:none;background:none;cursor:pointer;padding:4px;color:var(--text-primary);}
+.ico{display:inline-flex;color:var(--text-secondary);}
+.option-dropdown .option-row{font-size:16px;}
+.list-btn-wrap{display:flex;justify-content:flex-end;gap:8px;padding:48px 20px 20px;}
+.list-btn-wrap .btn{flex:0 0 auto;padding:12px 16px;height:48px;display:flex;align-items:center;font-size:16px;}
+.result-box{border:1px solid var(--border-primary);border-radius:4px;background:var(--secondary-bg);padding:32px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;}
+button.mini-btn,button.small-outline-btn,button.mode-btn{border:none;font-family:inherit;cursor:pointer;}
+button.btn{font-family:inherit;}
+.info-grid .text-row:first-child .td{padding-right:64px;}
+@container pf (min-width:1024.02px){ .title-action-wrap .page-head{padding:0;} }
+.lk2{position:relative;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:none;background:none;padding:0;cursor:pointer;color:var(--text-secondary);vertical-align:middle;flex-shrink:0;}
+.lk2-n{position:absolute;top:0;right:-2px;min-width:14px;height:14px;padding:0 3px;border-radius:999px;background:var(--brand);color:#fff;font-size:9px;font-weight:700;line-height:14px;text-align:center;}   /* 아이콘 오른쪽 위에 겹침(4-2) */
+.text-row .td{position:relative;}
+.tg-pop{top:calc(100% - 4px);}
+.info-grid .text-row:first-child .td{padding-right:12px;}
+.dv-actions{display:flex;justify-content:flex-end;gap:6px;padding-top:16px;}
+.btn-gray{background:var(--disabled-bg);color:var(--btn-text);}
+/* 하단 고정 버튼(3-4 공통): 모바일만 — 주문취소 120 + 주 버튼 나머지, LG 54, 말풍선은 주 버튼 위 */
+.bottom-actions{position:sticky;bottom:0;display:flex;gap:8px;align-items:flex-end;padding:32px 20px calc(20px + env(safe-area-inset-bottom, 0px));background:linear-gradient(to bottom, rgba(255,255,255,0), var(--card) 35%);z-index:5;}
+.bottom-actions .btn{height:54px;font-size:18px;display:flex;align-items:center;justify-content:center;padding:0;}
+.bottom-actions .btn-gray{flex:0 0 120px;} .bottom-actions .btn-filled{flex:1;}
+.bubble.mo{position:absolute;right:20px;bottom:calc(20px + 54px + 10px + env(safe-area-inset-bottom, 0px));left:148px;margin:0;align-self:auto;}
+.bubble{position:relative;}
+.bubble::after{content:'';position:absolute;bottom:-6px;right:24px;width:10px;height:10px;background:#f2fde4;border-right:1px solid #43a047;border-bottom:1px solid #43a047;transform:rotate(45deg);}
+.pc-act{display:none;}
+@container pf (min-width:1024.02px){ .pc-act{display:flex;} .bottom-actions{display:none;} }
+.nw{white-space:nowrap;}
+.info-grid .text-row .td{flex-wrap:wrap;column-gap:4px;row-gap:2px;padding-top:12px;padding-bottom:12px;}   /* 모바일: 밀리는 값은 아래로 개행 */
+.info-grid .text-row .td .mini-btn{margin-left:4px;}
+.info-grid .text-row .th{flex:0 0 104px;width:104px;max-width:none;white-space:nowrap;}   /* 라벨 열 고정(가장 긴 '요양인정번호'가 한 줄) — 넘치는 값만 아래로 */
+@container pf (min-width:1024.02px){ .info-grid .text-row .th{flex-basis:128px;width:128px;} }
+.info-grid .text-row .td{min-width:0;flex:1 1 0;}
+/* 돌봄주문번호: 모바일 = 번호 + 아이콘 / 날짜(Figma 2줄), PC = 번호 (날짜) 아이콘 한 줄 */
+.nwrap{display:grid;grid-template-columns:auto 28px;column-gap:4px;align-items:center;justify-content:start;}
+.nwrap .db{grid-column:1;grid-row:1;} .nwrap .lk2{grid-column:2;grid-row:1;} .nwrap .dt{grid-column:1 / 3;grid-row:2;}
+@container pf (min-width:1024.02px){ .nwrap{display:flex;gap:4px;} }
+.bottom-actions.float{position:fixed;bottom:0;}
+#bottom-slot{position:relative;}
+#bottom-slot .bottom-actions:not(.float){position:absolute;left:0;right:0;bottom:0;}
+.btn-list{background:#fff;border:1px solid #616161;border-radius:4px;padding:12px 16px;height:48px;font-size:16px;font-weight:600;line-height:24px;color:#555;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-family:inherit;flex:0 0 auto;white-space:nowrap;}   /* DS Button Outline · Secondary · MD 48 (64Q1Re56aiAA8Al89pqjnV 7697:19573) */
+.result-box svg{background:#e8f5e9;border-radius:999px;padding:8px;width:56px;height:56px;}
+.rb-t{font-size:20px;font-weight:700;} .rb-s{font-size:14px;color:var(--text-secondary);line-height:1.6;}
 </style>
 </head>
 <body>
 <div class="proto-note">
-  <b>검토용 프로토타입</b> — 주문요청관리(대여) 주문 상세, 모바일(360px). 텍스트형(읽기전용)은 좌우 고정+flex-shrink, 입력필드형(배송조회)은 라벨125px+콘텐츠 최소폭 기반 flex-wrap입니다. 하단 "변경하기/취소·저장" 버튼으로 배송정보 조회↔수정 모드를 전환해보세요.<br>
-  ⚠ 상단 액션 버튼(주문취소/주문하기)은 실제 Figma에서는 hidden 처리되어 있고 대신 하단에 다른 버튼이 노출되는 문제가 있었습니다 — 여기서는 <b>의도된 정상 상태</b>로 표시했습니다.
+  <b>주문요청관리 상세 — 대여</b> (4-3) · 상태·품목·폭을 바꿔 보는 검토용 프로토타입. 기준은 Figma To-Be <code>6340:14254</code>(상태별 PC 1920 · 모바일 360). 버튼으로 실제 흐름(주문정보확인 → 주문확인중 → 주문하기 → 주문완료)도 따라갈 수 있어요.
+  전동침대는 설치옵션·배송희망일(설치배송)이 있고, 휠체어·실외경사로는 택배라 둘 다 없습니다.
 </div>
 
 <div class="control-wrap">
-  <div class="preset-row" id="preset-row">
+  <div class="ctl"><span class="ctl-l">상태</span><div class="seg" id="seg-state"></div></div>
+  <div class="ctl"><span class="ctl-l">품목</span><div class="seg" id="seg-type">
+    <button data-t="bed">전동침대</button><button data-t="chair">휠체어 · 실외경사로(택배)</button></div></div>
+  <div class="ctl"><span class="ctl-l">폭</span><div class="preset-row" id="preset-row">
     <button class="preset-btn" data-w="320">320px</button>
-    <button class="preset-btn" data-w="359">359px</button>
     <button class="preset-btn" data-w="360">360px</button>
     <button class="preset-btn" data-w="768">768px</button>
     <button class="preset-btn" data-w="1024">1024px</button>
     <button class="preset-btn active" data-w="1025">1025px</button>
     <button class="preset-btn" data-w="1440">1440px</button>
-  </div>
+  </div></div>
   <div class="w-readout" id="w-readout"></div>
 </div>
 
@@ -254,160 +324,7 @@ textarea.dv-input{height:auto;}
     <div class="search-bar">상품을 검색하세요</div>
     <div class="tab-row"><div class="tab">판매</div><div class="tab active">대여</div></div>
     <div class="breadcrumb">사업소 운영관리 &gt; 주문요청관리(대여) &gt; 주문 상세보기</div>
-
-    <div class="title-action-wrap">
-      <div class="page-head">
-        <span class="back">&#8249;</span>
-        <span class="page-title">주문 상세보기</span>
-      </div>
-      <div class="action-row">
-        <div class="btn btn-outline">주문취소</div>
-        <div class="btn btn-filled">주문하기</div>
-      </div>
-    </div>
-    <div class="bug-note">⚠ 실제 파일: 이 버튼(outline+filled, 156px)이 hidden 처리되어 있고, 화면 맨 아래 다른 두 버튼(둘 다 Filled)이 대신 노출됩니다.</div>
-
-    <div class="section">
-      <div class="section-title-row"><div class="section-title">주문 정보</div></div>
-
-      <div class="text-row">
-        <div class="th">돌봄주문번호</div>
-        <div class="td">DB1234567890<br>(2026-04-19 12:08)</div>
-        <div class="link2-badge"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 17H7A5 5 0 0 1 7 7h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 7h2a5 5 0 1 1 0 10h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="number-dot">3</span></div>
-      </div>
-      <div class="text-row">
-        <div class="th">주문번호</div>
-        <div class="td">-</div>
-      </div>
-      <div class="text-row">
-        <div class="th">수급자 이름</div>
-        <div class="td">홍길동 (남성, 85세)</div>
-      </div>
-      <div class="text-row">
-        <div class="th">요양인정번호</div>
-        <div class="td">- <span class="mini-btn">조회</span></div>
-      </div>
-      <div class="text-row">
-        <div class="th">연락처</div>
-        <div class="td">010-1234-5678</div>
-      </div>
-      <div class="text-row">
-        <div class="th">보호자</div>
-        <div class="td">홍꺽정 (011-3131-1455 / 자녀)</div>
-      </div>
-
-      <div class="notice">※ 보호자(수급자)의 주문요청 시점과 이로움에 주문 시점 사이에 수급자의 계약 조건이 변경될 수 있습니다. <span class="warn">주문 전, 반드시 요양정보를 다시 확인하시기 바랍니다.</span></div>
-    </div>
-
-    <div class="section">
-      <div class="section-title-row"><div class="section-title">주문상품</div><span class="badge-fill">대여</span></div>
-      <div class="product-top" style="margin-top:12px;">
-        <div class="thumb">침대<br>이미지</div>
-        <div style="flex:1;min-width:0;">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <span class="chip" data-status="주문확인중">주문확인중</span>
-            <span class="cat-tag">전동침대</span>
-          </div>
-          <div class="product-name">천연BED ST-3</div>
-        </div>
-      </div>
-      <div class="qty-row">
-        <div class="qty-text">대여 &nbsp; <b>1개</b></div>
-        <div class="small-outline-btn">상품변경</div>
-      </div>
-      <div class="price-box">
-        <div class="price-row"><span class="label">대여료(월)</span><span class="value">월 76,200원</span></div>
-        <div class="price-row danger"><span class="label">본인부담금(15%)</span><span class="value">월 3,300원</span></div>
-      </div>
-
-      <div class="divider"></div>
-      <div class="opt-title-row">설치옵션 <span style="color:var(--text-tertiary);font-size:14px;">ⓘ</span></div>
-      <div class="select-wrap">
-        <div class="select-box" onclick="toggleOptionDropdown()">설치옵션 선택 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="option-dropdown" id="option-dropdown" style="display:none;">
-          <div class="option-row" onclick="pickOption(this,'손잡이 추가 20,000원')">손잡이 추가 20,000원</div>
-          <div class="option-row selected" onclick="pickOption(this,'배수관 연장 15,000원')">배수관 연장 15,000원</div>
-          <div class="option-row" onclick="pickOption(this,'방수 매트리스 커버 10,000원')">방수 매트리스 커버 10,000원</div>
-          <div class="option-row" onclick="pickOption(this,'전동 리모컨 추가 12,000원')">전동 리모컨 추가 12,000원</div>
-        </div>
-      </div>
-      <div class="opt-chip"><span>기존 침대 외부 이동</span><span><span class="price">30,000원</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
-      <div class="opt-chip"><span>매트리스 폐기</span><span><span class="price">30,000원</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
-
-      <div class="divider"></div>
-      <div class="lock-toggle">
-        <input type="checkbox" id="date-locked" checked onchange="renderDeliveryDate()">
-        <label for="date-locked">배송희망일 선택완료(수정불가) 상태로 보기</label>
-        <span style="color:var(--text-tertiary);margin-left:4px;">※ 아래 "배송정보 변경하기" 진입 시 자동 해제됨(완전 잠금 아님, 2026-09-23 확정)</span>
-      </div>
-      <div class="delivery-wrap">
-        <div class="delivery-left">
-          <div class="delivery-title">배송희망일 (설치배송)</div>
-          <div class="delivery-region">배송지역 : <b>서울특별시 구로구</b></div>
-        </div>
-        <div class="date-wrap" style="flex:1;">
-          <div id="date-field-wrap"></div>
-          <div class="calendar-popup" id="calendar-popup" style="display:none;">
-            <div class="cal-head">
-              <div class="cal-nav">&#8249;</div>
-              <div class="cal-title">2026-06</div>
-              <div class="cal-nav">&#8250;</div>
-            </div>
-            <div class="cal-weekrow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
-            <div class="cal-grid" id="cal-grid"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="readonly-caption">비교용 — 주문완료 상태의 주문상품 (읽기전용: 상품변경/옵션추가삭제/배송일수정 불가)</div>
-      <div class="section-title-row"><div class="section-title">주문상품</div><span class="badge-fill">대여</span></div>
-      <div class="product-top" style="margin-top:12px;">
-        <div class="thumb">침대<br>이미지</div>
-        <div style="flex:1;min-width:0;">
-          <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <span class="chip" data-status="주문완료">주문완료</span>
-            <span class="cat-tag">전동침대</span>
-          </div>
-          <div class="product-name">천연BED ST-3</div>
-        </div>
-      </div>
-      <div class="qty-row">
-        <div class="qty-text">대여 &nbsp; <b>1개</b></div>
-      </div>
-
-      <div class="divider"></div>
-      <div class="opt-title-row">설치옵션</div>
-      <div class="opt-chip"><span>기존 침대 외부 이동</span><span class="price">30,000원</span></div>
-      <div class="opt-chip"><span>매트리스 폐기</span><span class="price">30,000원</span></div>
-
-      <div class="divider"></div>
-      <div class="delivery-wrap">
-        <div class="delivery-left">
-          <div class="delivery-title">배송희망일 (설치배송)</div>
-          <div class="delivery-region">배송지역 : <b>서울특별시 구로구</b></div>
-        </div>
-        <div style="flex:1;"><div class="date-box-locked">2026-10-03 (토)</div></div>
-      </div>
-
-      <div class="total-price-bar">
-        <div class="ttl">총 대여 금액</div>
-        <div class="rows">
-          <div class="row"><span class="label">대여료(월)</span><span class="value">월 392,400원</span></div>
-          <div class="row danger"><span class="label">본인부담금(15%)</span><span class="value">월 23,540원</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section" id="delivery-section">
-      <!-- JS로 조회/수정 모드 렌더 -->
-    </div>
-  </div>
-
-  <div class="bottom-actions">
-    <div class="btn btn-filled" style="flex:0 0 100px;">확인</div>
-    <div class="btn btn-outline" style="flex:1;">주문 상세 목록으로</div>
+    <div id="body"></div>
   </div>
 </div>
 
@@ -417,122 +334,173 @@ textarea.dv-input{height:auto;}
 
 <script>
 var CAL_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:-3px;"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9H21" stroke="currentColor" stroke-width="2"/><path d="M8 3V6M16 3V6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
-var editMode = false;
+var CHEV = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var XS = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+var LINK2 = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 17H7A5 5 0 0 1 7 7h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 7h2a5 5 0 1 1 0 10h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+var INFO = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor"/></svg>';
+var CHECK = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5 9-10" stroke="#09af00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-function renderDelivery(){
-  var el = document.getElementById('delivery-section');
-  if(!editMode){
-    el.innerHTML =
-      '<div class="dv-head"><div class="dv-title">배송정보</div>'+
-        '<button class="mode-btn" onclick="toggleMode()">변경하기</button></div>'+
-      '<div class="hint-caption">조회 상태 — 텍스트형(주문정보와 동일한 shrink 구조, wrap 없음)</div>'+
-      '<div class="text-row plain"><div class="th">이름</div><div class="td">홍길동</div></div>'+
-      '<div class="text-row plain"><div class="th">주소</div><div class="td">(16495) 경기 수원시 영통구 광교로 32 (이의동, 아름학교)</div></div>'+
-      '<div class="text-row plain"><div class="th">전화번호</div><div class="td">-</div></div>'+
-      '<div class="text-row plain"><div class="th">휴대폰번호</div><div class="td">010-1234-5678</div></div>'+
-      '<div class="text-row plain"><div class="th">배송요청사항</div><div class="td">부재시 현관 앞에 두고 가주세요</div></div>';
-  } else {
-    el.innerHTML =
-      '<div class="hint-caption">수정 상태 — 입력필드형(라벨 125px + 콘텐츠 최소폭 280px, flex-wrap)</div>'+
-      '<div class="dv-head" style="border-top:none;padding-top:0;"><div class="dv-title" style="font-size:16px;">배송정보 수정</div>'+
-        '<div style="display:flex;gap:6px;">'+
-          '<button class="mode-btn" onclick="toggleMode()">취소하기</button>'+
-          '<button class="mode-btn save" onclick="toggleMode()">저장하기</button>'+
-        '</div></div>'+
-      '<div class="dv-row"><div class="dv-label">이름<span style="color:var(--text-danger)">*</span></div>'+
-        '<div class="dv-content-edit"><input class="dv-input" value="홍길동"></div></div>'+
-      '<div class="dv-row"><div class="dv-label">주소<span style="color:var(--text-danger)">*</span></div>'+
-        '<div class="dv-content-edit">'+
-          '<div style="display:flex;gap:8px;margin-bottom:6px;">'+
-            '<input class="dv-input" value="16495" readonly>'+
-            '<button class="mode-btn" style="flex-shrink:0;">우편번호</button>'+
-          '</div>'+
-          '<input class="dv-input" value="경기 수원시 영통구 광교로 32 (이의동, 아름학교)" readonly style="margin-bottom:6px;">'+
-          '<input class="dv-input" placeholder="상세주소 입력">'+
-        '</div></div>'+
-      '<div class="dv-row"><div class="dv-label">전화번호</div>'+
-        '<div class="dv-content-edit"><input class="dv-input" placeholder="- 없이 숫자만 입력"></div></div>'+
-      '<div class="dv-row"><div class="dv-label">휴대폰번호<span style="color:var(--text-danger)">*</span></div>'+
-        '<div class="dv-content-edit"><input class="dv-input" value="010-1234-5689"></div></div>'+
-      '<div class="dv-row"><div class="dv-label">배송희망일</div>'+
-        '<div class="dv-content-edit">'+
-          '<input class="dv-input" value="2026-07-09 (금)">'+
-          '<div class="help-row">ⓘ 마감 시각 기준으로 내일부터 최대 14일 후까지 선택할 수 있습니다. (오후 1시 마감)</div>'+
-        '</div></div>'+
-      '<div class="dv-row"><div class="dv-label">배송요청사항</div>'+
-        '<div class="dv-content-edit">'+
-          '<select class="dv-input" style="margin-bottom:6px;"><option>직접입력</option></select>'+
-          '<input class="dv-input" placeholder="한글 20자, 영문 40자 이내">'+
-        '</div></div>';
-  }
-}
-function renderDeliveryDate(){
-  var locked = document.getElementById('date-locked').checked;
-  var el = document.getElementById('date-field-wrap');
-  if(locked){
-    el.innerHTML = '<div class="date-box-locked">2026-10-03 (토)</div>';
-  } else {
-    el.innerHTML = '<div class="date-box" onclick="toggleCalendar()">2026-06-07 ' + CAL_ICON + '</div>';
-  }
-}
-renderDeliveryDate();
-
-function toggleOptionDropdown(){
-  var el = document.getElementById('option-dropdown');
-  var opening = el.style.display === 'none';
-  document.getElementById('calendar-popup').style.display = 'none';
-  el.style.display = opening ? 'block' : 'none';
-}
-function pickOption(node, label){
-  document.querySelectorAll('.option-row').forEach(function(r){ r.classList.remove('selected'); });
-  node.classList.add('selected');
-  document.querySelector('.select-box').innerHTML = label + ' <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  document.getElementById('option-dropdown').style.display = 'none';
-}
-
-var CAL_DAYS = [
-  {d:25,dim:true},{d:26,dim:true},{d:27,dim:true},{d:28,dim:true},{d:29,dim:true},{d:30,dim:true},{d:1},
-  {d:2},{d:3},{d:4},{d:5},{d:6},{d:7},{d:8},
-  {d:9},{d:10},{d:11},{d:12},{d:13},{d:14},{d:15},
-  {d:16},{d:17},{d:18},{d:19},{d:20},{d:21,today:true},{d:22},
-  {d:23,selected:true},{d:24},{d:25},{d:26},{d:27},{d:28},{d:29},
-  {d:30},{d:1,dim:true},{d:2,dim:true},{d:3,dim:true},{d:4,dim:true},{d:5,dim:true},{d:6,dim:true}
+/* 상태 — Figma 6340:14254 섹션 순서 · 상세보기 가이드 메모 1~12 */
+var STATES = [
+  {k:'new',        label:'신규배정',               chip:'신규배정', masked:true,  btns:'new',  fig:'6578:152706'},
+  {k:'newCancel',  label:'신규배정 → 주문취소',     chip:'주문취소', masked:true,  reason:true, fig:'6534:187113'},
+  {k:'confirming', label:'주문확인중',              chip:'주문확인중', btns:'conf', edit:true, fig:'6522:25439'},
+  {k:'confCancel', label:'주문하기 전 주문취소',     chip:'주문취소', reason:true, noAge:true, fig:'6534:156534'},
+  {k:'done',       label:'주문완료',                chip:'주문완료', ordered:true, dvEdit:true, fig:'6591:179175'},
+  {k:'result',     label:'주문완료 결과(주문하기 직후)', chip:'주문완료', result:true, fig:'6523:27942'},
+  {k:'preparing',  label:'출고준비중',              chip:'출고준비중', ordered:true, fig:'6528:118111'},
+  {k:'shipped',    label:'출고완료',                chip:'출고완료', ordered:true, barcode:true, fig:'6528:120328'},
+  {k:'delivered',  label:'배송완료',                chip:'배송완료', ordered:true, barcode:true, fig:'6528:120328'},
+  {k:'cancelReq',  label:'취소요청(설치파트너·업체 요청)', chip:'취소요청', ordered:true, fig:'6534:163592'},
+  {k:'cancelDone', label:'취소완료',                chip:'취소완료', orderNo:true, noLic:true, fig:'6534:166514'}
 ];
-function renderCalGrid(){
-  var html = '';
-  CAL_DAYS.forEach(function(c){
-    var cls = 'cal-day' + (c.dim ? ' disabled' : '') + (c.today ? ' today' : '') + (c.selected ? ' selected' : '');
-    var click = c.dim ? '' : 'onclick="pickDate(' + c.d + ', this)"';
-    html += '<div class="cal-cell"><div class="' + cls + '" ' + click + '>' + c.d + '</div></div>';
-  });
-  document.getElementById('cal-grid').innerHTML = html;
-}
-function toggleCalendar(){
-  var el = document.getElementById('calendar-popup');
-  var opening = el.style.display === 'none';
-  document.getElementById('option-dropdown').style.display = 'none';
-  el.style.display = opening ? 'block' : 'none';
-  if(opening){ renderCalGrid(); }
-}
-function pickDate(day, node){
-  document.querySelectorAll('.cal-day.selected').forEach(function(n){ n.classList.remove('selected'); });
-  node.classList.add('selected');
-  var dateStr = '2026-06-' + String(day).padStart(2,'0');
-  document.querySelector('#date-field-wrap .date-box').innerHTML = dateStr + ' ' + CAL_ICON;
-  document.getElementById('calendar-popup').style.display = 'none';
-}
+var TYPES = {
+  bed:  {name:'천연BED ST-3', cat:'전동침대', img:'침대<br>이미지', fee:76200, own:3300, install:true, together:['실외경사로 ST-3','수동휠체어 MW-1']},
+  chair:{name:'MIRAGE(22D)-P', cat:'수동휠체어', img:'휠체어<br>이미지', fee:52000, own:7800, install:false, together:['실외경사로 ST-3','천연BED ST-3']}
+};
+var OPTS = [['기존 침대 외부 이동', 30000], ['매트리스 폐기', 30000]];
+var S = {state:'confirming', type:'bed', looked:false, dvEdit:false, dateOpen:false, optOpen:false, opts:OPTS.slice(), date:'2026-06-07', togetherOpen:false};
+function won(n){ return n.toLocaleString('ko-KR') + '원'; }
+function st(){ for(var i=0;i<STATES.length;i++){ if(STATES[i].k === S.state) return STATES[i]; } return STATES[0]; }
+function chip(s){ return '<span class="chip" data-status="'+s+'">'+s+'</span>'; }
+function row(k, v, extra){ return '<div class="text-row"><div class="th">'+k+'</div><div class="td">'+v+'</div>'+(extra||'')+'</div>'; }
+/* 빈 값 표기(3-1 정책 적용안): 칸 전체가 비면 '-' 하나, 일부만 비면 생략·괄호째 생략 */
+function joinParts(main, subs, sep){ var r = (subs||[]).filter(function(x){ return x && x !== '-'; }); var m = main && main !== '-' ? '<span class="nw">'+main+'</span>' : '';
+  return (m + (r.length ? '<span class="nw">(' + r.join(sep||', ') + ')</span>' : '')) || '-'; }   /* 덩어리(값 / 괄호) 단위로 줄바꿈 — 모바일에서 넘치면 괄호가 다음 줄로 */
 
-function toggleMode(){
-  editMode = !editMode;
-  renderDelivery();
-  // 배송정보 "변경하기" 진입 시 배송희망일(주문상품 영역)도 함께 잠금 해제 — 완전 잠금 아님 (2026-09-23 확정)
-  var lockCb = document.getElementById('date-locked');
-  if(lockCb){
-    lockCb.checked = !editMode;
-    renderDeliveryDate();
+function render(){
+  var s = st(), t = TYPES[S.type], h = '';
+  document.querySelectorAll('#seg-state button').forEach(function(b){ b.classList.toggle('active', b.dataset.k === S.state); });
+  document.querySelectorAll('#seg-type button').forEach(function(b){ b.classList.toggle('active', b.dataset.t === S.type); });
+  /* 타이틀 + 버튼 (PC 타이틀 오른쪽 MD 48 · 모바일 하단 고정 LG 54 — 3-4) */
+  var btns = '', bubble = '';
+  if(s.btns === 'new'){ btns = '<button class="btn btn-outline" onclick="go(\'newCancel\')">주문취소</button><button class="btn btn-filled" onclick="go(\'confirming\')">주문정보확인</button>';
+    bubble = '\'주문정보 확인\' 버튼을 눌러야 정보를 확인할 수 있습니다.'; }
+  if(s.btns === 'conf'){ btns = '<button class="btn btn-outline" onclick="go(\'confCancel\')">주문취소</button><button class="btn btn-filled" onclick="doOrder()">주문하기</button>';
+    if(!S.looked) bubble = '\'요양정보\'를 조회해야 주문이 가능합니다.'; }
+  h += '<div class="title-action-wrap"><div class="page-head"><span class="back" aria-label="뒤로">&#8249;</span><span class="page-title">주문 상세보기</span></div>'+
+    (btns ? '<div class="act-col pc-act">'+(bubble ? '<div class="bubble">'+bubble+'</div>' : '')+'<div class="action-row">'+btns+'</div></div>' : '')+'</div>';
+  S.bottom = btns ? '<div class="bottom-actions" id="bottom-bar">'+(bubble ? '<div class="bubble mo">'+bubble+'</div>' : '')+btns.replace(/btn btn-outline/, 'btn btn-gray')+'</div>' : '';
+  if(s.result){ S.bottom = ''; return renderResult(h, s, t); }
+
+  /* 주문 정보 */
+  var masked = s.masked, looked = S.looked || s.ordered || s.k === 'cancelDone';
+  var orderNo = s.ordered || s.orderNo ? joinParts('<a href="javascript:void(0)" class="olink">2026010315235001</a>', ['2026-04-19 12:00']) : '-';
+  var name = masked ? '홍*동' : joinParts('홍길동', s.noAge || (s.k === 'confirming' && !S.looked) ? [] : ['남성', '85세']);
+  var lic = masked || s.noAge || s.noLic ? '-' : (looked ? 'L12313414145' : '-');
+  var lookBtn = (s.k === 'confirming' || s.ordered) ? ' <button class="mini-btn" onclick="doLookup()">조회</button>' : '';
+  var tg = [[t.together[0], '주문접수'], [t.together[1], '주문확인중']];
+  var together = '<button class="lk2" onclick="S.togetherOpen=!S.togetherOpen;render()" aria-label="함께 요청한 대여상품 '+tg.length+'건">'+LINK2+'<span class="lk2-n">'+tg.length+'</span></button>'+
+    (S.togetherOpen ? '<div class="tg-pop"><div class="tg-t">돌봄에서 함께 요청한 대여상품</div><div class="tg-s">동일 시간대에 요청된 묶음 주문입니다</div>'+tg.map(function(x){ return '<div class="tg-row"><span>'+x[0]+'</span>'+chip(x[1])+'</div>'; }).join('')+'</div>' : '');
+  h += '<div class="section"><div class="section-title-row"><div class="section-title">주문 정보</div></div><div class="info-grid">'+
+    row('돌봄주문번호', '<div class="nwrap"><span class="nw db">DB1234567890</span><span class="nw dt">(2026-04-19 12:08)</span>'+together+'</div>')+row('주문번호', orderNo)+
+    row('수급자 이름', name)+row('요양인정번호', lic + (masked ? '' : lookBtn))+
+    row('연락처', masked ? '010-****-5678' : '010-1234-5678')+row('보호자', masked ? joinParts('홍*정', ['자녀']) : joinParts('홍꺽정', ['011-3131-1455', '자녀'], ' / '))+'</div>'+
+    '<div class="notice">※ 보호자(수급자)의 주문요청 시점과 이로움에 주문 시점 사이에 수급자의 계약 조건이 변경될 수 있습니다. <span class="warn">주문 전, 반드시 요양정보를 다시 확인하시기 바랍니다.</span></div></div>';
+
+  /* 주문상품 */
+  h += '<div class="section"><div class="section-title-row"><div class="section-title">주문상품</div><span class="badge-fill">대여</span></div>';
+  if(s.edit) h += '<div class="rent-note">대여 주문은 품목별 1개, 수량 1개 단위로 진행됩니다.</div>';
+  h += '<div class="prod"><div class="product-top"><div class="thumb">'+t.img+'</div><div style="flex:1;min-width:0;">'+
+      '<div class="chips-row">'+chip(s.chip)+'<span class="cat-tag">'+t.cat+'</span></div>'+
+      (s.reason ? '<div class="cancel-reason">주문 취소 사유 : 수급자 단순 변심</div>' : '')+
+      '<div class="product-name">'+t.name+'</div></div></div>'+
+    '<div class="prod-side"><div class="qty-row"><div class="qty-text">대여 &nbsp; <b>1개</b></div>'+(s.edit ? '<button class="small-outline-btn">상품변경</button>' : '')+'</div>'+
+      (s.barcode ? '<div class="barcode">바코드 <span>8801234567891</span></div>' : '')+
+      (s.ordered ? '' : '<div class="price-box"><div class="price-row"><span class="label">대여료(월)</span><span class="value">월 '+won(t.fee)+'</span></div>'+
+        (s.edit ? '<div class="price-row danger"><span class="label">본인부담금(15%)</span><span class="value">월 '+won(t.own)+'</span></div>' : '')+'</div>')+'</div></div>';
+  if(t.install){
+    h += '<div class="divider"></div><div class="opt-title-row">설치옵션 '+(s.edit || s.k==='new' ? '<span class="ico" title="설치 현장 상황에 따라 추가요금이 청구될 수 있습니다.">'+INFO+'</span>' : '')+'</div>';
+    if(s.edit){
+      h += '<div class="select-wrap"><div class="select-box" onclick="S.optOpen=!S.optOpen;S.dateOpen=false;render()">설치옵션 선택 '+CHEV+'</div>'+
+        (S.optOpen ? '<div class="option-dropdown">'+['손잡이 추가 20,000원','배수관 연장 15,000원','방수 매트리스 커버 10,000원','전동 리모컨 추가 12,000원'].map(function(o){ return '<div class="option-row" onclick="addOpt(\''+o+'\')">'+o+'</div>'; }).join('')+'</div>' : '')+'</div>';
+    }
+    h += S.opts.map(function(o, i){ return '<div class="opt-chip"><span>'+o[0]+'</span><span><span class="price">'+won(o[1])+'</span>'+(s.edit ? '<button class="x-btn" aria-label="'+o[0]+' 삭제" onclick="S.opts.splice('+i+',1);render()">'+XS+'</button>' : '')+'</span></div>'; }).join('');
+    var showDate = s.edit || s.ordered;
+    if(showDate){
+      var dateEditable = s.edit || (s.dvEdit && S.dvEdit);
+      h += '<div class="divider"></div><div class="delivery-wrap"><div class="delivery-left"><div class="delivery-title">배송희망일 (설치배송)</div><div class="delivery-region">배송지역 : <b>서울특별시 구로구</b></div></div>'+
+        '<div class="date-wrap" style="flex:1;">'+(dateEditable ? '<div class="date-box" onclick="S.dateOpen=!S.dateOpen;S.optOpen=false;render()">'+S.date+' '+CAL_ICON+'</div>'+(S.dateOpen ? calHtml() : '') : '<div class="date-box-locked">2026-10-03 (토)</div>')+'</div></div>';
+    }
   }
+  if(s.ordered){
+    var opt = t.install ? S.opts.reduce(function(a, o){ return a + o[1]; }, 0) : 0;
+    var fee = t.install ? 392400 : t.fee, own = t.install ? 23540 : t.own;
+    h += '<div class="total-price-bar"><div class="ttl">총 대여 금액</div><div class="rows"><div class="row"><span class="label">대여료(월)</span><span class="value">월 '+won(fee)+'</span></div>'+
+      '<div class="row danger"><span class="label">본인부담금(15%)</span><span class="value">월 '+won(own)+'</span></div></div></div>';
+  }
+  h += '</div>';
+  /* 배송정보 */
+  h += '<div class="section" id="delivery-section"></div>';
+  h += '<div class="list-btn-wrap"><button class="btn-list">주문목록</button></div>';
+  document.getElementById('body').innerHTML = h + (S.bottom ? '<div id="bottom-slot">'+S.bottom+'</div>' : '');
+  renderDelivery(s, t);
+  placeBottom();
 }
-renderDelivery();
+function renderResult(h, s, t){       /* 주문하기 직후 — Figma 6523:27942 */
+  h += '<div class="section"><div class="result-box">'+CHECK+'<div class="rb-t">주문이 완료되었습니다.</div><div class="rb-s">요청하신 대여상품의 주문이 완료되었습니다.<br>주문요청은 \'<b>상품준비중</b>\' 상태로 진행됩니다.</div></div></div>'+
+    '<div class="section"><div class="section-title-row"><div class="section-title">주문상품</div><span class="badge-fill">대여</span></div>'+
+    '<div class="product-top" style="margin-top:12px;"><div class="thumb">'+t.img+'</div><div style="flex:1;min-width:0;"><div class="chips-row">'+chip('주문완료')+'<span class="cat-tag">'+t.cat+'</span></div><div class="product-name">'+t.name+'</div></div></div>'+
+    '<div class="qty-row"><div class="qty-text">대여 &nbsp; <b>1개</b></div></div><div class="price-box"><div class="price-row"><span class="label">주문번호</span><a href="javascript:void(0)" class="olink">20260821-00001 &rsaquo;</a></div></div>'+
+    (t.install ? '<div class="divider"></div><div class="opt-title-row">설치옵션</div>'+S.opts.map(function(o){ return '<div class="opt-chip"><span>'+o[0]+'</span><span class="price">'+won(o[1])+'</span></div>'; }).join('')+
+      '<div class="divider"></div><div class="delivery-wrap"><div class="delivery-left"><div class="delivery-title">배송희망일 (설치배송)</div><div class="delivery-region">배송지역 : <b>서울특별시 구로구</b></div></div><div style="flex:1;"><div class="date-box-locked">2026-10-03 (토)</div></div></div>' : '')+
+    '</div><div class="list-btn-wrap"><button class="btn btn-filled" onclick="go(\'done\')">주문 요청 상세</button><button class="btn-list">주문목록</button></div>';
+  document.getElementById('body').innerHTML = h;
+}
+function renderDelivery(s, t){
+  var el = document.getElementById('delivery-section'); if(!el) return;
+  var canEdit = s.edit || s.dvEdit;
+  if(!S.dvEdit || !canEdit){
+    var m = s.masked;
+    el.innerHTML = '<div class="dv-head"><div class="dv-title">배송정보</div>'+(canEdit ? '<button class="mode-btn" onclick="S.dvEdit=true;render()">변경하기</button>' : '')+'</div>'+
+      '<div class="text-row plain"><div class="th">이름</div><div class="td">'+(m ? '홍*동' : '홍길동')+'</div></div>'+
+      '<div class="text-row plain"><div class="th">주소</div><div class="td">'+(m ? '-' : '(16495) 경기 수원시 영통구 광교로 32 (이의동, 아름학교)')+'</div></div>'+
+      '<div class="text-row plain"><div class="th">전화번호</div><div class="td">-</div></div>'+
+      '<div class="text-row plain"><div class="th">휴대폰번호</div><div class="td">'+(m ? '010-****-5678' : '010-1234-5678')+'</div></div>'+
+      '<div class="text-row plain"><div class="th">배송요청사항</div><div class="td">부재시 현관 앞에 두고 가주세요</div></div>';
+    return;
+  }
+  el.innerHTML =
+    '<div class="dv-head"><div class="dv-title">배송정보</div></div>'+
+    '<div class="dv-row"><div class="dv-label">이름<span style="color:var(--text-danger)">*</span></div><div class="dv-content-edit"><input class="dv-input" value="홍길동" enterkeyhint="next"></div></div>'+
+    '<div class="dv-row"><div class="dv-label">주소<span style="color:var(--text-danger)">*</span></div><div class="dv-content-edit">'+
+      '<div style="display:flex;gap:8px;margin-bottom:6px;align-items:center;"><input class="dv-input" value="16495" readonly><button class="mode-btn" style="flex-shrink:0;">우편번호</button></div>'+
+      '<input class="dv-input" value="경기 수원시 영통구 광교로 32 (이의동, 아름학교)" readonly style="margin-bottom:6px;"><input class="dv-input" placeholder="상세주소 입력" enterkeyhint="next"></div></div>'+
+    '<div class="dv-row"><div class="dv-label">전화번호</div><div class="dv-content-edit"><input class="dv-input" placeholder="- 없이 숫자만 입력" inputmode="tel" enterkeyhint="next"></div></div>'+
+    '<div class="dv-row"><div class="dv-label">휴대폰번호<span style="color:var(--text-danger)">*</span></div><div class="dv-content-edit"><input class="dv-input" value="010-1234-5689" inputmode="tel" enterkeyhint="next"></div></div>'+
+    (t.install ? '<div class="dv-row"><div class="dv-label">배송희망일</div><div class="dv-content-edit"><input class="dv-input" value="2026-07-09 (금)">'+
+      '<div class="help-row">'+INFO+' 마감 시각 기준으로 내일부터 최대 14일 후까지 선택할 수 있습니다. (오후 1시 마감)</div></div></div>' : '')+
+    '<div class="dv-row"><div class="dv-label">배송요청사항</div><div class="dv-content-edit"><select class="dv-input" style="margin-bottom:6px;"><option>직접입력</option></select>'+
+      '<input class="dv-input" placeholder="한글 20자, 영문 40자 이내" enterkeyhint="done"></div></div>'+
+    '<div class="dv-actions"><button class="mode-btn" onclick="S.dvEdit=false;render()">취소하기</button><button class="mode-btn save" onclick="S.dvEdit=false;render()">저장하기</button></div>';   /* Figma: 폼 아래 오른쪽 */
+}
+/* 하단 고정 버튼 — 미리보기 프레임이 가로 스크롤 영역이라 CSS sticky 대신 화면 아래에 붙여 둠(실제 페이지는 position:sticky) */
+function placeBottom(){
+  var slot = document.getElementById('bottom-slot'), bar = document.getElementById('bottom-bar'); if(!slot || !bar) return;
+  if(getComputedStyle(bar).display === 'none'){ slot.style.height = ''; return; }
+  var ph = document.getElementById('phone').getBoundingClientRect(), sr = slot.getBoundingClientRect(), vh = window.innerHeight;
+  bar.classList.remove('float'); var bh = bar.offsetHeight; slot.style.height = bh + 'px';
+  var float = ph.top < vh - bh && sr.top > vh - bh;
+  bar.classList.toggle('float', float);
+  if(float){ bar.style.left = ph.left + 'px'; bar.style.width = ph.width + 'px'; } else { bar.style.left = ''; bar.style.width = ''; }
+}
+window.addEventListener('scroll', function(){ requestAnimationFrame(placeBottom); }, {passive:true});
+window.addEventListener('resize', placeBottom);
+function calHtml(){
+  var days = [], h = '<div class="calendar-popup"><div class="cal-head"><div class="cal-nav">&#8249;</div><div class="cal-title">2026-06</div><div class="cal-nav">&#8250;</div></div>'+
+    '<div class="cal-weekrow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div class="cal-grid">';
+  for(var i=0;i<42;i++){ var d = i - 0; var day = i < 1 ? 31 : (i <= 30 ? i : i - 30), dim = i < 1 || i > 30;
+    var v = '2026-06-' + String(day).padStart(2,'0');
+    h += '<div class="cal-cell"><div class="cal-day'+(dim?' disabled':'')+(!dim && v===S.date?' selected':'')+'" '+(dim?'':'onclick="S.date=\''+v+'\';S.dateOpen=false;render()"')+'>'+day+'</div></div>'; }
+  return h + '</div></div>';
+}
+function addOpt(label){ var m = label.match(/^(.*) ([\d,]+)원$/); if(m && !S.opts.some(function(o){ return o[0] === m[1]; })) S.opts.push([m[1], +m[2].replace(/,/g,'')]); S.optOpen = false; render(); }   /* 모달·토스트 없이 즉시 반영(Figma 메모 4) */
+function doLookup(){ S.looked = true; render(); }
+function doOrder(){ if(!S.looked){ alert('요양정보를 조회해 주세요. (주문불가 모달 — 프로토타입에서는 생략)'); return; } go('result'); }
+function go(k){ S.state = k; S.dvEdit = false; S.dateOpen = false; S.optOpen = false; S.togetherOpen = false; render(); var f = document.getElementById('frame'); if(f.getBoundingClientRect().top < 0) f.scrollIntoView({block:'start'}); }
+document.getElementById('seg-state').innerHTML = STATES.map(function(x){ return '<button data-k="'+x.k+'">'+x.label+'</button>'; }).join('');
+document.querySelectorAll('#seg-state button').forEach(function(b){ b.addEventListener('click', function(){ if(b.dataset.k !== 'confirming') S.looked = false; go(b.dataset.k); }); });
+document.querySelectorAll('#seg-type button').forEach(function(b){ b.addEventListener('click', function(){ S.type = b.dataset.t; render(); }); });
 
 var frameEl = document.getElementById('frame');
 var presetButtons = document.querySelectorAll('.preset-btn');
@@ -542,7 +510,7 @@ function setWidth(w){
   requestAnimationFrame(updateReadout);
 }
 // 폭 전환 애니메이션이 끝난 실제 폭으로 표시 갱신(rAF 한 번으로는 전환 전 폭을 읽음)
-if (window.ResizeObserver) new ResizeObserver(function(){ updateReadout(); }).observe(frameEl);
+if (window.ResizeObserver) new ResizeObserver(function(){ updateReadout(); placeBottom(); }).observe(frameEl);
 presetButtons.forEach(function(b){
   b.addEventListener('click', function(){ setWidth(b.getAttribute('data-w')); });
 });
@@ -550,7 +518,9 @@ function updateReadout(){
   var w = Math.round(frameEl.getBoundingClientRect().width);
   document.getElementById('w-readout').textContent = '현재 프레임 폭: ' + w + 'px' + (w > 1024 ? ' (PC)' : ' (모바일)');
 }
-setWidth('1025');
+(function(){ var p = new URLSearchParams(location.search);
+  if(p.get('state')) S.state = p.get('state'); if(p.get('type')) S.type = p.get('type'); if(p.get('looked')) S.looked = true;
+  setWidth(p.get('w') || '1025'); render(); })();
 </script>
 </body>
 </html>
