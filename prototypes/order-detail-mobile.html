@@ -14,7 +14,7 @@
   --bg:#f4f5f7; --card:#ffffff; --tertiary:#f5f5f5; --secondary-bg:#fafafa; --disabled-bg:#eee;
   --text-primary:#1a1a1a; --text-secondary:#616161; --text-tertiary:#999; --text-danger:#e53935;
   --border-primary:#bdbdbd; --border-secondary:#eee; --border-tertiary:#e0e0e0; --border-dark:#616161;
-  --brand:#323da3; --brand-subtle:#e3e5f5;
+  --brand:#323da3; --brand-subtle:#e3e5f5; --text-disabled:#bdbdbd;
   --input-border-active:#333; --input-text-active:#333; --btn-text:#555;
   --success-bg:#e8f5e9; --success-border:#c8e6c9; --success-text:#166534; --success-bold:#15803d;
   --shadow:0 1px 2px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.05);
@@ -229,8 +229,17 @@ textarea.dv-input{height:auto;}
 .ctl .preset-row{margin:0;}
 /* 버튼 + 말풍선 */
 .act-col{display:flex;flex-direction:column;gap:8px;}
-.bubble{align-self:flex-end;margin:8px 20px 0;background:#f2fde4;border:1px solid #43a047;border-radius:8px;padding:8px 12px;font-size:14px;color:var(--text-primary);}
-@container pf (min-width:1024.02px){ .act-col{align-items:flex-end;} .bubble{margin:0;} }
+/* 툴팁 — DS Tooltip(64Q1Re56aiAA8Al89pqjnV 7761:18604) BrandSub: 패딩 12(닫기 있으면 12/8/12/12), radius 8, 테두리 1px, 14/20, 꼬리 포인트(41px 영역 안 왼쪽·오른쪽 끝), min 150 · max 500 */
+.tt{--tt-bg:#f2fde4;--tt-bd:#43a047;position:relative;display:flex;gap:12px;align-items:flex-start;background:var(--tt-bg);border:1px solid var(--tt-bd);border-radius:8px;
+  padding:12px;font-size:14px;font-weight:400;line-height:20px;color:#1a1a1a;box-shadow:0 0 .5px rgba(0,0,0,.08),0 2px 3px rgba(0,0,0,.05);min-width:150px;max-width:500px;box-sizing:border-box;}
+.tt.has-x{padding:12px 8px 12px 12px;}
+.tt > span{flex:1;min-width:0;}
+.tt .tt-x{flex:0 0 24px;width:24px;height:24px;border:none;background:none;padding:0;cursor:pointer;color:#1a1a1a;display:flex;}
+.tt .tt-pt{position:absolute;width:10px;height:6px;}
+.tt.pt-top .tt-pt{top:-5px;} .tt.pt-bottom .tt-pt{bottom:-5px;transform:rotate(180deg);}
+.tt.pt-left .tt-pt{left:15px;} .tt.pt-right .tt-pt{right:15px;}
+.act-col .tt{align-self:flex-end;margin-bottom:5px;}
+@container pf (min-width:1024.02px){ .act-col{align-items:flex-end;} }
 /* 정보 표: 모바일 1쌍/행, PC 2쌍/행(3-11) */
 .info-grid{display:grid;grid-template-columns:minmax(0,1fr);}
 @container pf (min-width:1024.02px){ .info-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);} }
@@ -266,9 +275,7 @@ button.btn{font-family:inherit;}
 .bottom-actions{position:sticky;bottom:0;display:flex;gap:8px;align-items:flex-end;padding:32px 20px calc(20px + env(safe-area-inset-bottom, 0px));background:linear-gradient(to bottom, rgba(255,255,255,0), var(--card) 35%);z-index:5;}
 .bottom-actions .btn{height:54px;font-size:18px;display:flex;align-items:center;justify-content:center;padding:0;}
 .bottom-actions .btn-gray{flex:0 0 120px;} .bottom-actions .btn-filled{flex:1;}
-.bubble.mo{position:absolute;right:20px;bottom:calc(20px + 54px + 10px + env(safe-area-inset-bottom, 0px));left:148px;margin:0;align-self:auto;}
-.bubble{position:relative;}
-.bubble::after{content:'';position:absolute;bottom:-6px;right:24px;width:10px;height:10px;background:#f2fde4;border-right:1px solid #43a047;border-bottom:1px solid #43a047;transform:rotate(45deg);}
+.bottom-actions .tt{position:absolute;right:20px;left:148px;bottom:calc(20px + 54px + 10px + env(safe-area-inset-bottom, 0px));}   /* 주 버튼 위, 버튼 폭 */
 .pc-act{display:none;}
 @container pf (min-width:1024.02px){ .pc-act{display:flex;} .bottom-actions{display:none;} }
 .nw{white-space:nowrap;}
@@ -286,6 +293,37 @@ button.btn{font-family:inherit;}
 #bottom-slot .bottom-actions:not(.float){position:absolute;left:0;right:0;bottom:0;}
 .btn-list{background:#fff;border:1px solid #616161;border-radius:4px;padding:12px 16px;height:48px;font-size:16px;font-weight:600;line-height:24px;color:#555;
   display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-family:inherit;flex:0 0 auto;white-space:nowrap;}   /* DS Button Outline · Secondary · MD 48 (64Q1Re56aiAA8Al89pqjnV 7697:19573) */
+/* 모달·바텀시트 — 3-3: 480 · min(480, 100% - 40), 정중앙, 버튼 MD 48 · 150 / 시트 radius 40 · 하단 버튼 LG 54 */
+.m-ov{position:fixed;z-index:50;background:rgba(20,20,22,.5);display:flex;align-items:center;justify-content:center;}
+.m-box{width:min(480px, calc(100% - 40px));max-height:calc(100% - 80px);background:#fff;border-radius:16px;padding:24px 20px;display:flex;flex-direction:column;box-shadow:0 8px 24px rgba(0,0,0,.2),0 0 4px rgba(0,0,0,.12);}
+.m-head{display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--border-primary);}
+.m-head h3{flex:1;margin:0;font-size:20px;font-weight:700;line-height:30px;}
+.m-x{border:none;background:none;padding:0;cursor:pointer;color:#333;display:flex;}
+.m-body{padding:24px 0 32px;overflow-y:auto;}
+.m-msg{display:flex;flex-direction:column;gap:8px;font-size:16px;line-height:24px;color:var(--text-primary);}
+.m-msg span{color:var(--btn-text);}
+.m-acts{display:flex;justify-content:center;gap:12px;}
+.m-acts .m-btn{flex:0 1 150px;height:48px;font-size:16px;display:flex;align-items:center;justify-content:center;padding:0;font-family:inherit;}
+.m-acts .btn:disabled{background:var(--disabled-bg);color:var(--text-disabled);cursor:default;}
+.m-ov.sheet{align-items:flex-end;}
+.m-ov.sheet .m-box{width:100%;max-height:90%;border-radius:40px 40px 0 0;padding:32px 20px 0;box-shadow:0 8px 24px rgba(0,0,0,.2),0 0 4px rgba(0,0,0,.12);}
+.m-ov.sheet .m-head{border-bottom:none;padding-bottom:0;}
+.m-ov.sheet .m-body{padding:24px 0;}
+.m-ov.sheet .m-acts{padding:32px 0 calc(32px + env(safe-area-inset-bottom, 0px));gap:8px;}
+.m-ov.sheet .m-acts .btn{flex:1;height:54px;font-size:18px;}
+.m-ov.sheet .m-acts .btn-gray{flex:0 0 120px;}
+.m-field label{display:block;font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;}
+.m-search{position:relative;} .m-search .dv-input{padding-right:48px;}
+input[type=search]::-webkit-search-cancel-button{display:none;}
+.m-sbtn{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;color:#333;display:flex;padding:4px;}
+.m-res{margin-top:8px;border:1px solid #333;border-radius:4px;padding:8px;display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;}
+.m-row{min-height:44px;padding:10px 8px 10px 12px;border:none;background:none;border-radius:4px;text-align:left;font-size:16px;font-family:inherit;color:var(--text-primary);cursor:pointer;}
+.m-row:hover,.m-row:active{background:#eff1fd;} .m-row:disabled{color:var(--text-disabled);cursor:default;background:none;} .m-row em{font-style:normal;color:inherit;font-size:14px;margin-left:4px;}   /* 품절 행은 글자 전체 Disabled #bdbdbd */
+@container pf (min-width:1024.02px){ .m-row{min-height:36px;padding:8px 8px 8px 12px;font-size:14px;} }
+.m-empty{padding:10px 12px;font-size:16px;color:var(--text-secondary);}
+body.m-open #bottom-bar{visibility:hidden;}
+button.ico{border:none;background:none;padding:0;cursor:pointer;}
+.tip-pop{position:absolute;top:calc(100% + 9px);z-index:20;width:max-content;}
 .result-box svg{background:#e8f5e9;border-radius:999px;padding:8px;width:56px;height:56px;}
 .rb-t{font-size:20px;font-weight:700;} .rb-s{font-size:14px;color:var(--text-secondary);line-height:1.6;}
 </style>
@@ -300,6 +338,12 @@ button.btn{font-family:inherit;}
   <div class="ctl"><span class="ctl-l">상태</span><div class="seg" id="seg-state"></div></div>
   <div class="ctl"><span class="ctl-l">품목</span><div class="seg" id="seg-type">
     <button data-t="bed">전동침대</button><button data-t="chair">휠체어 · 실외경사로(택배)</button></div></div>
+  <div class="ctl" id="ctl-pop"><span class="ctl-l">팝업</span><div class="seg" id="seg-pop">
+    <button data-m="change">상품 변경</button><button data-m="confirm">주문하기 확인</button><button data-m="na_lookup">주문불가 · 요양정보 미조회</button>
+    <button data-m="na_balance">주문불가 · 급여 잔액 부족</button><button data-m="na_rate">주문불가 · 본인부담률 변경</button><button data-m="na_period">주문불가 · 인정유효기간</button>
+    <button data-m="installInfo">설치옵션 안내</button></div></div>
+  <div class="ctl" id="ctl-result"><span class="ctl-l">주문<br>결과</span><div class="seg" id="seg-result">
+    <button data-r="ok">정상</button><button data-r="na_balance">급여 잔액 부족</button><button data-r="na_rate">본인부담률 변경</button><button data-r="na_period">인정유효기간 만료</button></div></div>
   <div class="ctl"><span class="ctl-l">폭</span><div class="preset-row" id="preset-row">
     <button class="preset-btn" data-w="320">320px</button>
     <button class="preset-btn" data-w="360">360px</button>
@@ -338,6 +382,8 @@ var CHEV = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d=
 var XS = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 var LINK2 = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 17H7A5 5 0 0 1 7 7h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M15 7h2a5 5 0 1 1 0 10h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 var INFO = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor"/></svg>';
+var TT_PT = '<svg class="tt-pt" viewBox="0 0 10 6" aria-hidden="true"><path d="M0.2 6V5L5 0.7L9.8 5V6Z" fill="var(--tt-bg)"/><path d="M0.5 5L4.3 1.2C4.7 0.8 5.3 0.8 5.7 1.2L9.5 5" stroke="var(--tt-bd)" fill="none"/></svg>';
+function tt(text, cls, closeJs){ return '<div class="tt '+cls+(closeJs?' has-x':'')+'">'+TT_PT+'<span>'+text+'</span>'+(closeJs?'<button class="tt-x" aria-label="닫기" onclick="'+closeJs+'"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>':'')+'</div>'; }
 var CHECK = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l5 5 9-10" stroke="#09af00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 /* 상태 — Figma 6340:14254 섹션 순서 · 상세보기 가이드 메모 1~12 */
@@ -359,7 +405,7 @@ var TYPES = {
   chair:{name:'MIRAGE(22D)-P', cat:'수동휠체어', img:'휠체어<br>이미지', fee:52000, own:7800, install:false, together:['실외경사로 ST-3','천연BED ST-3']}
 };
 var OPTS = [['기존 침대 외부 이동', 30000], ['매트리스 폐기', 30000]];
-var S = {state:'confirming', type:'bed', looked:false, dvEdit:false, dateOpen:false, optOpen:false, opts:OPTS.slice(), date:'2026-06-07', togetherOpen:false};
+var S = {result:'ok', modal:null, mq:'', mpick:null, state:'confirming', type:'bed', looked:false, dvEdit:false, dateOpen:false, optOpen:false, opts:OPTS.slice(), date:'2026-06-07', togetherOpen:false};
 function won(n){ return n.toLocaleString('ko-KR') + '원'; }
 function st(){ for(var i=0;i<STATES.length;i++){ if(STATES[i].k === S.state) return STATES[i]; } return STATES[0]; }
 function chip(s){ return '<span class="chip" data-status="'+s+'">'+s+'</span>'; }
@@ -379,8 +425,8 @@ function render(){
   if(s.btns === 'conf'){ btns = '<button class="btn btn-outline" onclick="go(\'confCancel\')">주문취소</button><button class="btn btn-filled" onclick="doOrder()">주문하기</button>';
     if(!S.looked) bubble = '\'요양정보\'를 조회해야 주문이 가능합니다.'; }
   h += '<div class="title-action-wrap"><div class="page-head"><span class="back" aria-label="뒤로">&#8249;</span><span class="page-title">주문 상세보기</span></div>'+
-    (btns ? '<div class="act-col pc-act">'+(bubble ? '<div class="bubble">'+bubble+'</div>' : '')+'<div class="action-row">'+btns+'</div></div>' : '')+'</div>';
-  S.bottom = btns ? '<div class="bottom-actions" id="bottom-bar">'+(bubble ? '<div class="bubble mo">'+bubble+'</div>' : '')+btns.replace(/btn btn-outline/, 'btn btn-gray')+'</div>' : '';
+    (btns ? '<div class="act-col pc-act">'+(bubble ? tt(bubble, 'pt-bottom pt-right') : '')+'<div class="action-row">'+btns+'</div></div>' : '')+'</div>';
+  S.bottom = btns ? '<div class="bottom-actions" id="bottom-bar">'+(bubble ? tt(bubble, 'pt-bottom pt-right') : '')+btns.replace(/btn btn-outline/, 'btn btn-gray')+'</div>' : '';
   if(s.result){ S.bottom = ''; return renderResult(h, s, t); }
 
   /* 주문 정보 */
@@ -405,12 +451,12 @@ function render(){
       '<div class="chips-row">'+chip(s.chip)+'<span class="cat-tag">'+t.cat+'</span></div>'+
       (s.reason ? '<div class="cancel-reason">주문 취소 사유 : 수급자 단순 변심</div>' : '')+
       '<div class="product-name">'+t.name+'</div></div></div>'+
-    '<div class="prod-side"><div class="qty-row"><div class="qty-text">대여 &nbsp; <b>1개</b></div>'+(s.edit ? '<button class="small-outline-btn">상품변경</button>' : '')+'</div>'+
+    '<div class="prod-side"><div class="qty-row"><div class="qty-text">대여 &nbsp; <b>1개</b></div>'+(s.edit ? '<button class="small-outline-btn" onclick="openM(\'change\')">상품변경</button>' : '')+'</div>'+
       (s.barcode ? '<div class="barcode">바코드 <span>8801234567891</span></div>' : '')+
       (s.ordered ? '' : '<div class="price-box"><div class="price-row"><span class="label">대여료(월)</span><span class="value">월 '+won(t.fee)+'</span></div>'+
         (s.edit ? '<div class="price-row danger"><span class="label">본인부담금(15%)</span><span class="value">월 '+won(t.own)+'</span></div>' : '')+'</div>')+'</div></div>';
   if(t.install){
-    h += '<div class="divider"></div><div class="opt-title-row">설치옵션 '+(s.edit || s.k==='new' ? '<span class="ico" title="설치 현장 상황에 따라 추가요금이 청구될 수 있습니다.">'+INFO+'</span>' : '')+'</div>';
+    h += '<div class="divider"></div><div class="opt-title-row">설치옵션 '+(s.edit || s.k==='new' ? '<button class="ico" aria-label="설치옵션 안내" onclick="openM(\'installInfo\', event)">'+INFO+'</button>' : '')+'</div>';
     if(s.edit){
       h += '<div class="select-wrap"><div class="select-box" onclick="S.optOpen=!S.optOpen;S.dateOpen=false;render()">설치옵션 선택 '+CHEV+'</div>'+
         (S.optOpen ? '<div class="option-dropdown">'+['손잡이 추가 20,000원','배수관 연장 15,000원','방수 매트리스 커버 10,000원','전동 리모컨 추가 12,000원'].map(function(o){ return '<div class="option-row" onclick="addOpt(\''+o+'\')">'+o+'</div>'; }).join('')+'</div>' : '')+'</div>';
@@ -436,6 +482,9 @@ function render(){
   document.getElementById('body').innerHTML = h + (S.bottom ? '<div id="bottom-slot">'+S.bottom+'</div>' : '');
   renderDelivery(s, t);
   placeBottom();
+  drawM();
+  document.getElementById('ctl-result').style.display = s.k === 'confirming' ? '' : 'none';
+  document.querySelectorAll('#seg-result button').forEach(function(b){ b.classList.toggle('active', b.dataset.r === S.result); });
 }
 function renderResult(h, s, t){       /* 주문하기 직후 — Figma 6523:27942 */
   h += '<div class="section"><div class="result-box">'+CHECK+'<div class="rb-t">주문이 완료되었습니다.</div><div class="rb-s">요청하신 대여상품의 주문이 완료되었습니다.<br>주문요청은 \'<b>상품준비중</b>\' 상태로 진행됩니다.</div></div></div>'+
@@ -486,6 +535,61 @@ function placeBottom(){
 }
 window.addEventListener('scroll', function(){ requestAnimationFrame(placeBottom); }, {passive:true});
 window.addEventListener('resize', placeBottom);
+/* ---------- 모달 · 바텀시트 (Figma 6482:127084, 크기·버튼은 3-3) ---------- */
+var NA = {   /* 주문 불가 안내 — Figma 문구 그대로 */
+  na_lookup:['요양정보조회 : \'조회\' 버튼을 누르세요.', '요양정보를 조회하여 본인부담률 및 주문 가능 품목 등을 확인 후 주문해 주세요.'],
+  na_balance:['장기요양급여 잔액이 부족합니다.', '요양정보조회 후 급여잔액을 확인하여 조건과 금액에 맞는 상품을 삭제해 주세요.'],
+  na_rate:['본인부담률이 변경되었습니다.', '변경된 본인부담률을 확인하여 수급자에게 안내 후 주문을 진행해 주세요.'],
+  na_period:['인정유효기간 또는 적용기간이 지났습니다.', '수급자에게 기간 갱신을 안내해 주시고 주문은 취소해 주세요.']
+};
+var PRODS = [['NY(M)-1300', 36900], ['NY(M)-1500', 41200], ['천연BED ST-5', 79800], ['스탠다드형 ST-1', 72300], ['NY(M)-1700', 45000, true]];
+function isMO(){ return document.getElementById('frame').getBoundingClientRect().width <= 1024; }
+function openM(type, e){ if(e) e.stopPropagation(); S.modal = type; S.mq = ''; S.mpick = null; S.optOpen = false; S.dateOpen = false; drawM(); }
+function closeM(){ S.modal = null; drawM(); }
+function drawM(){
+  var ov = document.getElementById('m-ov'), pop = document.getElementById('m-pop');
+  if(pop) pop.remove();
+  if(!S.modal){ if(ov) ov.remove(); document.body.classList.remove('m-open'); return; }
+  var t = S.modal, mo = isMO(), title = '', body = '', acts = '', sheet = false;
+  if(t === 'installInfo' && !mo){     /* PC: 트리거 아래 팝오버(3-5) */
+    if(ov) ov.remove();
+    var trg = document.querySelector('#body .ico'); if(!trg){ S.modal = null; return; }
+    var p = document.createElement('div'); p.id = 'm-pop'; p.className = 'tip-pop';
+    p.innerHTML = tt('※ 설치 현장 상황에 따라 추가요금이 청구될 수 있습니다.<br>(엘리베이터 無, 배송차량 주차비, 통행료 등)', 'pt-top pt-left', 'closeM()');
+    trg.parentNode.style.position = 'relative'; trg.parentNode.appendChild(p);
+    p.style.left = (trg.offsetLeft + trg.offsetWidth/2 - 20) + 'px'; return;   /* 꼬리(왼쪽 끝에서 20px)가 아이콘 가운데를 가리킴 */
+  }
+  if(NA[t]){ title = '주문 불가 안내'; body = '<div class="m-msg"><b>'+NA[t][0]+'</b><span>'+NA[t][1]+'</span></div>'; acts = '<button class="btn btn-filled m-btn" onclick="closeM()">확인</button>'; }
+  if(t === 'confirm'){ title = '주문하기'; body = '<div class="m-msg"><span>주문 완료 후에는 수량과 옵션을 변경할 수 없습니다. 주문 내용을 다시 확인해 주세요.</span><b>대여 주문을 진행하시겠습니까?</b></div>';
+    acts = '<button class="btn btn-gray m-btn" onclick="closeM()">취소</button><button class="btn btn-filled m-btn" onclick="closeM();go(\'result\')">주문하기</button>'; }
+  if(t === 'installInfo'){ sheet = true; title = '설치옵션 안내'; body = '<div class="m-msg"><span>※ 설치 현장 상황에 따라 추가요금이 청구될 수 있습니다.<br>(엘리베이터 無, 배송차량 주차비, 통행료 등)</span></div>';
+    acts = '<button class="btn btn-filled" onclick="closeM()">확인</button>'; }
+  if(t === 'change'){       /* 상품 변경 — PC 480 모달 / 모바일 바텀시트(글자 입력, 3-3 검색 선택) */
+    sheet = true; title = '상품 변경';
+    var q = S.mq.trim(), res = q ? PRODS.filter(function(x){ return x[0].toLowerCase().indexOf(q.toLowerCase()) >= 0 || '대여'.indexOf(q) >= 0; }) : [];
+    body = '<div class="m-field"><label for="m-q">상품명</label><div class="m-search"><input id="m-q" class="dv-input" type="search" enterkeyhint="search" placeholder="상품 이름을 검색하세요" value="'+(S.mpick ? '[대여] '+S.mpick[0]+' (월 이용료 월 '+won(S.mpick[1])+')' : S.mq)+'" oninput="S.mq=this.value;S.mpick=null;clearTimeout(window._mt);window._mt=setTimeout(function(){drawM(true)},300)" onfocus="this.select()">'+
+      '<button class="m-sbtn" aria-label="검색" onclick="document.activeElement.blur()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4.5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>'+
+      (q && !S.mpick ? '<div class="m-res">'+(res.length ? res.map(function(x, i){ return '<button class="m-row" '+(x[2]?'disabled':'')+' onclick="S.mpick=PRODS['+PRODS.indexOf(x)+'];drawM()">[대여] '+x[0]+' (월 이용료 월 '+won(x[1])+')'+(x[2]?' <em>품절</em>':'')+'</button>'; }).join('') : '<div class="m-empty">검색 결과가 없습니다.</div>')+'</div>' : '')+'</div>';
+    acts = '<button class="btn btn-gray m-btn" onclick="closeM()">취소하기</button><button class="btn btn-filled m-btn" '+(S.mpick?'':'disabled')+' onclick="TYPES[S.type].name=S.mpick[0];closeM();render()">상품 변경</button>'; }
+  var useSheet = sheet && mo, keep = arguments[0] === true && document.activeElement && document.activeElement.id === 'm-q';
+  if(!ov){ ov = document.createElement('div'); ov.id = 'm-ov'; document.body.appendChild(ov); ov.addEventListener('click', function(e){ if(e.target === ov) closeM(); }); }
+  ov.className = 'm-ov' + (useSheet ? ' sheet' : '');
+  ov.innerHTML = '<div class="m-box" role="dialog" aria-modal="true"><div class="m-head"><h3>'+title+'</h3><button class="m-x" aria-label="닫기" onclick="closeM()"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button></div>'+
+    '<div class="m-body">'+body+'</div><div class="m-acts">'+acts+'</div></div>';
+  document.body.classList.add('m-open');
+  placeM();
+  if(keep){ var i = document.getElementById('m-q'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
+}
+/* 딤은 미리보기 화면(#phone)의 보이는 영역만 덮음 */
+function placeM(){
+  var ov = document.getElementById('m-ov'); if(!ov) return;
+  var r = document.getElementById('phone').getBoundingClientRect(), top = Math.max(r.top, 0), bot = Math.min(r.bottom, window.innerHeight);
+  ov.style.left = r.left + 'px'; ov.style.width = r.width + 'px'; ov.style.top = top + 'px'; ov.style.height = Math.max(0, bot - top) + 'px';
+}
+window.addEventListener('scroll', function(){ requestAnimationFrame(placeM); }, {passive:true});
+window.addEventListener('resize', function(){ if(S.modal) drawM(); });
+document.addEventListener('click', function(e){ if(S.modal === 'installInfo' && !e.target.closest('#m-pop') && !e.target.closest('.ico') && !e.target.closest('#m-ov')) closeM(); });
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && S.modal) closeM(); });
 function calHtml(){
   var days = [], h = '<div class="calendar-popup"><div class="cal-head"><div class="cal-nav">&#8249;</div><div class="cal-title">2026-06</div><div class="cal-nav">&#8250;</div></div>'+
     '<div class="cal-weekrow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div class="cal-grid">';
@@ -496,10 +600,12 @@ function calHtml(){
 }
 function addOpt(label){ var m = label.match(/^(.*) ([\d,]+)원$/); if(m && !S.opts.some(function(o){ return o[0] === m[1]; })) S.opts.push([m[1], +m[2].replace(/,/g,'')]); S.optOpen = false; render(); }   /* 모달·토스트 없이 즉시 반영(Figma 메모 4) */
 function doLookup(){ S.looked = true; render(); }
-function doOrder(){ if(!S.looked){ alert('요양정보를 조회해 주세요. (주문불가 모달 — 프로토타입에서는 생략)'); return; } go('result'); }
+function doOrder(){ if(!S.looked){ openM('na_lookup'); return; } if(S.result !== 'ok'){ openM(S.result); return; } openM('confirm'); }
 function go(k){ S.state = k; S.dvEdit = false; S.dateOpen = false; S.optOpen = false; S.togetherOpen = false; render(); var f = document.getElementById('frame'); if(f.getBoundingClientRect().top < 0) f.scrollIntoView({block:'start'}); }
 document.getElementById('seg-state').innerHTML = STATES.map(function(x){ return '<button data-k="'+x.k+'">'+x.label+'</button>'; }).join('');
 document.querySelectorAll('#seg-state button').forEach(function(b){ b.addEventListener('click', function(){ if(b.dataset.k !== 'confirming') S.looked = false; go(b.dataset.k); }); });
+document.querySelectorAll('#seg-pop button').forEach(function(b){ b.addEventListener('click', function(){ if(S.state !== 'confirming' && b.dataset.m !== 'installInfo'){ S.state = 'confirming'; render(); } if(b.dataset.m === 'installInfo' && !TYPES[S.type].install){ S.type = 'bed'; render(); } var f = document.getElementById('frame'); window.scrollTo(0, f.getBoundingClientRect().top + window.scrollY - 4); setTimeout(function(){ openM(b.dataset.m); }, 50); }); });
+document.querySelectorAll('#seg-result button').forEach(function(b){ b.addEventListener('click', function(){ S.result = b.dataset.r; render(); }); });
 document.querySelectorAll('#seg-type button').forEach(function(b){ b.addEventListener('click', function(){ S.type = b.dataset.t; render(); }); });
 
 var frameEl = document.getElementById('frame');
