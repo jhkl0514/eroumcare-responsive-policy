@@ -1,5 +1,7 @@
 # Status Chip
 
+Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `13139:11578`, `13864:12146`, `13920:12833`, `13027:12231`, `13079:12197` / 마지막 확인일 `2026-10-12`
+
 ## 1. 개요 · 언제 쓰는지
 
 상태칩은 주문, 대여, 회수, A/S, 반품의 처리 상태를 짧은 텍스트와 시맨틱 컬러로 보여주는 컴포넌트다. 같은 라벨이 있어도 도메인별 Figma 컴포넌트가 다르므로, 화면 도메인에 맞는 상태칩을 사용한다.
@@ -99,7 +101,7 @@
 | 상태 | 시맨틱 | Figma 출처 |
 |---|---|---|
 | 반품접수 | Info | [Status chip-Return](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=13079-12197) |
-| 반품접수 확인 | Success | [Status chip-Return](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=13079-12197); Figma 오타, 수정 예정 |
+| 반품접수 확인 | Success | [Status chip-Return](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=13079-12197) |
 | 반품요청 | Caution | [Status chip-Return](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=13079-12197) |
 | 회수요청 | Caution | [Status chip-Return](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=13079-12197) |
 | 회수진행 | BrandSub | [Status chip-Return](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=13079-12197) |
@@ -162,4 +164,3 @@
 | DS 삭제 예정(D-05) | 미사용(D-05) |
 | 구입 주문취소 | 주문취소는 단일 상태로 통일한다. Figma의 주체별 3종은 정리될 예정이다. |
 | 구입 추가상품 색상 | DS 기준 `Neutral · White`를 따른다. 개발 화면의 초록은 현행과 다름. |
-| 반품 오타 | Figma의 `반품품접수 확인`은 문서에서 `반품접수 확인`으로 표기했다. Figma 오타, 수정 예정. |

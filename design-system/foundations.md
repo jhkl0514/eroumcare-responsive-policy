@@ -1,5 +1,7 @@
 # 이로움Care 디자인 시스템 Foundations
 
+Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막 확인일 `2026-10-12`
+
 이 문서는 Figma DS 라이브러리와 `CLAUDE.md` 3장·5장의 확정값을 기준으로 작성한다. Figma와 문서 확정값이 다른 항목은 임의 확정하지 않고 “확인 필요”로 표시한다.
 
 - Figma DS 라이브러리: [64Q1Re56aiAA8Al89pqjnV / Component 36:11730](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=36-11730)
