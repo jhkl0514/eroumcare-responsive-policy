@@ -205,10 +205,10 @@ td{padding:12px;border-bottom:1px solid var(--border-secondary);vertical-align:t
 <section id="questions">
   <h2>열린 질문 (요약)</h2>
   <div class="q-list">
-    <div class="q-row"><span class="k">기획</span><span>Q1 추가 후 삭제 처리 · Q2 복원 기준 · Q3 삭제 행 스텝퍼 비활성 · Q4 사유 모달 버튼명 · Q5 글자 수 · Q6 주문 후 이력 노출 · Q7 상태칩 명칭 · Q8 옵션 불일치 알림 존폐 · Q9 옵션 표기 · Q10 합계 명칭 · <b>Q20 전체 되돌리기</b> · <b>Q21 확정 시점 저장</b> · Q22 삭제 상품과 같은 옵션 · Q24 사유 목록 순서 · Q25 사유 모달 같은 상품 구분 · Q26 급여불가 상품 [주문하기] 안내</span></div>
-    <div class="q-row"><span class="k">문서·이력</span><span>Q7 상품준비 이후 칩 명칭 · Q27 퍼블 302 항목 폐기/유지 · Q28 BTS-143·HOLDING 반영 여부 · Q29 2026.04 주문 추가 담당 · Q30 '경사로'/'실외경사로'</span></div>
+    <div class="q-row"><span class="k">기획</span><span>Q1 추가 후 삭제 처리 · Q2 복원 기준 · Q3 삭제 행 스텝퍼 비활성 · Q4 사유 모달 버튼명 · Q5 글자 수 · Q6 주문 후 이력 노출 · Q7 상태칩 명칭 · Q9 옵션 표기 · Q10 합계 명칭 · <b>Q20 전체 되돌리기</b> · <b>Q21 확정 시점 저장</b> · Q22 삭제 상품과 같은 옵션 · Q24 사유 목록 순서 · Q25 사유 모달 같은 상품 구분 · Q26 급여불가 상품 [주문하기] 안내</span></div>
+    <div class="q-row"><span class="k">문서·이력</span><span>Q7 상품준비 이후 칩 명칭 · Q27 퍼블 302 항목 폐기/유지(Q8 옵션 불일치 알림 존폐를 여기에 합침) · Q28 BTS-143·HOLDING 반영 여부 · Q29 2026.04 주문 추가 담당 · Q30 '경사로'/'실외경사로'</span></div>
     <div class="q-row"><span class="k">UI/UX</span><span>Q11 행 BG 컬러 토큰 — 토큰 확정 필요(지금 색은 임시)</span></div>
-        <div class="q-row"><span class="k">개발</span><span>Q13~Q19 (옵션 관리 반영, 2025 변경 건, 행 이동, 변경=삭제+추가(Q17), 퍼블 불일치, 옵션 줄바꿈) · Q22 중복 추가를 막는지</span></div>
+        <div class="q-row"><span class="k">개발</span><span>Q12 현행 화면 확인(UI/UX, 주문취소 사유 전체 캡처 대기) · Q13~Q19 (옵션 관리 반영, 2025 변경 건, 행 이동(Q15), 부품 유형·0원(Q16), 변경=삭제+추가(Q17), 퍼블 정리(Q18), 옵션 줄바꿈(Q19)) · Q22 중복 추가를 막는지 · Q31 취소요청 상품의 대표 배지 포함 여부(Q23 후속) · Q32 상품 추가 급여불가 품목 비활성/미노출 · Q33 주문 후 취소 사유 전체 보기 위치 · Q34 구입 주문완료 결과 화면 캡처 요청</span></div>
     <div class="q-row"><span class="k">답변 완료</span><span>Q23 상품별 상태가 다를 때 대표 배지 — 가장 앞 단계, 일부 취소 제외·전부 취소면 주문취소 (개발 확인 2026-10-08)</span></div>
   </div>
   <p class="foot">상세는 Confluence 02 질문·결정 기록. 화면으로 비교: <a href="order-detail-purchase.html?view=current&amp;step=confirming">현행</a> · <a href="order-detail-purchase.html?view=plan&amp;step=confirming">개선안(기획 확인 중)</a></p>
@@ -276,13 +276,13 @@ var GROUPS = [
   ]},
   { key:'B', title:'시스템 — 되돌릴 수 없음', items:[
     {id:'B1', t:'변경·추가·삭제가 즉시 서버 저장 (목록 이동 후 재진입해도 유지)', p:'주문하기 전인데도 실수 복구 불가', shots:['dev-11-delete-reason-scope.jpg','dev-15-delete-reason-added-then-deleted.png'], cur:'step=confirming&pin=B1', plan:'scenario=3'},
-    {id:'B2', t:'옵션 변경이 데이터상 \'삭제 + 추가\'', p:'\'변경\' 개념 없음 → A3, C1의 원인으로 추정', shots:[], cur:'step=confirming&pin=B1', plan:'scenario=1'},
+    {id:'B2', t:'옵션 변경이 데이터상 \'삭제 + 추가\'', p:'\'변경\' 개념 없음 → A3, C1의 원인으로 추정', shots:[], cur:'step=confirming&pin=B2', plan:'scenario=1'},
     {id:'B3', t:'수량은 스텝퍼 후 [변경]을 눌러야 반영, 미반영 체크 없음', p:'바꾼 줄 알고 그대로 주문될 수 있음', shots:[], cur:'step=confirming&pin=B3', plan:'scenario=2'}
   ]},
   { key:'C', title:'고지·이력 — 수급자에게 변경이 전달되지 않음', items:[
     {id:'C1', t:'삭제 사유 목록에 추가 후 삭제 상품, 옵션 변경 전·후 옵션까지 포함', p:'실제로 없던 \'삭제\'가 안내됨', shots:['dev-11-delete-reason-scope.jpg','dev-15-delete-reason-added-then-deleted.png'], cur:'step=confirming&pin=C1', plan:'scenario=6'},
-    {id:'C2', t:'옵션·수량 변경, 상품 추가는 사유 없음', p:'동의가 필요한 변경인데 기록 없음', shots:[], cur:'step=confirming&pin=C1', plan:'scenario=6'},
-    {id:'C3', t:'사유 20자 제한, 동의 확인 장치 없음', p:'맥락 전달 불가', shots:['dev-04-delete-reason-20.jpg'], cur:'step=confirming&pin=C1', plan:'scenario=6'},
+    {id:'C2', t:'옵션·수량 변경, 상품 추가는 사유 없음', p:'동의가 필요한 변경인데 기록 없음', shots:['dev-11-delete-reason-scope.jpg'], cur:'step=confirming&pin=C2', plan:'scenario=6'},
+    {id:'C3', t:'사유 20자 제한, 동의 확인 장치 없음', p:'맥락 전달 불가', shots:['dev-04-delete-reason-20.jpg'], cur:'step=confirming&pin=C3', plan:'scenario=6'},
     {id:'C4', t:'확인 모달 "수량이나 옵션을 바꿀 수 없으니…"', p:'상품 추가·삭제 언급 없음', shots:['dev-14-order-confirm-mo.png'], cur:'step=confirming&pin=C4', plan:'scenario=6'},
     {id:'C5', t:'상품준비 ~ 배송완료에는 최종 상품만 표시', p:'사후 변경 확인 불가 → 문의·분쟁 근거 없음', shots:['dev-16-preparing.png','dev-17-delivered.png'], cur:'step=preparing&pin=C5', plan:'scenario=6'}
   ]}
