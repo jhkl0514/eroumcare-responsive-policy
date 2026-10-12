@@ -184,3 +184,20 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `13139:11578`, `13864:
 ```html
 <span class="ds-chip ds-chip--purchase-preparing">상품준비</span>
 ```
+
+## 프레임워크 사용 원칙
+
+- 상태칩은 대상의 현재 진행 상태를 짧게 보여준다. 한 영역에는 대표 상태를 우선 표시한다.
+- 상태 의미에 맞는 시맨틱 타입과 간결한 업무 용어를 선택한다. 색만으로 상태를 구분하지 않는다.
+- 부가 정보를 여러 개 보여줘야 할 때 상태칩을 무작정 늘어놓지 말고 배지 등 보조 표현을 검토한다.
+- 앞쪽 아이콘은 상태 이해에 도움이 될 때 사용하고, 텍스트만으로 충분하면 생략한다.
+- 프레임워크의 타입 이름과 Filled/Transparent/Outline 표현은 참고 원칙이며, 기존 DS의 도메인별 매핑을 대체하지 않는다.
+
+출처: 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [Status Chips 10:15762](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=10-15762)
+
+## 프레임워크와 차이
+
+| 항목 | DS 값 | 프레임워크 값 | 노드 ID |
+|---|---|---|---|
+| 상태 타입 | Info, Success, Caution, BrandSub, Default, Danger, Neutral, Neutral-white | Info, Success, Error, Default, BrandSub, Caution | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [10:15762](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=10-15762) |
+| 시각 변형 | DS 시맨틱 상태 색상 매핑을 사용 | Filled, Transparent, Outline | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [10:15762](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=10-15762) |

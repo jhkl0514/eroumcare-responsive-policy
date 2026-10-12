@@ -151,3 +151,19 @@ CSS에서는 기본 입력이 placeholder 유무와 관계없이 Default 테두�
   <span class="ds-field__error">요청 사유를 입력해 주세요.</span>
 </label>
 ```
+
+## 프레임워크 사용 원칙
+
+- 각 입력에는 목적을 설명하는 라벨을 제공한다. Placeholder는 예시나 입력 형식 힌트로만 쓰고 라벨을 대신하지 않는다.
+- 필드 너비는 입력할 내용의 길이를 고려한다. 보통 그리드와 화면 폭에 맞추고, 길이가 예측 가능한 값은 예상 문자열이 잘리지 않을 만큼 확보한다.
+- 입력 종류에 맞는 필드 형식을 선택한다. 오류는 테두리 변화만으로 알리지 말고 이유를 문구로 함께 제공한다.
+- TextArea는 긴 내용을 위한 별도 컨트롤이다. 내용이 높이를 넘으면 컨테이너 높이를 유지하고 내부에서 스크롤한다.
+- 글자 수 제한이 있는 TextArea는 제한과 현재 입력량을 함께 알려주며, 도움말·오류 문구는 해당 필드와 연관 지어 배치한다.
+
+출처: 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [Text input 475:22492](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=475-22492), [Textarea 475:19957](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=475-19957)
+
+## 프레임워크와 차이
+
+| 항목 | DS 값 | 프레임워크 값 | 노드 ID |
+|---|---|---|---|
+| 입력 규격 대조 | 확인한 DS 상태·표현 규격과 상충하는 수치 차이는 확인되지 않음 | 주로 라벨, 너비 선택, TextArea 스크롤·글자 수 안내 원칙을 제시 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [475:22492](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=475-22492), [475:19957](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=475-19957) |

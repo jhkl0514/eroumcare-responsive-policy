@@ -7,7 +7,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 - Figma DS 라이브러리: [64Q1Re56aiAA8Al89pqjnV / Component 36:11730](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=36-11730)
 - 기준 컬렉션: `Primitive`, `Theme`, `Sementic`, `Breakpoint`
 - 기준 모드: `대대여`
-- 참고 출처(접근 불가, 추후 확인): [uxuithkc.netlify.app/framework](https://uxuithkc.netlify.app/framework)
+- 참고 출처: 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [Color 1:6893](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-6893), [Typography 1:8157](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-8157), [Layout 1:8547](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-8547), [아이콘 1:9425](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-9425), [Shape 1:10475](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-10475)
 
 ## 1. 컬러
 
@@ -168,4 +168,27 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | 항목 | 내용 |
 |---|---|
 | 브레이크포인트 기록 구분 | 프로젝트 기준은 `1024 / 360`이며, Figma의 Mobile `360-768`, PC `1200-1920`은 디자인 캔버스 폭으로 기록한다. |
-| 참고 URL 접근 | [uxuithkc.netlify.app/framework](https://uxuithkc.netlify.app/framework)는 접근 불가, 추후 확인. |
+| 프레임워크 참고 범위 | 지정된 Figma 노드만 확인했다. 사내 웹 문서 URL은 출처로 기재하지 않는다. |
+
+## 사용 원칙
+
+- 색상은 역할을 먼저 정한다. 브랜드 색은 핵심 액션·선택 상태에, 중립색은 정보 위계와 구분에, 시맨틱 색은 정보·성공·주의·오류 의미에 사용한다.
+- 텍스트와 배경의 대비를 확인하고, 색만으로 상태를 전달하지 않는다.
+- SUIT 스타일 토큰의 역할과 위계를 유지한다. 본문 기본 크기는 16px이며, 화면마다 임의로 타이포 위계를 만들지 않는다.
+- 레이아웃은 컬럼·여백·거터를 함께 설계하고 정렬 기준을 화면 크기가 달라져도 일관되게 유지한다. 프레임워크 그리드 예시는 참고 지침이며 프로젝트 브레이크포인트를 대체하지 않는다.
+- 아이콘은 24px 그리드를 기준으로 제공된 크기와 선 굵기를 우선 사용하고, 장식 목적의 임의 변형이나 소수점 크기는 피한다.
+- 모서리와 그림자는 표면의 역할을 구분하는 데 사용하며, 컴포넌트별 DS 토큰을 우선한다.
+
+출처: 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [Color 1:6893](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-6893), [Typography 1:8157](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-8157), [Layout 1:8547](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-8547), [아이콘 1:9425](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-9425), [Shape 1:10475](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-10475)
+
+## 프레임워크와 차이
+
+| 항목 | DS 값 | 프레임워크 값 | 노드 ID |
+|---|---|---|---|
+| 프로젝트 반응형 기준 | `1024px` 이하 모바일, 최소 폭 `360px` | 767px 이하 고정형 모바일, 768px 이상 유동형 레이아웃, 최소 폭 360px | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:8547](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-8547) |
+| 반경 토큰 | Radius3 `12px`, Radius4 `16px`, Radius5 `40px` | Radius3 `16px`, Radius4 `40px`, 별도 Radius5 없음 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:10475](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-10475) |
+| 테두리 굵기 공통 토큰 | 공통 굵기 토큰 미정; 컴포넌트별 값 사용 | 1px, 1.5px, 2px 단계. 1.5px은 아이콘 용도 안내 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:10475](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-10475) |
+| 범용 아이콘 크기 | 공통 크기 미정; 컴포넌트별 지정 | 24px 기준, 16/20/24/30/36px 크기 세트 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:9425](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-9425) |
+| 상태 역할 색 | 상태칩은 배경·테두리·글자 조합 사용. Info `#EFF6FF/#DBEAFE/#1E40AF`, Success `#E8F5E9/#C8E6C9/#166534`, Caution `#FFF8E1/#FFB300/#FF8F00`, Danger `#FFEBEE/#FFCDD2/#C62828` | 단색 역할 색: Info `#1D4ED8`, Success `#15803D`, Caution `#FFA000`, Error `#D32F2F` | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:6893](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-6893) |
+| 브랜드·중립 원본 팔레트 | 확인한 Darkblue, lightgreen, Grey 단계 | 확인한 Primary, BrandSub, Neutral 팔레트 값 일치 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:6893](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-6893) |
+| 기본 서체 | SUIT, 본문 토큰에 16px 포함 | SUIT, 본문 기준 16px | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:8157](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-8157) |

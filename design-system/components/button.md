@@ -118,3 +118,18 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7696:4607`, `6534:185
 | `.ds-modal__footer .ds-btn` | 기본 폭 150px, 좁은 모달에서는 같은 비율로 축소 |
 | `.ds-btn:disabled` | 비활성 상태 |
 | `.ds-btn:focus-visible` | 키보드 포커스 상태 |
+
+## 프레임워크 사용 원칙
+
+- 버튼은 명확한 동작 실행이나 상태 변경에 사용한다. 단순 이동 링크나 선택 상태 표시와 혼용하지 않는다.
+- 액션 중요도에 따라 Primary, Secondary, Tertiary 위계를 두고 가장 중요한 동작이 먼저 읽히게 한다.
+- 라벨을 중심으로 구성하고 아이콘은 동작을 보조할 때만 사용한다. 아이콘만으로 뜻이 불명확하면 텍스트를 함께 둔다.
+- 프레임워크의 위계 명칭은 기존 DS의 Filled/Outline 변형과 일대일 대응한다고 단정하지 않는다.
+
+출처: 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [Button 164:14191](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=164-14191)
+
+## 프레임워크와 차이
+
+| 항목 | DS 값 | 프레임워크 값 | 노드 ID |
+|---|---|---|---|
+| Primary 버튼 배경색 | `#323DA3` | `#323DA3` | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [164:14191](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=164-14191) |
