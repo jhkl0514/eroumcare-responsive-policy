@@ -128,6 +128,18 @@
   --ds-radius-40: 40px; /* Radius5 */
   --ds-radius-circle: 999px; /* radius-circle */
 
+  /* foundations.md Shape: Framework Figma Shape 1:10475 */
+  --ds-border-1: 1px;
+  --ds-border-1-5: 1.5px;
+  --ds-border-2: 2px;
+
+  /* foundations.md Icon: Framework Figma Icon 1:9425 */
+  --ds-icon-16: 16px;
+  --ds-icon-20: 20px;
+  --ds-icon-24: 24px;
+  --ds-icon-30: 30px;
+  --ds-icon-36: 36px;
+
   /* foundations.md 5 그림자 */
   --ds-shadow-default: 0 0 1px rgba(0, 0, 0, 0.2), 0 2px 16px rgba(0, 0, 0, 0.08); /* shadow1_default */
   --ds-shadow-2: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.12); /* elevation/shadow2 */

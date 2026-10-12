@@ -32,7 +32,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 
 - Figma DS 라이브러리: [64Q1Re56aiAA8Al89pqjnV](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=36-11730)
 - 프로젝트 기준: `CLAUDE.md` 3장·5장
-- 참고 링크: [uxuithkc.netlify.app/framework](https://uxuithkc.netlify.app/framework) (접근 불가, 추후 확인)
+- 참고 출처: 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv), 상세 노드 링크는 [Foundations](./foundations.md#color) 및 각 컴포넌트 문서에 기록
 - Figma 속성명·컴포넌트명은 문서에서 표준화해 쓸 수 있으며, 원본과 다른 이름이나 값은 해당 문서에 원문과 함께 기록한다.
 - 확정되지 않았거나 출처 간 차이가 남은 내용은 각 문서의 `확인 필요`에 기록한다.
 - 개발 미사용으로 삭제 예정인 항목은 승인된 결정 번호와 문서 처리 기준에 따라 본문 스펙에서 제외한다.

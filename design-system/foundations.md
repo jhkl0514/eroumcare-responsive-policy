@@ -5,10 +5,11 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 이 문서는 Figma DS 라이브러리와 `CLAUDE.md` 3장·5장의 확정값을 기준으로 작성한다. Figma와 문서 확정값이 다른 항목은 임의 확정하지 않고 “확인 필요”로 표시한다.
 
 - Figma DS 라이브러리: [64Q1Re56aiAA8Al89pqjnV / Component 36:11730](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=36-11730)
-- 기준 컬렉션: `Primitive`, `Theme`, `Sementic`, `Breakpoint`
-- 기준 모드: `대대여`
+- 기준 컬렉션 표기: `Primitive`, `Theme`, `Sementic`, `Breakpoint` (`Sementic`의 Figma Variables 원문 표기는 확인 필요)
+- 캔버스에서 관찰한 텍스트: `대대여` (Variables mode 이름인지는 확인되지 않음)
 - 참고 출처: 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [Color 1:6893](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-6893), [Typography 1:8157](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-8157), [Layout 1:8547](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-8547), [아이콘 1:9425](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-9425), [Shape 1:10475](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-10475)
 
+<a id="color"></a>
 ## 1. 컬러
 
 ### 1-1. 원본 팔레트
@@ -83,6 +84,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | `Color/border/brand-subtle` | `#CED2F4` | Default 상태 테두리 | `Sementic` Variables |
 | `Color/border/danger-subtle` | `#FFCDD2` | Danger 상태 테두리 | `Sementic` Variables |
 
+<a id="typography"></a>
 ## 2. 타이포
 
 | 토큰명 | 값 | 용도 | Figma 출처 |
@@ -120,6 +122,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | 카드 목록 간격 | `12` | 카드 사이 간격 | `CLAUDE.md` 3-8, 3-9 |
 | 상태칩 gap | `4` | 아이콘/텍스트 조합 여백 | [Status chip-Order 13139:11578](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=13139-11578) |
 
+<a id="shape"></a>
 ## 4. 모서리
 
 | 토큰명 | 값 | 용도 | Figma 출처 |
@@ -131,6 +134,16 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | `border/radius/Radius4` | `16px` | Modal 외곽 모서리 | `Sementic` Variables; [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122) |
 | `border/radius/Radius5` | `40` | 큰 알약형 요소 | `Sementic` Variables |
 | `border/radius/radius-circle` | `999` | 상태칩, 필터칩 알약 | `Sementic` Variables |
+
+### 테두리 굵기
+
+DS 라이브러리에서 공통 굵기 토큰을 확인하지 못해 프레임워크 값을 프로젝트 토큰으로 채택했다.
+
+| 토큰명 | 값 | 용도 | Figma 출처 |
+|---|---:|---|---|
+| `--ds-border-1` | `1px` | 기본 테두리·구분선 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [Shape 1:10475](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-10475) |
+| `--ds-border-1-5` | `1.5px` | 아이콘 선 굵기 용례 | 같은 노드 |
+| `--ds-border-2` | `2px` | 강조·포커스 테두리 | 같은 노드 |
 
 ## 5. 그림자
 
@@ -144,6 +157,20 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | `elevation/shadow6_Top` | `0 -4px 16px rgba(0,0,0,.12)` | 상단 방향 elevation | Effect Styles |
 | 카드 목록 그림자 | `0 2px 8px rgba(0,0,0,.08), 0 0 .5px rgba(0,0,0,.2)` | 모바일 카드 목록 기본 그림자 | `CLAUDE.md` 3-9 |
 
+<a id="icon"></a>
+## 아이콘 크기
+
+공통 아이콘 크기는 DS 라이브러리에서 정하지 않아 프레임워크 기준을 토큰으로 채택한다. 기본 그리드는 24px이며, 실제 자산의 원본 비율과 컴포넌트 슬롯을 우선한다.
+
+| 토큰명 | 값 | 용도 | Figma 출처 |
+|---|---:|---|---|
+| `--ds-icon-16` | `16px` | 작은 보조 아이콘 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [아이콘 1:9425](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-9425) |
+| `--ds-icon-20` | `20px` | 소형 컨트롤 아이콘 | 같은 노드 |
+| `--ds-icon-24` | `24px` | 기본 아이콘 그리드 | 같은 노드 |
+| `--ds-icon-30` | `30px` | 중대형 아이콘 | 같은 노드 |
+| `--ds-icon-36` | `36px` | 큰 조작 아이콘 | 같은 노드 |
+
+<a id="layout"></a>
 ## 6. 브레이크포인트
 
 | 토큰명 | 값 | 용도 | Figma 출처 |
@@ -169,6 +196,8 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 |---|---|
 | 브레이크포인트 기록 구분 | 프로젝트 기준은 `1024 / 360`이며, Figma의 Mobile `360-768`, PC `1200-1920`은 디자인 캔버스 폭으로 기록한다. |
 | 프레임워크 참고 범위 | 지정된 Figma 노드만 확인했다. 사내 웹 문서 URL은 출처로 기재하지 않는다. |
+| Variables 원문 표기 | Figma node metadata에서 `Sementic` collection명은 확인되지 않았고, variable search에서도 결과가 없었다. Variables collection 목록을 직접 확인할 수 없어 원문 표기는 미확정이다. |
+| `대대여` 표기 | Figma 캔버스에 해당 문자열의 레이어가 있지만 Variables mode 이름인지는 확인하지 못했다. |
 
 ## 사용 원칙
 
@@ -187,8 +216,8 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 |---|---|---|---|
 | 프로젝트 반응형 기준 | `1024px` 이하 모바일, 최소 폭 `360px` | 767px 이하 고정형 모바일, 768px 이상 유동형 레이아웃, 최소 폭 360px | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:8547](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-8547) |
 | 반경 토큰 | Radius3 `12px`, Radius4 `16px`, Radius5 `40px` | Radius3 `16px`, Radius4 `40px`, 별도 Radius5 없음 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:10475](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-10475) |
-| 테두리 굵기 공통 토큰 | 공통 굵기 토큰 미정; 컴포넌트별 값 사용 | 1px, 1.5px, 2px 단계. 1.5px은 아이콘 용도 안내 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:10475](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-10475) |
-| 범용 아이콘 크기 | 공통 크기 미정; 컴포넌트별 지정 | 24px 기준, 16/20/24/30/36px 크기 세트 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:9425](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-9425) |
+| 테두리 굵기 공통 토큰 | DS 원본에 미정이어서 프레임워크 값으로 `--ds-border-1/1-5/2` 채택: 1/1.5/2px | 1px, 1.5px, 2px 단계. 1.5px은 아이콘 용도 안내 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:10475](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-10475) |
+| 범용 아이콘 크기 | DS 원본에 미정이어서 프레임워크 값으로 `--ds-icon-16/20/24/30/36` 채택 | 24px 기준, 16/20/24/30/36px 크기 세트 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:9425](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-9425) |
 | 상태 역할 색 | 상태칩은 배경·테두리·글자 조합 사용. Info `#EFF6FF/#DBEAFE/#1E40AF`, Success `#E8F5E9/#C8E6C9/#166534`, Caution `#FFF8E1/#FFB300/#FF8F00`, Danger `#FFEBEE/#FFCDD2/#C62828` | 단색 역할 색: Info `#1D4ED8`, Success `#15803D`, Caution `#FFA000`, Error `#D32F2F` | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:6893](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-6893) |
 | 브랜드·중립 원본 팔레트 | 확인한 Darkblue, lightgreen, Grey 단계 | 확인한 Primary, BrandSub, Neutral 팔레트 값 일치 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:6893](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-6893) |
 | 기본 서체 | SUIT, 본문 토큰에 16px 포함 | SUIT, 본문 기준 16px | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:8157](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-8157) |
