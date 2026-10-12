@@ -154,7 +154,16 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | 디자인 캔버스 폭 / Min-width | Mobile `360`, PC `1200` | Figma 디자인 프레임 범위 | `Breakpoint` Variables |
 | 디자인 캔버스 폭 / Max-width | Mobile `768`, PC `1920` | Figma 디자인 프레임 범위 | `Breakpoint` Variables |
 
-## 7. 확인 필요
+## 7. 모달 너비
+
+| 토큰명 | 값 | 용도 | 출처 |
+|---|---:|---|---|
+| `Modal/sm` | `340px` | 소형 모달 기준 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
+| `Modal/md` | `480px` | 기본 안내·확인 모달 기준 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
+| `Modal/lg` | `600px` | 표 포함 모달 기준 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
+| `Modal/xl` | `800px` | 넓은 표·문서 모달 기준 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
+
+## 8. 확인 필요
 
 | 항목 | 내용 |
 |---|---|

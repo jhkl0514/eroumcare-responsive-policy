@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--ds-space-4);
+  min-inline-size: calc(var(--ds-space-48) * 3 + var(--ds-space-6));
   min-block-size: var(--ds-space-36);
   padding-inline: var(--ds-space-16);
   border: 1px solid var(--ds-color-border-primary);
@@ -77,8 +78,14 @@
   line-height: var(--ds-font-body-md-semibold-line-height);
 }
 
+.ds-btn--block {
+  display: flex;
+  inline-size: 100%;
+}
+
 .ds-btn:focus-visible,
 .ds-input:focus-visible,
+.ds-input__clear:focus-visible,
 .ds-textarea:focus-visible,
 .ds-select__trigger:focus-visible,
 .ds-modal__close:focus-visible {
@@ -133,6 +140,38 @@
 .ds-input::placeholder {
   color: var(--ds-color-text-disabled);
   opacity: 1;
+}
+
+.ds-input-wrap {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.ds-input-wrap .ds-input {
+  padding-inline-end: var(--ds-space-40);
+}
+
+.ds-input__clear {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--ds-space-8);
+  display: none;
+  place-items: center;
+  min-inline-size: var(--ds-space-24);
+  min-block-size: var(--ds-space-24);
+  padding: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: var(--ds-radius-circle);
+  background: var(--ds-color-bg-tertiary);
+  color: var(--ds-color-text-secondary);
+  cursor: pointer;
+}
+
+.ds-input-wrap:focus-within .ds-input:not(:placeholder-shown):not(:disabled):not([readonly]):not(.ds-is-readonly) + .ds-input__clear {
+  display: grid;
 }
 
 .ds-input[aria-invalid="true"],
@@ -286,8 +325,8 @@
 .ds-modal {
   position: relative;
   box-sizing: border-box;
-  inline-size: calc(100vw - var(--ds-space-40));
-  max-inline-size: 100%;
+  inline-size: 100%;
+  max-inline-size: var(--ds-modal-width-md);
   max-block-size: 100%;
   padding: var(--ds-space-24);
   overflow: visible;
@@ -299,15 +338,19 @@
 }
 
 .ds-modal--sm {
-  max-inline-size: calc(var(--ds-space-48) * 10);
+  max-inline-size: var(--ds-modal-width-sm);
 }
 
 .ds-modal--md {
-  max-inline-size: calc(var(--ds-space-48) * 12 + var(--ds-space-24));
+  max-inline-size: var(--ds-modal-width-md);
 }
 
 .ds-modal--lg {
-  max-inline-size: calc(var(--ds-space-40) * 20);
+  max-inline-size: var(--ds-modal-width-lg);
+}
+
+.ds-modal--xl {
+  max-inline-size: var(--ds-modal-width-xl);
 }
 
 .ds-modal__header,

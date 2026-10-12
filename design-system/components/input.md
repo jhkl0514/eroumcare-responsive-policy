@@ -47,6 +47,8 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7837:8282`, `7697:147
 | `Disabled` | 현재 조건에서 입력할 수 없음 | 비활성 배경·테두리·글자 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
 | `ReadOnly` | 값은 보여 주지만 직접 수정하지 않음 | 비활성 배경, 값은 읽을 수 있는 대비 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
 
+Figma 속성 원문 `Outlne`, `Incative`는 각각 표준명 `Outline`, `Inactive`로 정규화해 표기한다.
+
 ## 5. 토큰 매핑
 
 | 토큰명 | 값 | 용도 | Figma 출처 |
@@ -95,10 +97,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7837:8282`, `7697:147
 
 ## 9. 확인 필요
 
-| 항목 | 내용 |
-|---|---|
-| Figma 속성명 | Figma는 `Outlne`, `Incative`로 표기한다. 문서에서는 `Outline`, `Inactive`로 읽기 좋게 정규화했다. 라이브러리 속성명 수정 여부는 추후 확인한다. |
-| 지우기(X) 아이콘 | 프로젝트 동작 규칙은 확정되어 있으나, CLAUDE 기준 DS Textfield에 X 옵션이 아직 없다. 컴포넌트 구현 연결 시 옵션 지원 여부를 확인한다. |
+현재 확인 필요 항목 없음.
 
 ## CSS 클래스
 
@@ -107,6 +106,8 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7837:8282`, `7697:147
 | `.ds-field` | 라벨·입력·도움말을 묶는 필드 |
 | `.ds-field__label` | 필드 라벨 |
 | `.ds-input` | 한 줄 입력 |
+| `.ds-input-wrap` | 입력과 지우기 버튼의 위치 기준 |
+| `.ds-input__clear` | 값이 있고 입력 그룹에 포커스가 있을 때 표시되는 지우기 버튼. Disabled·ReadOnly에서는 숨김 |
 | `.ds-textarea` | 여러 줄 입력 |
 | `.ds-field__hint` | 입력 도움말 |
 | `.ds-field__error` | 오류 메시지 |
@@ -122,7 +123,10 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7837:8282`, `7697:147
 ```html
 <label class="ds-field">
   <span class="ds-field__label">연락처</span>
-  <input class="ds-input" type="tel" inputmode="tel" placeholder="010-0000-0000">
+  <span class="ds-input-wrap">
+    <input class="ds-input" type="tel" inputmode="tel" value="010-0000-0000" placeholder="연락처">
+    <button class="ds-input__clear" type="button" aria-label="입력 지우기">×</button>
+  </span>
   <span class="ds-field__hint">숫자만 입력해 주세요.</span>
 </label>
 ```

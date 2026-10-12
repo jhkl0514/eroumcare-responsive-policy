@@ -23,7 +23,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | 최소 모바일 폭 | `360px`; 콘텐츠 최소 너비는 `320px` |
 | 입력 컴포넌트 | Textfield·SelectField는 PC 40px, 모바일 48px. SelectOption은 PC 36px, 모바일 44px |
 | 버튼 | SM 36px / MD 48px는 PC·모바일 공통. 화면 하단 고정과 BottomSheet 하단 액션만 LG 54px |
-| 모달 폭 | 480 / 600 / 800px를 기준으로 `min(기준 폭, 화면 폭 - 40px)` 적용 |
+| 모달 폭 | sm 340 / md 480 / lg 600 / xl 800px; 화면 폭에 맞춰 축소 |
 | 카드 목록 | 카드 사이 간격 12px, 모서리 8px, 그림자 사용 |
 
 세부 값과 Figma 출처는 [Foundations](./foundations.md) 및 각 컴포넌트 문서를 따른다. 위 기준은 `CLAUDE.md`의 확정 규칙을 옮긴 요약이다.
@@ -46,16 +46,16 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 <link rel="stylesheet" href="/design-system/css/components.css">
 ```
 
-모든 컴포넌트 클래스는 `ds-`로 시작합니다. 색·크기·간격은 tokens.css의 사용자 정의 속성을 사용합니다. CSS는 표현만 제공하며 Select 열기, Modal 표시·닫기 동작은 구현하지 않습니다.
+모든 컴포넌트 클래스는 `ds-`로 시작합니다. 색·크기·간격은 tokens.css의 사용자 정의 속성을 사용합니다. CSS는 표현만 제공하며 입력 지우기, Select 열기, Modal 표시·닫기 동작은 구현하지 않습니다.
 
 ### 클래스 목록
 
 | 컴포넌트 | 클래스 |
 |---|---|
-| Button | `.ds-btn`, `.ds-btn--primary`, `.ds-btn--secondary`, `.ds-btn--tertiary`, `.ds-btn--outline`, `.ds-btn--sm`, `.ds-btn--md`, `.ds-btn--lg` |
-| Input | `.ds-field`, `.ds-field__label`, `.ds-input`, `.ds-textarea`, `.ds-field__hint`, `.ds-field__error`, `.ds-textarea__count`, `.ds-is-readonly`, `.ds-is-error` |
+| Button | `.ds-btn`, `.ds-btn--primary`, `.ds-btn--secondary`, `.ds-btn--tertiary`, `.ds-btn--outline`, `.ds-btn--sm`, `.ds-btn--md`, `.ds-btn--lg`, `.ds-btn--block` |
+| Input | `.ds-field`, `.ds-field__label`, `.ds-input-wrap`, `.ds-input`, `.ds-input__clear`, `.ds-textarea`, `.ds-field__hint`, `.ds-field__error`, `.ds-textarea__count`, `.ds-is-readonly`, `.ds-is-error` |
 | Select | `.ds-select`, `.ds-select__trigger`, `.ds-select__list`, `.ds-select__option`, `.ds-is-readonly`, `.ds-is-error` |
-| Modal | `.ds-modal-backdrop`, `.ds-modal`, `.ds-modal--sm`, `.ds-modal--md`, `.ds-modal--lg`, `.ds-modal__header`, `.ds-modal__title`, `.ds-modal__body`, `.ds-modal__footer`, `.ds-modal__close`, `.ds-bottom-sheet`, `.ds-bottom-sheet__body`, `.ds-bottom-sheet__footer` |
+| Modal | `.ds-modal-backdrop`, `.ds-modal`, `.ds-modal--sm`, `.ds-modal--md`, `.ds-modal--lg`, `.ds-modal--xl`, `.ds-modal__header`, `.ds-modal__title`, `.ds-modal__body`, `.ds-modal__footer`, `.ds-modal__close`, `.ds-bottom-sheet`, `.ds-bottom-sheet__body`, `.ds-bottom-sheet__footer` |
 | Status Chip | `.ds-chip` + 의미 또는 도메인 상태 modifier, `.ds-chip--table` |
 
 상태는 `:hover`, `:focus-visible`, `:disabled`, `[aria-invalid="true"]`로 표현합니다. 읽기전용 클래스는 접두사 규칙에 따라 `.ds-is-readonly`를 사용합니다.
@@ -64,6 +64,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 
 ```html
 <button class="ds-btn ds-btn--primary ds-btn--md" type="button">저장</button>
+<button class="ds-btn ds-btn--primary ds-btn--lg ds-btn--block" type="button">주문하기</button>
 ```
 
 ### Input
@@ -71,7 +72,10 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 ```html
 <label class="ds-field">
   <span class="ds-field__label">연락처</span>
-  <input class="ds-input" type="tel" inputmode="tel" placeholder="010-0000-0000">
+  <span class="ds-input-wrap">
+    <input class="ds-input" type="tel" inputmode="tel" value="010-0000-0000" placeholder="연락처">
+    <button class="ds-input__clear" type="button" aria-label="입력 지우기">×</button>
+  </span>
 </label>
 ```
 

@@ -28,11 +28,12 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
 
 ### Modal 크기
 
-| 크기 | 기준 너비 | 사용 기준 | Figma 출처 |
+| 크기 | 기준 너비 | 사용 기준 | 출처 |
 |---|---:|---|---|
-| MD | `480px` | 안내·확인·입력·검색 | [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122), `CLAUDE.md` 3-3 |
-| LG | `600px` | 테이블 포함 | [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122), `CLAUDE.md` 3-3 |
-| XL | `800px` | 큰 테이블·계약서·문서 정보 포함 | [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122), `CLAUDE.md` 3-3 |
+| SM | `340px` | 짧은 안내·확인 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
+| MD | `480px` | 안내·확인·입력·검색 | [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122), 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
+| LG | `600px` | 테이블 포함 | [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122), 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
+| XL | `800px` | 큰 테이블·계약서·문서 정보 포함 | [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122), 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
 
 ## 4. 상태
 
@@ -63,7 +64,7 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
 | 구분 | PC (≥1025px) | 모바일 (≤1024px) | 근거 |
 |---|---|---|---|
 | Modal 위치 | 화면 정중앙 | 화면 정중앙 | `CLAUDE.md` 3-3 |
-| Modal 너비 | 지정 크기 480 / 600 / 800px | `min(지정 크기, 화면 너비 - 40px)` | `CLAUDE.md` 3-3 |
+| Modal 너비 | 지정 크기 340 / 480 / 600 / 800px | 지정 크기 이하의 가용 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
 | 좌우 여백 | 지정 크기 기준 | 화면 양쪽 `20px` | `CLAUDE.md` 3-3 |
 | 안내·확인만 | Modal | Modal | `CLAUDE.md` 3-3 |
 | 선택만 | Modal | Modal, 선택지가 길면 BottomSheet | `CLAUDE.md` 3-3 |
@@ -75,7 +76,7 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
 
 ## 7. 사용 규칙
 
-1. 모달 크기는 내부 요소 수가 아니라 테이블(행·열 데이터) 포함 여부로 선택한다. 안내·확인·입력·검색은 480px, 표 포함형은 600px 또는 800px을 기준으로 한다.
+1. 모달 크기는 내부 요소 수가 아니라 테이블(행·열 데이터) 포함 여부로 선택한다. 기준 너비는 SM 340px, MD 480px, LG 600px, XL 800px이다.
 2. 모달은 딤 배경 위에 중앙 정렬한다. 본문이 넘치면 본문만 스크롤하고 타이틀·하단 액션은 유지한다.
 3. 모바일에서 글자 입력이 필요한 팝업은 BottomSheet로 연다. 다른 모달 위에서 입력칸 하나와 취소·확인만 제공하는 짧은 입력은 예외다.
 4. BottomSheet 높이는 고정 픽셀로 지정하지 않는다. 화면 높이에 맞춰 최대 높이를 정하고 본문만 스크롤한다.
@@ -101,8 +102,7 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
 
 | 항목 | 내용 |
 |---|---|
-| Figma 340px 샘플 | Figma에는 `Modal_sm-340` 샘플이 남아 있다. 프로젝트 기준은 별도 340px 크기를 두지 않고 `min(480px, 화면 너비 - 40px)`를 적용한다. 샘플 프레임 정리는 추후 확인한다. |
-| XL 샘플 프레임 크기 | Figma 일부 샘플 프레임의 실제 외곽 크기와 `xl-800` 명칭이 일치하지 않는 사례가 있다. 프로젝트 구현 기준은 `CLAUDE.md` 3-3의 800px 및 폭 공식을 따른다. |
+| 현재 확인 필요 없음 | 프로젝트 기준 모달 너비 340 / 480 / 600 / 800px을 적용했다. Figma 샘플 프레임은 구현 너비의 근거로 사용하지 않는다. |
 
 ## CSS 클래스
 
@@ -110,9 +110,10 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
 |---|---|
 | `.ds-modal-backdrop` | 딤과 중앙 정렬 컨테이너 |
 | `.ds-modal` | 모달 본체. overflow를 visible로 유지해 자식 Select 목록이 잘리지 않게 함 |
-| `.ds-modal--sm` | 480px 기준 폭 |
-| `.ds-modal--md` | 600px 기준 폭 |
-| `.ds-modal--lg` | 800px 기준 폭 |
+| `.ds-modal--sm` | 340px 기준 폭 |
+| `.ds-modal--md` | 480px 기준 폭 |
+| `.ds-modal--lg` | 600px 기준 폭 |
+| `.ds-modal--xl` | 800px 기준 폭 |
 | `.ds-modal__header` | 제목과 닫기 버튼 영역 |
 | `.ds-modal__title` | 모달 제목 |
 | `.ds-modal__body` | 본문 영역 |

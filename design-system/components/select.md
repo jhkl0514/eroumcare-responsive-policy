@@ -38,6 +38,7 @@ Select는 정해진 목록에서 값을 선택할 때 사용한다. 필드에는
 | OptionGroup 가로 패딩 | `8px` | `8px` | [OptionGroup 7984:8451](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7984-8451) |
 | OptionGroup 모서리 | `4px` | `4px` | [OptionGroup 7984:8451](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7984-8451) |
 | OptionGroup 옵션 수 변형 | `2`, `4`, `6`, `10` | `2`, `4`, `6`, `10` | [OptionGroup 7984:8451](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7984-8451) |
+| 옵션 목록 최대 높이 | `320px`, 초과 시 내부 스크롤 | `320px`, 초과 시 내부 스크롤 | 프로젝트 CSS 기준 |
 
 ## 4. 상태
 
@@ -63,7 +64,7 @@ Figma 출처: [SelectField 53:698](https://www.figma.com/design/64Q1Re56aiAA8Al8
 | `Hover:Active` | 미선택·선택 | 포인터/눌림 강조 |
 | `Diabled` | 미선택·선택 | 비활성 표현, 선택 불가 |
 
-Figma에는 `Diabled`로 오기되어 있다. 표준 상태 이름 `Disabled`로 문서에 표기한다. 출처: [SelectOption 6570:11270](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6570-11270)
+Figma 원문 `Diabled`는 문서와 클래스에서 표준 이름 `Disabled`로 정규화한다. 출처: [SelectOption 6570:11270](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6570-11270)
 
 ## 5. 토큰 매핑
 
@@ -113,8 +114,7 @@ Figma에는 `Diabled`로 오기되어 있다. 표준 상태 이름 `Disabled`로
 
 | 항목 | 내용 |
 |---|---|
-| Figma 속성 오기 | SelectOption 상태 `Diabled`는 문서에서 `Disabled`로 정규화했다. Figma 원본 속성명 수정 여부는 추후 확인한다. |
-| 목록 높이 제한 | OptionGroup은 2/4/6/10개 구성 변형을 제공한다. 실제 옵션 수가 더 많을 때의 최대 높이·스크롤 기준은 화면별 적용을 확인한다. |
+| 현재 확인 필요 없음 | `Disabled` 표준 표기와 320px 최대 높이·내부 스크롤을 문서 및 CSS에 반영했다. |
 
 ## CSS 클래스
 
