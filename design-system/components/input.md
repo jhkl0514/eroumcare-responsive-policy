@@ -38,14 +38,14 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7837:8282`, `7697:147
 
 ## 4. 상태
 
-| 상태 | 사용 시점 | 표시 규칙 | Figma 출처 |
+| 상태 | 상태 의미 | 표시 규칙 | Figma 출처 |
 |---|---|---|---|
-| `Inactive` | 값이 없고 아직 입력하지 않음 | MO 테두리 1px `#BDBDBD`, 흰 배경 | [Textfield Inactive MO 3065:29264](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=3065-29264) |
-| `Default` | 입력 가능한 기본 상태 | PC·MO 테두리 1px `#333333`, 흰 배경 | [Textfield Default MO 53:137](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-137), [PC 6201:9260](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6201-9260) |
-| `Focused` | 사용자가 필드를 편집 중 | 2px 브랜드 테두리, 바깥 outline 없음 | [Textfield Focused MO 53:145](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-145) |
-| `Error` | 입력값 검증 실패 | 2px 위험 테두리와 에러 메시지 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
-| `Disabled` | 현재 조건에서 입력할 수 없음 | MO 테두리 1px `#BDBDBD`, 비활성 배경·글자 | [Textfield Disabled MO 53:141](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-141) |
-| `ReadOnly` | 값은 보여 주지만 직접 수정하지 않음 | 비활성 배경, 값은 읽을 수 있는 대비 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
+| `Inactive` | 선택되지 않은 상태(빈 칸) | MO 테두리 1px `#BDBDBD`, 흰 배경 | [Textfield Inactive MO 3065:29264](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=3065-29264) |
+| `Default` | 입력이 완료된 상태 | PC·MO 테두리 1px `#333333`, 흰 배경 | [Textfield Default MO 53:137](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-137), [PC 6201:9260](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6201-9260) |
+| `Focused` | 선택되었거나 입력 중인 상태 | 2px 브랜드 테두리, 바깥 outline 없음 | [Textfield Focused MO 53:145](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-145) |
+| `Error` | 에러 | 2px 위험 테두리와 에러 메시지 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
+| `Disabled` | 비활성화 | MO 테두리 1px `#BDBDBD`, 비활성 배경·글자 | [Textfield Disabled MO 53:141](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-141) |
+| `ReadOnly` | 값은 보이지만 수정할 수 없는 상태 | 비활성 배경, 값은 읽을 수 있는 대비 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
 
 Figma 속성 원문 `Outlne`, `Incative`는 각각 표준명 `Outline`, `Inactive`로 정규화해 표기한다.
 

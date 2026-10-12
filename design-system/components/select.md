@@ -44,14 +44,14 @@ Select는 정해진 목록에서 값을 선택할 때 사용한다. 필드에는
 
 ### SelectField
 
-| 상태 | 사용 시점 | 표시 |
+| 상태 | 상태 의미 | 표시 |
 |---|---|---|
-| `Inactive` | 아직 값을 선택하지 않음 | placeholder와 기본 테두리 |
-| `Default` | 현재 선택값이 있음 | 흰 배경과 기본 테두리 |
-| `Focused` | 옵션 목록을 열었거나 조작 중 | 2px 브랜드 테두리 |
-| `Error` | 선택값 검증 실패 | 2px 위험 테두리와 오류 안내 |
-| `Disabled` | 조건상 선택 불가 | 비활성 배경과 테두리 |
-| `ReadOnly` | 선택값을 보여 주되 변경할 수 없음 | 비활성 배경, 읽을 수 있는 값 대비 |
+| `Inactive` | 선택되지 않은 상태(빈 칸) | placeholder와 기본 테두리 |
+| `Default` | 입력이 완료된 상태 | 흰 배경과 기본 테두리 |
+| `Focused` | 선택되었거나 입력 중인 상태(옵션 목록을 열었거나 조작 중) | 2px 브랜드 테두리 |
+| `Error` | 에러 | 2px 위험 테두리와 오류 안내 |
+| `Disabled` | 비활성화 | 비활성 배경과 테두리 |
+| `ReadOnly` | 값은 보이지만 수정할 수 없는 상태 | 비활성 배경, 읽을 수 있는 값 대비 |
 
 Figma 출처: [SelectField 53:698](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-698)
 
