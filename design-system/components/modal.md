@@ -54,6 +54,8 @@ SM 샘플은 [Modal/sm 6437:10238](https://www.figma.com/design/64Q1Re56aiAA8Al8
 | `--ds-radius-16` (`border/radius/Radius4`) | `16px` | 모달 바깥 모서리 | Figma DS 기준 [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122) |
 | `--ds-color-bg-primary` (`Color/bg/primary`) | `#FFFFFF` | 모달 배경 | Figma DS 기준 [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122) |
 | `--ds-shadow-4` (`elevation/shadow4`) | `0 8px 24px 0 rgba(0,0,0,.20), 0 0 4px 0 rgba(0,0,0,.12)` | 모달 그림자 | Figma DS 기준 [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122) |
+| 헤더 구분선 | `1px solid var(--ds-color-border-primary)` | 타이틀 영역 하단 구분 | Figma 타이틀 구성 [Part/Modal 6433:9616](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6433-9616) |
+| 닫기 아이콘 | `32 × 32px` | 타이틀 우측 닫기 버튼 아이콘 | Figma 타이틀 구성 [Part/Modal 6433:9616](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6433-9616) |
 | BottomSheet 상단 모서리 | `40px` | 모바일 시트 상단 좌우 모서리 | `CLAUDE.md` 3-5 |
 | 내부 좌우 여백 | `20px` | 모달 본문과 버튼 영역 | `CLAUDE.md` 3-3 |
 | Modal 버튼 높이 | `48px` | 모달 하단 액션 | `CLAUDE.md` 3-3, 3-4 |
@@ -119,7 +121,7 @@ SM 샘플은 [Modal/sm 6437:10238](https://www.figma.com/design/64Q1Re56aiAA8Al8
 | `.ds-modal--md` | 480px 기준 폭 |
 | `.ds-modal--lg` | 600px 기준 폭 |
 | `.ds-modal--xl` | 800px 기준 폭 |
-| `.ds-modal__header` | 제목과 닫기 버튼 영역 |
+| `.ds-modal__header` | 제목·닫기 버튼 및 타이틀 하단 구분선 영역 |
 | `.ds-modal__title` | 모달 제목 |
 | `.ds-modal__body` | 본문 영역 |
 | `.ds-modal__footer` | 하단 액션 영역 |
@@ -136,7 +138,7 @@ SM 샘플은 [Modal/sm 6437:10238](https://www.figma.com/design/64Q1Re56aiAA8Al8
     <header class="ds-modal__header">
       <h2 class="ds-modal__title" id="order-dialog-title">주문을 진행할까요?</h2>
       <button class="ds-modal__close" type="button" aria-label="닫기">
-        <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 24 24" fill="none">
           <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
         </svg>
       </button>
@@ -149,3 +151,22 @@ SM 샘플은 [Modal/sm 6437:10238](https://www.figma.com/design/64Q1Re56aiAA8Al8
   </section>
 </div>
 ```
+
+## 프레임워크 사용 원칙
+
+- 모달 너비는 내용의 양과 복잡도에 맞춘다. 짧은 안내·확인은 작게, 복합 정보는 더 넓은 크기로 구성한다.
+- 프레임워크는 SM 340px을 모바일용으로, MD/LG/XL을 PC용으로 나눈다. 이는 반응형에서 모든 크기를 사용할 수 있게 한 기존 DS 기준과 다르므로 두 규칙을 혼동하지 않는다.
+- 본문이 길어질 때 모달 전체를 무한히 키우지 않는다. 최대 높이를 제한하고 본문을 스크롤하며, 액션은 하단에서 접근할 수 있게 둔다.
+- 프레임워크 샘플은 모바일 버튼 영역을 전체 너비로 사용한다. PC에서는 버튼에 최소 폭을 두되, DS의 버튼 규칙과는 별도로 기록한다.
+- 모달을 중첩하지 않는다. 탭·아코디언·긴 입력처럼 맥락을 잃기 쉬운 상호작용은 별도 화면이나 적절한 시트 패턴을 검토한다.
+- 본문은 핵심 메시지 위주로 간결하게 작성하고, 닫기와 주요·보조 액션을 명확히 구분한다.
+
+출처: 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [Modal 1:5574](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-5574)
+
+## 프레임워크와 차이
+
+| 항목 | DS 값 | 프레임워크 값 | 노드 ID |
+|---|---|---|---|
+| 크기별 화면 적용 | SM 340 / MD 480 / LG 600 / XL 800px; 지정 폭 이하에서는 가용 폭에 맞춤 | SM 340px은 모바일, MD 480 / LG 600 / XL 800px은 PC용 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:5574](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-5574) |
+| 모바일 하단 버튼 | 높이 48px, 모달 폭이 좁으면 버튼 폭을 같은 비율로 축소 | SM 모바일 샘플에서 버튼 영역을 가로 100%로 사용 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:5574](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-5574) |
+| PC 하단 버튼 최소 폭 | 150px; 좁은 컨테이너에서는 축소 | MD/LG/XL 버튼 최소 폭 150px | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:5574](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-5574) |

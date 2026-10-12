@@ -1,0 +1,27 @@
+<section data-sample="변형(variant) · 크기 > TextAreaField">
+  <label class="ds-field" data-label="Textarea · 기본">
+    <span class="ds-field__label" data-label="Field label">요청 사유</span>
+    <textarea class="ds-textarea" placeholder="요청 사유를 입력해 주세요." data-label="Textarea · Default"></textarea>
+    <span class="ds-textarea__count" data-label="Character count">0 / 200자</span>
+  </label>
+</section>
+<section data-sample="상태 > Focused">
+  <label class="ds-field" data-label="Textarea · Focused">
+    <span class="ds-field__label" data-label="Field label">메모</span>
+    <textarea class="ds-textarea" placeholder="전달할 내용을 입력해 주세요." data-label="Textarea · Focus by click"></textarea>
+  </label>
+</section>
+<section data-sample="상태 > Error">
+  <label class="ds-field" data-label="Textarea · Error">
+    <span class="ds-field__label" data-label="Field label">요청 사유</span>
+    <textarea class="ds-textarea ds-is-error" aria-invalid="true" aria-describedby="reason-error" data-label="Textarea · Error"></textarea>
+    <span class="ds-field__error" id="reason-error" data-label="Error message">요청 사유를 입력해 주세요.</span>
+    <span class="ds-textarea__count" data-label="Character count">0 / 200자</span>
+  </label>
+</section>
+<section data-sample="상태 > Disabled">
+  <label class="ds-field" data-label="Textarea · Disabled">
+    <span class="ds-field__label" data-label="Field label">메모</span>
+    <textarea class="ds-textarea" disabled data-label="Textarea · Disabled">확인된 내용입니다.</textarea>
+  </label>
+</section>

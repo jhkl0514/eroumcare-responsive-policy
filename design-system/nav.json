@@ -1,0 +1,109 @@
+[
+  {
+    "group": "개요",
+    "items": [
+      { "title": "디자인 시스템 개요", "file": "DESIGN.md", "status": "done", "figmaNodeIds": ["1:2"] }
+    ]
+  },
+  {
+    "group": "Foundation",
+    "items": [
+      { "title": "Color", "file": "foundations.md#color", "status": "done", "figmaNodeIds": ["1:6893"], "sample": "samples/foundations.html" },
+      { "title": "Typography", "file": "foundations.md#typography", "status": "done", "figmaNodeIds": ["1:8157"], "sample": "samples/foundations.html" },
+      { "title": "Shape", "file": "foundations.md#shape", "status": "done", "figmaNodeIds": ["1:10475"], "sample": "samples/foundations.html" },
+      { "title": "Layout", "file": "foundations.md#layout", "status": "done", "figmaNodeIds": ["1:8547"], "sample": "samples/foundations.html" },
+      { "title": "Icon", "file": "foundations.md#icon", "status": "done", "figmaNodeIds": ["1:9425"], "sample": "samples/foundations.html" }
+    ]
+  },
+  {
+    "group": "Components / Navigation",
+    "items": [
+      { "title": "GNB", "file": "components/gnb.md", "status": "todo", "figmaNodeIds": ["1:3990"] },
+      { "title": "Side Navigation", "file": "components/side-navigation.md", "status": "todo", "figmaNodeIds": ["1:4201"] },
+      { "title": "Breadcrumb", "file": "components/breadcrumb.md", "status": "todo", "figmaNodeIds": ["1:4606"] },
+      { "title": "Pagination", "file": "components/pagination.md", "status": "done", "figmaNodeIds": ["1:4426"] }
+    ]
+  },
+  {
+    "group": "Components / Layout",
+    "items": [
+      { "title": "Accordion", "file": "components/accordion.md", "status": "todo", "figmaNodeIds": ["1:40847"] },
+      { "title": "Avatar", "file": "components/avatar.md", "status": "todo", "figmaNodeIds": ["1:41570"] },
+      { "title": "Badge", "file": "components/badge.md", "status": "todo", "figmaNodeIds": ["1:6508"] },
+      { "title": "Calendar", "file": "components/calendar.md", "status": "todo", "figmaNodeIds": ["1:5097"] },
+      { "title": "Card", "file": "components/card.md", "status": "todo", "figmaNodeIds": ["1:6281"] },
+      { "title": "Carousel", "file": "components/carousel.md", "status": "todo", "figmaNodeIds": ["1:4763"] },
+      { "title": "Label", "file": "components/label.md", "status": "todo", "figmaNodeIds": ["10:15115"] },
+      { "title": "Modal", "file": "components/modal.md", "status": "done", "figmaNodeIds": ["1:5574"], "sample": "samples/modal.html" },
+      { "title": "Status Chip", "file": "components/status-chip.md", "status": "done", "figmaNodeIds": ["10:15762"], "sample": "samples/status-chip.html" },
+      { "title": "Tab", "file": "components/tab.md", "status": "done", "figmaNodeIds": ["10:16409"] },
+      { "title": "Table", "file": "components/table.md", "status": "done", "figmaNodeIds": ["10:17056"] }
+    ]
+  },
+  {
+    "group": "Components / Action",
+    "items": [
+      { "title": "Button", "file": "components/button.md", "status": "done", "figmaNodeIds": ["164:14191"], "sample": "samples/button.html" },
+      { "title": "Link", "file": "components/link.md", "status": "todo", "figmaNodeIds": ["164:23662"] }
+    ]
+  },
+  {
+    "group": "Components / Select",
+    "items": [
+      { "title": "Checkbox", "file": "components/checkbox.md", "status": "done", "figmaNodeIds": ["238:13303"] },
+      { "title": "Chips", "file": "components/chips.md", "status": "done", "figmaNodeIds": ["239:14543"] },
+      { "title": "Radio", "file": "components/radio.md", "status": "done", "figmaNodeIds": ["239:14963"] },
+      { "title": "Segmented Control", "file": "components/segmented-control.md", "status": "todo", "figmaNodeIds": ["239:15383"] },
+      { "title": "Select", "file": "components/select.md", "status": "done", "figmaNodeIds": ["239:15803"], "sample": "samples/select.html" },
+      { "title": "Switch", "file": "components/switch.md", "status": "todo", "figmaNodeIds": ["239:16223"] }
+    ]
+  },
+  {
+    "group": "Components / Input",
+    "items": [
+      { "title": "Text input", "file": "components/text-input.md", "status": "done", "figmaNodeIds": ["475:22492"], "sample": "samples/text-input.html" },
+      { "title": "Textarea", "file": "components/textarea.md", "status": "done", "figmaNodeIds": ["475:19957"], "sample": "samples/textarea.html" },
+      { "title": "File upload", "file": "components/file-upload.md", "status": "todo", "figmaNodeIds": ["475:24981"] },
+      { "title": "Number Stepper", "file": "components/number-stepper.md", "status": "todo", "figmaNodeIds": ["3824:2"] }
+    ]
+  },
+  {
+    "group": "Components / Feedback",
+    "items": [
+      { "title": "Loading", "file": "components/loading.md", "status": "todo", "figmaNodeIds": ["717:19127"] },
+      { "title": "Step indicator", "file": "components/step-indicator.md", "status": "todo", "figmaNodeIds": ["717:19341"] }
+    ]
+  },
+  {
+    "group": "Components / Message",
+    "items": [
+      { "title": "Toast", "file": "components/toast.md", "status": "todo", "figmaNodeIds": ["724:19636"] },
+      { "title": "Tooltip", "file": "components/tooltip.md", "status": "todo", "figmaNodeIds": ["735:22043"] }
+    ]
+  },
+  {
+    "group": "Patterns",
+    "items": [
+      { "title": "검색", "file": "patterns/search.md", "status": "todo", "figmaNodeIds": ["827:20735", "1916:40102"] },
+      { "title": "알림", "file": "patterns/notification.md", "status": "todo", "figmaNodeIds": ["827:22027"] },
+      { "title": "오류", "file": "patterns/error.md", "status": "todo", "figmaNodeIds": ["827:22430", "2040:41054"] },
+      { "title": "입력폼", "file": "patterns/input-form.md", "status": "todo", "figmaNodeIds": ["827:22833"] },
+      { "title": "카드(모바일)", "file": "patterns/mobile-card.md", "status": "todo", "figmaNodeIds": ["1954:42749"] },
+      { "title": "주문 상품리스트", "file": "patterns/order-product-list.md", "status": "todo", "figmaNodeIds": ["827:23639", "2040:42553"] },
+      { "title": "상품상세", "file": "patterns/product-detail.md", "status": "todo", "figmaNodeIds": ["827:27346", "2040:42840"] },
+      { "title": "정보확인", "file": "patterns/information-confirmation.md", "status": "todo", "figmaNodeIds": ["827:26088", "2040:43317"] },
+      { "title": "테이블 기본형", "file": "patterns/table-basic.md", "status": "todo", "figmaNodeIds": ["827:25686"] },
+      { "title": "테이블 데이터 입력형", "file": "patterns/table-data-entry.md", "status": "todo", "figmaNodeIds": ["827:26490"] },
+      { "title": "테이블 조합형", "file": "patterns/table-composite.md", "status": "todo", "figmaNodeIds": ["827:26896"] },
+      { "title": "테이블 리스트", "file": "patterns/table-list.md", "status": "todo", "figmaNodeIds": ["3869:42100"] }
+    ]
+  },
+  {
+    "group": "Page",
+    "items": [
+      { "title": "Error", "file": "pages/error.md", "status": "todo", "figmaNodeIds": ["827:22430", "2040:41054"], "figmaStatus": "오류 패턴 프레임을 참조; 독립 Page 노드는 미확인" },
+      { "title": "NoData", "file": "pages/no-data.md", "status": "todo", "figmaNodeIds": [], "figmaStatus": "독립 Page 노드 미확인" },
+      { "title": "빈 화면", "file": "pages/empty.md", "status": "todo", "figmaNodeIds": ["2380:48455", "2380:49817"], "figmaStatus": "EmptyState 사용 예시 인스턴스" }
+    ]
+  }
+]

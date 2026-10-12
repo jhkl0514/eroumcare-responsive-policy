@@ -10,7 +10,8 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 |---|---|
 | [Foundations](./foundations.md) | 원본·시맨틱 컬러, 타이포, 간격, 모서리, 그림자, 브레이크포인트 |
 | [Button](./components/button.md) | 버튼 종류, 크기, 상태, 배치 규칙 |
-| [Input](./components/input.md) | Textfield, TextAreaField, 입력 상태와 키보드 규칙 |
+| [Text input](./components/text-input.md) | Textfield 크기·상태와 사용 규칙 |
+| [Textarea](./components/textarea.md) | 여러 줄 입력·글자 수·스크롤 규칙 |
 | [Select](./components/select.md) | SelectField, SelectOption, OptionGroup, 선택 흐름 |
 | [Modal](./components/modal.md) | 모달 크기와 모바일 팝업 형태 선택 |
 | [Status Chip](./components/status-chip.md) | 구입·대여·회수·A/S·반품 상태 표시 |
@@ -28,11 +29,13 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 
 세부 값과 Figma 출처는 [Foundations](./foundations.md) 및 각 컴포넌트 문서를 따른다. 모달 크기 네 단계는 Figma DS 기준이며, `CLAUDE.md` 3-3도 이 기준으로 갱신 예정이다.
 
+새 문서를 추가할 때는 [nav.json](./nav.json)의 해당 항목도 `done`으로 함께 갱신한다. 해당 컴포넌트 CSS가 준비된 경우 `samples/` 견본을 함께 추가하고 nav 항목에 연결한다.
+
 ## 출처와 표기
 
 - Figma DS 라이브러리: [64Q1Re56aiAA8Al89pqjnV](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=36-11730)
 - 프로젝트 기준: `CLAUDE.md` 3장·5장
-- 참고 링크: [uxuithkc.netlify.app/framework](https://uxuithkc.netlify.app/framework) (접근 불가, 추후 확인)
+- 참고 출처: 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv), 상세 노드 링크는 [Foundations](./foundations.md#color) 및 각 컴포넌트 문서에 기록
 - Figma 속성명·컴포넌트명은 문서에서 표준화해 쓸 수 있으며, 원본과 다른 이름이나 값은 해당 문서에 원문과 함께 기록한다.
 - 확정되지 않았거나 출처 간 차이가 남은 내용은 각 문서의 `확인 필요`에 기록한다.
 - 개발 미사용으로 삭제 예정인 항목은 승인된 결정 번호와 문서 처리 기준에 따라 본문 스펙에서 제외한다.
@@ -53,7 +56,8 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | 컴포넌트 | 클래스 |
 |---|---|
 | Button | `.ds-btn`, `.ds-btn--primary`, `.ds-btn--secondary`, `.ds-btn--tertiary`, `.ds-btn--outline`, `.ds-btn--outline-secondary`, `.ds-btn--sm`, `.ds-btn--md`, `.ds-btn--lg`, `.ds-btn--block` |
-| Input | `.ds-field`, `.ds-field__label`, `.ds-input-wrap`, `.ds-input`, `.ds-input__clear`, `.ds-textarea`, `.ds-field__hint`, `.ds-field__error`, `.ds-textarea__count`, `.ds-is-readonly`, `.ds-is-error` |
+| Text input | `.ds-field`, `.ds-field__label`, `.ds-input-wrap`, `.ds-input`, `.ds-input__clear`, `.ds-field__hint`, `.ds-field__error`, `.ds-is-inactive`, `.ds-is-readonly`, `.ds-is-error` |
+| Textarea | `.ds-field`, `.ds-field__label`, `.ds-textarea`, `.ds-field__hint`, `.ds-field__error`, `.ds-textarea__count` |
 | Select | `.ds-select`, `.ds-select__trigger`, `.ds-select__list`, `.ds-select__option`, `.ds-is-readonly`, `.ds-is-error` |
 | Modal | `.ds-modal-backdrop`, `.ds-modal`, `.ds-modal--sm`, `.ds-modal--md`, `.ds-modal--lg`, `.ds-modal--xl`, `.ds-modal__header`, `.ds-modal__title`, `.ds-modal__body`, `.ds-modal__footer`, `.ds-modal__close`, `.ds-bottom-sheet`, `.ds-bottom-sheet__body`, `.ds-bottom-sheet__footer` |
 | Status Chip | `.ds-chip` + 의미 또는 도메인 상태 modifier, `.ds-chip--table` |
