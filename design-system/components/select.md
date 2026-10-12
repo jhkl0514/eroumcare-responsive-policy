@@ -115,3 +115,35 @@ Figma에는 `Diabled`로 오기되어 있다. 표준 상태 이름 `Disabled`로
 |---|---|
 | Figma 속성 오기 | SelectOption 상태 `Diabled`는 문서에서 `Disabled`로 정규화했다. Figma 원본 속성명 수정 여부는 추후 확인한다. |
 | 목록 높이 제한 | OptionGroup은 2/4/6/10개 구성 변형을 제공한다. 실제 옵션 수가 더 많을 때의 최대 높이·스크롤 기준은 화면별 적용을 확인한다. |
+
+## CSS 클래스
+
+옵션 목록은 트리거와 같은 `.ds-select` 안에 둔다. 목록은 320px에서 내부 스크롤되며 overflow가 보이는 모달 안에서도 잘리지 않도록 구성한다.
+
+| 클래스 | 용도 |
+|---|---|
+| `.ds-select` | 필드와 옵션 목록의 위치 기준 |
+| `.ds-select__trigger` | 현재 선택값을 보여 주는 버튼 |
+| `.ds-select__list` | 내부 스크롤 옵션 목록 |
+| `.ds-select__option` | 개별 옵션 |
+| `.ds-is-readonly` | 읽기전용 표시용 클래스 |
+| `.ds-is-error` | 오류 표시용 클래스 |
+| `:focus-visible` | 키보드 포커스 상태 |
+| `:disabled` | 비활성 상태 |
+| `[aria-invalid="true"]` | 검증 오류 상태 |
+| `[aria-selected="true"]` | 선택된 옵션 |
+
+## HTML 예시
+
+```html
+<div class="ds-select">
+  <button class="ds-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="true">
+    <span>수급자</span><span aria-hidden="true">⌄</span>
+  </button>
+  <div class="ds-select__list" role="listbox" aria-label="검색 기준">
+    <button class="ds-select__option" type="button" role="option" aria-selected="true">수급자</button>
+    <button class="ds-select__option" type="button" role="option" aria-selected="false">연락처</button>
+    <button class="ds-select__option" type="button" role="option" aria-selected="false">주문번호</button>
+  </div>
+</div>
+```

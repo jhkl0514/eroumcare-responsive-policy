@@ -99,3 +99,38 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7837:8282`, `7697:147
 |---|---|
 | Figma 속성명 | Figma는 `Outlne`, `Incative`로 표기한다. 문서에서는 `Outline`, `Inactive`로 읽기 좋게 정규화했다. 라이브러리 속성명 수정 여부는 추후 확인한다. |
 | 지우기(X) 아이콘 | 프로젝트 동작 규칙은 확정되어 있으나, CLAUDE 기준 DS Textfield에 X 옵션이 아직 없다. 컴포넌트 구현 연결 시 옵션 지원 여부를 확인한다. |
+
+## CSS 클래스
+
+| 클래스 | 용도 |
+|---|---|
+| `.ds-field` | 라벨·입력·도움말을 묶는 필드 |
+| `.ds-field__label` | 필드 라벨 |
+| `.ds-input` | 한 줄 입력 |
+| `.ds-textarea` | 여러 줄 입력 |
+| `.ds-field__hint` | 입력 도움말 |
+| `.ds-field__error` | 오류 메시지 |
+| `.ds-textarea__count` | 글자 수 표시 |
+| `.ds-is-readonly` | 읽기전용 표시용 클래스 |
+| `.ds-is-error` | 오류 표시용 클래스 |
+| `:focus-visible` | 키보드 포커스 테두리 |
+| `:disabled` | 비활성 상태 |
+| `[aria-invalid="true"]` | 검증 오류 상태 |
+
+## HTML 예시
+
+```html
+<label class="ds-field">
+  <span class="ds-field__label">연락처</span>
+  <input class="ds-input" type="tel" inputmode="tel" placeholder="010-0000-0000">
+  <span class="ds-field__hint">숫자만 입력해 주세요.</span>
+</label>
+```
+
+```html
+<label class="ds-field">
+  <span class="ds-field__label">요청 사유</span>
+  <textarea class="ds-textarea" aria-invalid="true"></textarea>
+  <span class="ds-field__error">요청 사유를 입력해 주세요.</span>
+</label>
+```

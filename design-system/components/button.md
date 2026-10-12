@@ -94,3 +94,20 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7696:4607`, `6534:185
 | 항목 | 내용 |
 |---|---|
 | 고정 너비 | Figma 예시 버튼의 너비는 라벨에 따라 달라진다. 모달 버튼은 프로젝트 규칙의 150px 기준과 좁은 화면 축소 규칙을 적용한다. |
+
+## CSS 클래스
+
+기본 클래스와 변형 클래스를 조합한다. 상태는 HTML `disabled`와 `:focus-visible`로 표현한다.
+
+| 클래스 | 용도 |
+|---|---|
+| `.ds-btn` | 버튼 기본 스타일 |
+| `.ds-btn--primary` | Filled 주 동작 |
+| `.ds-btn--secondary` | 보조 채움 |
+| `.ds-btn--tertiary` | 낮은 강조 채움 |
+| `.ds-btn--outline` | 외곽선 보조 동작 |
+| `.ds-btn--sm` | 36px 높이 |
+| `.ds-btn--md` | 48px 높이 |
+| `.ds-btn--lg` | 54px 높이 |
+| `.ds-btn:disabled` | 비활성 상태 |
+| `.ds-btn:focus-visible` | 키보드 포커스 상태 |

@@ -103,3 +103,39 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
 |---|---|
 | Figma 340px 샘플 | Figma에는 `Modal_sm-340` 샘플이 남아 있다. 프로젝트 기준은 별도 340px 크기를 두지 않고 `min(480px, 화면 너비 - 40px)`를 적용한다. 샘플 프레임 정리는 추후 확인한다. |
 | XL 샘플 프레임 크기 | Figma 일부 샘플 프레임의 실제 외곽 크기와 `xl-800` 명칭이 일치하지 않는 사례가 있다. 프로젝트 구현 기준은 `CLAUDE.md` 3-3의 800px 및 폭 공식을 따른다. |
+
+## CSS 클래스
+
+| 클래스 | 용도 |
+|---|---|
+| `.ds-modal-backdrop` | 딤과 중앙 정렬 컨테이너 |
+| `.ds-modal` | 모달 본체. overflow를 visible로 유지해 자식 Select 목록이 잘리지 않게 함 |
+| `.ds-modal--sm` | 480px 기준 폭 |
+| `.ds-modal--md` | 600px 기준 폭 |
+| `.ds-modal--lg` | 800px 기준 폭 |
+| `.ds-modal__header` | 제목과 닫기 버튼 영역 |
+| `.ds-modal__title` | 모달 제목 |
+| `.ds-modal__body` | 본문 영역 |
+| `.ds-modal__footer` | 하단 액션 영역 |
+| `.ds-modal__close` | 닫기 버튼 |
+| `.ds-bottom-sheet` | 모바일 BottomSheet 본체 |
+| `.ds-bottom-sheet__body` | 시트 본문 |
+| `.ds-bottom-sheet__footer` | 시트 하단 액션 영역 |
+
+## HTML 예시
+
+```html
+<div class="ds-modal-backdrop">
+  <section class="ds-modal ds-modal--sm" role="dialog" aria-modal="true" aria-labelledby="order-dialog-title">
+    <header class="ds-modal__header">
+      <h2 class="ds-modal__title" id="order-dialog-title">주문을 진행할까요?</h2>
+      <button class="ds-modal__close" type="button" aria-label="닫기">×</button>
+    </header>
+    <div class="ds-modal__body">주문 정보를 확인해 주세요.</div>
+    <footer class="ds-modal__footer">
+      <button class="ds-btn ds-btn--outline ds-btn--md" type="button">취소</button>
+      <button class="ds-btn ds-btn--primary ds-btn--md" type="button">확인</button>
+    </footer>
+  </section>
+</div>
+```

@@ -36,3 +36,74 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 - Figma 속성명·컴포넌트명은 문서에서 표준화해 쓸 수 있으며, 원본과 다른 이름이나 값은 해당 문서에 원문과 함께 기록한다.
 - 확정되지 않았거나 출처 간 차이가 남은 내용은 각 문서의 `확인 필요`에 기록한다.
 - 개발 미사용으로 삭제 예정인 항목은 승인된 결정 번호와 문서 처리 기준에 따라 본문 스펙에서 제외한다.
+
+## CSS 사용법
+
+저장소 루트 기준 경로입니다. 다른 하위 폴더에서 사용할 때는 현재 문서 경로에 맞게 상대 경로를 조정합니다. 토큰을 먼저 불러온 뒤 컴포넌트 스타일을 불러옵니다.
+
+```html
+<link rel="stylesheet" href="/design-system/css/tokens.css">
+<link rel="stylesheet" href="/design-system/css/components.css">
+```
+
+모든 컴포넌트 클래스는 `ds-`로 시작합니다. 색·크기·간격은 tokens.css의 사용자 정의 속성을 사용합니다. CSS는 표현만 제공하며 Select 열기, Modal 표시·닫기 동작은 구현하지 않습니다.
+
+### 클래스 목록
+
+| 컴포넌트 | 클래스 |
+|---|---|
+| Button | `.ds-btn`, `.ds-btn--primary`, `.ds-btn--secondary`, `.ds-btn--tertiary`, `.ds-btn--outline`, `.ds-btn--sm`, `.ds-btn--md`, `.ds-btn--lg` |
+| Input | `.ds-field`, `.ds-field__label`, `.ds-input`, `.ds-textarea`, `.ds-field__hint`, `.ds-field__error`, `.ds-textarea__count`, `.ds-is-readonly`, `.ds-is-error` |
+| Select | `.ds-select`, `.ds-select__trigger`, `.ds-select__list`, `.ds-select__option`, `.ds-is-readonly`, `.ds-is-error` |
+| Modal | `.ds-modal-backdrop`, `.ds-modal`, `.ds-modal--sm`, `.ds-modal--md`, `.ds-modal--lg`, `.ds-modal__header`, `.ds-modal__title`, `.ds-modal__body`, `.ds-modal__footer`, `.ds-modal__close`, `.ds-bottom-sheet`, `.ds-bottom-sheet__body`, `.ds-bottom-sheet__footer` |
+| Status Chip | `.ds-chip` + 의미 또는 도메인 상태 modifier, `.ds-chip--table` |
+
+상태는 `:hover`, `:focus-visible`, `:disabled`, `[aria-invalid="true"]`로 표현합니다. 읽기전용 클래스는 접두사 규칙에 따라 `.ds-is-readonly`를 사용합니다.
+
+### Button
+
+```html
+<button class="ds-btn ds-btn--primary ds-btn--md" type="button">저장</button>
+```
+
+### Input
+
+```html
+<label class="ds-field">
+  <span class="ds-field__label">연락처</span>
+  <input class="ds-input" type="tel" inputmode="tel" placeholder="010-0000-0000">
+</label>
+```
+
+### Select
+
+```html
+<div class="ds-select">
+  <button class="ds-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="true">수급자</button>
+  <div class="ds-select__list" role="listbox" aria-label="검색 기준">
+    <button class="ds-select__option" type="button" role="option" aria-selected="true">수급자</button>
+    <button class="ds-select__option" type="button" role="option" aria-selected="false">연락처</button>
+  </div>
+</div>
+```
+
+### Modal
+
+```html
+<div class="ds-modal-backdrop">
+  <section class="ds-modal ds-modal--sm" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <h2 class="ds-modal__title" id="confirm-title">저장할까요?</h2>
+    <div class="ds-modal__body">입력한 내용을 저장합니다.</div>
+    <footer class="ds-modal__footer">
+      <button class="ds-btn ds-btn--outline ds-btn--md" type="button">취소</button>
+      <button class="ds-btn ds-btn--primary ds-btn--md" type="button">확인</button>
+    </footer>
+  </section>
+</div>
+```
+
+### Status Chip
+
+```html
+<span class="ds-chip ds-chip--purchase-preparing">상품준비</span>
+```

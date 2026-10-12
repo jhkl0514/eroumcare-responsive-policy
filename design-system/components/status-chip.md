@@ -164,3 +164,23 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `13139:11578`, `13864:
 | DS 삭제 예정(D-05) | 미사용(D-05) |
 | 구입 주문취소 | 주문취소는 단일 상태로 통일한다. Figma의 주체별 3종은 정리될 예정이다. |
 | 구입 추가상품 색상 | DS 기준 `Neutral · White`를 따른다. 개발 화면의 초록은 현행과 다름. |
+
+## CSS 클래스
+
+기본 `.ds-chip`에 시맨틱 색 또는 도메인 상태 클래스를 하나 조합한다. D-05 제외 항목의 클래스는 제공하지 않는다.
+
+| 도메인·상태 | 클래스 |
+|---|---|
+| 구입 주문: 주문접수, 주문확인중, 상품준비, 출고중, 출고완료, 배송완료, 취소요청, 주문취소, 추가상품 | `.ds-chip--purchase-received`, `.ds-chip--purchase-confirming`, `.ds-chip--purchase-preparing`, `.ds-chip--purchase-shipping`, `.ds-chip--purchase-shipped`, `.ds-chip--purchase-delivered`, `.ds-chip--purchase-cancel-requested`, `.ds-chip--purchase-cancelled`, `.ds-chip--purchase-additional-product` |
+| 대여 주문: 신규배정, 주문확인중, 주문완료, 출고준비중, 출고완료, 배송완료, 취소요청, 주문취소, 취소완료 | `.ds-chip--rental-assigned`, `.ds-chip--rental-confirming`, `.ds-chip--rental-completed`, `.ds-chip--rental-shipping-preparing`, `.ds-chip--rental-shipped`, `.ds-chip--rental-delivered`, `.ds-chip--rental-cancel-requested`, `.ds-chip--rental-cancelled`, `.ds-chip--rental-cancellation-completed` |
+| 회수: 회수접수, 회수확인중, 회수요청, 회수준비중, 회수완료, 회수취소, 회수취소완료 | `.ds-chip--collection-received`, `.ds-chip--collection-confirming`, `.ds-chip--collection-requested`, `.ds-chip--collection-preparing`, `.ds-chip--collection-completed`, `.ds-chip--collection-cancelled`, `.ds-chip--collection-cancellation-completed` |
+| A/S: 접수, 접수 확인, 진행중, 완료, 접수 취소, 접수 불가, A/S 불가 | `.ds-chip--service-received`, `.ds-chip--service-confirmed`, `.ds-chip--service-in-progress`, `.ds-chip--service-completed`, `.ds-chip--service-cancelled`, `.ds-chip--service-unavailable`, `.ds-chip--service-not-available` |
+| 반품: 접수, 접수 확인, 요청, 회수 요청, 회수 진행, 완료, 철회, 접수 취소, 접수 불가, 반품불가 | `.ds-chip--return-received`, `.ds-chip--return-confirmed`, `.ds-chip--return-requested`, `.ds-chip--return-collection-requested`, `.ds-chip--return-collection-progress`, `.ds-chip--return-completed`, `.ds-chip--return-withdrawn`, `.ds-chip--return-cancelled`, `.ds-chip--return-unavailable`, `.ds-chip--return-not-allowed` |
+| 공통 시맨틱 | `.ds-chip--info`, `.ds-chip--success`, `.ds-chip--caution`, `.ds-chip--brand-sub`, `.ds-chip--default`, `.ds-chip--danger`, `.ds-chip--neutral`, `.ds-chip--neutral-white` |
+| 테이블 축약 배지 | `.ds-chip--table` |
+
+## HTML 예시
+
+```html
+<span class="ds-chip ds-chip--purchase-preparing">상품준비</span>
+```
