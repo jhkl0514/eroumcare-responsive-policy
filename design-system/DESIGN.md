@@ -10,7 +10,8 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 |---|---|
 | [Foundations](./foundations.md) | 원본·시맨틱 컬러, 타이포, 간격, 모서리, 그림자, 브레이크포인트 |
 | [Button](./components/button.md) | 버튼 종류, 크기, 상태, 배치 규칙 |
-| [Input](./components/input.md) | Textfield, TextAreaField, 입력 상태와 키보드 규칙 |
+| [Text input](./components/text-input.md) | Textfield 크기·상태와 사용 규칙 |
+| [Textarea](./components/textarea.md) | 여러 줄 입력·글자 수·스크롤 규칙 |
 | [Select](./components/select.md) | SelectField, SelectOption, OptionGroup, 선택 흐름 |
 | [Modal](./components/modal.md) | 모달 크기와 모바일 팝업 형태 선택 |
 | [Status Chip](./components/status-chip.md) | 구입·대여·회수·A/S·반품 상태 표시 |
@@ -27,6 +28,8 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | 카드 목록 | 카드 사이 간격 12px, 모서리 8px, 그림자 사용 |
 
 세부 값과 Figma 출처는 [Foundations](./foundations.md) 및 각 컴포넌트 문서를 따른다. 모달 크기 네 단계는 Figma DS 기준이며, `CLAUDE.md` 3-3도 이 기준으로 갱신 예정이다.
+
+새 문서를 추가할 때는 [nav.json](./nav.json)의 해당 항목도 `done`으로 함께 갱신한다. 해당 컴포넌트 CSS가 준비된 경우 `samples/` 견본을 함께 추가하고 nav 항목에 연결한다.
 
 ## 출처와 표기
 
@@ -53,7 +56,8 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | 컴포넌트 | 클래스 |
 |---|---|
 | Button | `.ds-btn`, `.ds-btn--primary`, `.ds-btn--secondary`, `.ds-btn--tertiary`, `.ds-btn--outline`, `.ds-btn--outline-secondary`, `.ds-btn--sm`, `.ds-btn--md`, `.ds-btn--lg`, `.ds-btn--block` |
-| Input | `.ds-field`, `.ds-field__label`, `.ds-input-wrap`, `.ds-input`, `.ds-input__clear`, `.ds-textarea`, `.ds-field__hint`, `.ds-field__error`, `.ds-textarea__count`, `.ds-is-readonly`, `.ds-is-error` |
+| Text input | `.ds-field`, `.ds-field__label`, `.ds-input-wrap`, `.ds-input`, `.ds-input__clear`, `.ds-field__hint`, `.ds-field__error`, `.ds-is-inactive`, `.ds-is-readonly`, `.ds-is-error` |
+| Textarea | `.ds-field`, `.ds-field__label`, `.ds-textarea`, `.ds-field__hint`, `.ds-field__error`, `.ds-textarea__count` |
 | Select | `.ds-select`, `.ds-select__trigger`, `.ds-select__list`, `.ds-select__option`, `.ds-is-readonly`, `.ds-is-error` |
 | Modal | `.ds-modal-backdrop`, `.ds-modal`, `.ds-modal--sm`, `.ds-modal--md`, `.ds-modal--lg`, `.ds-modal--xl`, `.ds-modal__header`, `.ds-modal__title`, `.ds-modal__body`, `.ds-modal__footer`, `.ds-modal__close`, `.ds-bottom-sheet`, `.ds-bottom-sheet__body`, `.ds-bottom-sheet__footer` |
 | Status Chip | `.ds-chip` + 의미 또는 도메인 상태 modifier, `.ds-chip--table` |
