@@ -461,8 +461,9 @@ var SECTIONS = {
 var FULL_DOC_ORDER = ["s1","s2","s30","s31","s32","s33","s34","s35","s36","s37","s38","s39","s310","s311","s312","s41","s42","s43","s44","s45","s5","s6","s7","s9"];
 
 /* ---------------- Category order (menu group order — edit here to reorder groups) ---------------- */
-var CATEGORY_ORDER = ["common-pattern", "rental-system", "ops-pattern", "shared-docs"];
+var CATEGORY_ORDER = ["design-system", "common-pattern", "rental-system", "ops-pattern", "shared-docs"];
 var CATEGORY_LABEL = {
+  "design-system": "디자인 시스템",
   "rental-system": "주문요청관리 · 회수 화면군",
   "common-pattern": "공통 컴포넌트 패턴",
   "ops-pattern": "운영관리 화면군 패턴",
@@ -478,6 +479,29 @@ var CATEGORY_LABEL = {
       primary/related로 연결한다. 같은 카테고리 안에서는 배열에 적힌 순서 = 메뉴 노출 순서.
 ------------------------------------------------------------------- */
 var PROTOS = [
+  // --- 디자인 시스템 (design-system/ 문서·CSS를 그대로 읽어 그림 — 뷰어 하나, ?p=로 페이지 선택) ---
+  { id:"ds-viewer.html?p=overview", title:"개요", category:"design-system",
+    desc:"DESIGN.md · 문서 목록, 프로젝트 기준, CSS 사용법",
+    primary:"s30", related:["s1","s6"] },
+  { id:"ds-viewer.html?p=foundations", title:"파운데이션", category:"design-system",
+    desc:"색상 · 글자 · 간격 · 모서리 · 그림자 · 브레이크포인트 · 모달 너비",
+    primary:"s30", related:["s1","s33","s5"] },
+  { id:"ds-viewer.html?p=button", title:"Button", category:"design-system",
+    desc:"종류 · SM/MD/LG · 상태",
+    primary:"s34", related:["s30","s33"] },
+  { id:"ds-viewer.html?p=input", title:"Input", category:"design-system",
+    desc:"Textfield · TextAreaField · 상태",
+    primary:"s32", related:["s30","s312"] },
+  { id:"ds-viewer.html?p=select", title:"Select", category:"design-system",
+    desc:"SelectField · SelectOption · OptionGroup",
+    primary:"s32", related:["s30","s37"] },
+  { id:"ds-viewer.html?p=modal", title:"Modal", category:"design-system",
+    desc:"모달 크기 · 바텀시트",
+    primary:"s33", related:["s35","s34"] },
+  { id:"ds-viewer.html?p=status-chip", title:"Status Chip", category:"design-system",
+    desc:"구입 · 대여 · 회수 · A/S · 반품 상태칩",
+    primary:"s5", related:["s39"] },
+
   // --- 대여 시스템 화면 (실제 사용자 흐름 순서: 리스트 → 상세 → 회수) ---
   { id:"order-list-adaptive.html", title:"주문요청관리 리스트", category:"rental-system",
     desc:"4-2 · PC 테이블 / 모바일 카드 (적응형)",
