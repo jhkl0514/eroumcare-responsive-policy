@@ -6,6 +6,10 @@
 - **공유 링크**: 화면은 `/#화면이름`(예: `/#modal-types-gallery`), 조항은 `/#조항번호`(예: `/#3-3`). 허브 상단 검색(⌘K)으로 조항·화면을 찾을 수 있음
 - **프로토타입**: 각 절 끝의 `→ 파일명`이 그 규칙을 구현한 예시(목록은 8번)
 - **동기화**: 규칙이 바뀌면 이 문서 · `index.html`의 SECTIONS · 스킬(`.claude/skills/eroumcare-design-system/SKILL.md`) 세 곳을 함께 고친다. 허브는 `python3 tools/sync-hub.py s33=3-3 s5=5 …`(SECTIONS 키=조항 번호)로 이 문서 본문에서 자동 변환하고, 스킬은 요약본이라 직접 고친다
+- **작업 분담(2026-10-12~)**: Codex는 `ds-docs` 브랜치(전용 폴더 `../eroumcare-ds`)에서 `design-system/` 문서만 작성하고(규칙은 `AGENTS.md`), Claude Code는 `main`에서 기존 작업(주문요청관리 프로토타입·이 문서·정책 사이트·Confluence)을 계속한다
+  - Claude Code는 `design-system/`을 수정하지 않는다(읽기만). `AGENTS.md`는 사용자가 요청할 때만 수정한다. `ds-docs` 브랜치는 체크아웃·커밋·머지하지 않는다
+  - 3장·5장의 DS 값(브레이크포인트·모달 폭·버튼·상태칩·카드)을 바꿔야 하면 바꾸기 전에 사용자에게 먼저 알린다(Codex 문서와 값이 어긋나지 않게)
+  - 사용자가 `ds-docs`를 `main`에 합친 뒤에는 작업 전에 항상 `main` 최신을 먼저 받는다. 다음 단계(사용자 요청 시): 이 문서의 중복 DS 내용을 `design-system/` 링크로 정리하고 정책 사이트에 '디자인 시스템' 메뉴 연결
 
 ---
 
