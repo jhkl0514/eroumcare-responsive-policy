@@ -2,108 +2,108 @@
   {
     "group": "개요",
     "items": [
-      { "title": "디자인 시스템 개요", "file": "DESIGN.md", "status": "done", "figmaNodeIds": ["1:2"] }
+      {"title":"디자인 시스템 개요","file":"DESIGN.md","status":"done","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:2"]}}}
     ]
   },
   {
     "group": "Foundation",
     "items": [
-      { "title": "Color", "file": "foundations.md#color", "status": "done", "figmaNodeIds": ["1:6893"], "sample": "samples/foundations.html" },
-      { "title": "Typography", "file": "foundations.md#typography", "status": "done", "figmaNodeIds": ["1:8157"], "sample": "samples/foundations.html" },
-      { "title": "Shape", "file": "foundations.md#shape", "status": "done", "figmaNodeIds": ["1:10475"], "sample": "samples/foundations.html" },
-      { "title": "Layout", "file": "foundations.md#layout", "status": "done", "figmaNodeIds": ["1:8547"], "sample": "samples/foundations.html" },
-      { "title": "Icon", "file": "foundations.md#icon", "status": "done", "figmaNodeIds": ["1:9425"], "sample": "samples/foundations.html" }
+      {"title":"Color","file":"foundations.md#color","status":"done","sample":"samples/foundations.html","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:6893"]}}},
+      {"title":"Typography","file":"foundations.md#typography","status":"done","sample":"samples/foundations.html","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:8157"]}}},
+      {"title":"Shape","file":"foundations.md#shape","status":"done","sample":"samples/foundations.html","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:10475"]}}},
+      {"title":"Layout","file":"foundations.md#layout","status":"done","sample":"samples/foundations.html","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:8547"]}}},
+      {"title":"Icon","file":"foundations.md#icon","status":"done","sample":"samples/foundations.html","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:9425"]}}}
     ]
   },
   {
     "group": "Components / Navigation",
     "items": [
-      { "title": "GNB", "file": "components/gnb.md", "status": "todo", "figmaNodeIds": ["1:3990"] },
-      { "title": "Side Navigation", "file": "components/side-navigation.md", "status": "todo", "figmaNodeIds": ["1:4201"] },
-      { "title": "Breadcrumb", "file": "components/breadcrumb.md", "status": "todo", "figmaNodeIds": ["1:4606"] },
-      { "title": "Pagination", "file": "components/pagination.md", "status": "done", "figmaNodeIds": ["1:4426"] }
+      {"title":"GNB","file":"components/gnb.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:3990"]}}},
+      {"title":"Side Navigation","file":"components/side-navigation.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:4201"]}}},
+      {"title":"Breadcrumb","file":"components/breadcrumb.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:4606"]}}},
+      {"title":"Pagination","file":"components/pagination.md","status":"done","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:4426"]},"ds":{"file":"64Q1Re56aiAA8Al89pqjnV","nodes":["8462:8629","6102:8144","6102:8154","14055:12316","14072:12344"]}}}
     ]
   },
   {
     "group": "Components / Layout",
     "items": [
-      { "title": "Accordion", "file": "components/accordion.md", "status": "todo", "figmaNodeIds": ["1:40847"] },
-      { "title": "Avatar", "file": "components/avatar.md", "status": "todo", "figmaNodeIds": ["1:41570"] },
-      { "title": "Badge", "file": "components/badge.md", "status": "todo", "figmaNodeIds": ["1:6508"] },
-      { "title": "Calendar", "file": "components/calendar.md", "status": "todo", "figmaNodeIds": ["1:5097"] },
-      { "title": "Card", "file": "components/card.md", "status": "todo", "figmaNodeIds": ["1:6281"] },
-      { "title": "Carousel", "file": "components/carousel.md", "status": "todo", "figmaNodeIds": ["1:4763"] },
-      { "title": "Label", "file": "components/label.md", "status": "todo", "figmaNodeIds": ["10:15115"] },
-      { "title": "Modal", "file": "components/modal.md", "status": "done", "figmaNodeIds": ["1:5574"], "sample": "samples/modal.html" },
-      { "title": "Status Chip", "file": "components/status-chip.md", "status": "done", "figmaNodeIds": ["10:15762"], "sample": "samples/status-chip.html" },
-      { "title": "Tab", "file": "components/tab.md", "status": "done", "figmaNodeIds": ["10:16409"] },
-      { "title": "Table", "file": "components/table.md", "status": "done", "figmaNodeIds": ["10:17056"] }
+      {"title":"Accordion","file":"components/accordion.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:40847"]}}},
+      {"title":"Avatar","file":"components/avatar.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:41570"]}}},
+      {"title":"Badge","file":"components/badge.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:6508"]}}},
+      {"title":"Calendar","file":"components/calendar.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:5097"]}}},
+      {"title":"Card","file":"components/card.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:6281"]}}},
+      {"title":"Carousel","file":"components/carousel.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:4763"]}}},
+      {"title":"Label","file":"components/label.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["10:15115"]}}},
+      {"title":"Modal","file":"components/modal.md","status":"done","sample":"samples/modal.html","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1:5574"]},"ds":{"file":"64Q1Re56aiAA8Al89pqjnV","nodes":["6487:5122","6489:5807","7317:76226","7374:41582","6433:9616","6437:10238","6489:5791"]}}},
+      {"title":"Status Chip","file":"components/status-chip.md","status":"done","sample":"samples/status-chip.html","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["10:15762"]},"ds":{"file":"64Q1Re56aiAA8Al89pqjnV","nodes":["13139:11578","13864:12146","13920:12833","13027:12231","13079:12197"]}}},
+      {"title":"Tab","file":"components/tab.md","status":"done","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["10:16409"]},"ds":{"file":"64Q1Re56aiAA8Al89pqjnV","nodes":["7988:12496","6106:10089","6106:10090","6106:10091"]}}},
+      {"title":"Table","file":"components/table.md","status":"done","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["10:17056"]},"ds":{"file":"64Q1Re56aiAA8Al89pqjnV","nodes":["6503:13134","6102:8080","6102:7387","6503:13497","6503:13496","6503:13495","6503:13494"]}}}
     ]
   },
   {
     "group": "Components / Action",
     "items": [
-      { "title": "Button", "file": "components/button.md", "status": "done", "figmaNodeIds": ["164:14191"], "sample": "samples/button.html" },
-      { "title": "Link", "file": "components/link.md", "status": "todo", "figmaNodeIds": ["164:23662"] }
+      {"title":"Button","file":"components/button.md","status":"done","sample":"samples/button.html","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["164:14191"]},"ds":{"file":"64Q1Re56aiAA8Al89pqjnV","nodes":["7696:4607","7697:19573","7697:19657","7697:19741","6534:185304"]}}},
+      {"title":"Link","file":"components/link.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["164:23662"]}}}
     ]
   },
   {
     "group": "Components / Select",
     "items": [
-      { "title": "Checkbox", "file": "components/checkbox.md", "status": "done", "figmaNodeIds": ["238:13303"] },
-      { "title": "Chips", "file": "components/chips.md", "status": "done", "figmaNodeIds": ["239:14543"] },
-      { "title": "Radio", "file": "components/radio.md", "status": "done", "figmaNodeIds": ["239:14963"] },
-      { "title": "Segmented Control", "file": "components/segmented-control.md", "status": "todo", "figmaNodeIds": ["239:15383"] },
-      { "title": "Select", "file": "components/select.md", "status": "done", "figmaNodeIds": ["239:15803"], "sample": "samples/select.html" },
-      { "title": "Switch", "file": "components/switch.md", "status": "todo", "figmaNodeIds": ["239:16223"] }
+      {"title":"Checkbox","file":"components/checkbox.md","status":"done","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["238:13303"]},"ds":{"file":"64Q1Re56aiAA8Al89pqjnV","nodes":["6568:9409","11195:14349","11195:14350"]}}},
+      {"title":"Chips","file":"components/chips.md","status":"done","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["239:14543"]},"ds":{"file":"64Q1Re56aiAA8Al89pqjnV","nodes":["7723:6790","7723:9844","7723:10025","7723:9850","7723:9875","7723:9905","7723:9965"]}}},
+      {"title":"Radio","file":"components/radio.md","status":"done","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["239:14963"]},"ds":{"file":"64Q1Re56aiAA8Al89pqjnV","nodes":["52:46","11758:16218","11758:16219"]}}},
+      {"title":"Segmented Control","file":"components/segmented-control.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["239:15383"]}}},
+      {"title":"Select","file":"components/select.md","status":"done","sample":"samples/select.html","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["239:15803"]},"ds":{"file":"64Q1Re56aiAA8Al89pqjnV","nodes":["53:698","6570:11270","7984:8451","6323:10568"]}}},
+      {"title":"Switch","file":"components/switch.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["239:16223"]}}}
     ]
   },
   {
     "group": "Components / Input",
     "items": [
-      { "title": "Text input", "file": "components/text-input.md", "status": "done", "figmaNodeIds": ["475:22492"], "sample": "samples/text-input.html" },
-      { "title": "Textarea", "file": "components/textarea.md", "status": "done", "figmaNodeIds": ["475:19957"], "sample": "samples/textarea.html" },
-      { "title": "File upload", "file": "components/file-upload.md", "status": "todo", "figmaNodeIds": ["475:24981"] },
-      { "title": "Number Stepper", "file": "components/number-stepper.md", "status": "todo", "figmaNodeIds": ["3824:2"] }
+      {"title":"Text input","file":"components/text-input.md","status":"done","sample":"samples/text-input.html","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["475:22492"]},"ds":{"file":"64Q1Re56aiAA8Al89pqjnV","nodes":["7837:8282","6201:9256","6201:9260","53:137","53:145","53:141"]}}},
+      {"title":"Textarea","file":"components/textarea.md","status":"done","sample":"samples/textarea.html","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["475:19957"]},"ds":{"file":"64Q1Re56aiAA8Al89pqjnV","nodes":["7697:14799","6591:177940"]}}},
+      {"title":"File upload","file":"components/file-upload.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["475:24981"]}}},
+      {"title":"Number Stepper","file":"components/number-stepper.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["3824:2"]}}}
     ]
   },
   {
     "group": "Components / Feedback",
     "items": [
-      { "title": "Loading", "file": "components/loading.md", "status": "todo", "figmaNodeIds": ["717:19127"] },
-      { "title": "Step indicator", "file": "components/step-indicator.md", "status": "todo", "figmaNodeIds": ["717:19341"] }
+      {"title":"Loading","file":"components/loading.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["717:19127"]}}},
+      {"title":"Step indicator","file":"components/step-indicator.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["717:19341"]}}}
     ]
   },
   {
     "group": "Components / Message",
     "items": [
-      { "title": "Toast", "file": "components/toast.md", "status": "todo", "figmaNodeIds": ["724:19636"] },
-      { "title": "Tooltip", "file": "components/tooltip.md", "status": "todo", "figmaNodeIds": ["735:22043"] }
+      {"title":"Toast","file":"components/toast.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["724:19636"]}}},
+      {"title":"Tooltip","file":"components/tooltip.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["735:22043"]}}}
     ]
   },
   {
     "group": "Patterns",
     "items": [
-      { "title": "검색", "file": "patterns/search.md", "status": "todo", "figmaNodeIds": ["827:20735", "1916:40102"] },
-      { "title": "알림", "file": "patterns/notification.md", "status": "todo", "figmaNodeIds": ["827:22027"] },
-      { "title": "오류", "file": "patterns/error.md", "status": "todo", "figmaNodeIds": ["827:22430", "2040:41054"] },
-      { "title": "입력폼", "file": "patterns/input-form.md", "status": "todo", "figmaNodeIds": ["827:22833"] },
-      { "title": "카드(모바일)", "file": "patterns/mobile-card.md", "status": "todo", "figmaNodeIds": ["1954:42749"] },
-      { "title": "주문 상품리스트", "file": "patterns/order-product-list.md", "status": "todo", "figmaNodeIds": ["827:23639", "2040:42553"] },
-      { "title": "상품상세", "file": "patterns/product-detail.md", "status": "todo", "figmaNodeIds": ["827:27346", "2040:42840"] },
-      { "title": "정보확인", "file": "patterns/information-confirmation.md", "status": "todo", "figmaNodeIds": ["827:26088", "2040:43317"] },
-      { "title": "테이블 기본형", "file": "patterns/table-basic.md", "status": "todo", "figmaNodeIds": ["827:25686"] },
-      { "title": "테이블 데이터 입력형", "file": "patterns/table-data-entry.md", "status": "todo", "figmaNodeIds": ["827:26490"] },
-      { "title": "테이블 조합형", "file": "patterns/table-composite.md", "status": "todo", "figmaNodeIds": ["827:26896"] },
-      { "title": "테이블 리스트", "file": "patterns/table-list.md", "status": "todo", "figmaNodeIds": ["3869:42100"] }
+      {"title":"검색","file":"patterns/search.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["827:20735","1916:40102"]}}},
+      {"title":"알림","file":"patterns/notification.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["827:22027"]}}},
+      {"title":"오류","file":"patterns/error.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["827:22430","2040:41054"]}}},
+      {"title":"입력폼","file":"patterns/input-form.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["827:22833"]}}},
+      {"title":"카드(모바일)","file":"patterns/mobile-card.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["1954:42749"]}}},
+      {"title":"주문 상품리스트","file":"patterns/order-product-list.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["827:23639","2040:42553"]}}},
+      {"title":"상품상세","file":"patterns/product-detail.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["827:27346","2040:42840"]}}},
+      {"title":"정보확인","file":"patterns/information-confirmation.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["827:26088","2040:43317"]}}},
+      {"title":"테이블 기본형","file":"patterns/table-basic.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["827:25686"]}}},
+      {"title":"테이블 데이터 입력형","file":"patterns/table-data-entry.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["827:26490"]}}},
+      {"title":"테이블 조합형","file":"patterns/table-composite.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["827:26896"]}}},
+      {"title":"테이블 리스트","file":"patterns/table-list.md","status":"todo","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["3869:42100"]}}}
     ]
   },
   {
     "group": "Page",
     "items": [
-      { "title": "Error", "file": "pages/error.md", "status": "todo", "figmaNodeIds": ["827:22430", "2040:41054"], "figmaStatus": "오류 패턴 프레임을 참조; 독립 Page 노드는 미확인" },
-      { "title": "NoData", "file": "pages/no-data.md", "status": "todo", "figmaNodeIds": [], "figmaStatus": "독립 Page 노드 미확인" },
-      { "title": "빈 화면", "file": "pages/empty.md", "status": "todo", "figmaNodeIds": ["2380:48455", "2380:49817"], "figmaStatus": "EmptyState 사용 예시 인스턴스" }
+      {"title":"Error","file":"pages/error.md","status":"todo","figmaStatus":"오류 패턴 프레임을 참조; 독립 Page 노드는 미확인","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["827:22430","2040:41054"]}}},
+      {"title":"NoData","file":"pages/no-data.md","status":"todo","figmaStatus":"독립 Page 노드 미확인","figma":{}},
+      {"title":"빈 화면","file":"pages/empty.md","status":"todo","figmaStatus":"EmptyState 사용 예시 인스턴스","figma":{"framework":{"file":"AD6zHJIIn6yJ0ifS8w5pYv","nodes":["2380:48455","2380:49817"]}}}
     ]
   }
 ]
