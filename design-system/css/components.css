@@ -97,8 +97,6 @@
 
 .ds-btn:focus-visible,
 .ds-input__clear:focus-visible,
-.ds-textarea:focus-visible,
-.ds-select__trigger:focus-visible,
 .ds-modal__close:focus-visible {
   outline: var(--ds-space-2) solid var(--ds-color-darkblue-600);
   outline-offset: var(--ds-space-2);
@@ -169,9 +167,14 @@
 }
 
 .ds-input.ds-is-inactive {
-  border-color: var(--ds-color-grey-400);
   background: var(--ds-color-bg-primary);
-  color: var(--ds-color-text-disabled);
+  border-color: var(--ds-color-grey-600);
+}
+
+@media (max-width: 1024px) {
+  .ds-input.ds-is-inactive {
+    border-color: var(--ds-color-grey-400);
+  }
 }
 
 .ds-input-wrap {
@@ -245,6 +248,13 @@
 .ds-textarea::placeholder {
   color: var(--ds-color-text-disabled);
   opacity: 1;
+}
+
+.ds-textarea:focus:not(:disabled):not([readonly]):not(.ds-is-readonly):not([aria-invalid="true"]):not(.ds-is-error),
+.ds-select__trigger:focus-visible:not(:disabled):not(.ds-is-readonly):not([aria-invalid="true"]):not(.ds-is-error),
+.ds-select__trigger[aria-expanded="true"]:not(:disabled):not(.ds-is-readonly):not([aria-invalid="true"]):not(.ds-is-error) {
+  border: var(--ds-space-2) solid var(--ds-color-darkblue-600);
+  outline: 0;
 }
 
 .ds-textarea[aria-invalid="true"],
