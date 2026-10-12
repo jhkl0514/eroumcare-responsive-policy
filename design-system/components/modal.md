@@ -135,7 +135,11 @@ SM 샘플은 [Modal/sm 6437:10238](https://www.figma.com/design/64Q1Re56aiAA8Al8
   <section class="ds-modal ds-modal--sm" role="dialog" aria-modal="true" aria-labelledby="order-dialog-title">
     <header class="ds-modal__header">
       <h2 class="ds-modal__title" id="order-dialog-title">주문을 진행할까요?</h2>
-      <button class="ds-modal__close" type="button" aria-label="닫기">×</button>
+      <button class="ds-modal__close" type="button" aria-label="닫기">
+        <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
     </header>
     <div class="ds-modal__body">주문 정보를 확인해 주세요.</div>
     <footer class="ds-modal__footer">

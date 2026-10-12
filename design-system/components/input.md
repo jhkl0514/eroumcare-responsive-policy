@@ -40,12 +40,13 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7837:8282`, `7697:147
 
 | 상태 | 상태 의미 | 표시 규칙 | Figma 출처 |
 |---|---|---|---|
-| `Inactive` | 선택되지 않은 상태(빈 칸) | MO 테두리 1px `#BDBDBD`, 흰 배경 | [Textfield Inactive MO 3065:29264](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=3065-29264) |
+| `Inactive` | 선택되지 않은 빈 칸 | PC 테두리 1px `#616161`, MO 테두리 1px `#BDBDBD`, 흰 배경. 값 글자색은 변경하지 않고 placeholder만 `#BDBDBD`로 표시 | [PC 6201:9256](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6201-9256), [MO 3065:29264](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=3065-29264) |
 | `Default` | 입력이 완료된 상태 | PC·MO 테두리 1px `#333333`, 흰 배경 | [Textfield Default MO 53:137](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-137), [PC 6201:9260](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6201-9260) |
 | `Focused` | 선택되었거나 입력 중인 상태 | 2px 브랜드 테두리, 바깥 outline 없음 | [Textfield Focused MO 53:145](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-145) |
-| `Error` | 에러 | 2px 위험 테두리와 에러 메시지 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
-| `Disabled` | 비활성화 | MO 테두리 1px `#BDBDBD`, 비활성 배경·글자 | [Textfield Disabled MO 53:141](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-141) |
-| `ReadOnly` | 값은 보이지만 수정할 수 없는 상태 | 비활성 배경, 값은 읽을 수 있는 대비 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
+| `Error` | 에러 | 2px 위험 테두리, 에러 아이콘과 빨간 오류 문구 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
+| `Disabled` | 비활성화 | 비활성 배경, 흐린 글자색 | [Textfield Disabled MO 53:141](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-141) |
+| `ReadOnly` | 값은 보이지만 수정할 수 없는 상태 | 비활성 배경, 값 글자색은 진하게 유지 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
+| 도움말 (보조 문구) | 입력 형식이나 조건 안내. 인터랙션 상태는 아님 | 정보 아이콘과 회색 글자 | 입력 도움말 표현 |
 
 Figma 속성 원문 `Outlne`, `Incative`는 각각 표준명 `Outline`, `Inactive`로 정규화해 표기한다.
 
@@ -61,9 +62,10 @@ Figma 속성 원문 `Outlne`, `Incative`는 각각 표준명 `Outline`, `Inactiv
 | `color/border/primitive/primary` | `#323DA3` | 포커스 테두리 | Textfield `7837:8282` |
 | `color/border/danger` | `#E53935` | 오류 테두리 | Textfield `7837:8282` |
 | `color/border/disabled` | `#BDBDBD` | 비활성·읽기전용 테두리 | Textfield `7837:8282` |
+| `Color/Grey/600` | `#616161` | PC 값 없음(Inactive) 테두리 | [Textfield Inactive PC 6201:9256](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6201-9256) |
 | `Color/Grey/400` | `#BDBDBD` | MO 값 없음(Inactive) 테두리 | [Textfield Inactive MO 3065:29264](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=3065-29264) |
 
-CSS에서는 기본 입력이 placeholder 유무와 관계없이 Default 테두리(`#333333`)를 사용한다. Figma Inactive 모습이 필요한 경우에만 `.ds-is-inactive`를 추가해 `#BDBDBD` 테두리와 흰 배경을 표시한다. HTML `disabled` 상태는 Disabled 스타일을 적용한다.
+CSS에서는 기본 입력이 placeholder 유무와 관계없이 Default 테두리(`#333333`)를 사용한다. Figma Inactive 모습이 필요한 경우에만 `.ds-is-inactive`를 추가한다. Inactive 값 글자색은 바꾸지 않고, placeholder는 별도 규칙으로 비활성 텍스트색을 쓴다. HTML `disabled` 상태는 Disabled 스타일을 적용한다.
 
 ## 6. PC / 모바일(≤1024) 차이
 
@@ -72,7 +74,7 @@ CSS에서는 기본 입력이 placeholder 유무와 관계없이 Default 테두�
 | Textfield 높이 | `40px` | `48px` | `CLAUDE.md` 3-0, 3-2 |
 | Textfield 좌우 패딩 | `8px 12px` | `12px` | `CLAUDE.md` 3-0, 3-2 |
 | Textfield 글자 | `14px` | `16px` | `CLAUDE.md` 3-0, 3-2 |
-| 값 없음(Inactive) 테두리 | `1px #616161` | `1px #BDBDBD` | `CLAUDE.md` 3-2; Figma MO [3065:29264](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=3065-29264) |
+| 값 없음(Inactive) 테두리 | `1px #616161` | `1px #BDBDBD` | Figma PC [6201:9256](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6201-9256), MO [3065:29264](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=3065-29264) |
 | 값 입력(Default) 테두리 | `1px #333333` | `1px #333333` | Figma PC [6201:9260](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6201-9260), MO [53:137](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-137) |
 | 포커스 테두리 | `2px #323DA3` | `2px #323DA3` | Figma MO [53:145](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-145) |
 | TextAreaField 글자 | `16px` | `16px` | 동일 |
