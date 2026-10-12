@@ -1,0 +1,149 @@
+:root {
+  /* foundations.md 1-1 원본 팔레트 */
+  --ds-color-base-black: #000000; /* Color/Base/black */
+  --ds-color-base-white: #FFFFFF; /* Color/Base/white */
+  --ds-color-grey-50: #FAFAFA; /* Color/Grey/50 */
+  --ds-color-grey-100: #F5F5F5; /* Color/Grey/100 */
+  --ds-color-grey-200: #EEEEEE; /* Color/Grey/200 */
+  --ds-color-grey-300: #E0E0E0; /* Color/Grey/300 */
+  --ds-color-grey-400: #BDBDBD; /* Color/Grey/400 */
+  --ds-color-grey-500: #999999; /* Color/Grey/500 */
+  --ds-color-grey-600: #616161; /* Color/Grey/600 */
+  --ds-color-grey-700: #555555; /* Color/Grey/700 */
+  --ds-color-grey-800: #333333; /* Color/Grey/800 */
+  --ds-color-grey-900: #1A1A1A; /* Color/Grey/900 */
+  --ds-color-darkblue-50: #EFF1FD; /* Color/Darkblue/50 */
+  --ds-color-darkblue-100: #E3E5F5; /* Color/Darkblue/100 */
+  --ds-color-darkblue-200: #CED2F4; /* Color/Darkblue/200 */
+  --ds-color-darkblue-600: #323DA3; /* Color/Darkblue/600 */
+  --ds-color-darkblue-800: #141E76; /* Color/Darkblue/800 */
+  --ds-color-blue-50: #EFF6FF; /* Color/blue/50 */
+  --ds-color-blue-100: #DBEAFE; /* Color/blue/100 */
+  --ds-color-blue-800: #1E40AF; /* Color/blue/800 */
+  --ds-color-green-50: #E8F5E9; /* Color/green/50 */
+  --ds-color-green-100: #C8E6C9; /* Color/green/100 */
+  --ds-color-green-800: #166534; /* Color/green/800 */
+  --ds-color-yellow-50: #FFF8E1; /* Color/Yellow/50 */
+  --ds-color-yellow-600: #FFB300; /* Color/Yellow/600 */
+  --ds-color-yellow-800: #FF8F00; /* Color/Yellow/800 */
+  --ds-color-lightgreen-50: #F2FDE4; /* Color/lightgreen/50 */
+  --ds-color-lightgreen-200: #C6F68D; /* Color/lightgreen/200 */
+  --ds-color-lightgreen-800: #09AF00; /* Color/lightgreen/800 */
+  --ds-color-red-50: #FFEBEE; /* Color/red/50 */
+  --ds-color-red-100: #FFCDD2; /* Color/red/100 */
+  --ds-color-red-600: #E53935; /* Color/red/600 */
+  --ds-color-red-800: #C62828; /* Color/red/800 */
+
+  /* foundations.md 1-2 시맨틱 컬러 */
+  --ds-color-text-primary: var(--ds-color-grey-900); /* Color/text/primary */
+  --ds-color-text-secondary: var(--ds-color-grey-600); /* Color/text/secondary */
+  --ds-color-text-tertiary: var(--ds-color-grey-500); /* Color/text/teritiary */
+  --ds-color-text-disabled: var(--ds-color-grey-400); /* Color/text/disabled */
+  --ds-color-text-info-bold: var(--ds-color-blue-800); /* Color/text/info-bold */
+  --ds-color-text-success-bold: var(--ds-color-green-800); /* Color/text/success-bold */
+  --ds-color-text-warning-bold: var(--ds-color-yellow-800); /* Color/text/warning-bold */
+  --ds-color-text-brand-sub: var(--ds-color-lightgreen-800); /* Color/text/brandSub */
+  --ds-color-text-primary-hover-active: var(--ds-color-darkblue-800); /* Color/text/Primitive/primary-hover:active */
+  --ds-color-text-danger-bold: var(--ds-color-red-800); /* Color/text/danger-bold */
+  --ds-color-text-neutral: var(--ds-color-grey-700); /* Color/text/Primitive/secondary */
+  --ds-color-bg-primary: var(--ds-color-base-white); /* Color/bg/primary */
+  --ds-color-bg-secondary: var(--ds-color-grey-50); /* Color/bg/secondary */
+  --ds-color-bg-tertiary: var(--ds-color-grey-100); /* Color/bg/teritiary */
+  --ds-color-bg-disabled: var(--ds-color-grey-200); /* Color/bg/disabled */
+  --ds-color-bg-info-subtle: var(--ds-color-blue-50); /* Color/bg/info-subtle */
+  --ds-color-bg-success-subtle: var(--ds-color-green-50); /* Color/bg/success-subtle */
+  --ds-color-bg-warning-subtle: var(--ds-color-yellow-50); /* Color/bg/warning-subtle */
+  --ds-color-bg-brand-subtle: var(--ds-color-lightgreen-50); /* Color/bg/brandSub-subtle */
+  --ds-color-bg-brand: var(--ds-color-darkblue-100); /* Color/bg/brand_subtle */
+  --ds-color-bg-danger-subtle: var(--ds-color-red-50); /* Color/bg/danger-subtle */
+  --ds-color-border-primary: var(--ds-color-grey-400); /* Color/border/primary */
+  --ds-color-border-secondary: var(--ds-color-grey-200); /* Color/border/secondary */
+  --ds-color-border-info-subtle: var(--ds-color-blue-100); /* Color/border/info-subtle */
+  --ds-color-border-success-subtle: var(--ds-color-green-100); /* Color/border/success-subtle */
+  --ds-color-border-warning: var(--ds-color-yellow-600); /* Color/border/warning */
+  --ds-color-border-brand-subtle: var(--ds-color-lightgreen-200); /* Color/border/brandSub_subtle */
+  --ds-color-border-brand: var(--ds-color-darkblue-200); /* Color/border/brand-subtle */
+  --ds-color-border-danger-subtle: var(--ds-color-red-100); /* Color/border/danger-subtle */
+
+  /* foundations.md 2 타이포 */
+  --ds-font-family-suit: "SUIT", sans-serif; /* SUIT Text Styles */
+  --ds-font-heading-xxl-heavy-size: 36px; /* Heading/XXL/Heavy */
+  --ds-font-heading-xxl-heavy-line-height: 46px; /* Heading/XXL/Heavy */
+  --ds-font-heading-xxl-heavy-letter-spacing: -0.02em; /* Heading/XXL/Heavy, -2% */
+  --ds-font-heading-xl-heavy-size: 32px; /* Heading/XL/Heavy */
+  --ds-font-heading-xl-heavy-line-height: 42px; /* Heading/XL/Heavy */
+  --ds-font-heading-xl-heavy-letter-spacing: -0.02em; /* Heading/XL/Heavy, -2% */
+  --ds-font-heading-lg-heavy-size: 28px; /* Heading/LG/Heavy */
+  --ds-font-heading-lg-heavy-line-height: 38px; /* Heading/LG/Heavy */
+  --ds-font-heading-lg-heavy-letter-spacing: -0.02em; /* Heading/LG/Heavy, -2% */
+  --ds-font-heading-md-bold-size: 24px; /* Heading/MD/Bold */
+  --ds-font-heading-md-bold-line-height: 34px; /* Heading/MD/Bold */
+  --ds-font-heading-md-bold-letter-spacing: -0.02em; /* Heading/MD/Bold, -2% */
+  --ds-font-heading-sm-bold-size: 20px; /* Heading/SM/Bold */
+  --ds-font-heading-sm-bold-line-height: 30px; /* Heading/SM/Bold */
+  --ds-font-heading-sm-bold-letter-spacing: -0.02em; /* Heading/SM/Bold, -2% */
+  --ds-font-body-md-regular-size: 18px; /* Body/MD/Regular */
+  --ds-font-body-md-regular-line-height: 26px; /* Body/MD/Regular */
+  --ds-font-body-md-regular-letter-spacing: -0.015em; /* Body/MD/Regular, -1.5% */
+  --ds-font-body-md-semibold-size: 18px; /* Body/MD/SemiBold */
+  --ds-font-body-md-semibold-line-height: 26px; /* Body/MD/SemiBold */
+  --ds-font-body-md-semibold-letter-spacing: -0.015em; /* Body/MD/SemiBold, -1.5% */
+  --ds-font-body-sm-regular-size: 16px; /* Body/SM/Regular */
+  --ds-font-body-sm-regular-line-height: 24px; /* Body/SM/Regular */
+  --ds-font-body-sm-regular-letter-spacing: -0.015em; /* Body/SM/Regular, -1.5% */
+  --ds-font-body-sm-semibold-size: 16px; /* Body/SM/SemiBold */
+  --ds-font-body-sm-semibold-line-height: 24px; /* Body/SM/SemiBold */
+  --ds-font-body-sm-semibold-letter-spacing: -0.015em; /* Body/SM/SemiBold, -1.5% */
+  --ds-font-body-ss-regular-size: 14px; /* Body/SS/Regular */
+  --ds-font-body-ss-regular-line-height: 20px; /* Body/SS/Regular */
+  --ds-font-body-ss-regular-letter-spacing: 0; /* Body/SS/Regular */
+  --ds-font-body-ss-semibold-size: 14px; /* Body/SS/Semibold */
+  --ds-font-body-ss-semibold-line-height: 20px; /* Body/SS/Semibold */
+  --ds-font-body-ss-semibold-letter-spacing: 0; /* Body/SS/Semibold */
+  --ds-font-caption-xs-size: 12px; /* Caption/XS */
+  --ds-font-caption-xs-line-height: 18px; /* Caption/XS */
+  --ds-font-caption-xs-letter-spacing: -0.015em; /* Caption/XS, -1.5% */
+
+  /* foundations.md 3 간격 */
+  --ds-space-0: 0; /* spacing/0 */
+  --ds-space-2: 2px; /* spacing/2 */
+  --ds-space-4: 4px; /* spacing/4 */
+  --ds-space-6: 6px; /* spacing/6 */
+  --ds-space-8: 8px; /* spacing/8 */
+  --ds-space-12: 12px; /* spacing/12 */
+  --ds-space-16: 16px; /* spacing/16 */
+  --ds-space-20: 20px; /* spacing/20 */
+  --ds-space-24: 24px; /* spacing/24 */
+  --ds-space-32: 32px; /* spacing/32 */
+  --ds-space-36: 36px; /* spacing/36 */
+  --ds-space-40: 40px; /* spacing/40 */
+  --ds-space-48: 48px; /* spacing/48 */
+
+  /* foundations.md 4 모서리 */
+  --ds-radius-0: 0; /* radius0 */
+  --ds-radius-4: 4px; /* radius1 */
+  --ds-radius-8: 8px; /* Radius2 */
+  --ds-radius-12: 12px; /* Radius3 */
+  --ds-radius-16: 16px; /* Radius4 */
+  --ds-radius-40: 40px; /* Radius5 */
+  --ds-radius-circle: 999px; /* radius-circle */
+
+  /* foundations.md 5 그림자 */
+  --ds-shadow-default: 0 0 1px rgba(0, 0, 0, 0.2), 0 2px 16px rgba(0, 0, 0, 0.08); /* shadow1_default */
+  --ds-shadow-2: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.12); /* elevation/shadow2 */
+  --ds-shadow-3: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.12); /* elevation/shadow3 */
+  --ds-shadow-4: 0 0 4px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.2); /* elevation/shadow4 */
+  --ds-shadow-5-left: 0 0 8px rgba(0, 0, 0, 0.12), -8px 0 16px rgba(0, 0, 0, 0.12); /* elevation/shadow5_Left */
+  --ds-shadow-6-top: 0 -4px 16px rgba(0, 0, 0, 0.12); /* elevation/shadow6_Top */
+  --ds-shadow-card-list: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0.5px rgba(0, 0, 0, 0.2); /* 카드 목록 그림자 */
+
+  /* foundations.md 7 모달 너비, 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) */
+  --ds-modal-width-sm: 340px; /* Modal/sm */
+  --ds-modal-width-md: 480px; /* Modal/md */
+  --ds-modal-width-lg: 600px; /* Modal/lg */
+  --ds-modal-width-xl: 800px; /* Modal/xl */
+}
+
+/* foundations.md 6: 프로젝트 전환 폭 1024px, 최소 모바일 폭 360px.
+   CSS 사용자 정의 속성은 미디어쿼리 조건에 쓸 수 없어 토큰으로 선언하지 않습니다.
+   Figma 디자인 캔버스 폭은 Mobile 360-768px, PC 1200-1920px입니다. */
