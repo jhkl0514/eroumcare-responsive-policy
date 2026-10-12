@@ -357,7 +357,7 @@
   padding: var(--ds-space-24);
   overflow: visible;
   border-radius: var(--ds-radius-16);
-  background: var(--ds-color-bg-primary);
+  background: var(--ds-color-bg-primary, #FFF);
   box-shadow: var(--ds-shadow-4);
   color: var(--ds-color-text-primary);
   font-family: var(--ds-font-family-suit);

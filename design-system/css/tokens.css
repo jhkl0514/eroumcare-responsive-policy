@@ -132,12 +132,12 @@
   --ds-shadow-default: 0 0 1px rgba(0, 0, 0, 0.2), 0 2px 16px rgba(0, 0, 0, 0.08); /* shadow1_default */
   --ds-shadow-2: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.12); /* elevation/shadow2 */
   --ds-shadow-3: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.12); /* elevation/shadow3 */
-  --ds-shadow-4: 0 0 4px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.2); /* elevation/shadow4 */
+  --ds-shadow-4: 0 8px 24px 0 rgba(0, 0, 0, 0.20), 0 0 4px 0 rgba(0, 0, 0, 0.12); /* elevation/shadow4 */
   --ds-shadow-5-left: 0 0 8px rgba(0, 0, 0, 0.12), -8px 0 16px rgba(0, 0, 0, 0.12); /* elevation/shadow5_Left */
   --ds-shadow-6-top: 0 -4px 16px rgba(0, 0, 0, 0.12); /* elevation/shadow6_Top */
   --ds-shadow-card-list: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0.5px rgba(0, 0, 0, 0.2); /* 카드 목록 그림자 */
 
-  /* foundations.md 7: sm 340px은 Figma DS 기준, 프로젝트 사용 여부 확인 중 */
+  /* foundations.md 7: Figma DS 기준(노드 6487:5122), CLAUDE.md 3-3 갱신 예정 */
   --ds-modal-width-sm: 340px; /* Modal/sm */
   --ds-modal-width-md: 480px; /* Modal/md */
   --ds-modal-width-lg: 600px; /* Modal/lg */

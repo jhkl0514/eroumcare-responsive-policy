@@ -128,7 +128,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | `border/radius/radius1` | `4` | 입력칸, 셀렉트, 버튼, 검색 패널 | `Sementic` Variables |
 | `border/radius/Radius2` | `8` | 모바일 카드 목록 | `Sementic` Variables, `CLAUDE.md` 3-9 |
 | `border/radius/Radius3` | `12` | 큰 표면/패널 후보 | `Sementic` Variables |
-| `border/radius/Radius4` | `16` | 강조 표면 후보 | `Sementic` Variables |
+| `border/radius/Radius4` | `16px` | Modal 외곽 모서리 | `Sementic` Variables; [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122) |
 | `border/radius/Radius5` | `40` | 큰 알약형 요소 | `Sementic` Variables |
 | `border/radius/radius-circle` | `999` | 상태칩, 필터칩 알약 | `Sementic` Variables |
 
@@ -139,7 +139,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | `shadow1_default` | `0 0 1px rgba(0,0,0,.2), 0 2px 16px rgba(0,0,0,.08)` | 기본 떠 있는 표면 | Effect Styles |
 | `elevation/shadow2` | `0 0 1px rgba(0,0,0,.2), 0 1px 2px rgba(0,0,0,.12)` | 낮은 elevation | Effect Styles |
 | `elevation/shadow3` | `0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.12)` | 중간 elevation | Effect Styles |
-| `elevation/shadow4` | `0 0 4px rgba(0,0,0,.12), 0 8px 24px rgba(0,0,0,.2)` | 바텀시트/강한 overlay | Effect Styles |
+| `elevation/shadow4` | `0 8px 24px 0 rgba(0,0,0,.20), 0 0 4px 0 rgba(0,0,0,.12)` | Modal 및 BottomSheet | Effect Styles; [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122) |
 | `elevation/shadow5_Left` | `0 0 8px rgba(0,0,0,.12), -8px 0 16px rgba(0,0,0,.12)` | 좌측 방향 elevation | Effect Styles |
 | `elevation/shadow6_Top` | `0 -4px 16px rgba(0,0,0,.12)` | 상단 방향 elevation | Effect Styles |
 | 카드 목록 그림자 | `0 2px 8px rgba(0,0,0,.08), 0 0 .5px rgba(0,0,0,.2)` | 모바일 카드 목록 기본 그림자 | `CLAUDE.md` 3-9 |
@@ -158,10 +158,10 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 
 | 토큰명 | 값 | 용도 | 출처 |
 |---|---:|---|---|
-| `Modal/sm` | `340px` | Figma DS 기준 너비, 프로젝트 사용 여부 확인 중 | [Modal/sm 6437:10238](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6437-10238) |
-| `Modal/md` | `480px` | 기본 안내·확인 모달 기준 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
-| `Modal/lg` | `600px` | 표 포함 모달 기준 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
-| `Modal/xl` | `800px` | 넓은 표·문서 모달 기준 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
+| `Modal/sm` | `340px` | 짧은 안내·확인 모달 기준 너비 | Figma DS 기준(노드 [6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122)), CLAUDE.md 3-3도 이 기준으로 갱신 예정 |
+| `Modal/md` | `480px` | 기본 안내·확인 모달 기준 너비 | Figma DS 기준(노드 [6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122)), CLAUDE.md 3-3도 이 기준으로 갱신 예정 |
+| `Modal/lg` | `600px` | 표 포함 모달 기준 너비 | Figma DS 기준(노드 [6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122)), CLAUDE.md 3-3도 이 기준으로 갱신 예정 |
+| `Modal/xl` | `800px` | 넓은 표·문서 모달 기준 너비 | Figma DS 기준(노드 [6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122)), CLAUDE.md 3-3도 이 기준으로 갱신 예정 |
 
 ## 8. 확인 필요
 
