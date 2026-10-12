@@ -19,9 +19,6 @@ body{margin:0;background:var(--ds-color-bg-tertiary);color:var(--ds-color-text-p
 .nav a{display:inline-flex;align-items:center;min-height:var(--ds-space-32);padding:0 var(--ds-space-12);border:1px solid var(--ds-color-border-primary);
   border-radius:var(--ds-radius-circle);background:var(--ds-color-bg-primary);color:var(--ds-color-text-primary);text-decoration:none;font-weight:600;}
 .nav a.on{background:var(--ds-color-darkblue-600);border-color:var(--ds-color-darkblue-600);color:var(--ds-color-base-white);}
-.notice{border:1px solid var(--ds-color-border-warning);background:var(--ds-color-bg-warning-subtle);border-radius:var(--ds-radius-8);padding:var(--ds-space-12) var(--ds-space-16);margin-bottom:var(--ds-space-20);}
-.notice b{display:block;margin-bottom:var(--ds-space-4);}
-.notice ul{margin:0;padding-left:var(--ds-space-20);}
 .card{background:var(--ds-color-bg-primary);border-radius:var(--ds-radius-8);box-shadow:var(--ds-shadow-2);padding:var(--ds-space-20);margin-bottom:var(--ds-space-20);}
 .card > h2{margin:0 0 var(--ds-space-12);font-size:var(--ds-font-body-md-semibold-size);line-height:var(--ds-font-body-md-semibold-line-height);display:flex;align-items:center;gap:var(--ds-space-8);flex-wrap:wrap;}
 .card > h2 small{font-size:var(--ds-font-body-ss-regular-size);font-weight:400;color:var(--ds-color-text-secondary);}
@@ -61,14 +58,6 @@ body{margin:0;background:var(--ds-color-bg-tertiary);color:var(--ds-color-text-p
     <h1 id="ttl">디자인 시스템</h1>
     <div class="src">기준: <code>design-system/</code> 문서와 <code>design-system/css/</code> — 문서·CSS가 바뀌면 이 화면도 그대로 따라 바뀝니다</div>
     <nav class="nav" id="nav"></nav>
-  </div>
-  <div class="notice" role="note">
-    <b>조정 중 항목</b>
-    아래 항목은 정책(CLAUDE.md)과 DS 값을 맞추는 중입니다. 견본은 지금 <code>design-system/css</code> 값 그대로 그립니다.
-    <ul>
-      <li>입력칸 Inactive(빈 칸) 테두리 — 정책은 PC <code>#616161</code> / 모바일 <code>#bdbdbd</code>, DS는 PC도 <code>#bdbdbd</code></li>
-      <li>TextArea·Select 포커스(열림) 표시 — 정책은 테두리 2px <code>#323da3</code>, DS는 바깥 outline</li>
-    </ul>
   </div>
   <div class="jump"><a href="#sec-desc">설명</a><a href="#sec-swatch">실물 견본</a><a href="#sec-figma">Figma 링크</a></div>
   <section class="card" id="sec-desc"><h2>설명 <small id="mdpath"></small></h2><div class="md" id="md">불러오는 중…</div></section>

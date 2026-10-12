@@ -98,14 +98,7 @@
 | 칩 | 선택칩 `Option Chips_Line`(모서리 4) | XL 44·18px / SM 32·14px | 같음 | 그대로 |
 | 탭 | `Tab` | Underline 56 / Outlined 48 / Round 40 | 같음 | 그대로 — 모양(Type)별로 고름 |
 
-**입력칸 상태와 표시** — 테두리·배경은 3-2 상태 표, 필수 `*` 표시와 상태 정의는 [`input.md`](design-system/components/input.md). 아래는 input.md에 아직 없는 표현만
-
-| 상태·표시 | 언제 | 모양 |
-|---|---|---|
-| 비활성 `Disabled` | 지금은 쓸 수 없는 칸(조건이 안 맞음) | 배경 `#eee`, 테두리 `#bdbdbd`, 글자 흐리게 |
-| 읽기전용 `ReadOnly` | 값은 보이지만 직접 고치지 않는 칸(우편번호·기본주소처럼 버튼으로 채움) | 배경 `#eee`, 테두리 `#bdbdbd`, 글자는 그대로 진하게 |
-| 도움말 `Help message` | 입력 규칙 안내가 필요할 때만(예: "- 없이 숫자만", "마감 시각 기준…") | 입력칸 아래 한 줄, 정보 아이콘 + 회색 글자. 필요 없으면 넣지 않음 |
-| 에러 | 입력 값이 틀렸을 때 | 테두리 2px `#e53935` + 입력칸 아래 빨간 문구(에러 아이콘) |
+**입력칸 상태와 표시**(Disabled·ReadOnly·필수 `*`·도움말·에러) — 테두리·배경은 3-2 상태 표, 글자·아이콘 표현까지 상세는 [`input.md`](design-system/components/input.md)
 
 - 근거: DS `64Q1Re56aiAA8Al89pqjnV` — Textfield `7837:8282`, SelectField `53:698`, SelectOption `6570:11270`, chips `7723:6790`, Tab `7988:12496`, checkbox·Radio·Toggle 컴포넌트
 
@@ -988,6 +981,10 @@ DS "모바일 정의"의 모바일 간격 규칙. 3-1·3-2·카드 목록을 담
 ---
 
 ## 부록. 변경 이력 (본문은 현재 규칙만 — 결정 경위는 여기)
+
+### DS 3차 병합 확인 (2026-10-12)
+- ds-docs 3차 병합 후 확인: `.ds-is-inactive` PC `#616161`·모바일 `#bdbdbd`, TextArea 포커스·Select 열림 2px `#323da3`(바깥 outline 없음) 반영 → ds-viewer '조정 중 항목' 박스 삭제
+- input.md에 Disabled 흐린 글자·ReadOnly 진한 글자·도움말 정보 아이콘·에러 아이콘이 들어와 3-0에 남겨 둔 상태 표 4행을 링크 한 줄로 바꿈
 
 ### DS와 겹치는 값 정리 (2026-10-12)
 - 3-0 크기 기준표의 입력류·버튼·모달 행, 3-2 PC/MO 변형 표, 5장 시맨틱 색 표와 도메인별 칩 표 5개를 `design-system/` 링크로 바꿈(값이 같은 것만, 사용자 확인). 5장 맨 위에 '칩 실물·색 표 → 디자인 시스템 > Status Chip' 링크
