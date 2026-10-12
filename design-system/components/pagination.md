@@ -32,9 +32,9 @@
 | 기본 페이지 | Regular 14/20, 기본 텍스트색 | [6102:8144](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6102-8144) |
 | 현재 페이지 | 선택 배경 `#EFF1FD`, 선택 텍스트 `#141E76`, SemiBold | [8945:10280](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=8945-10280) |
 | Compact 표시 | 현재 숫자 강조, 구분자와 전체 숫자는 회색이며 비조작 텍스트 | [14055:12316](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=14055-12316) |
-| 화살표 조작 | 눌림 시 배경 `#EFF1FD`, radius 4px; hover·disabled 스타일 없음 | [14072:12344](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=14072-12344) |
+| 화살표 조작 | 눌림 사례의 배경 `#EFF1FD`, radius 4px; hover·disabled 스타일 없음 | [14072:12344](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=14072-12344) |
 
-DS에 명시되지 않은 첫/마지막 페이지에서 화살표 disabled 처리, focus 외형, 로딩 상태는 확인 필요다.
+공통 상호작용 규칙 hover/focus/pressed: 정의 없음(현행 유지). Figma의 화살표 눌림 사례는 개별 관찰값으로 기록하며 공통 규칙으로 일반화하지 않는다. 첫/마지막 페이지에서 화살표 disabled 처리와 로딩 상태는 확인 필요다.
 
 ## 5. 크기·토큰 매핑
 
@@ -68,5 +68,5 @@ DS는 `Default`, `Combination`, `Compact` 변형을 제공하지만 breakpoint�
 
 1. 페이지 수별 번호 노출·생략 규칙을 DS 공통값으로 채택할지.
 2. 페이지 크기 옵션 20/50/100을 제품 공통값으로 채택할지.
-3. 첫/마지막 페이지 화살표 disabled, focus 및 키보드 동작.
+3. 첫/마지막 페이지 화살표 disabled 처리와 키보드 동작.
 4. Compact를 모바일에서 사용하는 breakpoint와 전환 조건.

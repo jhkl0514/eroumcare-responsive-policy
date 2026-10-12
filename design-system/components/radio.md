@@ -49,7 +49,7 @@ Pressed/On·Disabled/On의 내부에 8×8 원도 있으나 `visible=false`다. �
 | check / Off | `#FFFFFF` | `#FFFFFF`, 1px | 없음 | [13113:11915](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=13113-11915) |
 | check / On | `#323DA3` | 없음 | 흰 체크 16 | [13113:11916](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=13113-11916) |
 
-모든 변형은 그림자 효과가 없다. hover·focus·error는 세트에 없고 미정이다. Pressed를 hover·focus로 임의 매핑하지 않는다. Disabled 선택 원의 흰색은 확인한 원본 값이며 Checkbox 비활성 체크의 회색과 다르다. 통일 여부를 임의 결정하지 않는다.
+모든 변형은 그림자 효과가 없다. 공통 상호작용 규칙 hover/focus/pressed: 정의 없음(현행 유지). Pressed를 hover·focus로 임의 매핑하지 않는다. Disabled 선택 원의 흰색은 확인한 원본 값이며 Checkbox 비활성 체크의 회색과 다르다. 통일 여부를 임의 결정하지 않는다.
 
 ## 5. 토큰 매핑
 
@@ -79,21 +79,24 @@ Pressed/On·Disabled/On의 내부에 8×8 원도 있으나 `visible=false`다. �
 |---|---|---|---|
 | 컨트롤 | 20×20 | 20×20 | Figma 세트·CLAUDE.md 3-0 일치 |
 | 클릭·터치 영역 | 라벨과 연결 | 줄 전체 터치, 줄 높이 최소 44 | CLAUDE.md 3-0·9장 |
-| 라벨 타이포 | 관찰 예시 14/20 | 공통 전환 규칙 미정 | 입력칸의 16px 전환을 Radio에 자동 적용하지 않음 |
-| 그룹 배치 | 가로 gap 16 예시 확인 | 세로 전환 기준·항목 간격 미정 | 예시는 전체 배치 규칙을 확정하지 않음 |
+| 라벨·내용 | 라벨 125px 고정, 내용 영역 flex. 수정형 전환 폭은 125+4+280=409px, 조회형은 125+8+180=313px이며 이 폭보다 좁으면 내용이 라벨 아래로 줄바꿈 | 동일한 구조 적용 | 프로젝트 정책 `input-field-compare-demo` / `text-table-compare-demo` |
+| 선택지 배치 | 가로 나열, 항목 간격 24px; 공간이 부족하면 다음 줄로 배치 | 동일한 구조 적용 | 프로젝트 정책 기준 |
+| 여러 줄 라벨 | 컨트롤을 라벨 첫 줄에 맞춤 | 동일한 구조 적용 | 프로젝트 정책 기준 |
 | 최소 검토 폭 | 화면에 맞춤 | 360px | 프로젝트 기준 |
 
-좁은 화면에서 항목이 겹치지 않도록 재배치하는 방향은 권장하지만, 가로/세로 전환 폭·줄바꿈·여러 줄 라벨의 첫 줄 정렬·패딩 수치는 미정으로 둔다.
+라벨·내용 폭과 선택지 줄바꿈은 프로젝트 정책 `input-field-compare-demo` / `text-table-compare-demo`를 따른다. 좁은 화면에서는 선택지를 다음 줄로 배치하고, 여러 줄 라벨의 컨트롤은 첫 줄에 맞춘다.
 
 ## 7. 사용 규칙 · 접근성
 
 권장: 단일 선택 그룹에 사용하고 옵션 라벨을 명확히 제공한다. 금지: 기본 선택·필수 여부를 세트의 기본값으로 결정하거나 `check` 외형을 이유로 복수 선택 동작을 적용하지 않는다. `check`·`checkLine`의 사용처는 먼저 확인한다.
 
+- 그룹 오류 표시: 정의 없음. UX 제안 DS-U1 참고(프로토타입)
+
 아래는 디자인 값과 구분한 접근성 권장사항이다.
 
 - native `input type="radio"`와 연결된 `label`을 사용한다. 같은 그룹은 동일한 `name`, 각 항목은 구분되는 `value`를 사용한다. [HTML Radio 표준](https://html.spec.whatwg.org/multipage/input.html#radio-button-state-(type=radio))
 - 관련 선택지는 `fieldset`·`legend`로 묶는다. 라벨에는 `for`와 `id` 연결 또는 input을 포함하는 구조를 사용한다. [W3C 그룹 가이드](https://www.w3.org/WAI/tutorials/forms/grouping/), [라벨 가이드](https://www.w3.org/WAI/tutorials/forms/labels/)
-- native 키보드 동작을 유지하고 Tab·방향키·Space로 선택할 수 있게 한다. APG의 커스텀 그룹 패턴과 native 브라우저 동작의 차이를 고려한다. 포커스 외형은 확인 필요다. [W3C Radio 패턴](https://www.w3.org/WAI/ARIA/apg/patterns/radio/)
+- native 키보드 동작을 유지하고 Tab·방향키·Space로 선택할 수 있게 한다. APG의 커스텀 그룹 패턴과 native 브라우저 동작의 차이를 고려한다. 포커스 시각 표현의 공통 규칙은 정의 없음(현행 유지). [W3C Radio 패턴](https://www.w3.org/WAI/ARIA/apg/patterns/radio/)
 - 설명·오류 텍스트를 `aria-describedby`로 연결하고 오류 입력에 `aria-invalid="true"`를 표시한다. 비활성은 native `disabled`로 동작과 표시를 함께 처리한다.
 
 최소 HTML 예시는 의미 구조만 보여준다. DS 클래스와 CSS는 아직 추가하지 않았으며 기본 선택·필수 여부를 예시에서 확정하지 않는다.
@@ -126,13 +129,11 @@ Pressed/On·Disabled/On의 내부에 8×8 원도 있으나 `visible=false`다. �
 | ID | 항목 | 확인 내용 |
 |---|---|---|
 | R-01 | check·checkLine | 세트에는 State로 들어 있으나 외형 변형처럼 보임. 사용처·명명·단일 선택 의미·Disabled 지원 범위 확인 |
-| R-02 | hover·focus·Pressed | hover·focus 변형 없음. Pressed의 CSS 매핑과 포커스 표시 확인 |
-| R-03 | 오류 | error 변형 없음. 그룹 오류·개별 오류 표시 규격 확인 |
-| R-04 | 라벨·배치 | PC/MO 라벨·Disabled 라벨 색, 가로/세로 배치·줄바꿈·여러 줄 정렬·패딩 확인 |
-| R-05 | Disabled 선택 표시 | 원본은 회색 배경 안 흰 원 10. Checkbox와 차이는 원본 그대로 보존. 가독성과 유지 여부 검토 |
-| R-06 | 토큰 추가 | 크기 20·10·16, 터치 높이 44, 누락 시맨틱 색·Regular 굵기 토큰 후보 검토 |
+| R-02 | Disabled 라벨 | 아이콘만 있는 세트에서 Disabled 라벨 색상은 확인할 수 없음 |
+| R-03 | Disabled 선택 표시 | 원본은 회색 배경 안 흰 원 10. Checkbox와 차이는 원본 그대로 보존. 가독성과 유지 여부 검토 |
+| R-04 | 토큰 추가 | 크기 20·10·16, 터치 높이 44, 누락 시맨틱 색·Regular 굵기 토큰 후보 검토 |
 
-작성 범위: 공통 목차 9개, 상태 10개. 확인 필요 6건. 확인된 20×20 크기는 프로젝트와 일치. CSS 클래스는 이번에 추가하지 않음.
+작성 범위: 공통 목차 9개, 상태 10개. 확인 필요 4건. 확인된 20×20 크기는 프로젝트와 일치. CSS 클래스는 이번에 추가하지 않음.
 
 ## 10. 프레임워크와 차이
 

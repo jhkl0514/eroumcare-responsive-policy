@@ -36,7 +36,7 @@ DS의 주요 셀 타입은 `Text`, `Label`, `Status`, `Profile`, `Checkbox`, `Te
 | 내림차순 | `sorting_desc` | [6503:13494](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6503-13494) |
 | 행·셀 상호작용 | Checkbox, TextField, Select, Button 셀 타입 존재 | [6503:13134](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6503-13134) |
 
-Hover, focus, disabled, loading, empty, error 행 스타일은 이 컴포넌트 노드만으로 공통 규격을 확정할 수 없어 확인 필요다. 개별 셀 컨트롤의 상태는 해당 컴포넌트 문서를 따른다.
+공통 상호작용 규칙 hover/focus/pressed: 정의 없음(현행 유지). disabled, loading, empty, error 행 스타일은 이 컴포넌트 노드만으로 공통 규격을 확정하지 않는다. 개별 셀 컨트롤의 상태는 해당 컴포넌트 문서를 따른다.
 
 ## 5. 크기·토큰 매핑
 
@@ -72,5 +72,5 @@ DS 라이브러리의 Header 및 Cell 조합 예시를 확인했다. 정책 사�
 
 1. 공통 헤더·행·셀의 경계선, 패딩, 폭과 토큰 매핑.
 2. 모바일(≤1024)의 가로 스크롤·고정 열·카드 전환 기준.
-3. Hover/focus/disabled/loading/empty/error 행 상태와 접근성 동작.
+3. Disabled/loading/empty/error 행 상태와 접근성 동작.
 4. 프레임워크의 데이터 정렬·빈 값·버튼 수 정책을 프로젝트 공통 규칙으로 채택할지.

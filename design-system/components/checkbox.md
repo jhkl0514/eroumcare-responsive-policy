@@ -43,7 +43,7 @@
 | Disabled / off | `#EEEEEE` | `#BDBDBD`, 1px | 없음 | [6568:9405](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6568-9405) |
 | Disabled / on | `#EEEEEE` | `#BDBDBD`, 1px | `#BDBDBD` | [6568:9403](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6568-9403) |
 
-`Pressed`는 원본 상태명 그대로 기록한다. hover·focus와 같은 상태로 임의 매핑하지 않는다. 부분 선택(indeterminate), hover, focus, error는 세트에 없으며 미정이다. 위 세트의 모든 변형은 그림자 효과가 없다. Disabled 라벨의 색상은 아이콘만 있는 세트에서 확인할 수 없다.
+`Pressed`는 원본 상태명 그대로 기록하며 hover·focus로 매핑하지 않는다. 공통 상호작용 규칙 hover/focus/pressed: 정의 없음(현행 유지). 위 세트의 모든 변형은 그림자 효과가 없다. Disabled 라벨의 색상은 아이콘만 있는 세트에서 확인할 수 없다.
 
 ## 5. 토큰 매핑
 
@@ -71,24 +71,28 @@
 |---|---|---|---|
 | 컨트롤 | 20×20 | 20×20 | Figma 세트·CLAUDE.md 3-0 일치 |
 | 터치 영역 | 컨트롤과 연결된 라벨 | 줄 전체가 터치 대상, 줄 높이 최소 44 | CLAUDE.md 3-0·9장; Figma 아이콘 크기와 다른 개념 |
-| 라벨 | 관찰 예시 14/20 | 공통 전환 타이포 미정 | 자동으로 16px 전환하는 규칙을 추가하지 않음 |
+| 라벨·내용 | 라벨 125px 고정, 내용 영역 flex. 수정형 전환 폭은 125+4+280=409px, 조회형은 125+8+180=313px이며 이 폭보다 좁으면 내용이 라벨 아래로 줄바꿈 | 동일한 구조 적용 | 프로젝트 정책 `input-field-compare-demo` / `text-table-compare-demo` |
+| 선택지 배치 | 가로 나열, 항목 간격 24px; 공간이 부족하면 다음 줄로 배치 | 동일한 구조 적용 | 프로젝트 정책 기준 |
+| 여러 줄 라벨 | 컨트롤을 라벨 첫 줄에 맞춤 | 동일한 구조 적용 | 프로젝트 정책 기준 |
 | 최소 검토 폭 | 화면에 맞춤 | 360px | 프로젝트 반응형 기준 |
 
-모바일에서 컨트롤을 44px로 키우는 것이 아니라 라벨 행의 터치 영역을 확보한다. 여러 줄 라벨은 내용에 따라 행이 늘어나야 한다. 첫 줄 정렬과 행 패딩의 구체 값은 확인 필요다.
+모바일에서 컨트롤을 44px로 키우는 것이 아니라 라벨 행의 터치 영역을 확보한다. 여러 줄 라벨은 내용에 따라 행이 늘어나며 컨트롤은 첫 줄에 맞춘다. 라벨과 내용 배치 규칙은 프로젝트 정책 `input-field-compare-demo` / `text-table-compare-demo`를 따른다.
 
 ## 7. 사용 규칙 · 접근성
 
 권장: 독립·복수 선택에 사용하고 선택 표시를 색상과 체크로 함께 제공한다. 금지: Radio가 필요한 단일 선택을 Checkbox 외형만으로 표현하거나, 세트의 기본값을 모든 화면의 초기값으로 적용하지 않는다.
 
-‘전체 동의’와 개별 동의 연동, 기본 선택, 필수 여부, 회수 계약·임대료 문구는 화면별 정책이다. CLAUDE.md 3-7의 ‘전체’ 필터 정책을 동의 폼에 자동 적용하지 않는다. 부분 선택이 필요하면 미정 상태의 디자인을 먼저 검토한다.
+‘전체 동의’와 개별 동의 연동, 기본 선택, 필수 여부, 회수 계약·임대료 문구는 화면별 정책이다. CLAUDE.md 3-7의 ‘전체’ 필터 정책을 동의 폼에 자동 적용하지 않는다.
+
+- 그룹 오류 표시: 정의 없음. UX 제안 DS-U1 참고(프로토타입)
+- 부분 선택(Indeterminate): 정의 없음. UX 제안 DS-U2 참고(프로토타입)
 
 아래는 Figma 디자인 값과 구분한 접근성 권장사항이다.
 
 - native `input type="checkbox"`와 연결된 `label`을 사용한다. 커스텀 외형에서도 native input의 키보드·접근성 기능을 유지한다. [W3C 라벨 가이드](https://www.w3.org/WAI/tutorials/forms/labels/)
-- Tab으로 이동하고 Space로 선택을 전환할 수 있어야 한다. 키보드 포커스를 보이게 제공하며 표현 규격은 확인 필요다. [W3C Checkbox 패턴](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/)
+- Tab으로 이동하고 Space로 선택을 전환할 수 있어야 한다. 키보드 포커스는 보이게 제공한다. 시각 표현의 공통 규칙은 정의 없음(현행 유지). [W3C Checkbox 패턴](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/)
 - 관련 항목은 필요에 따라 `fieldset`·`legend`로 묶는다. [W3C 그룹 가이드](https://www.w3.org/WAI/tutorials/forms/grouping/)
 - 설명은 `aria-describedby`로 연결한다. 오류 시 `aria-invalid="true"`와 오류 텍스트를 함께 제공하되 미정인 오류 외형을 임의 확정하지 않는다.
-- 부분 선택은 native input의 `indeterminate` 속성으로 관리한다. HTML 속성으로 작성하지 않으며 이번 예시에는 JS를 넣지 않는다. [HTML Checkbox 표준](https://html.spec.whatwg.org/multipage/input.html#checkbox-state-(type=checkbox))
 
 최소 HTML 예시는 의미 구조만 보여준다. DS 클래스·스타일이 구현된 예시가 아니다.
 
@@ -115,13 +119,10 @@
 
 | ID | 항목 | 확인 내용 |
 |---|---|---|
-| C-01 | 부분 선택 | indeterminate 변형·색·기호가 세트에 없음. 필요 여부와 표현 규격 확인 |
-| C-02 | hover·focus·Pressed | hover·focus 변형 없음. Pressed와 CSS 상태의 연결 및 포커스 표시 확인 |
-| C-03 | 오류 | error 변형 없음. 오류 테두리·문구 위치·그룹 오류 처리 확인 |
-| C-04 | 라벨·줄바꿈 | 단일 줄 예시는 14/20·gap 8·가운데 정렬. 공통 PC/MO 라벨, Disabled 라벨 색, 여러 줄 정렬·패딩 확인 |
-| C-05 | 토큰 추가 | 20·16 크기, 모바일 터치 높이 44, 누락 시맨틱 색·Regular 굵기 토큰 검토. 기존 spacing을 크기 토큰으로 대신 쓰지 않음 |
+| C-01 | Disabled 라벨 | 아이콘만 있는 세트에서 Disabled 라벨 색상은 확인할 수 없음 |
+| C-02 | 토큰 추가 | 20·16 크기, 모바일 터치 높이 44, 누락 시맨틱 색·Regular 굵기 토큰 검토. 기존 spacing을 크기 토큰으로 대신 쓰지 않음 |
 
-작성 범위: 공통 목차 9개, 상태 6개. 확인 필요 5건. Figma와 프로젝트의 확인된 컨트롤 크기·PC 필터 예시 값에는 불일치 없음. CSS 클래스는 이번에 추가하지 않음.
+작성 범위: 공통 목차 9개, 상태 6개. 확인 필요 2건. Figma와 프로젝트의 확인된 컨트롤 크기·PC 필터 예시 값에는 불일치 없음. CSS 클래스는 이번에 추가하지 않음.
 
 ## 10. 프레임워크와 차이
 
@@ -133,4 +134,4 @@
 | 상태 표현 | `Default`, `Pressed`, `Disabled` × `off/on` | 기본·눌림·비활성 및 선택 여부 | 같은 노드 |
 | 사용 지침 | 공통 컴포넌트 세트에는 행위 정책 없음 | 다중 선택에 사용; 전체 선택은 하위 항목과 연동하는 패턴으로 설명 | 같은 노드 |
 
-프레임워크의 전체 선택 연동은 화면 패턴이다. indeterminate 디자인은 DS에서 확인되지 않아 이 문서의 공통 스타일로 추가하지 않는다.
+프레임워크의 전체 선택 연동은 화면 패턴이며, 이 문서에서 공통 컴포넌트 동작으로 정의하지 않는다.

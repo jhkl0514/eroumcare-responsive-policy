@@ -36,7 +36,7 @@ Option Chips는 radius 4px, XL label 18/26·가로 padding 20px, SM label 14px·
 | Hover:active | 미선택·선택 상태별 상호작용 표현 | [7723:9905](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7723-9905) |
 | Disabled | 선택 전·후 모두 비활성 배경·테두리 표현 | [7723:9965](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7723-9965) |
 
-컴포넌트 속성 상태는 `Default`, `Press`, `Disabled`, `Hover:active`로 표기되며, 개별 시각 예시는 Default, Hover:active, Disabled로 확인된다. Press 상태의 독립된 시각값과 키보드 focus 값은 추가 확인이 필요하다.
+컴포넌트 속성 상태는 `Default`, `Press`, `Disabled`, `Hover:active`로 표기되며, 개별 시각 예시는 Default, Hover:active, Disabled로 확인된다. 공통 상호작용 규칙 hover/focus/pressed: 정의 없음(현행 유지). 원본 변형명과 개별 시각 예시는 그대로 기록하며 공통 규칙으로 일반화하지 않는다.
 
 ## 5. 크기·토큰 매핑
 
@@ -44,7 +44,7 @@ DS examples에서 Option 높이 44/32px, Filter 높이 40/32px, radius 4/circle,
 
 ## 6. PC / 모바일(≤1024) 차이
 
-DS Chips에는 breakpoint별 크기나 PC/MO 전용 변형이 명시되지 않았다. XL·SM은 화면 기기가 아닌 컴포넌트 크기 변형이다. 프레임워크의 필터칩 색 범주 중 DS에서 찾지 못한 Black·Important는 해당 Figma 비교 차이에 기록하고, DS 색상 값처럼 사용하지 않는다.
+DS Chips에는 breakpoint별 크기나 PC/MO 전용 변형이 명시되지 않았다. XL·SM은 화면 기기가 아닌 컴포넌트 크기 변형이다. 프레임워크의 필터칩 Black·Important 색 범주는 미채택이며 DS 색상 값으로 사용하지 않는다.
 
 ## 7. 사용 원칙
 
@@ -64,12 +64,10 @@ DS 라이브러리의 Option Chips와 Filter Chips 예시를 확인했다. 서�
 |---|---|---|---|
 | 컴포넌트 구분 | `Option Chips_Line`, `Filter Chips` | 옵션칩과 필터칩의 목적을 분리 | DS [7723:9844](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7723-9844) · Framework [239:14543](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=239-14543) |
 | 크기 | Option XL/SM 44/32px; Filter XL/SM 40/32px | XL/SM 44/32px 사례 | 같은 노드 |
-| 색 범주 | Brand, SubBrand, Neutral | Filter Chips에 Black·Important 범주도 설명 | 같은 노드 |
+| 색 범주 | Brand, SubBrand, Neutral; Black·Important 미채택 | Filter Chips에 Black·Important 범주도 설명 | 같은 노드 |
 | 선택 반영 | DS는 선택 variant를 제공하나 반영 시점 정책은 별도 | 옵션의 선택·적용 시점 및 필터 결과 갱신을 사용법으로 안내 | 같은 노드 |
 
 ## 10. 확인 필요
 
-1. `Press`와 `Hover:active`의 구현 상태 매핑, 키보드 focus 표현.
-2. 프레임워크의 Black·Important 색 범주가 DS에 없는 의도된 차이인지.
-3. 옵션 선택의 단일/복수 선택 및 적용 버튼 유무는 각 사용 화면에서 결정.
-4. 색상 변수와 기존 CSS 토큰의 전체 대응 관계.
+1. 옵션 선택의 단일/복수 선택 및 적용 버튼 유무는 각 사용 화면에서 결정.
+2. 색상 변수와 기존 CSS 토큰의 전체 대응 관계.

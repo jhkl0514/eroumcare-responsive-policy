@@ -36,6 +36,8 @@ Underline의 대표 사례는 좌우 20px, 세로 16px padding이며 16/24 라�
 
 Disabled 상태는 확인되지 않는다. 오류·로딩 표현도 공통 Tab 상태로 확인되지 않아 확인 필요다.
 
+공통 상호작용 규칙 hover/focus/pressed: 정의 없음(현행 유지). 위 Hover·Hover:Active는 Figma에 기록된 Tab 자체의 관찰 변형이며, 다른 컴포넌트에 적용하는 공통 규칙으로 일반화하지 않는다.
+
 ## 5. 크기·토큰 매핑
 
 Figma 변형에서 라벨 16/24, padding 4/8/12/16/20, Tab 높이 40/48, radius 4/circle, selected underline 2px 사례를 확인했다. 값이 기존 foundations/tokens.css의 토큰과 연결되는지는 구현 시점에 대조한다. 이름이나 미확인 색상 토큰을 임의로 만들지 않는다.
@@ -69,5 +71,5 @@ DS 원본의 Underline·Outlined·Round 변형을 확인했다. 이번 범위에
 
 1. 원본 variant `Roound` 표기를 구현 API에서 `Round`로 정규화할지.
 2. 탭 라벨의 font-weight 및 선택 텍스트·경계 색상 전체 매핑.
-3. Disabled·focus·키보드 접근성 상태와 탭-패널 연결 규칙.
+3. Disabled·키보드 접근성 상태와 탭-패널 연결 규칙.
 4. 모바일 가로 스크롤, 고정 너비/콘텐츠 너비, PC/MO 변형 권장 범위를 DS 정책으로 채택할지.
