@@ -23,10 +23,10 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | 최소 모바일 폭 | `360px`; 콘텐츠 최소 너비는 `320px` |
 | 입력 컴포넌트 | Textfield·SelectField는 PC 40px, 모바일 48px. SelectOption은 PC 36px, 모바일 44px |
 | 버튼 | SM 36px / MD 48px는 PC·모바일 공통. 화면 하단 고정과 BottomSheet 하단 액션만 LG 54px |
-| 모달 폭 | sm 340 / md 480 / lg 600 / xl 800px; 화면 폭에 맞춰 축소 |
+| 모달 폭 | sm 340 / md 480 / lg 600 / xl 800px. Figma DS 기준(노드 [6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122)), CLAUDE.md 3-3도 이 기준으로 갱신 예정 |
 | 카드 목록 | 카드 사이 간격 12px, 모서리 8px, 그림자 사용 |
 
-세부 값과 Figma 출처는 [Foundations](./foundations.md) 및 각 컴포넌트 문서를 따른다. 위 기준은 `CLAUDE.md`의 확정 규칙을 옮긴 요약이다.
+세부 값과 Figma 출처는 [Foundations](./foundations.md) 및 각 컴포넌트 문서를 따른다. 모달 크기 네 단계는 Figma DS 기준이며, `CLAUDE.md` 3-3도 이 기준으로 갱신 예정이다.
 
 ## 출처와 표기
 
@@ -52,7 +52,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 
 | 컴포넌트 | 클래스 |
 |---|---|
-| Button | `.ds-btn`, `.ds-btn--primary`, `.ds-btn--secondary`, `.ds-btn--tertiary`, `.ds-btn--outline`, `.ds-btn--sm`, `.ds-btn--md`, `.ds-btn--lg`, `.ds-btn--block` |
+| Button | `.ds-btn`, `.ds-btn--primary`, `.ds-btn--secondary`, `.ds-btn--tertiary`, `.ds-btn--outline`, `.ds-btn--outline-secondary`, `.ds-btn--sm`, `.ds-btn--md`, `.ds-btn--lg`, `.ds-btn--block` |
 | Input | `.ds-field`, `.ds-field__label`, `.ds-input-wrap`, `.ds-input`, `.ds-input__clear`, `.ds-textarea`, `.ds-field__hint`, `.ds-field__error`, `.ds-textarea__count`, `.ds-is-readonly`, `.ds-is-error` |
 | Select | `.ds-select`, `.ds-select__trigger`, `.ds-select__list`, `.ds-select__option`, `.ds-is-readonly`, `.ds-is-error` |
 | Modal | `.ds-modal-backdrop`, `.ds-modal`, `.ds-modal--sm`, `.ds-modal--md`, `.ds-modal--lg`, `.ds-modal--xl`, `.ds-modal__header`, `.ds-modal__title`, `.ds-modal__body`, `.ds-modal__footer`, `.ds-modal__close`, `.ds-bottom-sheet`, `.ds-bottom-sheet__body`, `.ds-bottom-sheet__footer` |
@@ -74,7 +74,11 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
   <span class="ds-field__label">연락처</span>
   <span class="ds-input-wrap">
     <input class="ds-input" type="tel" inputmode="tel" value="010-0000-0000" placeholder="연락처">
-    <button class="ds-input__clear" type="button" aria-label="입력 지우기">×</button>
+    <button class="ds-input__clear" type="button" aria-label="입력 지우기">
+      <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </button>
   </span>
 </label>
 ```
