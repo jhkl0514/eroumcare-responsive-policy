@@ -137,7 +137,7 @@
   --ds-shadow-6-top: 0 -4px 16px rgba(0, 0, 0, 0.12); /* elevation/shadow6_Top */
   --ds-shadow-card-list: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0.5px rgba(0, 0, 0, 0.2); /* 카드 목록 그림자 */
 
-  /* foundations.md 7 모달 너비, 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) */
+  /* foundations.md 7: sm 340px은 Figma DS 기준, 프로젝트 사용 여부 확인 중 */
   --ds-modal-width-sm: 340px; /* Modal/sm */
   --ds-modal-width-md: 480px; /* Modal/md */
   --ds-modal-width-lg: 600px; /* Modal/lg */

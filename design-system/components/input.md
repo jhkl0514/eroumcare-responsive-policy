@@ -40,9 +40,9 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7837:8282`, `7697:147
 
 | 상태 | 사용 시점 | 표시 규칙 | Figma 출처 |
 |---|---|---|---|
-| `Inactive` | 값이 없고 아직 입력하지 않음 | 기본 테두리와 placeholder | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
-| `Default` | 입력 가능한 기본 상태 또는 값 입력 후 | 흰 배경, 기본 테두리 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
-| `Focused` | 사용자가 필드를 편집 중 | 2px 브랜드 테두리 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
+| `Inactive` | 값이 없고 아직 입력하지 않음 | MO 테두리 1px `#BDBDBD`, 흰 배경 | [Textfield Inactive MO 3065:29264](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=3065-29264) |
+| `Default` | 입력 가능한 기본 상태 또는 값 입력 후 | MO 테두리 1px `#333333`, 흰 배경 | [Textfield Default MO 53:137](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-137) |
+| `Focused` | 사용자가 필드를 편집 중 | 2px 브랜드 테두리, 바깥 outline 없음 | [Textfield Focused MO 53:145](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-145) |
 | `Error` | 입력값 검증 실패 | 2px 위험 테두리와 에러 메시지 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
 | `Disabled` | 현재 조건에서 입력할 수 없음 | 비활성 배경·테두리·글자 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
 | `ReadOnly` | 값은 보여 주지만 직접 수정하지 않음 | 비활성 배경, 값은 읽을 수 있는 대비 | [Textfield 7837:8282](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-8282) |
@@ -61,6 +61,7 @@ Figma 속성 원문 `Outlne`, `Incative`는 각각 표준명 `Outline`, `Inactiv
 | `color/border/primitive/primary` | `#323DA3` | 포커스 테두리 | Textfield `7837:8282` |
 | `color/border/danger` | `#E53935` | 오류 테두리 | Textfield `7837:8282` |
 | `color/border/disabled` | `#BDBDBD` | 비활성·읽기전용 테두리 | Textfield `7837:8282` |
+| `Color/Grey/400` | `#BDBDBD` | MO 값 없음(Inactive) 테두리 | [Textfield Inactive MO 3065:29264](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=3065-29264) |
 
 ## 6. PC / 모바일(≤1024) 차이
 
@@ -69,6 +70,9 @@ Figma 속성 원문 `Outlne`, `Incative`는 각각 표준명 `Outline`, `Inactiv
 | Textfield 높이 | `40px` | `48px` | `CLAUDE.md` 3-0, 3-2 |
 | Textfield 좌우 패딩 | `8px 12px` | `12px` | `CLAUDE.md` 3-0, 3-2 |
 | Textfield 글자 | `14px` | `16px` | `CLAUDE.md` 3-0, 3-2 |
+| 값 없음(Inactive) 테두리 | `1px #616161` | `1px #BDBDBD` | `CLAUDE.md` 3-2; Figma MO [3065:29264](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=3065-29264) |
+| 값 입력(Default) 테두리 | `1px #333333` | `1px #333333` | Figma PC [6201:9260](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6201-9260), MO [53:137](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-137) |
+| 포커스 테두리 | `2px #323DA3` | `2px #323DA3` | Figma MO [53:145](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-145) |
 | TextAreaField 글자 | `16px` | `16px` | 동일 |
 | 입력 폼 라벨 | 폭 `125px` 고정 | 폭 `125px` 고정 | `CLAUDE.md` 3-2 |
 
@@ -125,7 +129,11 @@ Figma 속성 원문 `Outlne`, `Incative`는 각각 표준명 `Outline`, `Inactiv
   <span class="ds-field__label">연락처</span>
   <span class="ds-input-wrap">
     <input class="ds-input" type="tel" inputmode="tel" value="010-0000-0000" placeholder="연락처">
-    <button class="ds-input__clear" type="button" aria-label="입력 지우기">×</button>
+    <button class="ds-input__clear" type="button" aria-label="입력 지우기">
+      <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </button>
   </span>
   <span class="ds-field__hint">숫자만 입력해 주세요.</span>
 </label>

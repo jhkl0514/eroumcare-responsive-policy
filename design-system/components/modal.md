@@ -30,10 +30,10 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
 
 | 크기 | 기준 너비 | 사용 기준 | 출처 |
 |---|---:|---|---|
-| SM | `340px` | 짧은 안내·확인 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
-| MD | `480px` | 안내·확인·입력·검색 | [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122), 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
-| LG | `600px` | 테이블 포함 | [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122), 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
-| XL | `800px` | 큰 테이블·계약서·문서 정보 포함 | [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122), 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
+| SM | `340px` | Figma DS 크기. 프로젝트 사용 여부 확인 중 | [Modal/sm 6437:10238](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6437-10238) |
+| MD | `480px` | 안내·확인·입력·검색 | 프로젝트 기준 `CLAUDE.md` 3-3; [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122) |
+| LG | `600px` | 테이블 포함 | 프로젝트 기준 `CLAUDE.md` 3-3; [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122) |
+| XL | `800px` | 큰 테이블·계약서·문서 정보 포함 | 프로젝트 기준 `CLAUDE.md` 3-3; [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122) |
 
 ## 4. 상태
 
@@ -49,7 +49,7 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
 
 | 토큰명 | 값 | 용도 | Figma 출처 |
 |---|---|---|---|
-| `border/radius/radius1` | `4px` | 모달 기본 모서리 값으로 참조 | [Modal 6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122) |
+| `border/radius/Radius4` | `16px` | 모달 바깥 모서리 | [Modal component 6489:5791](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6489-5791), [Modal/sm 6437:10238](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6437-10238) |
 | BottomSheet 상단 모서리 | `40px` | 모바일 시트 상단 좌우 모서리 | `CLAUDE.md` 3-5 |
 | 내부 좌우 여백 | `20px` | 모달 본문과 버튼 영역 | `CLAUDE.md` 3-3 |
 | Modal 버튼 높이 | `48px` | 모달 하단 액션 | `CLAUDE.md` 3-3, 3-4 |
@@ -64,7 +64,8 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
 | 구분 | PC (≥1025px) | 모바일 (≤1024px) | 근거 |
 |---|---|---|---|
 | Modal 위치 | 화면 정중앙 | 화면 정중앙 | `CLAUDE.md` 3-3 |
-| Modal 너비 | 지정 크기 340 / 480 / 600 / 800px | 지정 크기 이하의 가용 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
+| Modal 너비 | MD 480 / LG 600 / XL 800px; SM 340px은 Figma 기준 | 지정 크기 이하의 가용 너비 | `CLAUDE.md` 3-3; SM 사용 여부 확인 중 |
+| Modal 모서리 | `16px` | `16px` | Figma [6489:5791](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6489-5791) |
 | 좌우 여백 | 지정 크기 기준 | 화면 양쪽 `20px` | `CLAUDE.md` 3-3 |
 | 안내·확인만 | Modal | Modal | `CLAUDE.md` 3-3 |
 | 선택만 | Modal | Modal, 선택지가 길면 BottomSheet | `CLAUDE.md` 3-3 |
@@ -76,7 +77,7 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
 
 ## 7. 사용 규칙
 
-1. 모달 크기는 내부 요소 수가 아니라 테이블(행·열 데이터) 포함 여부로 선택한다. 기준 너비는 SM 340px, MD 480px, LG 600px, XL 800px이다.
+1. 모달 크기는 내부 요소 수가 아니라 테이블(행·열 데이터) 포함 여부로 선택한다. 프로젝트 기준은 MD 480px, LG 600px, XL 800px이며, SM 340px은 Figma DS에만 있고 사용 여부를 확인 중이다.
 2. 모달은 딤 배경 위에 중앙 정렬한다. 본문이 넘치면 본문만 스크롤하고 타이틀·하단 액션은 유지한다.
 3. 모바일에서 글자 입력이 필요한 팝업은 BottomSheet로 연다. 다른 모달 위에서 입력칸 하나와 취소·확인만 제공하는 짧은 입력은 예외다.
 4. BottomSheet 높이는 고정 픽셀로 지정하지 않는다. 화면 높이에 맞춰 최대 높이를 정하고 본문만 스크롤한다.
@@ -102,7 +103,8 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
 
 | 항목 | 내용 |
 |---|---|
-| 현재 확인 필요 없음 | 프로젝트 기준 모달 너비 340 / 480 / 600 / 800px을 적용했다. Figma 샘플 프레임은 구현 너비의 근거로 사용하지 않는다. |
+| SM 340px 사용 | Figma DS에 340px 변형이 있으나 `CLAUDE.md` 3-3은 480 / 600 / 800px만 정의한다. 프로젝트에서 SM을 사용할지 확인 필요. |
+| radius 4px 출처 | 모달 외곽 radius 4px인 Figma 노드는 확인되지 않았다. Figma Modal `6489:5791` 및 `6437:10238`은 16px이다. |
 
 ## CSS 클래스
 
@@ -134,7 +136,7 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
     </header>
     <div class="ds-modal__body">주문 정보를 확인해 주세요.</div>
     <footer class="ds-modal__footer">
-      <button class="ds-btn ds-btn--outline ds-btn--md" type="button">취소</button>
+      <button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button">취소</button>
       <button class="ds-btn ds-btn--primary ds-btn--md" type="button">확인</button>
     </footer>
   </section>

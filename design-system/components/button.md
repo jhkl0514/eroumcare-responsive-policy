@@ -27,6 +27,8 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7696:4607`, `6534:185
 | `outline / Secondary` | 중립 보조 동작 | 중립 외곽선 |
 | `outline / Tertiary` | 약한 강조의 보조 동작 | 낮은 강조의 외곽선 |
 
+`outline / Secondary`의 정사각형 MD 변형은 흰 배경, 1px `#616161` 테두리, `#555555` 글자, radius 4px이다. 기본·호버·비활성 표현은 Figma [7697:19573](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7697-19573), [7697:19657](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7697-19657), [7697:19741](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7697-19741)에서 확인했다.
+
 ### 크기
 
 | 크기 | 높이 | 기본 용도 | Figma 출처 |
@@ -35,7 +37,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7696:4607`, `6534:185
 | `MD_48px` | `48px` | 일반 주요·보조 액션, 모달 버튼 | [Button 7696:4607](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7696-4607) |
 | `LG_54px` | `54px` | 모바일 화면 하단 고정 및 바텀시트 하단 액션 | [Button 7696:4607](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7696-4607) |
 
-버튼은 최소 150px 너비를 적용하고 라벨이 더 길면 내용에 맞춰 늘어난다. `.ds-btn--block`은 모바일 하단 액션처럼 부모 폭 전체를 사용한다. 모달 하단 액션은 공간이 부족하면 같은 비율로 줄어든다.
+일반 버튼은 라벨과 패딩에 맞춰 늘어난다. 최소 너비를 공통 적용하지 않는다. 모달 하단 버튼은 150px을 기본 폭으로 두고, 공간이 부족하면 같은 비율로 줄어든다. `.ds-btn--block`은 부모 폭 전체를 사용한다.
 
 ## 4. 상태
 
@@ -57,6 +59,8 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7696:4607`, `6534:185
 | LG 세로 패딩 | `spacing/14` = `14px` | 54px 버튼 | [Button 7696:4607](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7696-4607) |
 | Filled 기본 배경 | `color/bg/primitive/primary` = `#323DA3` | 주 동작 | [Button 7696:4607](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7696-4607) |
 | 버튼 글자 | SUIT SemiBold, 크기별 `14 / 16 / 18px` | SM / MD / LG 라벨 | [Button 7696:4607](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7696-4607) |
+| Outline Secondary 테두리 | `Color/Grey/600` = `#616161` | 중립 외곽선 | [7697:19573](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7697-19573) |
+| Outline Secondary 글자 | `Color/text/Primitive/secondary` = `#555555` | 중립 외곽선 버튼 라벨 | [7697:19573](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7697-19573) |
 
 ## 6. PC / 모바일(≤1024) 차이
 
@@ -93,7 +97,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7696:4607`, `6534:185
 
 | 항목 | 내용 |
 |---|---|
-| 너비 | 일반 버튼 최소 150px, 긴 라벨은 hug. 모달 하단 버튼은 기본 150px이며 공간이 좁으면 같은 비율로 축소한다. |
+| 너비 | 일반 버튼은 내용에 맞춰 hug. 모달 하단 버튼만 기본 폭 150px이며 공간이 좁으면 같은 비율로 축소한다. |
 
 ## CSS 클래스
 
@@ -106,10 +110,11 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `7696:4607`, `6534:185
 | `.ds-btn--secondary` | 보조 채움 |
 | `.ds-btn--tertiary` | 낮은 강조 채움 |
 | `.ds-btn--outline` | 외곽선 보조 동작 |
+| `.ds-btn--outline-secondary` | 회색 외곽선 중립 보조 동작 |
 | `.ds-btn--sm` | 36px 높이 |
 | `.ds-btn--md` | 48px 높이 |
 | `.ds-btn--lg` | 54px 높이 |
 | `.ds-btn--block` | 부모 너비 전체를 사용하는 버튼 |
-| 최소 너비 | 150px; 라벨이 더 길면 내용 너비로 확장 |
+| `.ds-modal__footer .ds-btn` | 기본 폭 150px, 좁은 모달에서는 같은 비율로 축소 |
 | `.ds-btn:disabled` | 비활성 상태 |
 | `.ds-btn:focus-visible` | 키보드 포커스 상태 |

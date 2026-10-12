@@ -158,7 +158,7 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 
 | 토큰명 | 값 | 용도 | 출처 |
 |---|---:|---|---|
-| `Modal/sm` | `340px` | 소형 모달 기준 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
+| `Modal/sm` | `340px` | Figma DS 기준 너비, 프로젝트 사용 여부 확인 중 | [Modal/sm 6437:10238](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6437-10238) |
 | `Modal/md` | `480px` | 기본 안내·확인 모달 기준 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
 | `Modal/lg` | `600px` | 표 포함 모달 기준 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
 | `Modal/xl` | `800px` | 넓은 표·문서 모달 기준 너비 | 프로젝트 기준(CLAUDE.md, 2026-10-12 확정) |
