@@ -30,10 +30,10 @@ Modal은 현재 화면 위에서 짧은 안내·확인·선택 또는 표가 포
 
 | 크기 | 기준 너비 | 사용 기준 | 출처 |
 |---|---:|---|---|
-| SM | `340px` | 짧은 안내·확인 모달. 샘플은 네트워크 연결 안내, 최대 3줄 본문, 버튼 2개 | Figma DS 기준(노드 [6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122)), CLAUDE.md 3-3도 이 기준으로 갱신 예정 |
-| MD | `480px` | 기본 안내·확인·입력·검색 | Figma DS 기준(노드 [6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122)), CLAUDE.md 3-3도 이 기준으로 갱신 예정 |
-| LG | `600px` | 테이블 포함 | Figma DS 기준(노드 [6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122)), CLAUDE.md 3-3도 이 기준으로 갱신 예정 |
-| XL | `800px` | 큰 테이블·계약서·문서 정보 포함 | Figma DS 기준(노드 [6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122)), CLAUDE.md 3-3도 이 기준으로 갱신 예정 |
+| SM | `340px` | 짧은 안내·확인 모달. 샘플은 네트워크 연결 안내, 최대 3줄 본문, 버튼 2개 | Figma DS 및 정책 3-3 |
+| MD | `480px` | 기본 안내·확인·입력·검색 | Figma DS 및 정책 3-3 |
+| LG | `600px` | 테이블 포함 | Figma DS 및 정책 3-3 |
+| XL | `800px` | 큰 테이블·계약서·문서 정보 포함 | Figma DS 및 정책 3-3 |
 
 SM 샘플은 [Modal/sm 6437:10238](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6437-10238) 프레임(340×278px)에 짧은 네트워크 오류 안내와 두 개의 액션 버튼을 배치하며, 안내 본문은 최대 세 줄로 제한한다. 짧은 알림·확인 용례를 보여주는 샘플이다. 프레임 자체가 모바일 전용이라고 명시하지 않으므로, SM을 모바일 전용 크기로 해석하지 않는다.
 
@@ -83,7 +83,7 @@ SM 샘플은 [Modal/sm 6437:10238](https://www.figma.com/design/64Q1Re56aiAA8Al8
 
 ## 7. 사용 규칙
 
-1. 모달 크기는 콘텐츠 복잡도와 테이블(행·열 데이터) 포함 여부를 기준으로 선택한다. SM 340px은 짧은 알림·확인, MD 480px은 기본 안내·확인, LG 600px은 표 포함, XL 800px은 넓은 표·문서 정보를 기준으로 한다. 너비 출처는 Figma DS 기준(노드 [6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122)), CLAUDE.md 3-3도 이 기준으로 갱신 예정이다.
+1. 모달 크기는 콘텐츠 복잡도와 테이블(행·열 데이터) 포함 여부를 기준으로 선택한다. SM 340px은 짧은 알림·확인, MD 480px은 기본 안내·확인, LG 600px은 표 포함, XL 800px은 넓은 표·문서 정보를 기준으로 한다. (정책 3-3)
 2. 모달은 딤 배경 위에 중앙 정렬한다. 본문이 넘치면 본문만 스크롤하고 타이틀·하단 액션은 유지한다.
 3. 모바일에서 글자 입력이 필요한 팝업은 BottomSheet로 연다. 다른 모달 위에서 입력칸 하나와 취소·확인만 제공하는 짧은 입력은 예외다.
 4. BottomSheet 높이는 고정 픽셀로 지정하지 않는다. 화면 높이에 맞춰 최대 높이를 정하고 본문만 스크롤한다.
@@ -167,6 +167,14 @@ SM 샘플은 [Modal/sm 6437:10238](https://www.figma.com/design/64Q1Re56aiAA8Al8
 
 | 항목 | DS 값 | 프레임워크 값 | 노드 ID |
 |---|---|---|---|
-| 크기별 화면 적용 | SM 340 / MD 480 / LG 600 / XL 800px; 지정 폭 이하에서는 가용 폭에 맞춤 | SM 340px은 모바일, MD 480 / LG 600 / XL 800px은 PC용 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:5574](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-5574) |
+| 크기별 화면 적용 | SM 340 / MD 480 / LG 600 / XL 800px; 모든 기기에서 화면 가용 폭에 맞춤 | 프레임워크 샘플은 SM을 모바일, 나머지를 PC 크기로 분류 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:5574](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-5574) |
 | 모바일 하단 버튼 | 높이 48px, 모달 폭이 좁으면 버튼 폭을 같은 비율로 축소 | SM 모바일 샘플에서 버튼 영역을 가로 100%로 사용 | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:5574](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-5574) |
 | PC 하단 버튼 최소 폭 | 150px; 좁은 컨테이너에서는 축소 | MD/LG/XL 버튼 최소 폭 150px | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [1:5574](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-5574) |
+
+## 정책 반영 이력
+
+| 정책 조항 | 정책 기준 | 반영 내용 |
+|---|---|---|
+| 정책 3-3 | Modal은 340/480/600/800px 네 크기이며, 화면보다 큰 경우 좌우 20px 여백을 남기고 축소한다. 확인·안내는 Modal, 모바일 입력은 BottomSheet를 사용한다. | 네 크기 선택과 실제 열기/닫기 견본을 추가하고, 이전의 모바일 전용 SM 해석을 정정했다. |
+| 정책 3-3 | 한 번에 오버레이 하나만 표시한다. | 모달은 샘플 영역 안에서 열리고, 닫기·취소·확인·ESC로 닫힌다. |
+| 정책 3-3, 3-4 | 모달 하단 액션은 MD 48px, 기본 폭 150px, 간격 12px이다. | 모달 문서와 샘플의 액션 구성을 정책 기준에 맞췄다. |

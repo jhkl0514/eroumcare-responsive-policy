@@ -13,7 +13,7 @@
     sizes: { title: "크기", toc: "크기" }, states: { title: "상태", toc: "상태" },
     usage: { title: "사용 예", toc: "사용 예" }, dos: { title: "사용 원칙", toc: "사용 원칙" }
   };
-  const state = { nav: [], selected: null, tokens: [], vars: new Map(), sourceMarkup: "", docOpen: false, selectedDetails: new Map(), tocObserver: null };
+  const state = { nav: [], selected: null, tokens: [], vars: new Map(), sourceMarkup: "", docOpen: false, selectedDetails: new Map(), tocObserver: null, sampleClickHandler: null, interactionClickHandler: null };
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
   const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
@@ -251,20 +251,30 @@
     let partHtml = "";
     if (parts) {
       parts.classList.add("parts-grid");
+      $$("[data-part]", source).forEach(part => {
+        if (!$('.anatomy-marker', part)) {
+          const marker = document.createElement("span");
+          marker.className = "anatomy-marker";
+          marker.textContent = part.dataset.part;
+          marker.setAttribute("aria-hidden", "true");
+          part.prepend(marker);
+        }
+      });
       $$("li", parts).forEach(li => {
         const spans = $$('span:not(.part-no)', li);
         if (spans[1]) spans[1].classList.add("part-description");
       });
       partHtml = parts.outerHTML;
     }
-    return componentSection("structure", "구조", sectionData.description, `${sample?.outerHTML || ""}${partHtml}`);
+    return componentSection("structure", "구조", "", `${sample?.outerHTML || ""}${partHtml}`);
   }
 
   function makeCardPreview(article) {
     const clone = article.cloneNode(true);
+    clone.querySelector("strong, h3")?.remove();
+    clone.querySelector("p")?.remove();
     clone.querySelectorAll("[autofocus]").forEach(el => el.removeAttribute("autofocus"));
-    clone.querySelectorAll("button").forEach(el => el.disabled = true);
-    clone.querySelectorAll("input,textarea,select").forEach(el => el.disabled = true);
+    clone.querySelectorAll("button,input,textarea,select").forEach(el => el.tabIndex = -1);
     clone.setAttribute("aria-hidden", "true");
     clone.setAttribute("inert", "");
     return clone;
@@ -296,24 +306,68 @@
 
   function modalSizes() {
     const widths = ["sm", "md", "lg", "xl"].map(size => state.tokens.find(token => token.token === `--ds-modal-width-${size}`)).filter(Boolean);
-    const use = { sm: "간단한 알림·확인", md: "일반적인 결정", lg: "정보가 많은 선택·입력", xl: "넓은 콘텐츠" };
-    return `<div class="gallery-grid modal-size-grid">${widths.map((token, index) => `<article class="gallery-card" role="button" tabindex="0" aria-pressed="false" data-card-index="${index}"><div class="gallery-preview"><section class="ds-modal ds-modal--${token.name.split(" ").pop().toLowerCase()}" style="max-width:100%"><header class="ds-modal__header"><h3 class="ds-modal__title">${token.name.replace("모달 ", "Modal ")}</h3></header><div class="ds-modal__body">화면 폭에 맞춰 표시되는 모달입니다.</div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--primary ds-btn--md">확인</button></footer></section></div><div class="gallery-meta"><strong>${esc(token.name.replace("모달 ", "Modal "))} · ${esc(token.value)}</strong><span>${use[token.name.split(" ").pop().toLowerCase()]}</span></div></article>`).join("")}</div><div class="gallery-detail-slot" aria-live="polite"></div>`;
+    const use = { sm: "간단한 알림·확인", md: "일반 안내·결정", lg: "표가 포함된 정보", xl: "넓은 표·문서 정보" };
+    const choices = widths.map(token => {
+      const size = token.name.split(" ").pop().toLowerCase();
+      return `<button class="ds-btn ds-btn--outline-secondary ds-btn--sm modal-size-trigger" type="button" data-modal-size="${size}" aria-pressed="${size === "md"}">${size.toUpperCase()} · ${esc(token.value)}</button>`;
+    }).join("");
+    const uses = widths.map(token => {
+      const size = token.name.split(" ").pop().toLowerCase();
+      return `<p><strong>${size.toUpperCase()} · ${esc(token.value)}</strong><span>${use[size]}</span></p>`;
+    }).join("");
+    return `<div class="modal-size-controls" role="group" aria-label="모달 크기 선택">${choices}</div><p class="section-note">크기를 선택한 뒤 열어 실제 모달을 확인합니다. 좁은 화면에서는 좌우 여백을 남기고 줄어듭니다. (정책 3-3)</p><div class="modal-demo-stage" data-current-size="md"><button class="ds-btn ds-btn--primary ds-btn--md modal-open" type="button">모달 열기</button><div class="modal-demo-backdrop" hidden><section class="ds-modal ds-modal--md" role="dialog" aria-modal="true" aria-labelledby="size-modal-title"><header class="ds-modal__header"><h3 class="ds-modal__title" id="size-modal-title">주문 정보를 확인해 주세요.</h3><button class="ds-modal__close modal-close" type="button" aria-label="닫기"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body">요청하신 내용을 확인한 뒤 다음 단계로 진행해 주세요.</div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--outline-secondary ds-btn--md modal-close" type="button">취소</button><button class="ds-btn ds-btn--primary ds-btn--md modal-close" type="button">확인</button></footer></section></div></div><div class="modal-size-uses">${uses}</div>`;
+  }
+
+  function responsiveRule(title) {
+    const rules = {
+      Button: ["일반 버튼은 PC·모바일 같은 크기", "모바일 하단 고정·시트 액션만 전체 폭으로 나눔 (정책 3-0, 3-4)"],
+      "Text input": ["입력류는 1024px 이하에서 MO 크기로 전환", "PC 40px·14px → 모바일 48px·16px, 검색 입력은 X 없이 유지 (정책 3-0, 3-2)"],
+      Textarea: ["PC·모바일 모두 16px", "도움말·글자 수를 연결하고 키보드에 가리지 않게 배치 (정책 3-2, 3-12)"],
+      Select: ["PC 40/36px → 모바일 48/44px", "긴 선택 목록은 모바일에서 시트 흐름을 사용 (정책 3-0, 3-3, 3-7)"],
+      Modal: ["화면이 좁으면 좌우 20px 여백으로 축소", "모바일 입력은 바텀시트, 안내·확인은 모달 (정책 3-3)"],
+      "Status Chip": ["상태칩은 PC·모바일 같은 크기", "도메인 상태를 대표 정보 가까이에 배치 (정책 3-0, 3-9, 5장)"]
+    };
+    const [pc, mobile] = rules[title] || ["화면 폭에 맞춰 재배치", "모바일에서도 조작성을 유지"];
+    return '<div class="responsive-rule"><h3>PC / 모바일</h3><div class="responsive-rule-grid"><article><strong>PC · 1025px 이상</strong><span>' + esc(pc) + '</span><div class="responsive-mock responsive-mock-pc"><i></i><i></i><i></i></div></article><article><strong>모바일 · 1024px 이하</strong><span>' + esc(mobile) + '</span><div class="responsive-mock responsive-mock-mobile"><i></i><i></i><i></i></div></article></div></div>';
+  }
+
+  function usageExamples(title) {
+    const examples = {
+      Button: [["페이지 제목 액션","주요·보조 동작을 나란히 둡니다.",'<button class="ds-btn ds-btn--outline-secondary ds-btn--sm">주문취소</button><button class="ds-btn ds-btn--primary ds-btn--sm">주문하기</button>'],["주문 목록 검색","초기화와 검색의 우선순위를 구분합니다.",'<button class="ds-btn ds-btn--outline-secondary ds-btn--sm">초기화</button><button class="ds-btn ds-btn--primary ds-btn--sm">검색</button>'],["모달 하단 액션","취소와 확인을 구분합니다.",'<button class="ds-btn ds-btn--outline-secondary ds-btn--md">취소</button><button class="ds-btn ds-btn--primary ds-btn--md">확인</button>']],
+      "Text input": [["수급자 조회 폼","필수 표시와 입력 규칙을 함께 제공합니다.",'<div class="ds-field"><label class="ds-field__label" for="usage-recipient-id">요양인정번호 <span class="ds-field__required">*</span></label><div class="field-control-row"><input class="ds-input" id="usage-recipient-id" placeholder="인정번호 입력" required><button class="ds-btn ds-btn--primary ds-btn--sm" type="button">조회</button></div><span class="ds-field__hint">하이픈 없이 입력해 주세요.</span></div>'],["주문 목록 검색","검색 입력은 실행 버튼을 유지하고 X를 두지 않습니다. (정책 3-2)",'<div class="ds-field"><label class="ds-field__label" for="usage-order-search">검색어</label><div class="field-control-row"><input class="ds-input" id="usage-order-search" type="search" placeholder="수급자명, 주문번호 검색"><button class="ds-btn ds-btn--primary ds-btn--sm" type="button">검색</button></div></div>'],["배송 상세 주소","값이 있는 편집 입력은 지우기 동작을 제공합니다.",'<label class="ds-field"><span class="ds-field__label">상세 주소</span><input class="ds-input" value="가상로 10"></label>']],
+      Textarea: [["회수 사유","긴 내용을 입력하고 글자 수를 확인합니다.",'<label class="ds-field"><span class="ds-field__label">회수 사유</span><textarea class="ds-textarea" rows="3" maxlength="200"></textarea><span class="ds-field__hint">상세 사유를 입력해 주세요.</span><span class="ds-textarea__count">0 / 200자</span></label>'],["주문 메모","내부 전달사항을 여러 줄로 작성합니다.",'<label class="ds-field"><span class="ds-field__label">주문 메모</span><textarea class="ds-textarea" rows="3" maxlength="200"></textarea><span class="ds-textarea__count">0 / 200자</span></label>'],["배송 요청사항","오류 이유를 입력 영역과 연결합니다.",'<label class="ds-field"><span class="ds-field__label">요청사항</span><textarea class="ds-textarea ds-is-error" rows="3" aria-invalid="true" maxlength="200"></textarea><span class="ds-field__error">요청사항을 확인해 주세요.</span><span class="ds-textarea__count">0 / 200자</span></label>']],
+      Select: [["주문 목록 검색","진행 상태처럼 정해진 조건을 선택합니다.",'<div class="ds-field"><label class="ds-field__label" for="usage-order-status">주문 진행상태</label><div class="field-control-row"><span class="ds-select"><button class="ds-select__trigger" id="usage-order-status" type="button">전체</button></span><button class="ds-btn ds-btn--primary ds-btn--sm" type="button">검색</button></div></div>'],["품목 필터","상품군 목록에서 한 항목을 고릅니다.",'<label class="ds-field"><span class="ds-field__label">품목</span><span class="ds-select"><button class="ds-select__trigger">전체 품목</button></span></label>'],["회수 신청 폼","선택지가 길면 모바일 옵션 시트 흐름을 사용합니다. (정책 3-3)",'<label class="ds-field"><span class="ds-field__label">회수 사유</span><span class="ds-select"><button class="ds-select__trigger">사유 선택</button></span></label>']],
+      Modal: [["주문하기 확인","변경이 제한되는 점과 다음 동작을 확인합니다.","<p>주문 완료 후 수량과 옵션은 변경할 수 없습니다.</p>"],["주문 불가 안내","짧은 안내 뒤 확인 동작을 제공합니다.","<p>선택한 상품은 현재 주문할 수 없습니다.</p>"],["대여 이력 조회","표가 포함되면 넓은 크기를 선택합니다.","<p>대여 이력은 필요한 경우 가로로 이동해 확인합니다.</p>"]],
+      "Status Chip": [["주문 목록","대여 도메인의 대표 상태를 표시합니다.",'<span class="ds-chip ds-chip--rental-shipping-preparing">출고준비중</span>'],["회수 관리","회수 흐름의 진행 상태를 표시합니다.",'<span class="ds-chip ds-chip--collection-requested">회수요청</span>'],["반품·A/S 목록","화면 도메인에 맞는 칩을 선택합니다.",'<span class="ds-chip ds-chip--service-in-progress">A/S진행중</span>']]
+    };
+    const cards = (examples[title] || []).map(([name, desc, body]) => '<article class="usage-example"><h3>' + esc(name) + '</h3><p>' + esc(desc) + '</p><div class="sample-row">' + body + '</div></article>').join("");
+    return '<div class="usage-examples-grid">' + cards + responsiveRule(title) + '</div>';
+  }
+
+  function principlePairs(title) {
+    const items = {
+      Button: [["주 동작 하나를 강조","Primary로 가장 중요한 행동을 보여줍니다.","동급 Primary 나열","보조 동작은 낮은 위계로 구분합니다."],["결과가 분명한 라벨","저장·검색·주문하기처럼 실행을 씁니다.","모호한 라벨","동작명이 결과를 전달하게 합니다."],["배치에 맞는 크기","입력 옆은 SM, 일반 액션은 MD입니다.","모바일 임의 확대","일반 버튼 크기는 기기별로 바꾸지 않습니다. (정책 3-0, 3-4)"],["입력칸 기준 정렬","옆 버튼은 입력 높이의 중앙에 둡니다.","라벨 블록 기준 정렬","버튼은 입력칸과 수직으로 맞춥니다. (정책 3-4)"]],
+      "Text input": [["라벨과 입력 연결","필드 목적과 필수 여부를 알려줍니다.","placeholder로 라벨 대체","placeholder는 입력 예시로만 사용합니다."],["편집 필드에만 X","값이 있을 때 지우기를 제공합니다.","검색 아이콘과 X 병치","검색 입력은 X 없이 유지합니다. (정책 3-2)"],["MO 규격 적용","1024px 이하에서 48px·16px을 씁니다.","PC 규격 유지","입력류는 모바일 변형으로 바꿉니다. (정책 3-2)"],["문장으로 상태 안내","도움말·오류를 필드와 연결합니다.","색만으로 오류 표시","오류 이유를 텍스트로 제공합니다. (정책 3-0)"]],
+      Textarea: [["긴 내용에 사용","사유·메모처럼 여러 줄 입력에 씁니다.","짧은 값에 사용","한 줄 값에는 Text input을 씁니다."],["현재/최대 글자 수","제한이 있으면 입력량을 표시합니다.","최대치만 표시","작성자가 남은 분량을 판단하게 합니다. (정책 3-2)"],["안내를 입력 가까이에","도움말과 오류를 필드 아래에 둡니다.","색상만으로 오류 표시","이유를 읽을 수 있는 문장으로 알립니다."],["키보드 공간 확보","본문은 스크롤하고 액션은 접근 가능하게 둡니다.","고정 액션으로 입력 가리기","키보드가 입력을 가리지 않게 합니다. (정책 3-12)"]],
+      Select: [["정해진 선택지 제공","목록에서 제한된 값을 고를 때 씁니다.","자유 입력처럼 사용","검색·입력 패턴과 구분합니다."],["선택 상태를 표시","텍스트와 선택 표시로 현재값을 알립니다.","쉼표로 값 나열","항목별 선택 상태를 제공합니다."],["기기별 크기 적용","PC 40/36, 모바일 48/44px입니다.","모바일에서 PC 크기","1024px 이하 MO 크기를 씁니다. (정책 3-0, 3-2)"],["오버레이 하나 유지","새 선택 목록이 열리면 기존 것을 닫습니다.","팝업 중첩","닫기 순서를 단순하게 유지합니다. (정책 3-3)"]],
+      Modal: [["한 가지 결정에 집중","안내·확인과 핵심 액션을 담습니다.","긴 입력 폼을 작은 모달에","모바일 입력은 바텀시트입니다. (정책 3-3)"],["내용량에 맞는 크기","네 가지 너비와 용도를 선택합니다.","요소 개수로만 결정","표 포함 여부와 정보 밀도를 봅니다. (정책 3-3)"],["액션 위계 구분","취소와 진행 결과를 다르게 표현합니다.","두 액션을 같은 강조로","주요 동작을 구분합니다."],["오버레이 하나만","새 팝업을 열 때 이전 것을 닫습니다.","모달 중첩","예외적 짧은 입력 외에는 중첩하지 않습니다. (정책 3-3)"]],
+      "Status Chip": [["도메인별 칩 사용","주문·대여·회수·A/S·반품을 구분합니다.","같은 이름 임의 재사용","도메인 상태 흐름을 보존합니다. (정책 5장)"],["텍스트와 색 함께","색은 상태 의미를 보조합니다.","색상만으로 전달","읽을 수 있는 라벨을 유지합니다."],["대표 상태 우선","대상 정보 가까이에 상태 하나를 둡니다.","상태를 무작정 나열","한 대상의 현재 상태를 강조합니다."],["기기별 크기 유지","상태칩은 화면 폭으로 바꾸지 않습니다.","임의 축소","표 배지 예외만 적용합니다. (정책 3-0, 3-9)"]]
+    };
+    const pairs = (items[title] || []).map(([goodTitle, good, badTitle, bad]) => '<div class="principle-pair"><article class="do-item good"><h3>' + esc(goodTitle) + '</h3><p>' + esc(good) + '</p><small>✓ 권장</small></article><article class="do-item bad"><h3>' + esc(badTitle) + '</h3><p>' + esc(bad) + '</p><small>✕ 주의</small></article></div>').join("");
+    return '<div class="principle-pairs">' + pairs + '</div>';
   }
 
   function buildComponentPage(item, sections) {
     const description = sections.find(section => section.type === "anatomy")?.description || `${item.title}의 형태, 상태, 크기와 화면 사용 예입니다.`;
     const byType = new Map(sections.map(section => [section.type, section]));
     const content = [];
-    content.push(componentSection("overview", "개요", "", `<div class="component-overview"><span class="overview-mark" aria-hidden="true">${esc(item.title.slice(0,1))}</span><p>${esc(description)}</p></div>`));
     if (byType.has("anatomy")) content.push(buildStructure(item, byType.get("anatomy")));
     if (byType.has("variants")) content.push(componentSection("types", "타입", byType.get("variants").description, item.title === "Modal" ? modalTypes(item, byType.get("variants")) : detailGallery(item, "variants", byType.get("variants"))));
     if (byType.has("sizes")) content.push(componentSection("sizes", "크기", byType.get("sizes").description, item.title === "Modal" ? modalSizes() : detailGallery(item, "sizes", byType.get("sizes"))));
     if (byType.has("states")) content.push(componentSection("states", "상태", byType.get("states").description, detailGallery(item, "states", byType.get("states"))));
-    if (byType.has("usage")) content.push(componentSection("usage", "사용 예", byType.get("usage").description, `<div class="use-frame">${byType.get("usage").html}</div>`));
+    if (byType.has("usage")) content.push(componentSection("usage", "사용 예", byType.get("usage").description, usageExamples(item.title)));
     if (byType.has("dos")) {
-      const source = document.createElement("div"); source.innerHTML = byType.get("dos").html;
-      const grid = $(".do-grid", source);
-      content.push(componentSection("usage-principles", "사용 원칙", byType.get("dos").description, grid?.outerHTML || byType.get("dos").html));
+      content.push(componentSection("usage-principles", "사용 원칙", byType.get("dos").description, principlePairs(item.title)));
     }
     const design = content.join("");
     const classes = [...new Set([...sections.flatMap(section => [...section.source.querySelectorAll("[class]")].flatMap(el => [...el.classList]))])].sort();
@@ -334,8 +388,143 @@
     return state.tokens.filter(filters[title] || (() => false));
   }
 
+  function enhanceFunctionalSamples(item) {
+    const host = $("#design-content");
+    $$(".ds-field__hint img, .ds-field__error img", host).forEach(icon => icon.remove());
+    if (item.title === "Text input" || item.title === "Textarea") {
+      $$(".ds-input", host).forEach(input => {
+        if (input.disabled || input.readOnly || input.type === "search") return;
+        let wrap = input.closest(".ds-input-wrap");
+        if (!wrap) {
+          wrap = document.createElement("span");
+          wrap.className = "ds-input-wrap viewer-input-wrap";
+          input.before(wrap);
+          wrap.append(input);
+        }
+        let clear = $(".ds-input__clear", wrap);
+        if (!clear) {
+          clear = document.createElement("button");
+          clear.type = "button";
+          clear.className = "ds-input__clear";
+          clear.setAttribute("aria-label", "입력 지우기");
+          clear.innerHTML = '<svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+          wrap.append(clear);
+        }
+        const sync = () => { clear.hidden = !input.value; };
+        input.addEventListener("input", sync);
+        clear.addEventListener("click", () => { input.value = ""; sync(); input.focus(); });
+        sync();
+      });
+      $$(".ds-textarea", host).forEach(textarea => {
+        let wrap = textarea.closest(".viewer-textarea-wrap");
+        if (!wrap) {
+          wrap = document.createElement("span");
+          wrap.className = "viewer-textarea-wrap";
+          textarea.before(wrap);
+          wrap.append(textarea);
+        }
+        let clear = $(".viewer-textarea-clear", wrap);
+        if (!clear) {
+          clear = document.createElement("button");
+          clear.type = "button";
+          clear.className = "viewer-textarea-clear";
+          clear.setAttribute("aria-label", "입력 지우기");
+          clear.innerHTML = '<svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+          wrap.append(clear);
+        }
+        const countNode = textarea.parentElement.querySelector(".ds-textarea__count") || textarea.closest(".ds-field")?.querySelector(".ds-textarea__count");
+        const max = Number(textarea.maxLength > 0 ? textarea.maxLength : 200);
+        textarea.maxLength = max;
+        const count = countNode || Object.assign(document.createElement("span"), { className: "ds-textarea__count" });
+        if (!countNode) textarea.after(count);
+        const sync = () => { clear.hidden = !textarea.value; count.textContent = `${textarea.value.length} / ${max}자`; };
+        textarea.addEventListener("input", sync);
+        clear.addEventListener("click", () => { textarea.value = ""; sync(); textarea.focus(); });
+        sync();
+      });
+    }
+    if (item.title === "Select") {
+      $$(".ds-select", host).forEach(select => {
+        const trigger = $(".ds-select__trigger", select);
+        if (!trigger) return;
+        trigger.setAttribute("aria-haspopup", "listbox");
+        trigger.setAttribute("aria-expanded", "false");
+        let list = $(".ds-select__list", select);
+        if (!list) {
+          const fieldLabel = select.closest(".ds-field")?.querySelector(".ds-field__label")?.textContent.trim();
+          const options = fieldLabel === "주문 진행상태" ? ["전체", "주문접수", "주문확인중", "상품준비", "출고완료"] : ["전체", "전동침대", "휠체어", "실외경사로"];
+          list = document.createElement("div");
+          list.className = "ds-select__list";
+          list.setAttribute("role", "listbox");
+          list.setAttribute("aria-label", fieldLabel || "선택 항목");
+          options.forEach(option => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "ds-select__option";
+            button.setAttribute("role", "option");
+            button.setAttribute("aria-selected", String(trigger.textContent.trim() === option));
+            button.textContent = option;
+            list.append(button);
+          });
+          select.append(list);
+        }
+        list.hidden = true;
+      });
+    }
+    state.sampleClickHandler = event => {
+      const sizeButton = event.target.closest(".modal-size-trigger");
+      if (sizeButton) {
+        const stage = $(".modal-demo-stage", host);
+        const size = sizeButton.dataset.modalSize;
+        stage.dataset.currentSize = size;
+        $(".ds-modal", stage).className = `ds-modal ds-modal--${size}`;
+        $$(".modal-size-trigger", host).forEach(button => button.setAttribute("aria-pressed", String(button === sizeButton)));
+        return;
+      }
+      const modalOpen = event.target.closest(".modal-open");
+      if (modalOpen) {
+        const stage = modalOpen.closest(".modal-demo-stage");
+        $(".modal-demo-backdrop", stage).hidden = false;
+        $(".modal-close", stage)?.focus();
+        return;
+      }
+      const modalClose = event.target.closest(".modal-close");
+      if (modalClose) {
+        modalClose.closest(".modal-demo-backdrop").hidden = true;
+        $(".modal-open", modalClose.closest(".modal-demo-stage"))?.focus();
+        return;
+      }
+      const trigger = event.target.closest(".ds-select__trigger");
+      if (trigger && item.title === "Select") {
+        const select = trigger.closest(".ds-select");
+        const list = $(".ds-select__list", select);
+        const willOpen = list.hidden;
+        $$(".ds-select__list", host).forEach(other => { other.hidden = true; other.closest(".ds-select")?.querySelector(".ds-select__trigger")?.setAttribute("aria-expanded", "false"); });
+        list.hidden = !willOpen;
+        trigger.setAttribute("aria-expanded", String(willOpen));
+        return;
+      }
+      const option = event.target.closest(".ds-select__option");
+      if (option && item.title === "Select") {
+        const list = option.closest(".ds-select__list");
+        const select = list.closest(".ds-select");
+        const triggerButton = $(".ds-select__trigger", select);
+        triggerButton.textContent = option.textContent;
+        list.querySelectorAll(".ds-select__option").forEach(button => button.setAttribute("aria-selected", String(button === option)));
+        list.hidden = true;
+        triggerButton.setAttribute("aria-expanded", "false");
+      }
+    };
+    host.addEventListener("click", state.sampleClickHandler);
+  }
+
   async function renderSelected() {
     if (!state.selected) return;
+    const contentHost = $("#design-content");
+    if (state.sampleClickHandler) contentHost.removeEventListener("click", state.sampleClickHandler);
+    if (state.interactionClickHandler) contentHost.removeEventListener("click", state.interactionClickHandler);
+    state.sampleClickHandler = null;
+    state.interactionClickHandler = null;
     const item = state.selected;
     const breadcrumb = [item.group, item.title].filter(Boolean);
     $("#breadcrumbs").innerHTML = breadcrumb.map((part, index) => `${index ? '<span class="crumb-separator" aria-hidden="true">›</span>' : ""}<span>${esc(part)}</span>`).join("");
@@ -365,6 +554,7 @@
         $("#page-description").textContent = page.description;
         $("#design-content").innerHTML = page.design;
         $("#development-content").innerHTML = developerView(page.tokens, page.classes, page.code);
+        enhanceFunctionalSamples(item);
       } catch (error) {
         $("#page-description").textContent = "문서를 불러오지 못했습니다.";
         $("#design-content").innerHTML = `<div class="empty-state"><strong>견본을 불러오지 못했습니다</strong><span>${esc(error.message)}</span></div>`;
@@ -448,14 +638,15 @@
       card.addEventListener("click", select);
       card.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); select(); } });
     });
-    $("#design-content").addEventListener("click", event => {
+    state.interactionClickHandler = event => {
       const button = event.target.closest(".measure-toggle");
       if (!button) return;
       const pressed = button.getAttribute("aria-pressed") !== "true";
       button.setAttribute("aria-pressed", String(pressed));
       button.textContent = pressed ? "치수 숨기기" : "치수 보기";
       button.closest(".detail-panel")?.querySelector(".detail-specimen")?.classList.toggle("measure-on", pressed);
-    });
+    };
+    $("#design-content").addEventListener("click", state.interactionClickHandler);
     $("#copy-code")?.addEventListener("click", async event => {
       const code = $("#development-content pre code")?.textContent || "";
       try { await navigator.clipboard.writeText(code); event.currentTarget.textContent = "복사됨"; }
@@ -532,7 +723,20 @@
       const stop = () => { resize.removeEventListener("pointermove", move); resize.removeEventListener("pointerup", stop); };
       resize.addEventListener("pointermove", move); resize.addEventListener("pointerup", stop);
     });
-    document.addEventListener("keydown", event => { if (event.key === "Escape") { setDocOpen(false); closeNavigation(); } });
+    document.addEventListener("keydown", event => {
+      if (event.key !== "Escape") return;
+      const modal = $(".modal-demo-backdrop:not([hidden])", $("#design-content"));
+      if (modal) { modal.hidden = true; $(".modal-open", modal.closest(".modal-demo-stage"))?.focus(); }
+      setDocOpen(false);
+      closeNavigation();
+    });
+    document.addEventListener("click", event => {
+      if (event.target.closest(".ds-select")) return;
+      $$(".ds-select__list", $("#design-content")).forEach(list => {
+        list.hidden = true;
+        list.closest(".ds-select")?.querySelector(".ds-select__trigger")?.setAttribute("aria-expanded", "false");
+      });
+    });
     window.addEventListener("resize", () => { if (state.docOpen) setDocOpen(true); });
   }
 
