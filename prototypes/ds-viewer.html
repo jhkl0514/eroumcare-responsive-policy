@@ -149,7 +149,6 @@ button{font:inherit;color:inherit;}
 <script>
 /* 조정 중 항목 — 정책(CLAUDE.md)과 DS 값을 맞추는 중인 것. 있을 때만 설명문서 패널 맨 위에 보인다 */
 var ADJUST = [];
-var FRAMEWORK_FILE = 'AD6zHJIIn6yJ0ifS8w5pYv';     /* nav.json에 Figma 파일 키 필드가 없을 때 쓰는 프레임워크 파일 */
 var LEGACY = { overview:'DESIGN.md', foundations:'foundations.md#color', button:'components/button.md', input:'components/text-input.md',
   select:'components/select.md', modal:'components/modal.md', 'status-chip':'components/status-chip.md' };   /* 예전 ?p= 링크 */
 var DS = new URL('../design-system/', location.href).href;
@@ -172,7 +171,7 @@ fetch(DS + 'nav.json', {cache:'no-cache'}).then(function(r){ return r.json(); })
 /* nav.json 목록에 없는 문서(예: 정책 문서가 가리키는 옛 파일)는 메뉴 선택 없이 설명문서만 연다 */
 function offNav(f){
   if(!/^[\w\/.-]+\.md(#[\w-]+)?$/.test(f)) return null;
-  var it = {title:f.split('/').pop().replace(/\.md.*$/, ''), file:f, status:'done', group:'목록에 없는 문서', figmaNodeIds:[], offNav:true};
+  var it = {title:f.split('/').pop().replace(/\.md.*$/, ''), file:f, status:'done', group:'목록에 없는 문서', offNav:true};
   ITEMS.push(it); setTimeout(function(){ setDoc(true, false); }, 0); return it;
 }
 function openGroups(){ try{ return JSON.parse(store.get('dsNavOpen') || 'null') || {}; }catch(e){ return {}; } }
@@ -353,16 +352,21 @@ function renderDoc(it){
     .then(function(t){ mdCache[file] = t; draw(t); })
     .catch(function(e){ if(cur === it) c.innerHTML = head + '<p class="err">문서를 불러오지 못했습니다 ('+esc(e.message)+')</p>' + figmaHtml(it, ''); });
 }
-/* Figma 링크 두 종류: .md 안의 DS 라이브러리 링크(값 기준) / nav.json figmaNodeIds = 프레임워크(사용 원칙 참고) */
+/* Figma 링크 두 종류 — nav.json figma.ds = DS 라이브러리(값 기준), figma.framework = 프레임워크(사용 원칙 참고). 각 {file, nodes}.
+   링크 이름은 .md 안에서 같은 노드를 가리키는 링크 글자를 쓰고, 없으면 항목 이름 */
 function figmaHtml(it, text){
-  var lib = [], seen = {}, re = /\[([^\]]+)\]\((https:\/\/www\.figma\.com\/[^)\s]+)\)/g, m;
-  while((m = re.exec(text))){ var id = (m[2].match(/node-id=([\d-]+)/) || [])[1], k = id || m[2]; if(seen[k]) continue; seen[k] = 1;
-    lib.push('<a href="'+esc(m[2])+'" target="_blank" rel="noopener">'+esc(m[1].replace(/\s*\d+[:\-]\d+$/, '') || 'Figma')+(id ? ' <code>'+id.replace('-', ':')+'</code>' : '')+'</a>'); }
-  var key = it.figmaFileKey || it.figmaFile || it.fileKey || FRAMEWORK_FILE;
-  var fw = (it.figmaNodeIds || []).map(function(n){ return '<a href="https://www.figma.com/design/'+encodeURIComponent(key)+'?node-id='+encodeURIComponent(n.replace(':', '-'))+'" target="_blank" rel="noopener">'+esc(it.title)+' <code>'+esc(n)+'</code></a>'; });
+  var names = {}, re = /\[([^\]]+)\]\((https:\/\/www\.figma\.com\/[^)\s]+)\)/g, m;
+  while((m = re.exec(text))){ var id = (m[2].match(/node-id=([\d-]+)/) || [])[1]; if(id && !names[id]) names[id] = m[1].replace(/\s*\d+[:\-]\d+$/, ''); }
+  var f = it.figma || {};
+  var links = function(src){
+    if(!src || !src.file || !(src.nodes || []).length) return '';
+    return src.nodes.map(function(n){ var k = n.replace(':', '-');
+      return '<a href="https://www.figma.com/design/'+encodeURIComponent(src.file)+'?node-id='+encodeURIComponent(k)+'" target="_blank" rel="noopener">'+esc(names[k] || it.title)+' <code>'+esc(n)+'</code></a>'; }).join('');
+  };
+  var ds = links(f.ds), fw = links(f.framework);
   return '<section class="figma"><h3>Figma 링크</h3>'+
-    '<div class="fg"><span>DS 라이브러리 — 값 기준</span><div class="links">'+(lib.join('') || '<span>문서에 링크 없음</span>')+'</div></div>'+
-    '<div class="fg"><span>프레임워크 — 사용 원칙 참고</span><div class="links">'+(fw.join('') || '<span>노드 없음</span>')+'</div>'+(it.figmaStatus ? '<span>'+esc(it.figmaStatus)+'</span>' : '')+'</div></section>';
+    '<div class="fg"><span>DS 라이브러리 — 값 기준</span><div class="links">'+(ds || '<span>nav.json에 노드 없음</span>')+'</div></div>'+
+    '<div class="fg"><span>프레임워크 — 사용 원칙 참고</span><div class="links">'+(fw || '<span>nav.json에 노드 없음</span>')+'</div>'+(it.figmaStatus ? '<span>'+esc(it.figmaStatus)+'</span>' : '')+'</div></section>';
 }
 function scrollDocTo(t){
   var c = $('docC'); c.scrollTop += t.getBoundingClientRect().top - c.getBoundingClientRect().top - 8;

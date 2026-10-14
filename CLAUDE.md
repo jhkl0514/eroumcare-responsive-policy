@@ -88,7 +88,7 @@
 | 긴 글 `TextAreaField` | 여러 줄 입력(사유·메모) | 3-2 |
 | 모달 / 바텀시트 / 옵션 시트 | 팝업 형태 | 3-3 |
 
-**크기 기준표** — 입력칸·셀렉트·옵션 행·긴 글은 [`input.md`](design-system/components/input.md)·[`select.md`](design-system/components/select.md), 버튼 SM 36 / MD 48 / LG 54는 [`button.md`](design-system/components/button.md), 모달 크기·모달 버튼은 [`modal.md`](design-system/components/modal.md). 아래는 DS 문서에 없는 컴포넌트만
+**크기 기준표** — 입력칸은 [`text-input.md`](design-system/components/text-input.md), 긴 글은 [`textarea.md`](design-system/components/textarea.md), 셀렉트·옵션 행은 [`select.md`](design-system/components/select.md), 버튼 SM 36 / MD 48 / LG 54는 [`button.md`](design-system/components/button.md), 모달 크기·모달 버튼은 [`modal.md`](design-system/components/modal.md). 아래는 DS 문서에 없는 컴포넌트만
 
 | 구분 | 컴포넌트 | PC (1025px 이상) | 모바일 (1024px 이하) | 바뀌나 |
 |---|---|---|---|---|
@@ -98,7 +98,7 @@
 | 칩 | 선택칩 `Option Chips_Line`(모서리 4) | XL 44·18px / SM 32·14px | 같음 | 그대로 |
 | 탭 | `Tab` | Underline 56 / Outlined 48 / Round 40 | 같음 | 그대로 — 모양(Type)별로 고름 |
 
-**입력칸 상태와 표시**(Disabled·ReadOnly·필수 `*`·도움말·에러) — 테두리·배경은 3-2 상태 표, 글자·아이콘 표현까지 상세는 [`input.md`](design-system/components/input.md)
+**입력칸 상태와 표시**(Disabled·ReadOnly·도움말·에러) — 테두리·배경은 3-2 상태 표, 글자·아이콘 표현까지 상세는 [`text-input.md`](design-system/components/text-input.md)(긴 글은 [`textarea.md`](design-system/components/textarea.md)). 필수 입력은 라벨 뒤 빨간 `*`
 
 - 근거: DS `64Q1Re56aiAA8Al89pqjnV` — Textfield `7837:8282`, SelectField `53:698`, SelectOption `6570:11270`, chips `7723:6790`, Tab `7988:12496`, checkbox·Radio·Toggle 컴포넌트
 
@@ -127,7 +127,7 @@
 - PC(1025px 이상)에서 입력 콘텐츠 영역은 `max-width:480px`에서 멈춘다
 - **반응형이어도 입력류 컴포넌트는 PC·모바일 변형을 바꿔 쓴다.** DS 입력류는 `Device=PC` / `Device=MO` 변형이 따로 있고, **1024px 이하에서는 MO 변형**(CSS 미디어쿼리로 크기 전환)을 쓴다. 같은 DOM을 재배치하는 반응형 화면이라고 PC 크기를 그대로 두지 않는다
 
-  - 크기: 입력칸·셀렉트 높이 PC 40 / 모바일 48, 옵션 행 PC 36 / 모바일 44, 글자 PC 14px / 모바일 16px(긴 글은 둘 다 16px) — 패딩까지 상세는 [`input.md`](design-system/components/input.md)·[`select.md`](design-system/components/select.md)
+  - 크기: 입력칸·셀렉트 높이 PC 40 / 모바일 48, 옵션 행 PC 36 / 모바일 44, 글자 PC 14px / 모바일 16px(긴 글은 둘 다 16px) — 패딩까지 상세는 [`text-input.md`](design-system/components/text-input.md)·[`textarea.md`](design-system/components/textarea.md)·[`select.md`](design-system/components/select.md)
 
   버튼은 이 원칙에서 빠진다 — 버튼은 PC 크기 그대로, 하단 고정·바텀시트 하단만 LG 54(3-4)
   - **예외 없음 — 모달 안 입력류도 1024px 이하에서는 MO 크기**다. 코드는 미디어쿼리 하나로 페이지·모달·바텀시트의 입력칸·셀렉트·옵션 행을 모두 MO로 바꾼다("모달 안만 PC 유지" 같은 예외를 두면 개발이 위치를 구분해야 해서 경우의 수가 늘어난다). **디자인은 모달을 PC 하나로 관리**하고 "모바일(1024px 이하)에서는 입력류 MO 크기 자동 적용" 메모만 단다. 모바일 모달 안 셀렉트는 선택만 하는 팝업(예: 회수 요청하기)에만 생기므로 실제 경우도 적다
@@ -143,7 +143,7 @@
   | ReadOnly | 값은 보이지만 수정 불가 | 1px `#bdbdbd` | `#eee` |
 
   버튼으로만 채우는 칸(우편번호·기본주소 등)은 **ReadOnly** 스타일
-  - 근거: Figma `Textfield` MO Default `53:137`, Disabled `53:141`. 상태 정의(Inactive·Default·Focused)는 이로움케어 프레임워크 1.0.4 'Text input'(사내 웹 문서 — URL은 적지 않음). 상세는 [`design-system/components/input.md`](design-system/components/input.md)
+  - 근거: Figma `Textfield` MO Default `53:137`, Disabled `53:141`. 상태 정의(Inactive·Default·Focused)는 이로움케어 프레임워크 1.0.4 'Text input'(사내 웹 문서 — URL은 적지 않음). 상세는 [`design-system/components/text-input.md`](design-system/components/text-input.md)
 - **입력칸 안 정렬**: 입력칸·셀렉트·날짜 칸 안의 글자와 아이콘(달력·화살표·돋보기)은 **세로 가운데 정렬**(`display:flex; align-items:center`). 크기는 **높이**(PC 40 / 모바일 48)로 정하고 위아래 패딩은 두지 않는다(좌우만 12) — 위아래 패딩으로 높이를 맞추면 글꼴·줄 높이에 따라 글자가 위나 아래로 쏠린다
 - **지우기(X) 버튼**: 텍스트 입력칸은 **값이 없으면 X 없음, 값이 있으면 X 노출**. 읽기전용·비활성 칸, 날짜·셀렉트 칸(오른쪽에 달력·화살표 아이콘이 있는 칸)에는 X 없음. X를 누르면 값만 지우고 포커스는 그 칸에 유지(모바일 키보드 유지). 아이콘 24, 모바일 터치 영역 40×40 이상. 입력 글자가 X 밑으로 들어가지 않게 오른쪽 패딩을 X 폭만큼 확보. 입력칸 오른쪽에 돋보기 등 다른 아이콘이 있을 때도 같은 원칙
   - **예외 — 검색 입력칸은 X를 두지 않는다.** 오른쪽 돋보기는 장식이 아니라 **검색을 실행하는 버튼**이라 오른쪽에 고정하고, 그 자리를 X와 나눠 쓰지 않는다(DS의 왼쪽 아이콘 Leading Icon은 표시용이라 돋보기 버튼을 옮기는 용도로 쓰지 않음). 대신 **입력칸을 다시 누르면 글자 전체를 선택**해서 바로 새 검색어를 칠 수 있게 한다. `type="search"`는 브라우저가 기본 "×"를 자동으로 붙이므로 CSS(`::-webkit-search-cancel-button{display:none}`)로 숨긴다
@@ -981,6 +981,10 @@ DS "모바일 정의"의 모바일 간격 규칙. 3-1·3-2·카드 목록을 담
 ---
 
 ## 부록. 변경 이력 (본문은 현재 규칙만 — 결정 경위는 여기)
+
+### input.md 링크 정리 · nav.json Figma 필드 (2026-10-14)
+- 정책이 가리키던 `components/input.md`(nav.json 목록에 없음)를 입력칸 = `text-input.md`, 긴 글 = `textarea.md`로 바꿈(3-0·3-2, 스킬). input.md 파일은 그대로(Codex 담당). 필수 `*` 규칙은 text-input.md·textarea.md에 없어 3-0 줄에 다시 적음
+- 뷰어 Figma 링크를 nav.json `figma.ds`·`figma.framework`({file, nodes})로 그림. 임시 프레임워크 파일 키 처리 삭제
 
 ### 디자인 시스템 뷰어 개편 (2026-10-14)
 - ds-viewer를 단독 페이지로(사용자 A안): 왼쪽 `nav.json` 메뉴(하드코딩 없음) · 가운데 `samples/*.html` 견본(뷰어 안에 견본 HTML을 쓰지 않음, 없으면 '견본 준비 중') · 오른쪽 '설명문서' 패널(허브 정책 패널과 같은 구조 — 머리줄·본문 스크롤·폭 조절). 허브 메뉴 '디자인 시스템'은 '디자인 시스템 열기' 1개(새 탭), 뷰어 위쪽에 '정책 허브로'
