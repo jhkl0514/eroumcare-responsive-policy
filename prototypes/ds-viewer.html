@@ -91,6 +91,9 @@ button{font:inherit;color:inherit;}
 .md table{border-collapse:collapse;min-width:100%;}
 .md th,.md td{border-bottom:1px solid var(--ds-color-border-secondary);padding:var(--ds-space-8);text-align:left;vertical-align:top;}
 .md th{background:var(--ds-color-bg-tertiary);font-weight:600;white-space:nowrap;}
+.prop{margin-top:var(--ds-space-24);border:1px solid var(--ds-color-border-warning);background:var(--ds-color-bg-warning-subtle);border-radius:var(--ds-radius-8);padding:var(--ds-space-12) var(--ds-space-16);}
+.prop b{display:block;margin-bottom:var(--ds-space-6);}
+.prop a{display:inline-flex;margin-right:var(--ds-space-12);color:var(--ds-color-darkblue-600);font-weight:600;}
 .figma{margin-top:var(--ds-space-24);border-top:1px solid var(--ds-color-border-secondary);padding-top:var(--ds-space-16);}
 .figma h3{margin:0 0 var(--ds-space-8);font-size:var(--ds-font-body-sm-semibold-size);}
 .figma .fg{margin-bottom:var(--ds-space-12);}
@@ -330,7 +333,7 @@ function renderDoc(it){
   if(it.status !== 'done'){ c.innerHTML = head + '<div class="md" id="md"><h1>'+esc(it.title)+'</h1><p>문서를 준비하고 있습니다.</p></div>' + figmaHtml(it, ''); return; }
   var draw = function(text){
     if(cur !== it) return;
-    c.innerHTML = head + '<nav class="toc" id="toc" aria-label="목차"></nav><div class="md" id="md"></div>' + figmaHtml(it, text);
+    c.innerHTML = head + '<nav class="toc" id="toc" aria-label="목차"></nav><div class="md" id="md"></div>' + propHtml(text) + figmaHtml(it, text);
     var md = $('md'); md.innerHTML = window.marked ? marked.parse(text) : '<pre>'+esc(text)+'</pre>';
     md.querySelectorAll('table').forEach(function(t){ var w = document.createElement('div'); w.className = 'tbl'; t.parentNode.insertBefore(w, t); w.appendChild(t); });
     md.querySelectorAll('a[href]').forEach(function(a){
@@ -351,6 +354,12 @@ function renderDoc(it){
   fetch(DS + file, {cache:'no-cache'}).then(function(r){ if(!r.ok) throw new Error(r.status); return r.text(); })
     .then(function(t){ mdCache[file] = t; draw(t); })
     .catch(function(e){ if(cur === it) c.innerHTML = head + '<p class="err">문서를 불러오지 못했습니다 ('+esc(e.message)+')</p>' + figmaHtml(it, ''); });
+}
+/* 문서에 'DS-U숫자'가 적혀 있으면 제안 프로토타입(ds-proposals.html) 링크를 자동으로 붙인다 */
+function propHtml(text){
+  var ids = []; (text.match(/DS-U\d+/g) || []).forEach(function(x){ if(ids.indexOf(x) < 0) ids.push(x); });
+  if(!ids.length) return '';
+  return '<section class="prop"><b>관련 제안(미확정)</b>'+ids.map(function(x){ return '<a href="ds-proposals.html#'+x.toLowerCase()+'" target="_blank" rel="noopener">'+x+' 화면으로 보기</a>'; }).join('')+'</section>';
 }
 /* Figma 링크 두 종류 — nav.json figma.ds = DS 라이브러리(값 기준), figma.framework = 프레임워크(사용 원칙 참고). 각 {file, nodes}.
    링크 이름은 .md 안에서 같은 노드를 가리키는 링크 글자를 쓰고, 없으면 항목 이름 */
