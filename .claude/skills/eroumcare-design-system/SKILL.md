@@ -52,7 +52,7 @@ label-value 나열형 데이터(주문 정보, 회수 신청 정보 등).
 - flex-wrap 컨테이너라 미디어쿼리 없이 순수 flexbox로 동작
 - PC(1025px 이상) 상한: 입력 콘텐츠 영역은 `max-width:480px`에서 멈춤
 - **반응형이어도 1024px 이하는 컴포넌트 MO 변형 크기로**: Textfield·SelectField 높이 **48**/패딩 12/**16px**(PC 40/8·12/14px), SelectOption 옵션 행 **44**/패딩 10·8·10·12/16px(PC 36/14px), TextArea 16px. 같은 DOM 재배치라고 PC 크기(40·14px)를 그대로 두지 않는다. **모달 안 입력류도 예외 없음**(미디어쿼리 하나로 페이지·모달·시트 전부 MO) — 디자인은 PC 모달 하나 + "모바일은 MO 크기 자동" 메모로 관리
-- **입력칸 상태**(DS `Textfield`, 높이 PC 40 / 모바일 48, radius 4): Inactive(선택 안 됨) 1px 모바일 `#bdbdbd`·PC `#616161` / Default(입력 완료) 1px `#333333` / **Focused(입력 중) 2px `#323da3`** / Error 2px `#e53935` / Disabled·ReadOnly 1px `#bdbdbd` + bg `#eee`. 버튼으로만 채우는 칸(우편번호·기본주소)은 ReadOnly 스타일. 상세 `design-system/components/input.md`
+- **입력칸 상태**(DS `Textfield`, 높이 PC 40 / 모바일 48, radius 4): Inactive(선택 안 됨) 1px 모바일 `#bdbdbd`·PC `#616161` / Default(입력 완료) 1px `#333333` / **Focused(입력 중) 2px `#323da3`** / Error 2px `#e53935` / Disabled·ReadOnly 1px `#bdbdbd` + bg `#eee`. 버튼으로만 채우는 칸(우편번호·기본주소)은 ReadOnly 스타일. 상세 `design-system/components/text-input.md`(긴 글은 `textarea.md`). 필수 `*`(`.ds-field__required`)도 text-input.md
 - **입력칸 안 정렬**: 글자·아이콘은 세로 가운데(`display:flex; align-items:center`). 크기는 높이(PC 40 / MO 48)로, 위아래 패딩 없이 좌우 12만
 - **지우기(X) 버튼**: 텍스트 입력칸은 미입력 시 X 없음, 입력값이 있으면 X 노출. 읽기전용·비활성·날짜·셀렉트 칸은 X 없음. 누르면 값만 지우고 포커스 유지. 아이콘 24, 모바일 터치 40×40, 입력칸 오른쪽 패딩을 X 폭만큼 확보
   - 예외: **검색 칸은 X를 두지 않음** — 오른쪽 돋보기는 검색 실행 버튼이라 오른쪽 고정(Leading Icon으로 옮기지 않음) → 다시 누르면 글자 전체 선택. `type="search"`의 브라우저 기본 ×는 CSS로 숨김
@@ -144,33 +144,13 @@ label-value 나열형 데이터(주문 정보, 회수 신청 정보 등).
 
 ## 4. DS 시맨틱 컬러 / 상태칩
 
-**대여 주문상태칩** (9종, Figma "대여 - 상태값" 범례 실측):
+**칩 실물·색 표는 `design-system/components/status-chip.md`**(허브 '디자인 시스템 > Status Chip'). 시맨틱 8단계: Info `#eff6ff`/`#dbeafe`/`#1e40af` · Success `#e8f5e9`/`#c8e6c9`/`#166534` · Caution `#fff8e1`/`#ffb300`/`#ff8f00` · BrandSub `#f2fde4`/`#c6f68d`/`#09af00` · Default `#e3e5f5`/`#ced2f4`/`#141e76` · Danger `#ffebee`/`#ffcdd2`/`#c62828` · Neutral `#f5f5f5`/`#bdbdbd`/`#555` · Neutral White `#fff`/`#bdbdbd`/`#555`(배경/테두리/글자).
 
-| 상태 | 배경 | 테두리 | 텍스트 |
-|---|---|---|---|
-| 신규배정 | `#eff6ff` | `#dbeafe` | `#1e40af` |
-| 주문확인중 | `#e8f5e9` | `#c8e6c9` | `#166534` |
-| 주문완료 | `#f2fde4` | `#c6f68d` | `#09af00` |
-| 출고준비중 | `#fff8e1` | `#ffb300` | `#ff8f00` |
-| 출고완료 | `#f2fde4` | `#c6f68d` | `#09af00` (주문완료와 동일) |
-| 배송완료 | `#e3e5f5` | `#ced2f4` | `#141e76` |
-| 취소요청 | `#fff8e1` | `#ffb300` | `#ff8f00` (출고준비중과 동일) |
-| 주문취소 | `#ffebee` | `#ffcdd2` | `#c62828` |
-| 취소완료 | `#f5f5f5` | `#bdbdbd` | `#555555` |
+**대여 주문상태칩**: 신규배정 Info · 주문확인중 Success · 주문완료·출고완료 BrandSub · 출고준비중·취소요청 Caution · 배송완료 Default · 주문취소 Danger · 취소완료 Neutral.
 
-**회수 관리 상태칩** (7종, Figma `Status chip-Collect` 컴포넌트 실측):
+**회수 관리 상태칩**: 회수접수 Info · 회수확인중 Success · 회수요청 Caution · 회수준비중 BrandSub · 회수완료 Default · 회수취소 Danger · 회수취소완료 Neutral.
 
-| 상태 | 배경 | 테두리 | 텍스트 |
-|---|---|---|---|
-| 회수접수 | `#eff6ff` | `#dbeafe` | `#1e40af` |
-| 회수확인중 | `#e8f5e9` | `#c8e6c9` | `#166534` |
-| 회수요청 | `#fff8e1` | `#ffb300` | `#ff8f00` |
-| 회수준비중 | `#f2fde4` | `#c6f68d` | `#09af00` |
-| 회수완료 | `#e3e5f5` | `#ced2f4` | `#141e76` |
-| 회수취소 | `#ffebee` | `#ffcdd2` | `#c62828` |
-| 회수취소완료 | `#f5f5f5` | `#bdbdbd` | `#555555` |
-
-**구입 주문상태칩** (`Status chip-Order`, DS `13139:11578`): 주문접수 Info · 주문확인중 Success · 상품준비 Caution · 출고중·출고완료 BrandSub · 배송완료 Default · 취소요청 Caution · **주문취소 Danger(표기 하나)** · 추가상품 Neutral·White(`#fff`/`#bdbdbd`/`#555`). A/S(`13027:12231`)·반품(`13079:12197`) 칩은 CLAUDE.md 5장. DS에 있으나 미사용: +2개 상태, 상품별 처리 중, 주문취소 주체별 3종. 상품별 상태가 다르면 대표 배지 = 가장 앞 단계(일부 취소 제외, 전부 취소면 주문취소), 상품 행은 자기 상태(4-5). 코드는 공통 `prototypes/status-chip.css` — `<span class="chip" data-status="상태명">`, 화면별 색 하드코딩 금지.
+**구입 주문상태칩** (`Status chip-Order`, DS `13139:11578`): 주문접수 Info · 주문확인중 Success · 상품준비 Caution · 출고중·출고완료 BrandSub · 배송완료 Default · 취소요청 Caution · **주문취소 Danger(표기 하나)** · 추가상품 Neutral·White(`#fff`/`#bdbdbd`/`#555`). A/S(`13027:12231`)·반품(`13079:12197`) 칩은 `design-system/components/status-chip.md`. DS에 있으나 미사용: +2개 상태, 상품별 처리 중, 주문취소 주체별 3종. 상품별 상태가 다르면 대표 배지 = 가장 앞 단계(일부 취소 제외, 전부 취소면 주문취소), 상품 행은 자기 상태(4-5). 코드는 공통 `prototypes/status-chip.css` — `<span class="chip" data-status="상태명">`, 화면별 색 하드코딩 금지(DS `.ds-chip--*`와 두 벌 — 통합 여부 미정, CLAUDE.md 7번 #11).
 
 **빈 값 표기**(3-1 정책 적용안): 칸 전체가 비면 '-' 하나, 일부만 비면 빈 부분 생략, 괄호 안이 모두 비면 괄호째 생략(예: "홍*동 (-, -)" → "홍*동", "김*호 (- / 자녀)" → "김*호 (자녀)").
 

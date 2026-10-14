@@ -88,32 +88,17 @@
 | 긴 글 `TextAreaField` | 여러 줄 입력(사유·메모) | 3-2 |
 | 모달 / 바텀시트 / 옵션 시트 | 팝업 형태 | 3-3 |
 
-**크기 기준표**
+**크기 기준표** — 입력칸은 [`text-input.md`](design-system/components/text-input.md), 긴 글은 [`textarea.md`](design-system/components/textarea.md), 셀렉트·옵션 행은 [`select.md`](design-system/components/select.md), 버튼 SM 36 / MD 48 / LG 54는 [`button.md`](design-system/components/button.md), 모달 크기·모달 버튼은 [`modal.md`](design-system/components/modal.md). 아래는 DS 문서에 없는 컴포넌트만
 
 | 구분 | 컴포넌트 | PC (1025px 이상) | 모바일 (1024px 이하) | 바뀌나 |
 |---|---|---|---|---|
-| 입력류 | 입력칸 `Textfield`, 셀렉트 `SelectField` | 높이 40, 패딩 8/12, 14px | 높이 **48**, 패딩 12, **16px** | **바뀜** |
-| 입력류 | 옵션 행 `SelectOption` | 높이 36, 패딩 8/8/8/12, 14px | 높이 **44**, 패딩 10/8/10/12, **16px** | **바뀜** |
-| 입력류 | 긴 글 `TextAreaField` | 16px | 16px | 그대로 |
-| 버튼 | SM / MD | 36 / 48 | 36 / 48 | 그대로 (3-4) |
-| 버튼 | LG | — | **54** | 하단 고정·바텀시트 하단 버튼만 |
 | 선택 | 체크박스 / 라디오 | 20×20 | 20×20 | 그대로 — 모바일은 **줄 전체를 누를 수 있게**, 줄 높이 44 이상 |
 | 선택 | 토글 | 48×24 | 48×24 | 그대로 |
 | 칩 | 필터칩 `Filter Chips`(알약) | XL 40·16px / SM 32·14px | 같음 | 그대로 — 자리별로 고름(모바일 필터칩 줄은 SM 32, 3-7) |
 | 칩 | 선택칩 `Option Chips_Line`(모서리 4) | XL 44·18px / SM 32·14px | 같음 | 그대로 |
 | 탭 | `Tab` | Underline 56 / Outlined 48 / Round 40 | 같음 | 그대로 — 모양(Type)별로 고름 |
-| 팝업 | 모달 | 340 · 480 · 600 · 800 | `min(크기, 100% - 40px)` | 폭만 (3-3) |
-| 팝업 | 모달 버튼 | 높이 48, 폭 150 고정 | 같음 — 모달이 좁으면 줄어듦 | 그대로 (3-3) |
 
-**입력칸 상태와 표시**
-
-| 상태·표시 | 언제 | 모양 |
-|---|---|---|
-| 비활성 `Disabled` | 지금은 쓸 수 없는 칸(조건이 안 맞음) | 배경 `#eee`, 테두리 `#bdbdbd`, 글자 흐리게 |
-| 읽기전용 `ReadOnly` | 값은 보이지만 직접 고치지 않는 칸(우편번호·기본주소처럼 버튼으로 채움) | 배경 `#eee`, 테두리 `#bdbdbd`, 글자는 그대로 진하게 |
-| 필수 | 반드시 입력해야 하는 칸 | 라벨 뒤 빨간 `*` |
-| 도움말 `Help message` | 입력 규칙 안내가 필요할 때만(예: "- 없이 숫자만", "마감 시각 기준…") | 입력칸 아래 한 줄, 정보 아이콘 + 회색 글자. 필요 없으면 넣지 않음 |
-| 에러 | 입력 값이 틀렸을 때 | 테두리 2px `#e53935` + 입력칸 아래 빨간 문구(에러 아이콘) |
+**입력칸 상태와 표시**(Disabled·ReadOnly·도움말·에러) — 테두리·배경은 3-2 상태 표, 글자·아이콘 표현까지 상세는 [`text-input.md`](design-system/components/text-input.md)(긴 글은 [`textarea.md`](design-system/components/textarea.md)). 필수 `*` 표시도 [`text-input.md`](design-system/components/text-input.md)
 
 - 근거: DS `64Q1Re56aiAA8Al89pqjnV` — Textfield `7837:8282`, SelectField `53:698`, SelectOption `6570:11270`, chips `7723:6790`, Tab `7988:12496`, checkbox·Radio·Toggle 컴포넌트
 
@@ -142,12 +127,7 @@
 - PC(1025px 이상)에서 입력 콘텐츠 영역은 `max-width:480px`에서 멈춘다
 - **반응형이어도 입력류 컴포넌트는 PC·모바일 변형을 바꿔 쓴다.** DS 입력류는 `Device=PC` / `Device=MO` 변형이 따로 있고, **1024px 이하에서는 MO 변형**(CSS 미디어쿼리로 크기 전환)을 쓴다. 같은 DOM을 재배치하는 반응형 화면이라고 PC 크기를 그대로 두지 않는다
 
-  | 컴포넌트 | 모바일(MO, 1024px 이하) | PC(1025px 이상) |
-  |---|---|---|
-  | `Textfield` 입력칸 | 높이 **48**, 패딩 12, 글자 **16px** | 높이 40, 패딩 8/12, 글자 14px |
-  | `SelectField` 셀렉트 | 높이 **48**, 패딩 12, 글자 **16px** | 높이 40, 패딩 8/12, 글자 14px |
-  | `SelectOption` 옵션 행 | 높이 **44**, 패딩 10/8/10/12, 글자 **16px** | 높이 36, 패딩 8/8/8/12, 글자 14px |
-  | `TextAreaField` 긴 글 | 글자 16px(PC·MO 같음) | 같음 |
+  - 크기: 입력칸·셀렉트 높이 PC 40 / 모바일 48, 옵션 행 PC 36 / 모바일 44, 글자 PC 14px / 모바일 16px(긴 글은 둘 다 16px) — 패딩까지 상세는 [`text-input.md`](design-system/components/text-input.md)·[`textarea.md`](design-system/components/textarea.md)·[`select.md`](design-system/components/select.md)
 
   버튼은 이 원칙에서 빠진다 — 버튼은 PC 크기 그대로, 하단 고정·바텀시트 하단만 LG 54(3-4)
   - **예외 없음 — 모달 안 입력류도 1024px 이하에서는 MO 크기**다. 코드는 미디어쿼리 하나로 페이지·모달·바텀시트의 입력칸·셀렉트·옵션 행을 모두 MO로 바꾼다("모달 안만 PC 유지" 같은 예외를 두면 개발이 위치를 구분해야 해서 경우의 수가 늘어난다). **디자인은 모달을 PC 하나로 관리**하고 "모바일(1024px 이하)에서는 입력류 MO 크기 자동 적용" 메모만 단다. 모바일 모달 안 셀렉트는 선택만 하는 팝업(예: 회수 요청하기)에만 생기므로 실제 경우도 적다
@@ -163,7 +143,7 @@
   | ReadOnly | 값은 보이지만 수정 불가 | 1px `#bdbdbd` | `#eee` |
 
   버튼으로만 채우는 칸(우편번호·기본주소 등)은 **ReadOnly** 스타일
-  - 근거: Figma `Textfield` MO Default `53:137`, Disabled `53:141`. 상태 정의(Inactive·Default·Focused)는 이로움케어 프레임워크 1.0.4 'Text input'(사내 웹 문서 — URL은 적지 않음). 상세는 [`design-system/components/input.md`](design-system/components/input.md)
+  - 근거: Figma `Textfield` MO Default `53:137`, Disabled `53:141`. 상태 정의(Inactive·Default·Focused)는 이로움케어 프레임워크 1.0.4 'Text input'(사내 웹 문서 — URL은 적지 않음). 상세는 [`design-system/components/text-input.md`](design-system/components/text-input.md)
 - **입력칸 안 정렬**: 입력칸·셀렉트·날짜 칸 안의 글자와 아이콘(달력·화살표·돋보기)은 **세로 가운데 정렬**(`display:flex; align-items:center`). 크기는 **높이**(PC 40 / 모바일 48)로 정하고 위아래 패딩은 두지 않는다(좌우만 12) — 위아래 패딩으로 높이를 맞추면 글꼴·줄 높이에 따라 글자가 위나 아래로 쏠린다
 - **지우기(X) 버튼**: 텍스트 입력칸은 **값이 없으면 X 없음, 값이 있으면 X 노출**. 읽기전용·비활성 칸, 날짜·셀렉트 칸(오른쪽에 달력·화살표 아이콘이 있는 칸)에는 X 없음. X를 누르면 값만 지우고 포커스는 그 칸에 유지(모바일 키보드 유지). 아이콘 24, 모바일 터치 영역 40×40 이상. 입력 글자가 X 밑으로 들어가지 않게 오른쪽 패딩을 X 폭만큼 확보. 입력칸 오른쪽에 돋보기 등 다른 아이콘이 있을 때도 같은 원칙
   - **예외 — 검색 입력칸은 X를 두지 않는다.** 오른쪽 돋보기는 장식이 아니라 **검색을 실행하는 버튼**이라 오른쪽에 고정하고, 그 자리를 X와 나눠 쓰지 않는다(DS의 왼쪽 아이콘 Leading Icon은 표시용이라 돋보기 버튼을 옮기는 용도로 쓰지 않음). 대신 **입력칸을 다시 누르면 글자 전체를 선택**해서 바로 새 검색어를 칠 수 있게 한다. `type="search"`는 브라우저가 기본 "×"를 자동으로 붙이므로 CSS(`::-webkit-search-cancel-button{display:none}`)로 숨긴다
@@ -785,95 +765,15 @@ DS "모바일 정의"의 모바일 간격 규칙. 3-1·3-2·카드 목록을 담
 
 ## 5. DS 시맨틱 컬러 / 상태칩
 
+> **칩 실물·색 표 → [디자인 시스템 > Status Chip](design-system/components/status-chip.md)** — 시맨틱 색 8단계와 구입·대여·회수·A/S·반품 상태별 매핑, 실제 칩 견본은 여기서 본다
+
 상태칩은 **도메인마다 별도 Figma 컴포넌트**를 쓴다 — `Status chip-Order`(구입 `13139:11578`), `Status chip-Rental`(대여 `13864:12146`), `Status chip-Return`(회수 `13920:12833`, 구 `-Collect`), `Status chip-AS`(`13027:12231`), 반품(`13079:12197`). DS 라이브러리 `64Q1Re56aiAA8Al89pqjnV`. 같은 라벨(배송완료·취소요청 등)이 있어도 다른 컴포넌트이므로 화면 도메인에 맞는 것을 쓴다.
 
-- 공통 크기: 높이 32, radius 999(알약), 패딩 4/12, gap 4, SUIT SemiBold 14px / 줄 높이 20. 테이블 안 배지는 높이 24·12px Medium(3-9)
-- **코드**: 공통 스타일 `prototypes/status-chip.css` 하나 — `<span class="chip" data-status="상태명">`. 화면마다 색을 따로 쓰지 않는다
-
-**시맨틱 색** — 모든 도메인이 이 단계를 공유한다
-
-| 시맨틱 | 배경 | 테두리 | 글자 |
-|---|---|---|---|
-| Info | `#eff6ff` | `#dbeafe` | `#1e40af` |
-| Success | `#e8f5e9` | `#c8e6c9` | `#166534` |
-| Caution | `#fff8e1` | `#ffb300` | `#ff8f00` |
-| BrandSub | `#f2fde4` | `#c6f68d` | `#09af00` |
-| Default | `#e3e5f5` | `#ced2f4` | `#141e76` |
-| Danger | `#ffebee` | `#ffcdd2` | `#c62828` |
-| Neutral | `#f5f5f5` | `#bdbdbd` | `#555555` |
-| Neutral · White | `#ffffff` | `#bdbdbd` | `#555555` |
-
-**구입 주문(`Status chip-Order`)**
-
-| 상태 | 시맨틱 | 미리보기 |
-|---|---|---|
-| 주문접수 | Info | {chip:주문접수} |
-| 주문확인중 | Success | {chip:주문확인중} |
-| 상품준비 | Caution | {chip:상품준비} |
-| 출고중 | BrandSub | {chip:출고중} |
-| 출고완료 | BrandSub | {chip:출고완료} |
-| 배송완료 | Default | {chip:배송완료} |
-| 취소요청 | Caution | {chip:취소요청} |
-| 주문취소 | Danger | {chip:주문취소} |
-| 추가상품 | Neutral · White | {chip:추가상품} |
+- **코드**: 프로토타입 공통 스타일 `prototypes/status-chip.css` 하나 — `<span class="chip" data-status="상태명">`. 화면마다 색을 따로 쓰지 않는다(DS CSS의 `.ds-chip--*`와 같은 색)
 
 - DS 라이브러리에 있으나 미사용 (개발 확인 10/08) — DS 정리 대상: '+2개 상태', '상품별 처리 중', 주문취소 주체별 3종(사업소/관리자/수급자 — 화면은 '주문취소' 단일)
 - 출고중·취소요청은 칩만 정의 — 현재 화면 흐름에는 없다
 - 구입 개발 화면의 '추가상품'은 초록(주문확인중과 같은 색)으로 DS와 다르다(4-5)
-
-**대여 주문(`Status chip-Rental`)**
-
-| 상태 | 시맨틱 | 미리보기 |
-|---|---|---|
-| 신규배정 | Info | {chip:신규배정} |
-| 주문확인중 | Success | {chip:주문확인중} |
-| 주문완료 | BrandSub | {chip:주문완료} |
-| 출고준비중 | Caution | {chip:출고준비중} |
-| 출고완료 | BrandSub | {chip:출고완료} |
-| 배송완료 | Default | {chip:배송완료} |
-| 취소요청 | Caution | {chip:취소요청} |
-| 주문취소 | Danger | {chip:주문취소} |
-| 취소완료 | Neutral | {chip:취소완료} |
-
-**회수(`Status chip-Return`)**
-
-| 상태 | 시맨틱 | 미리보기 |
-|---|---|---|
-| 회수접수 | Info | {chip:회수접수} |
-| 회수확인중 | Success | {chip:회수확인중} |
-| 회수요청 | Caution | {chip:회수요청} |
-| 회수준비중 | BrandSub | {chip:회수준비중} |
-| 회수완료 | Default | {chip:회수완료} |
-| 회수취소 | Danger | {chip:회수취소} |
-| 회수취소완료 | Neutral | {chip:회수취소완료} |
-
-**A/S(`Status chip-AS`)**
-
-| 상태 | 시맨틱 | 미리보기 |
-|---|---|---|
-| A/S접수 | Info | {chip:A/S접수} |
-| A/S접수 확인 | Success | {chip:A/S접수 확인} |
-| A/S진행중 | BrandSub | {chip:A/S진행중} |
-| A/S완료 | Default | {chip:A/S완료} |
-| A/S접수 취소 | Danger | {chip:A/S접수 취소} |
-| A/S접수 불가 | Danger | {chip:A/S접수 불가} |
-| A/S 불가 | Danger | {chip:A/S 불가} |
-
-**반품**
-
-| 상태 | 시맨틱 | 미리보기 |
-|---|---|---|
-| 반품접수 | Info | {chip:반품접수} |
-| 반품접수 확인 | Success | {chip:반품접수 확인} |
-| 반품요청 | Caution | {chip:반품요청} |
-| 회수요청 | Caution | {chip:회수요청} |
-| 회수진행 | BrandSub | {chip:회수진행} |
-| 반품완료 | Default | {chip:반품완료} |
-| 반품철회 | Default | {chip:반품철회} |
-| 반품접수 취소 | Danger | {chip:반품접수 취소} |
-| 반품접수 불가 | Danger | {chip:반품접수 불가} |
-| 반품불가 | Danger | {chip:반품불가} |
-
 - DS 변형 이름이 화면 표기와 다른 곳: A/S `A/S불가` → 표기 'A/S 불가', 반품 `반품품접수 확인`(오타) → 표기 '반품접수 확인'
 - 단계 흐름: 파랑(시작) → 초록(확인) → 주황(요청·대기) / 라임(진행·준비) → 네이비 틴트(최종 완료) → 빨강(취소·불가) → 회색(취소 완료)
 - 근거: DS 컴포넌트 5종(위 노드), Figma "대여 - 상태값" 범례
@@ -910,6 +810,7 @@ DS "모바일 정의"의 모바일 간격 규칙. 3-1·3-2·카드 목록을 담
 | 7 | 상품 변경 입력 중 화면의 입력칸 테두리 | Figma는 1px `#333`, DS 포커스 상태는 2px `#323da3`(3-2). 정책·프로토타입은 DS 기준 — Figma 수정 여부 확인 | 3-2, 4-3 |
 | 8 | 모달 버튼 영역 DS 컴포넌트(`Part/Modal`) | 버튼에 최소 폭 150·최대 Fill이 없어 긴 버튼명 화면은 컴포넌트를 끊고 폭을 직접 맞춤(회수 요청 불가 안내 `6655:96491`, 버튼 233). 다른 화면에 영향이 커서 변경 보류 — 정책·코드만 규칙 적용 | 3-3 |
 | 9 | 읽기 전용 정보 표·입력 폼 외 제3의 콘텐츠 유형 | 현재는 두 유형으로 전 화면 커버 | 3-1, 3-2 |
+| 11 | 상태칩 CSS 두 벌 | 프로토타입은 `prototypes/status-chip.css`(`data-status`), DS는 `design-system/css`의 `.ds-chip--*` — 색은 같고 이번에는 그대로 둠. 하나로 합칠지 정해야 함 | 5 |
 | 10 | 구입 주문 상세 `확인 필요` 항목 | 옵션이 길 때 '수정 >' 줄바꿈, 옵션 변경 후 행 이동, 요청 상품이 급여불가일 때 [주문하기] 안내·상품 추가에서 비활성/미노출, 같은 상품·같은 옵션 중복 추가·변경을 막는지, 주문취소 사유 나머지, 주문 후 취소 사유 말줄임, 기타 주문불가 유형, 주문완료 결과 화면(미캡처, Q34) — 질문 번호는 프로토타입 Q 목록 | 4-5 |
 
 ---
@@ -918,11 +819,14 @@ DS "모바일 정의"의 모바일 간격 규칙. 3-1·3-2·카드 목록을 담
 
 모든 파일은 `prototypes/`에 있고, 허브(`index.html`)에서 카테고리별로 볼 수 있다. 메뉴에서 화면을 고르면 가운데에 프로토타입, 오른쪽에 관련 조항이 함께 뜬다. 조항 카드의 **화면으로 확인**은 그 조항의 `→ 파일명` 프로토타입을 팝업으로 연다(절 끝 `→` 줄이 곧 버튼 목록이므로, 새 프로토타입은 해당 절에 `→ 파일명`으로 꼭 적는다). 새 프로토타입을 추가하면 `index.html`의 `PROTOS` 배열에도 항목을 넣는다(배열 순서 = 메뉴 순서).
 
-**디자인 시스템**(허브 메뉴 맨 위)
+**디자인 시스템**(허브 메뉴 맨 위 '디자인 시스템 열기' → 새 탭)
+
+- DS 뷰어는 `design-system/viewer/` (Codex 담당)
 
 | 파일 | 조항 | 내용 |
 |---|---|---|
-| `ds-viewer.html?p=overview·foundations·button·input·select·modal·status-chip` | 3-0 외 | `design-system/`의 .md를 그대로 읽어 그리는 설명 + `design-system/css`만 불러 그린 실물 견본(iframe으로 사이트 CSS와 분리, 폭 1024/360) + 문서의 Figma 노드 링크. 맨 위 '조정 중 항목' 안내. 파운데이션 견본은 `tokens.css` 변수 목록을 읽어 자동으로 그림 |
+| `ds-viewer.html?item=…` (단독 페이지, 새 탭) | 3-0 외 | 왼쪽 메뉴 = `design-system/nav.json`(그룹 접기, todo는 '준비 중'), 가운데 = `nav.json`의 `sample`(`design-system/samples/*.html`)을 DS CSS와 함께 그린 견본(묶음 제목·[코드] 복사·`data-label`과 클래스 표시, 폭 1024/360), 오른쪽 = '설명문서' 패널(.md 렌더링·목차·Figma 링크 'DS 라이브러리 / 프레임워크', 기본 닫힘·열림 기억·폭 조절, 1024 이하 서랍). 견본 묶음 제목을 누르면 같은 제목의 절로 이동. 예전 `?p=button`·허브 `#ds-viewer.html?p=…` 링크도 열림 |
+| `ds-proposals.html` | 제안(미확정) | 디자인 시스템 UX 제안 — **DS-U1** 그룹 오류 표시(체크박스·라디오, 그룹 아래 `.ds-field__error`), **DS-U2** 체크박스 부분 선택(머리 체크박스 −). 현행과 나란히 비교, 폭 1440/1024/360. DS CSS를 불러 쓰고 없는 체크박스·라디오·표만 파일 안에(`dsp-`). 허브 '디자인 시스템' 묶음과 뷰어 설명문서의 '관련 제안'(문서에 DS-U가 있으면 자동)으로 연결 |
 
 **공통 컴포넌트 패턴**
 
@@ -1080,6 +984,34 @@ DS "모바일 정의"의 모바일 간격 규칙. 3-1·3-2·카드 목록을 담
 ---
 
 ## 부록. 변경 이력 (본문은 현재 규칙만 — 결정 경위는 여기)
+
+### DS 아이콘·필수 표시 반영 (2026-10-14)
+- ds-docs 병합(`design-system/icons/error.svg`·`info.svg`, `.ds-field__required`) 확인. 3-0에 임시로 다시 적었던 '필수 입력은 라벨 뒤 빨간 `*`'를 text-input.md 링크로 정리(스킬 같이)
+- 제안 페이지 DS-U1: 오류 문구 `.ds-field__error`에 DS CSS가 에러 아이콘을 자동으로 붙임(`::before` + `mask-image`) — 마크업 변경 없음. 필수 별표를 파일 안 스타일 대신 DS `.ds-field__required`로
+
+### 디자인 시스템 UX 제안 DS-U1·U2 (2026-10-14)
+- `prototypes/ds-proposals.html` 신설 — DS 확정이 아닌 제안(페이지·제안마다 '제안 · 미확정'). DS-U1 그룹 오류 표시: 필수 라디오·체크박스 그룹을 비우고 저장하면 그룹 아래 `.ds-field__error` 문구, 첫 오류 그룹으로 이동, 고르면 즉시 사라짐, 항목 테두리는 그대로. DS-U2 부분 선택: 일부 선택 시 머리 체크박스에 흰 가로선, 없음→전체→해제 / 일부→전체
+- 오류 문구는 DS 입력칸 오류와 같은 `.ds-field__error`(사용자). DS에 에러 아이콘 자산이 없어 아이콘은 넣지 않음(text-input.md는 "오류 아이콘"을 적고 있으나 CSS·견본에 없음 — Codex 확인 대상)
+- 연결: 허브 '디자인 시스템' 묶음에 '제안(미확정) — DS-U1·U2', 뷰어 설명문서에 문서 안 'DS-U숫자'를 찾아 '관련 제안(미확정)' 링크 자동 표시(checkbox.md → U1·U2, radio.md → U1)
+
+### input.md 링크 정리 · nav.json Figma 필드 (2026-10-14)
+- 정책이 가리키던 `components/input.md`(nav.json 목록에 없음)를 입력칸 = `text-input.md`, 긴 글 = `textarea.md`로 바꿈(3-0·3-2, 스킬). input.md 파일은 그대로(Codex 담당). 필수 `*` 규칙은 text-input.md·textarea.md에 없어 3-0 줄에 다시 적음
+- 뷰어 Figma 링크를 nav.json `figma.ds`·`figma.framework`({file, nodes})로 그림. 임시 프레임워크 파일 키 처리 삭제
+
+### 디자인 시스템 뷰어 개편 (2026-10-14)
+- ds-viewer를 단독 페이지로(사용자 A안): 왼쪽 `nav.json` 메뉴(하드코딩 없음) · 가운데 `samples/*.html` 견본(뷰어 안에 견본 HTML을 쓰지 않음, 없으면 '견본 준비 중') · 오른쪽 '설명문서' 패널(허브 정책 패널과 같은 구조 — 머리줄·본문 스크롤·폭 조절). 허브 메뉴 '디자인 시스템'은 '디자인 시스템 열기' 1개(새 탭), 뷰어 위쪽에 '정책 허브로'
+- Figma 링크 두 종류: .md 안 링크 = DS 라이브러리(`64Q1Re56aiAA8Al89pqjnV`, 값 기준) / `nav.json` `figmaNodeIds` = 프레임워크(사용 원칙 참고). 파일 키는 `nav.json` 필드가 있으면 그 값, 없으면 `AD6zHJIIn6yJ0ifS8w5pYv`
+- 예전 링크 유지: `ds-viewer.html?p=button` 등은 같은 항목으로, 허브 `#ds-viewer.html?p=…`는 단독 뷰어로 넘김. 정책 조항의 `design-system/*.md` 링크는 뷰어의 해당 문서를 새 탭으로(`tools/sync-hub.py`). `nav.json`에 없는 문서(예: 3-2가 가리키는 `components/input.md`)는 설명문서만 열림
+- 견본 표시: 묶음 바로 아래 요소는 밑에 `data-label` + `ds-*` 클래스, 안쪽 부품과 화면 고정 요소(모달 배경)는 묶음 아래 목록(마우스를 올리면 해당 부품에 점선). 모달 배경은 견본 칸 안에 가둠(뷰어 표시용 CSS만, DS 값은 그대로)
+
+### DS 3차 병합 확인 (2026-10-12)
+- ds-docs 3차 병합 후 확인: `.ds-is-inactive` PC `#616161`·모바일 `#bdbdbd`, TextArea 포커스·Select 열림 2px `#323da3`(바깥 outline 없음) 반영 → ds-viewer '조정 중 항목' 박스 삭제
+- input.md에 Disabled 흐린 글자·ReadOnly 진한 글자·도움말 정보 아이콘·에러 아이콘이 들어와 3-0에 남겨 둔 상태 표 4행을 링크 한 줄로 바꿈
+
+### DS와 겹치는 값 정리 (2026-10-12)
+- 3-0 크기 기준표의 입력류·버튼·모달 행, 3-2 PC/MO 변형 표, 5장 시맨틱 색 표와 도메인별 칩 표 5개를 `design-system/` 링크로 바꿈(값이 같은 것만, 사용자 확인). 5장 맨 위에 '칩 실물·색 표 → 디자인 시스템 > Status Chip' 링크
+- 남긴 것: 3-0의 DS에 없는 컴포넌트(체크박스·토글·칩·탭), 3-0 상태 표 중 input.md에 없는 표현(글자 흐리게/진하게·정보 아이콘·에러 아이콘 — Codex에 추가 요청 예정), 3-2 상태 표, 3-3 모달 폭 표·규칙, 3-4 버튼 규칙
+- 상태칩 CSS가 `prototypes/status-chip.css`와 DS `.ds-chip--*` 두 벌인 것은 이번에 그대로 두고 7번 #11에 기록
 
 ### 입력칸 상태 기준 · DS 2차 병합 확인 (2026-10-12)
 - 3-2 입력칸 상태 표를 상태 이름 기준으로 바꿈(사용자): Inactive(선택 안 됨) 모바일 `#bdbdbd`·PC `#616161` / Default(입력 완료) `#333333` / Focused(입력 중) 2px `#323da3` / Error / Disabled·ReadOnly `#bdbdbd` + `#eee`. 값은 이전과 같고 이름과 근거만 바뀜(Figma Textfield MO `53:137`·`53:141`, 이로움케어 프레임워크 1.0.4 'Text input' — 사내 웹 문서라 URL은 적지 않음). 상세는 `design-system/components/input.md`

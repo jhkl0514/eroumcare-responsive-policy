@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>디자인 시스템 UX 제안</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<link rel="stylesheet" href="../design-system/css/tokens.css">
+<link rel="stylesheet" href="../design-system/css/components.css">
+<style>
+/* 제안 · 미확정 — design-system/ CSS에 없는 부분만 여기 작성(dsp- 접두사). 값은 --ds-* 변수와 checkbox.md·radio.md 기준 */
+*{box-sizing:border-box;}
+body{margin:0;background:var(--ds-color-bg-tertiary);color:var(--ds-color-text-primary);font-family:'SUIT',var(--ds-font-family-suit);
+  font-size:var(--ds-font-body-ss-regular-size);line-height:var(--ds-font-body-ss-regular-line-height);}
+.dsp-top{max-width:1480px;margin:0 auto;padding:var(--ds-space-24) var(--ds-space-20) 0;display:flex;flex-direction:column;gap:var(--ds-space-12);}
+.dsp-top h1{margin:0;font-size:var(--ds-font-heading-sm-bold-size);line-height:var(--ds-font-heading-sm-bold-line-height);display:flex;align-items:center;gap:var(--ds-space-8);flex-wrap:wrap;}
+.dsp-tag{display:inline-flex;align-items:center;height:var(--ds-space-24);padding:0 var(--ds-space-8);border-radius:var(--ds-radius-4);border:1px solid var(--ds-color-border-warning);
+  background:var(--ds-color-bg-warning-subtle);color:var(--ds-color-text-warning-bold);font-size:var(--ds-font-caption-xs-size);line-height:var(--ds-font-caption-xs-line-height);font-weight:700;white-space:nowrap;}
+.dsp-banner{border:1px solid var(--ds-color-border-warning);background:var(--ds-color-bg-warning-subtle);border-radius:var(--ds-radius-8);padding:var(--ds-space-12) var(--ds-space-16);}
+.dsp-banner p{margin:0;}
+.dsp-widths{display:flex;align-items:center;gap:var(--ds-space-8);flex-wrap:wrap;color:var(--ds-color-text-secondary);}
+.dsp-widths button{min-height:var(--ds-space-32);padding:0 var(--ds-space-12);border:1px solid var(--ds-color-border-primary);border-radius:var(--ds-radius-4);background:var(--ds-color-bg-primary);font:inherit;font-weight:600;cursor:pointer;}
+.dsp-widths button.on{border-color:var(--ds-color-darkblue-600);background:var(--ds-color-darkblue-50);color:var(--ds-color-darkblue-600);}
+.dsp-stage{overflow-x:auto;padding:var(--ds-space-16) var(--ds-space-20) var(--ds-space-48);}
+#frame{container:pf / inline-size;max-width:100%;margin:0 auto;transition:width .2s;}
+.dsp-card{background:var(--ds-color-bg-primary);border-radius:var(--ds-radius-8);box-shadow:var(--ds-shadow-2);padding:var(--ds-space-20);margin-bottom:var(--ds-space-20);scroll-margin-top:var(--ds-space-16);}
+.dsp-card > h2{margin:0 0 var(--ds-space-4);font-size:var(--ds-font-body-md-semibold-size);line-height:var(--ds-font-body-md-semibold-line-height);display:flex;align-items:center;gap:var(--ds-space-8);flex-wrap:wrap;}
+.dsp-card > p{margin:0 0 var(--ds-space-16);color:var(--ds-color-text-secondary);}
+.dsp-cols{display:grid;grid-template-columns:1fr 1fr;gap:var(--ds-space-20);}
+.dsp-col{border:1px solid var(--ds-color-border-secondary);border-radius:var(--ds-radius-8);padding:var(--ds-space-16);min-width:0;}
+.dsp-col > h3{margin:0 0 var(--ds-space-4);font-size:var(--ds-font-body-sm-semibold-size);line-height:var(--ds-font-body-sm-semibold-line-height);}
+.dsp-col > .dsp-note{margin:0 0 var(--ds-space-16);color:var(--ds-color-text-secondary);font-size:var(--ds-font-caption-xs-size);line-height:var(--ds-font-caption-xs-line-height);}
+.dsp-col.is-proposal{border-color:var(--ds-color-darkblue-200);}
+/* 입력 폼 배치(3-2): 라벨 125 고정 + 콘텐츠 flex:1 0 0 · 최소 280 → 409에서 줄바꿈 */
+.dsp-row{display:flex;flex-wrap:wrap;gap:var(--ds-space-4);padding:var(--ds-space-12) 0;border-bottom:1px solid var(--ds-color-border-secondary);scroll-margin-top:var(--ds-space-16);}
+.dsp-label{flex:0 0 125px;font-weight:600;padding-top:var(--ds-space-2);}
+.dsp-label .ds-field__required{margin-left:var(--ds-space-2);}
+.dsp-content{flex:1 0 0;min-width:280px;display:flex;flex-direction:column;gap:var(--ds-space-8);}
+.dsp-group{display:flex;flex-wrap:wrap;gap:var(--ds-space-8) var(--ds-space-16);margin:0;padding:0;border:0;}
+.dsp-group.v{flex-direction:column;gap:var(--ds-space-8);}
+.dsp-actions{display:flex;justify-content:flex-end;gap:var(--ds-space-8);padding-top:var(--ds-space-16);}
+.dsp-result{min-height:var(--ds-space-20);margin-top:var(--ds-space-8);color:var(--ds-color-text-secondary);font-size:var(--ds-font-caption-xs-size);line-height:var(--ds-font-caption-xs-line-height);text-align:right;}
+/* 체크박스·라디오(checkbox.md·radio.md): 20×20, 미선택 1px grey-600, 선택 darkblue-600 채움, Pressed grey-800 / darkblue-800 */
+.dsp-opt{position:relative;display:inline-flex;align-items:center;gap:var(--ds-space-8);cursor:pointer;font-size:var(--ds-font-body-ss-regular-size);line-height:var(--ds-font-body-ss-regular-line-height);}
+.dsp-opt input{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none;}
+.dsp-box{position:relative;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:var(--ds-icon-20);height:var(--ds-icon-20);
+  border:1px solid var(--ds-color-grey-600);border-radius:var(--ds-radius-4);background:var(--ds-color-bg-primary);color:var(--ds-color-base-white);}
+.dsp-box svg{display:none;width:var(--ds-icon-16);height:var(--ds-icon-16);}
+.dsp-opt.radio .dsp-box{border-radius:var(--ds-radius-circle);}
+.dsp-opt input:checked + .dsp-box{border-color:transparent;background:var(--ds-color-darkblue-600);}
+.dsp-opt input:checked + .dsp-box svg{display:block;}
+.dsp-opt.radio input:checked + .dsp-box::after{content:'';width:10px;height:10px;border-radius:var(--ds-radius-circle);background:var(--ds-color-base-white);}
+.dsp-opt:active input:not(:checked) + .dsp-box{border-color:var(--ds-color-grey-800);}
+.dsp-opt:active input:checked + .dsp-box{background:var(--ds-color-darkblue-800);}
+.dsp-opt input:focus-visible + .dsp-box{outline:var(--ds-space-2) solid var(--ds-color-darkblue-600);outline-offset:var(--ds-space-2);}
+/* DS-U2 제안: 부분 선택(Indeterminate) — 선택 배경 + 흰 가로선 */
+.dsp-opt input.is-mixed + .dsp-box{border-color:transparent;background:var(--ds-color-darkblue-600);}
+.dsp-opt input.is-mixed + .dsp-box svg{display:none;}
+.dsp-opt input.is-mixed + .dsp-box::after{content:'';width:10px;height:var(--ds-space-2);border-radius:var(--ds-space-2);background:var(--ds-color-base-white);}
+/* 표(3-9 값): 헤더 bg tertiary, 행 구분선, 선택 행 틴트, 체크 열 44 */
+.dsp-tbl-wrap{overflow-x:auto;}
+.dsp-tbl{width:100%;min-width:320px;border-collapse:collapse;}
+.dsp-tbl th,.dsp-tbl td{height:52px;padding:0 var(--ds-space-12);text-align:left;border-bottom:1px solid var(--ds-color-border-secondary);white-space:nowrap;}
+.dsp-tbl th{background:var(--ds-color-bg-tertiary);border-bottom-color:var(--ds-color-border-primary);font-weight:600;}
+.dsp-tbl .ck{width:44px;padding:0 var(--ds-space-12);}
+.dsp-tbl tr.sel td{background:var(--ds-color-darkblue-50);}
+.dsp-tbl td.num{text-align:right;}
+.dsp-count{margin-top:var(--ds-space-8);color:var(--ds-color-text-secondary);font-size:var(--ds-font-caption-xs-size);line-height:var(--ds-font-caption-xs-line-height);}
+.dsp-spec{margin:var(--ds-space-16) 0 0;padding:var(--ds-space-12) var(--ds-space-16);border-radius:var(--ds-radius-8);background:var(--ds-color-bg-secondary);}
+.dsp-spec b{display:block;margin-bottom:var(--ds-space-4);}
+.dsp-spec ul{margin:0;padding-left:var(--ds-space-20);}
+/* 1024 이하: 현행·제안 위아래로, 선택 항목은 줄 전체 터치·높이 44(3-0) */
+@container pf (max-width:1024px){
+  .dsp-cols{grid-template-columns:1fr;}
+  .dsp-group{flex-direction:column;gap:0;}
+  .dsp-opt{min-height:44px;width:100%;}
+  .dsp-actions .ds-btn{flex:1;}
+}
+</style>
+</head>
+<body>
+<div class="dsp-top">
+  <h1>디자인 시스템 UX 제안 <span class="dsp-tag">제안 · 미확정</span></h1>
+  <div class="dsp-banner" role="note"><p><b>DS 확정이 아니라 제안입니다.</b> 체크박스·라디오 문서(<code>design-system/components/checkbox.md</code>·<code>radio.md</code>)에 '정의 없음'으로 남은 두 가지를 화면으로 비교합니다. 확정되면 <code>design-system/</code>에 반영합니다. 상품명은 모두 예시입니다.</p></div>
+  <div class="dsp-widths" id="widths">화면 폭 <button data-w="1440">1440</button><button data-w="1024">1024</button><button data-w="360">360</button></div>
+</div>
+<div class="dsp-stage"><div id="frame">
+
+<!-- DS-U1 -->
+<section class="dsp-card" id="ds-u1" aria-labelledby="u1-title">
+  <h2 id="u1-title">DS-U1 그룹 오류 표시 (체크박스·라디오) <span class="dsp-tag">제안 · 미확정</span></h2>
+  <p>필수 선택 그룹을 비운 채 저장하면 그룹 아래에 DS 입력칸 오류와 같은 문구(<code>.ds-field__error</code> — 에러 아이콘은 DS CSS가 붙임)를 띄웁니다. 항목 테두리는 바꾸지 않습니다.</p>
+  <div class="dsp-cols">
+    <div class="dsp-col">
+      <h3>현행 — 오류 표시 없음</h3>
+      <p class="dsp-note">저장을 눌러도 화면에 아무 표시가 없어, 무엇이 빠졌는지 알 수 없습니다.</p>
+      <form class="u1-form" data-mode="current" novalidate></form>
+    </div>
+    <div class="dsp-col is-proposal">
+      <h3>제안 — 그룹 아래 오류 문구</h3>
+      <p class="dsp-note">저장하면 첫 오류 그룹으로 이동하고, 하나라도 고르면 그 그룹의 문구가 바로 사라집니다.</p>
+      <form class="u1-form" data-mode="proposal" novalidate></form>
+    </div>
+  </div>
+  <div class="dsp-spec"><b>제안 규칙</b><ul>
+    <li>문구: 라디오 "취소 사유를 선택해 주세요." / 체크박스 "변경할 상품을 1개 이상 선택해 주세요." — <code>.ds-field__error</code>, 그룹 바로 아래</li>
+    <li>그룹에 <code>aria-invalid="true"</code> + <code>aria-describedby</code>로 문구 연결, 항목 테두리·색은 그대로</li>
+    <li>저장 시 첫 오류 그룹으로 스크롤 · 그 그룹에서 하나라도 선택하면 문구 즉시 제거</li>
+  </ul></div>
+</section>
+
+<!-- DS-U2 -->
+<section class="dsp-card" id="ds-u2" aria-labelledby="u2-title">
+  <h2 id="u2-title">DS-U2 체크박스 부분 선택 (Indeterminate) <span class="dsp-tag">제안 · 미확정</span></h2>
+  <p>표의 일부 행만 선택했을 때 머리 체크박스에 흰 가로선(−)을 보여 "일부 선택" 상태를 알립니다.</p>
+  <div class="dsp-cols">
+    <div class="dsp-col">
+      <h3>현행 — 부분 선택 표시 없음</h3>
+      <p class="dsp-note">일부만 골라도 머리 체크박스가 빈칸이라, 선택된 행이 있는지 한눈에 알 수 없습니다.</p>
+      <div class="u2" data-mode="current"></div>
+    </div>
+    <div class="dsp-col is-proposal">
+      <h3>제안 — 머리 체크박스에 가로선(−)</h3>
+      <p class="dsp-note">없음 → 누르면 전체 선택 → 누르면 전체 해제 / 일부 선택(−) → 누르면 전체 선택</p>
+      <div class="u2" data-mode="proposal"></div>
+    </div>
+  </div>
+  <div class="dsp-spec"><b>제안 규칙</b><ul>
+    <li>일부 선택: 머리 체크박스 선택 배경(<code>--ds-color-darkblue-600</code>) + 흰 가로선 10×2 — 접근성은 <code>indeterminate</code> + <code>aria-checked="mixed"</code></li>
+    <li>머리 체크박스 동작: 없음 → 전체 선택 → 전체 해제, 일부 → 전체 선택</li>
+    <li>선택 행 배경 <code>--ds-color-darkblue-50</code>(3-9), 체크 열 44px</li>
+  </ul></div>
+</section>
+
+</div></div>
+<script>
+var CHECK = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var REASONS = ['단순 변심', '배송 지연', '상품 정보와 다름', '기타'];
+var PRODUCTS = [['전동침대 A형', '기본', 1], ['수동휠체어 B형', '접이식', 1], ['미끄럼방지 양말', '회색 · M', 2], ['안전손잡이 C형', '흰색', 1]];
+function opt(type, name, value, label, attrs){
+  return '<label class="dsp-opt'+(type === 'radio' ? ' radio' : '')+'"><input type="'+type+'" name="'+name+'" value="'+value+'"'+(attrs||'')+'><span class="dsp-box">'+(type === 'checkbox' ? CHECK : '')+'</span><span>'+label+'</span></label>';
+}
+
+/* ---------- DS-U1 ---------- */
+document.querySelectorAll('.u1-form').forEach(function(form){
+  var m = form.dataset.mode, p = m + '-';
+  form.innerHTML =
+    '<div class="dsp-row" data-group="reason"><div class="dsp-label" id="'+p+'reason-l">취소 사유<span class="ds-field__required" aria-hidden="true">*</span></div>'+
+      '<div class="dsp-content"><div class="dsp-group" role="radiogroup" aria-required="true" aria-labelledby="'+p+'reason-l">'+
+      REASONS.map(function(r, i){ return opt('radio', p+'reason', i, r); }).join('')+'</div></div></div>'+
+    '<div class="dsp-row" data-group="items"><div class="dsp-label" id="'+p+'items-l">변경할 상품<span class="ds-field__required" aria-hidden="true">*</span></div>'+
+      '<div class="dsp-content"><div class="dsp-group v" role="group" aria-labelledby="'+p+'items-l">'+
+      PRODUCTS.slice(0, 3).map(function(x, i){ return opt('checkbox', p+'items', i, x[0]); }).join('')+'</div></div></div>'+
+    '<div class="dsp-actions"><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="reset">초기화</button><button class="ds-btn ds-btn--primary ds-btn--md" type="submit">저장</button></div>'+
+    '<div class="dsp-result" aria-live="polite"></div>';
+  var MSG = { reason:'취소 사유를 선택해 주세요.', items:'변경할 상품을 1개 이상 선택해 주세요.' };
+  var picked = function(g){ return !!form.querySelector('[data-group="'+g+'"] input:checked'); };
+  var setErr = function(g, on){
+    var row = form.querySelector('[data-group="'+g+'"]'), grp = row.querySelector('.dsp-group'), id = p + g + '-err', el = document.getElementById(id);
+    if(on && !el){ el = document.createElement('span'); el.className = 'ds-field__error'; el.id = id; el.textContent = MSG[g]; grp.parentNode.appendChild(el); }
+    if(!on && el) el.remove();
+    if(on){ grp.setAttribute('aria-invalid', 'true'); grp.setAttribute('aria-describedby', id); } else { grp.removeAttribute('aria-invalid'); grp.removeAttribute('aria-describedby'); }
+  };
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var result = form.querySelector('.dsp-result');
+    var bad = ['reason', 'items'].filter(function(g){ return !picked(g); });
+    if(m === 'current'){ result.textContent = bad.length ? '' : '저장됨(예시)'; return; }   /* 현행: 막혀도 표시 없음 */
+    ['reason', 'items'].forEach(function(g){ setErr(g, bad.indexOf(g) >= 0); });
+    if(bad.length){ var first = form.querySelector('[data-group="'+bad[0]+'"]'); first.scrollIntoView({block:'center', behavior:'smooth'}); var i = first.querySelector('input'); if(i) i.focus({preventScroll:true}); result.textContent = ''; }
+    else result.textContent = '저장됨(예시)';
+  });
+  form.addEventListener('change', function(e){ var row = e.target.closest('[data-group]'); if(m === 'proposal' && row && picked(row.dataset.group)) setErr(row.dataset.group, false); form.querySelector('.dsp-result').textContent = ''; });
+  form.addEventListener('reset', function(){ setTimeout(function(){ ['reason', 'items'].forEach(function(g){ setErr(g, false); }); form.querySelector('.dsp-result').textContent = ''; }, 0); });
+});
+
+/* ---------- DS-U2 ---------- */
+document.querySelectorAll('.u2').forEach(function(box){
+  var m = box.dataset.mode, p = 'u2-' + m;
+  box.innerHTML = '<div class="dsp-tbl-wrap"><table class="dsp-tbl"><thead><tr><th class="ck">'+opt('checkbox', p+'-all', 'all', '<span class="vh" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">전체 선택</span>')+'</th>'+
+    '<th>상품명</th><th>옵션</th><th>수량</th></tr></thead><tbody>'+
+    PRODUCTS.map(function(x, i){ return '<tr><td class="ck">'+opt('checkbox', p+'-row', i, '<span class="vh" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">'+x[0]+' 선택</span>')+'</td><td>'+x[0]+'</td><td>'+x[1]+'</td><td class="num">'+x[2]+'개</td></tr>'; }).join('')+
+    '</tbody></table></div><div class="dsp-count" aria-live="polite"></div>';
+  var all = box.querySelector('thead input'), rows = Array.prototype.slice.call(box.querySelectorAll('tbody input'));
+  var sync = function(){
+    var n = rows.filter(function(r){ return r.checked; }).length, mixed = n > 0 && n < rows.length;
+    rows.forEach(function(r){ r.closest('tr').classList.toggle('sel', r.checked); });
+    all.checked = n === rows.length;
+    if(m === 'proposal'){ all.indeterminate = mixed; all.classList.toggle('is-mixed', mixed); all.setAttribute('aria-checked', mixed ? 'mixed' : String(all.checked)); }
+    box.querySelector('.dsp-count').textContent = n + '개 선택 / 전체 ' + rows.length + '개';
+  };
+  all.addEventListener('change', function(){
+    var n = rows.filter(function(r){ return r.checked; }).length;
+    var on = m === 'proposal' ? n < rows.length : all.checked;   /* 제안: 일부(−)·없음 → 전체 선택, 전체 → 해제 */
+    rows.forEach(function(r){ r.checked = on; }); sync();
+  });
+  rows.forEach(function(r){ r.addEventListener('change', sync); });
+  rows[0].checked = true; rows[2].checked = true;   /* 처음엔 일부 선택 상태로 시작 */
+  sync();
+});
+
+/* ---------- 화면 폭 ---------- */
+var frame = document.getElementById('frame');
+function setW(w){ frame.style.width = w + 'px'; document.querySelectorAll('#widths button').forEach(function(b){ b.classList.toggle('on', +b.dataset.w === w); });
+  var u = new URL(location.href); u.searchParams.set('w', w); history.replaceState(null, '', u); }
+document.querySelectorAll('#widths button').forEach(function(b){ b.addEventListener('click', function(){ setW(+b.dataset.w); }); });
+frame.style.transition = 'none'; setW([1440, 1024, 360].indexOf(+new URLSearchParams(location.search).get('w')) >= 0 ? +new URLSearchParams(location.search).get('w') : 1440); void frame.offsetWidth; frame.style.transition = '';
+if(location.hash){ var t = document.getElementById(location.hash.slice(1)); if(t) setTimeout(function(){ t.scrollIntoView(); }, 50); }
+</script>
+</body>
+</html>
