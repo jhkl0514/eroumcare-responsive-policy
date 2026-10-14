@@ -17,13 +17,11 @@ def inline(t):
     t = H.escape(t, quote=False)
     t = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', t)
     t = re.sub(r'`([^`]+)`', r'<span class="mono">\1</span>', t)
-    # [글자](링크) → 링크. design-system/*.md는 허브의 디자인 시스템 뷰어 페이지로
-    DSV = {'DESIGN.md':'overview', 'foundations.md':'foundations', 'components/button.md':'button', 'components/input.md':'input',
-           'components/select.md':'select', 'components/modal.md':'modal', 'components/status-chip.md':'status-chip'}
+    # [글자](링크) → 링크. design-system/*.md는 디자인 시스템 뷰어(새 탭)의 해당 문서로
     def _link(m):
         url = m.group(2)
-        if url.startswith('design-system/') and url[len('design-system/'):] in DSV:
-            return '<a href="#ds-viewer.html?p=' + DSV[url[len('design-system/'):]] + '">' + m.group(1) + '</a>'
+        if url.startswith('design-system/') and url.endswith('.md'):
+            return '<a href="prototypes/ds-viewer.html?item=' + url[len('design-system/'):] + '" target="_blank" rel="noopener">' + m.group(1) + '</a>'
         return '<a href="' + url + '" target="_blank" rel="noopener">' + m.group(1) + '</a>'
     t = re.sub(r'\[([^\]]+)\]\(([^)\s]+)\)', _link, t)
     # {chip:상태} / {chip:상태:표기} → 상태칩 미리보기(prototypes/status-chip.css, 5장)
