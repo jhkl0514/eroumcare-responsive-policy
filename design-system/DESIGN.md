@@ -24,10 +24,10 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `36:11730` / 마지막
 | 최소 모바일 폭 | `360px`; 콘텐츠 최소 너비는 `320px` |
 | 입력 컴포넌트 | Textfield·SelectField는 PC 40px, 모바일 48px. SelectOption은 PC 36px, 모바일 44px |
 | 버튼 | SM 36px / MD 48px는 PC·모바일 공통. 화면 하단 고정과 BottomSheet 하단 액션만 LG 54px |
-| 모달 폭 | sm 340 / md 480 / lg 600 / xl 800px. Figma DS 기준(노드 [6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122)), CLAUDE.md 3-3도 이 기준으로 갱신 예정 |
+| 모달 폭 | sm 340 / md 480 / lg 600 / xl 800px. Figma DS 기준(노드 [6487:5122](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122)), CLAUDE.md 3-3 반영 완료 |
 | 카드 목록 | 카드 사이 간격 12px, 모서리 8px, 그림자 사용 |
 
-세부 값과 Figma 출처는 [Foundations](./foundations.md) 및 각 컴포넌트 문서를 따른다. 모달 크기 네 단계는 Figma DS 기준이며, `CLAUDE.md` 3-3도 이 기준으로 갱신 예정이다.
+세부 값과 Figma 출처는 [Foundations](./foundations.md) 및 각 컴포넌트 문서를 따른다. 모달 크기 네 단계는 Figma DS 기준이며, `CLAUDE.md` 3-3 반영 완료.
 
 새 문서를 추가할 때는 [nav.json](./nav.json)의 해당 항목도 `done`으로 함께 갱신한다. 해당 컴포넌트 CSS가 준비된 경우 `samples/` 견본을 함께 추가하고 nav 항목에 연결한다.
 
