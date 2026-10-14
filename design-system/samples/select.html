@@ -1,38 +1,19 @@
-<section data-sample="변형(variant) · 크기 > SelectField">
-  <div class="ds-field" data-label="Select · PC · Default">
-    <span class="ds-field__label" data-label="Field label">주문 상태</span>
-    <div class="ds-select" data-label="Select field">
-      <button class="ds-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-label="Select trigger · Closed">전체</button>
-    </div>
-  </div>
+<section data-section="anatomy" data-title="구조" data-desc="선택 필드는 라벨, 현재값을 담는 트리거, 펼침 아이콘으로 이루어집니다.">
+  <div class="anatomy-sample"><label class="ds-field anatomy-part" data-part="1" data-label="field anatomy part"><span class="ds-field__label" data-label="field__label">주문 상태</span></label><span class="anatomy-part" data-part="2"><span class="ds-select" data-label="select"><button class="ds-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-label="Select trigger">전체</button></span></span><span class="anatomy-part" data-part="3"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+  <ol class="parts"><li><span class="part-no">1</span><span><b>라벨</b><span>무엇을 선택하는 필드인지 설명합니다.</span></span></li><li><span class="part-no">2</span><span><b>트리거</b><span>현재 선택값을 보여주고 목록을 엽니다.</span></span></li><li><span class="part-no">3</span><span><b>펼침 표시</b><span>선택 목록을 열 수 있음을 알려줍니다.</span></span></li></ol>
 </section>
-<section data-sample="변형(variant) · 크기 > SelectField">
-  <div class="ds-field" data-label="Select · MO · Default">
-    <span class="ds-field__label" data-label="Field label">품목</span>
-    <div class="ds-select" data-label="Select field">
-      <button class="ds-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-label="Select trigger · Closed">전체 품목</button>
-    </div>
-  </div>
+<section data-section="states" data-title="상태" data-desc="닫힘·열림·비활성 상태와 옵션의 선택 상태를 구분합니다.">
+  <div class="state-grid"><article class="state-card"><strong>Default · 닫힘</strong><div class="ds-select" data-label="select"><button class="ds-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-label="Default">전체</button></div><p>현재값과 목록 펼침 동작을 표시합니다.</p></article><article class="state-card"><strong>Focused · 열림</strong><div class="ds-select" data-label="select"><button class="ds-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="true" data-label="Open">전체</button><div class="ds-select__list" role="listbox" aria-label="주문 상태" data-label="select__list"><button class="ds-select__option" role="option" aria-selected="true" data-label="select__option">전체</button><button class="ds-select__option" role="option" aria-selected="false" data-label="select__option">주문접수</button><button class="ds-select__option" role="option" aria-selected="false" data-label="select__option">상품준비</button></div></div><p>열린 옵션 목록 안에서 선택값을 구분합니다.</p></article><article class="state-card"><strong>Disabled</strong><div class="ds-select" data-label="select"><button class="ds-select__trigger" type="button" disabled data-label="select__trigger">선택할 수 없음</button></div><p>트리거를 조작할 수 없습니다.</p></article><article class="state-card"><strong>Error</strong><div class="ds-select" data-label="select"><button class="ds-select__trigger ds-is-error" type="button" aria-invalid="true" data-label="select__trigger is error">항목을 선택해 주세요.</button></div><span class="ds-field__error" data-label="field__error"><img src="../icons/error.svg" width="16" height="16" alt="">필수 항목입니다.</span><p>입력 오류를 트리거 아래에 안내합니다.</p></article></div>
 </section>
-<section data-sample="상태 > Focused · 목록 열림">
-  <div class="ds-field" data-label="Select · 목록 열림">
-    <span class="ds-field__label" data-label="Field label">주문 상태</span>
-    <div class="ds-select" data-label="Select field">
-      <button class="ds-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="true" data-label="Select trigger · Open">전체</button>
-      <div class="ds-select__list" role="listbox" aria-label="주문 상태" data-label="Option list">
-        <button class="ds-select__option" type="button" role="option" aria-selected="true" data-label="Option · Selected">전체</button>
-        <button class="ds-select__option" type="button" role="option" aria-selected="false" data-label="Option · Default">주문접수</button>
-        <button class="ds-select__option" type="button" role="option" aria-selected="false" data-label="Option · Default">상품준비</button>
-        <button class="ds-select__option" type="button" role="option" aria-selected="false" data-label="Option · Default">배송완료</button>
-      </div>
-    </div>
-  </div>
+<section data-section="variants" data-title="변형" data-desc="목록 한 행은 기본·선택·비활성 옵션을 가질 수 있습니다.">
+  <div class="state-grid"><article class="state-card"><strong>선택 목록</strong><div class="ds-select" data-label="select"><button class="ds-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="true" data-label="select__trigger">주문 상태</button><div class="ds-select__list" role="listbox" aria-label="주문 상태" data-label="select__list"><button class="ds-select__option" type="button" role="option" aria-selected="true" data-label="select__option">전체</button><button class="ds-select__option" type="button" role="option" aria-selected="false" data-label="select__option">주문접수</button><button class="ds-select__option" type="button" role="option" aria-selected="false" data-label="select__option">상품준비</button><button class="ds-select__option" type="button" role="option" aria-selected="false" disabled data-label="select__option">사용할 수 없음</button></div></div><p>선택된 옵션은 배경으로 구분하고 비활성 옵션은 조작할 수 없게 합니다.</p></article></div>
 </section>
-<section data-sample="상태 > Disabled">
-  <div class="ds-field" data-label="Select · Disabled">
-    <span class="ds-field__label" data-label="Field label">주문 상태</span>
-    <div class="ds-select" data-label="Select field">
-      <button class="ds-select__trigger" type="button" disabled data-label="Select trigger · Disabled">선택할 수 없음</button>
-    </div>
-  </div>
+<section data-section="sizes" data-title="크기" data-desc="트리거와 옵션 행의 기기별 높이를 맞춰 선택하기 쉽게 합니다.">
+  <div class="size-compare"><article class="size-card" data-device="pc"><strong>PC · 1025px 이상</strong><div class="ds-select" data-label="select"><button class="ds-select__trigger" type="button" data-label="select__trigger">전체</button></div><span class="measure">트리거 40px · 옵션 36px</span></article><article class="size-card" data-device="mobile"><strong>모바일 · 1024px 이하</strong><div class="ds-select" data-label="select"><button class="ds-select__trigger" type="button" data-label="select__trigger">전체</button></div><span class="measure">트리거 48px · 옵션 44px</span></article></div>
+</section>
+<section data-section="usage" data-title="사용 예" data-desc="주문요청 검색에서 제한된 상태 선택값을 제공하는 사례입니다.">
+  <div class="usage-frame"><strong>주문요청 검색</strong><div class="sample-row"><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">주문 진행상태</span><span class="ds-select" data-label="select"><button class="ds-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-label="select__trigger">전체</button></span></label><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="btn btn primary btn md">검색</button></div></div>
+</section>
+<section data-section="dos" data-title="이렇게 사용해요" data-desc="선택지가 정해져 있을 때 목록을 사용하고, 직접 입력과 혼동하지 않게 합니다.">
+  <div class="do-grid"><article class="do-item good"><h3>권장 · 단일 선택 목록</h3><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">품목</span><span class="ds-select" data-label="select"><button class="ds-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-label="select__trigger">전체 품목</button></span></label></article><article class="do-item bad"><h3>피하기 · 여러 옵션을 한 줄에 쉼표로 나열</h3><button class="ds-select__trigger incorrect" type="button" data-label="select__trigger incorrect">전체, 침대, 휠체어, 경사로</button></article></div>
 </section>

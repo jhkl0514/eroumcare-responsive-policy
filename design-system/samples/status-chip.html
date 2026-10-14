@@ -1,27 +1,19 @@
-<section data-sample="상태 > 시맨틱 색">
-  <span class="ds-chip ds-chip--info" data-label="Info · 기본">안내</span>
-  <span class="ds-chip ds-chip--success" data-label="Success · 기본">확인완료</span>
-  <span class="ds-chip ds-chip--caution" data-label="Caution · 기본">확인필요</span>
-  <span class="ds-chip ds-chip--brand-sub" data-label="BrandSub · 기본">진행중</span>
-  <span class="ds-chip ds-chip--danger" data-label="Danger · 기본">취소</span>
-  <span class="ds-chip ds-chip--neutral" data-label="Neutral · 기본">대기</span>
+<section data-section="anatomy" data-title="구조" data-desc="상태칩은 현재 상태를 전달하는 짧은 라벨로 구성합니다.">
+  <div class="anatomy-sample"><span class="anatomy-part" data-part="1"><span class="ds-chip ds-chip--purchase-received" data-label="주문접수">주문접수</span></span><span class="anatomy-part" data-part="2"><span class="ds-chip ds-chip--rental-shipping-preparing" data-label="출고준비중">출고준비중</span></span></div>
+  <ol class="parts"><li><span class="part-no">1</span><span><b>상태 라벨</b><span>업무 흐름의 현재 단계를 짧은 텍스트로 표시합니다.</span></span></li><li><span class="part-no">2</span><span><b>시맨틱 컬러</b><span>색상은 상태의 의미를 보조하며 텍스트와 함께 읽힙니다.</span></span></li></ol>
 </section>
-<section data-sample="상태 > 구입 주문">
-  <span class="ds-chip ds-chip--purchase-received" data-label="구입 · 주문접수">주문접수</span>
-  <span class="ds-chip ds-chip--purchase-confirming" data-label="구입 · 주문확인중">주문확인중</span>
-  <span class="ds-chip ds-chip--purchase-preparing" data-label="구입 · 상품준비">상품준비</span>
-  <span class="ds-chip ds-chip--purchase-shipped" data-label="구입 · 배송중">배송중</span>
-  <span class="ds-chip ds-chip--purchase-delivered" data-label="구입 · 배송완료">배송완료</span>
+<section data-section="states" data-title="상태" data-desc="상태 변화의 의미를 읽고, 색상만으로 구분하지 않습니다.">
+  <div class="state-grid"><article class="state-card"><strong>정보 · 접수</strong><span class="ds-chip ds-chip--purchase-received" data-label="chip chip purchase received">주문접수</span><p>새 요청이 도착한 상태입니다.</p></article><article class="state-card"><strong>진행 · 확인</strong><span class="ds-chip ds-chip--purchase-confirming" data-label="chip chip purchase confirming">주문확인중</span><p>담당자가 내용을 확인합니다.</p></article><article class="state-card"><strong>주의 · 준비</strong><span class="ds-chip ds-chip--rental-shipping-preparing" data-label="chip chip rental shipping preparing">출고준비중</span><p>후속 처리가 진행 중입니다.</p></article><article class="state-card"><strong>완료</strong><span class="ds-chip ds-chip--rental-delivered" data-label="chip chip rental delivered">배송완료</span><p>업무 단계가 정상 완료되었습니다.</p></article><article class="state-card"><strong>취소·오류</strong><span class="ds-chip ds-chip--rental-cancelled" data-label="chip chip rental cancelled">주문취소</span><p>취소 또는 예외 상태를 나타냅니다.</p></article><article class="state-card"><strong>중립</strong><span class="ds-chip ds-chip--rental-cancellation-completed" data-label="chip chip rental cancellation completed">취소완료</span><p>중립적인 완료 결과를 표현합니다.</p></article></div>
 </section>
-<section data-sample="상태 > 대여 주문">
-  <span class="ds-chip ds-chip--rental-confirming" data-label="대여 · 주문확인중">주문확인중</span>
-  <span class="ds-chip ds-chip--rental-shipping-preparing" data-label="대여 · 출고준비중">출고준비중</span>
-  <span class="ds-chip ds-chip--rental-shipped" data-label="대여 · 출고완료">출고완료</span>
-  <span class="ds-chip ds-chip--rental-delivered" data-label="대여 · 배송완료">배송완료</span>
+<section data-section="variants" data-title="도메인별 변형" data-desc="같은 진행 단계라도 주문 도메인에 맞는 상태 클래스를 선택합니다.">
+  <div class="state-grid"><article class="state-card"><strong>구입 주문</strong><div class="sample-row"><span class="ds-chip ds-chip--purchase-received" data-label="chip chip purchase received">주문접수</span><span class="ds-chip ds-chip--purchase-preparing" data-label="chip chip purchase preparing">상품준비</span><span class="ds-chip ds-chip--purchase-delivered" data-label="chip chip purchase delivered">배송완료</span></div></article><article class="state-card"><strong>대여 주문</strong><div class="sample-row"><span class="ds-chip ds-chip--rental-confirming" data-label="chip chip rental confirming">주문확인중</span><span class="ds-chip ds-chip--rental-shipping-preparing" data-label="chip chip rental shipping preparing">출고준비중</span><span class="ds-chip ds-chip--rental-delivered" data-label="chip chip rental delivered">배송완료</span></div></article><article class="state-card"><strong>회수</strong><div class="sample-row"><span class="ds-chip ds-chip--collection-requested" data-label="chip chip collection requested">회수요청</span><span class="ds-chip ds-chip--collection-preparing" data-label="chip chip collection preparing">회수준비중</span><span class="ds-chip ds-chip--collection-completed" data-label="chip chip collection completed">회수완료</span></div></article></div>
 </section>
-<section data-sample="상태 > 회수">
-  <span class="ds-chip ds-chip--collection-requested" data-label="회수 · 회수요청">회수요청</span>
-  <span class="ds-chip ds-chip--collection-preparing" data-label="회수 · 회수준비중">회수준비중</span>
-  <span class="ds-chip ds-chip--collection-completed" data-label="회수 · 회수완료">회수완료</span>
-  <span class="ds-chip ds-chip--collection-cancelled" data-label="회수 · 회수취소">회수취소</span>
+<section data-section="sizes" data-title="크기" data-desc="기본 상태칩은 기기 폭에 따라 크기를 바꾸지 않습니다.">
+  <div class="size-compare"><article class="size-card"><strong>PC · 기본형</strong><span class="ds-chip ds-chip--purchase-confirming" data-label="기본 · 32px">주문확인중</span><span class="measure">높이 32px · 글자 14px</span><span class="ds-chip ds-chip--purchase-confirming ds-chip--table" data-label="테이블 안 · 24px">주문확인중</span><span class="measure">테이블 배지 예외 · 높이 24px</span></article><article class="size-card"><strong>모바일 · 기본형</strong><span class="ds-chip ds-chip--rental-shipping-preparing" data-label="기본 · 32px">출고준비중</span><span class="measure">높이 32px · 글자 14px</span><span class="sample-caption">모바일도 기본 칩 크기는 동일합니다.</span></article></div>
+</section>
+<section data-section="usage" data-title="사용 예" data-desc="주문 목록에서 주문 식별 정보 가까이에 대표 상태를 표시합니다.">
+  <div class="usage-frame"><strong>주문 목록</strong><div class="sample-row"><div><strong>전동침대 ST-3</strong><div class="sample-caption">주문번호 ORD-000123 · 요청수량 1개</div></div><span class="ds-chip ds-chip--rental-shipping-preparing" data-label="대여 · 출고준비중">출고준비중</span></div></div>
+</section>
+<section data-section="dos" data-title="이렇게 사용해요" data-desc="도메인과 상태 의미에 맞는 칩 하나를 선택해 사용합니다.">
+  <div class="do-grid"><article class="do-item good"><h3>권장 · 상태를 텍스트와 시맨틱 컬러로 표현</h3><span class="ds-chip ds-chip--collection-requested" data-label="chip chip collection requested">회수요청</span></article><article class="do-item bad"><h3>피하기 · 색상에만 의존해 의미 전달</h3><span class="ds-chip ds-chip--danger" aria-label="오류 상태" title="오류 상태" data-label="chip chip danger"></span><p>색 외에 읽을 수 있는 상태 라벨이 필요합니다.</p></article></div>
 </section>

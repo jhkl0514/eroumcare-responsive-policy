@@ -154,6 +154,10 @@
   --ds-modal-width-md: 480px; /* Modal/md */
   --ds-modal-width-lg: 600px; /* Modal/lg */
   --ds-modal-width-xl: 800px; /* Modal/xl */
+
+  /* 뷰포트 기준 문서화 전용. 미디어쿼리에는 숫자 기준을 직접 사용합니다. */
+  --ds-breakpoint-mobile-min: 360px;
+  --ds-breakpoint-mobile-max: 1024px;
 }
 
 /* foundations.md 6: 프로젝트 전환 폭 1024px, 최소 모바일 폭 360px.

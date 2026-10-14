@@ -1,38 +1,19 @@
-<section data-sample="Modal 크기 > SM">
-  <div class="ds-modal-backdrop" data-label="Modal · SM">
-    <section class="ds-modal ds-modal--sm" role="dialog" aria-modal="true" aria-labelledby="modal-sm-title" data-label="Modal surface · SM">
-      <header class="ds-modal__header" data-label="Modal header · separator">
-        <h2 class="ds-modal__title" id="modal-sm-title" data-label="Modal title">저장할까요?</h2>
-        <button class="ds-modal__close" type="button" aria-label="닫기" data-label="Close · 32px">
-          <svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-        </button>
-      </header>
-      <div class="ds-modal__body" data-label="Modal body">입력한 내용을 저장합니다.</div>
-      <footer class="ds-modal__footer" data-label="Modal footer">
-        <button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="Secondary · 취소">취소</button>
-        <button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary · 확인">확인</button>
-      </footer>
-    </section>
-  </div>
+<section data-section="anatomy" data-title="구조" data-desc="모달은 배경 차단층, 타이틀·닫기 영역, 본문, 하단 액션으로 구성합니다.">
+  <div class="sample-stage"><div class="ds-modal-backdrop" data-label="modal backdrop"><section class="ds-modal ds-modal--sm" data-label="Modal · SM" role="dialog" aria-modal="true" aria-labelledby="anatomy-modal-title"><header class="ds-modal__header" data-label="modal__header"><h2 class="ds-modal__title" id="anatomy-modal-title" data-label="modal__title">저장할까요?</h2><button class="ds-modal__close" type="button" aria-label="닫기" data-label="modal__close"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body" data-label="modal__body">입력한 내용을 저장합니다.</div><footer class="ds-modal__footer" data-label="modal__footer"><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="btn btn outline secondary btn md">취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="btn btn primary btn md">확인</button></footer></section></div></div>
+  <ol class="parts"><li><span class="part-no">1</span><span><b>배경 차단층</b><span>현재 화면과 모달 작업을 시각적으로 분리합니다.</span></span></li><li><span class="part-no">2</span><span><b>헤더</b><span>작업 제목과 닫기 동작을 제공합니다.</span></span></li><li><span class="part-no">3</span><span><b>본문</b><span>결정에 필요한 안내나 입력 내용을 담습니다.</span></span></li><li><span class="part-no">4</span><span><b>하단 액션</b><span>취소와 확인처럼 작업 결과를 선택합니다.</span></span></li></ol>
 </section>
-<section data-sample="Modal 크기 > MD">
-  <div class="ds-modal-backdrop" data-label="Modal · MD">
-    <section class="ds-modal ds-modal--md" role="dialog" aria-modal="true" aria-labelledby="modal-md-title" data-label="Modal surface · MD">
-      <header class="ds-modal__header" data-label="Modal header · separator">
-        <h2 class="ds-modal__title" id="modal-md-title" data-label="Modal title">주문하기</h2>
-        <button class="ds-modal__close" type="button" aria-label="닫기" data-label="Close · 32px">
-          <svg aria-hidden="true" focusable="false" width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-        </button>
-      </header>
-      <div class="ds-modal__body" data-label="Modal body">주문 완료 후에는 수량과 옵션을 변경할 수 없습니다.</div>
-      <footer class="ds-modal__footer" data-label="Modal footer">
-        <button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="Secondary · 취소">취소</button>
-        <button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary · 확인">확인</button>
-      </footer>
-    </section>
-  </div>
+<section data-section="states" data-title="상태" data-desc="모달이 열리면 현재 작업에 집중할 수 있게 배경과 분리합니다.">
+  <div class="state-grid"><article class="state-card"><strong>열림 · 기본 확인</strong><div class="sample-stage"><div class="ds-modal-backdrop" data-label="modal backdrop"><section class="ds-modal ds-modal--sm" data-label="Modal · SM" role="dialog" aria-modal="true" aria-labelledby="modal-state-title"><header class="ds-modal__header" data-label="modal__header"><h2 class="ds-modal__title" id="modal-state-title" data-label="modal__title">저장할까요?</h2><button class="ds-modal__close" type="button" aria-label="닫기" data-label="modal__close"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body" data-label="modal__body">입력한 내용을 저장합니다.</div><footer class="ds-modal__footer" data-label="modal__footer"><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="btn btn outline secondary btn md">취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="btn btn primary btn md">확인</button></footer></section></div></div><p>명확한 제목·내용·결정 버튼을 제공합니다.</p></article><article class="state-card"><strong>본문 길이 증가</strong><div class="sample-stage"><div class="ds-modal-backdrop" data-label="modal backdrop"><section class="ds-modal ds-modal--md" data-label="Modal · MD" role="dialog" aria-modal="true" aria-labelledby="modal-long-title"><header class="ds-modal__header" data-label="modal__header"><h2 class="ds-modal__title" id="modal-long-title" data-label="modal__title">주문하기</h2><button class="ds-modal__close" type="button" aria-label="닫기" data-label="modal__close"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body" data-label="modal__body">주문 완료 후에는 수량과 옵션을 변경할 수 없습니다.</div><footer class="ds-modal__footer" data-label="modal__footer"><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="btn btn outline secondary btn md">취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="btn btn primary btn md">확인</button></footer></section></div></div><p>내용이 길어지는 흐름은 모달 유형을 다시 검토합니다.</p></article></div>
+</section>
+<section data-section="variants" data-title="변형" data-desc="정보량과 입력 맥락에 맞춰 Modal·BottomSheet·Full Screen을 선택합니다.">
+  <div class="state-grid"><article class="state-card"><strong>Modal</strong><p>짧은 알림·확인·선택과 제한된 정보를 다룹니다.</p></article><article class="state-card"><strong>BottomSheet</strong><p>모바일에서 입력이나 선택이 이어지는 작업에 사용합니다.</p></article><article class="state-card"><strong>Full Screen</strong><p>항목이 많아 시트에 담기 어려운 흐름을 별도 화면으로 분리합니다.</p></article></div>
+</section>
+<section data-section="sizes" data-title="크기" data-desc="SM·MD·LG·XL 너비를 유지하고 좁은 화면에서는 가용 폭에 맞춥니다.">
+  <div class="size-compare"><article class="size-card"><strong>PC · 모달 너비</strong><div class="sample-row"><span class="sample-cell"><span class="ds-modal ds-modal--sm" data-label="Modal · SM · 340px" role="group"><header class="ds-modal__header" data-label="modal__header"><h2 class="ds-modal__title" data-label="modal__title">SM</h2></header><div class="ds-modal__body" data-label="modal__body">짧은 안내</div></span><span class="measure">340px</span></span><span class="sample-cell"><span class="ds-modal ds-modal--md" data-label="Modal · MD · 480px" role="group"><header class="ds-modal__header" data-label="modal__header"><h2 class="ds-modal__title" data-label="modal__title">MD</h2></header><div class="ds-modal__body" data-label="modal__body">기본 확인</div></span><span class="measure">480px</span></span></div><div class="sample-row"><span class="sample-caption">LG 600px · XL 800px는 같은 너비 체계로 사용합니다.</span></div></article><article class="size-card"><strong>모바일 · 가용 폭</strong><div class="sample-stage"><div class="ds-modal-backdrop" data-label="modal backdrop"><section class="ds-modal ds-modal--md" data-label="Modal · MD" role="group"><header class="ds-modal__header" data-label="modal__header"><h2 class="ds-modal__title" data-label="modal__title">확인</h2><button class="ds-modal__close" type="button" aria-label="닫기" data-label="modal__close"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body" data-label="modal__body">기기 폭에 맞춰 표시</div></section></div></div><span class="measure">max-width:100% · 화면 여백 적용</span></article></div>
+</section>
+<section data-section="usage" data-title="사용 예" data-desc="주문 내용을 다시 확인하고 사용자의 명시적 결정을 받는 흐름입니다.">
+  <div class="usage-frame"><div class="sample-stage"><div class="ds-modal-backdrop" data-label="modal backdrop"><section class="ds-modal ds-modal--md" data-label="Modal · MD" role="dialog" aria-modal="true" aria-labelledby="order-modal-title"><header class="ds-modal__header" data-label="modal__header"><h2 class="ds-modal__title" id="order-modal-title" data-label="modal__title">주문하기</h2><button class="ds-modal__close" type="button" aria-label="닫기" data-label="modal__close"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body" data-label="modal__body">주문 완료 후에는 수량과 옵션을 변경할 수 없습니다.</div><footer class="ds-modal__footer" data-label="modal__footer"><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="btn btn outline secondary btn md">취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="btn btn primary btn md">확인</button></footer></section></div></div></div>
+</section>
+<section data-section="dos" data-title="이렇게 사용해요" data-desc="모달을 열기 전에 작업의 중요도와 필요한 사용자 결정을 확인합니다.">
+  <div class="do-grid"><article class="do-item good"><h3>권장 · 한 가지 결정에 집중</h3><div class="sample-row"><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="btn btn outline secondary btn md">취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="btn btn primary btn md">확인</button></div><p>제목은 목적을 말하고 버튼은 결과를 구체적으로 표시합니다.</p></article><article class="do-item bad"><h3>피하기 · 긴 입력 작업을 작은 확인 모달에 넣기</h3><div class="incorrect"><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">상세 내용을 모두 입력</span><textarea class="ds-textarea" rows="3" data-label="textarea"></textarea></label></div></article></div>
 </section>

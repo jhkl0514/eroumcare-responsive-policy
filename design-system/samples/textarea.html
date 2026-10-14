@@ -1,35 +1,26 @@
-<section data-sample="변형(variant) · 크기 > TextAreaField">
-  <label class="ds-field" data-label="Textarea · 기본">
-    <span class="ds-field__label" data-label="Field label">요청 사유</span>
-    <textarea class="ds-textarea" aria-describedby="reason-help" placeholder="요청 사유를 입력해 주세요." data-label="Textarea · Default"></textarea>
-    <span class="ds-field__hint" id="reason-help" data-label="Help message">최대 200자까지 입력할 수 있습니다.</span>
-    <span class="ds-textarea__count" data-label="Character count">0 / 200자</span>
-  </label>
+<section data-section="anatomy" data-title="구조" data-desc="긴 내용을 여러 줄로 입력하고, 필요한 안내와 입력량을 함께 제공합니다.">
+  <div class="anatomy-sample"><span class="anatomy-part" data-part="1"><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">요청 사유</span></label></span><span class="anatomy-part" data-part="2"><textarea class="ds-textarea" rows="3" placeholder="요청 사유를 입력해 주세요." aria-label="요청 사유" data-label="textarea"></textarea></span><span class="anatomy-part" data-part="3"><span class="ds-field__hint" data-label="field__hint"><img src="../icons/info.svg" width="16" height="16" alt="">최대 200자까지 입력할 수 있습니다.</span></span><span class="anatomy-part" data-part="4"><span class="ds-textarea__count" data-label="textarea__count">0 / 200자</span></span></div>
+  <ol class="parts"><li><span class="part-no">1</span><span><b>라벨</b><span>요청자가 작성할 내용의 목적을 안내합니다.</span></span></li><li><span class="part-no">2</span><span><b>여러 줄 입력 영역</b><span>문장이나 설명처럼 길이가 있는 내용을 입력합니다.</span></span></li><li><span class="part-no">3</span><span><b>도움말</b><span>작성 조건이나 제한을 알려줍니다.</span></span></li><li><span class="part-no">4</span><span><b>입력량</b><span>현재 입력량과 허용량을 보여줍니다.</span></span></li></ol>
 </section>
-<section data-sample="상태 > Focused">
-  <label class="ds-field" data-label="Textarea · Focused">
-    <span class="ds-field__label" data-label="Field label">메모</span>
-    <textarea class="ds-textarea" placeholder="전달할 내용을 입력해 주세요." data-label="Textarea · Focus by click"></textarea>
-  </label>
+<section data-section="states" data-title="상태" data-desc="기본·포커스·오류·비활성 상태를 확인합니다.">
+  <div class="state-grid">
+    <article class="state-card"><strong>Default</strong><textarea class="ds-textarea" rows="3" placeholder="내용을 입력해 주세요." data-label="Default"></textarea><p>입력할 수 있는 기본 상태입니다.</p></article>
+    <article class="state-card"><strong>Focused</strong><textarea class="ds-textarea" rows="3" autofocus placeholder="내용을 입력해 주세요." data-label="Focused"></textarea><p>입력 영역을 선택해 조작 중인 상태입니다.</p></article>
+    <article class="state-card"><strong>Error</strong><textarea class="ds-textarea ds-is-error" rows="3" aria-invalid="true" aria-describedby="memo-error" data-label="Error">요청 내용을 확인해 주세요.</textarea><span class="ds-field__error" id="memo-error" data-label="field__error"><img src="../icons/error.svg" width="16" height="16" alt="">요청 사유를 입력해 주세요.</span><p>테두리·아이콘·오류 문구로 확인을 돕습니다.</p></article>
+    <article class="state-card"><strong>Disabled</strong><textarea class="ds-textarea" rows="3" disabled data-label="Disabled">확인된 요청입니다.</textarea><p>수정할 수 없는 비활성 상태입니다.</p></article>
+    <article class="state-card"><strong>ReadOnly</strong><textarea class="ds-textarea ds-is-readonly" rows="3" readonly data-label="ReadOnly">담당자에게 전달할 메모입니다.</textarea><p>값을 읽을 수 있지만 편집할 수 없습니다.</p></article>
+    <article class="state-card"><strong>도움말과 글자 수</strong><textarea class="ds-textarea" rows="3" aria-describedby="memo-hint" placeholder="요청 사유를 입력해 주세요." data-label="Help"></textarea><span class="ds-field__hint" id="memo-hint" data-label="field__hint"><img src="../icons/info.svg" width="16" height="16" alt="">최대 200자까지 작성할 수 있습니다.</span><span class="ds-textarea__count" data-label="textarea__count">0 / 200자</span><p>입력 조건과 현재 입력량을 함께 확인합니다.</p></article>
+  </div>
 </section>
-<section data-sample="상태 > Error">
-  <label class="ds-field" data-label="Textarea · Error">
-    <span class="ds-field__label" data-label="Field label">요청 사유</span>
-    <textarea class="ds-textarea ds-is-error" aria-invalid="true" aria-describedby="reason-error" data-label="Textarea · Error"></textarea>
-    <span class="ds-field__error" id="reason-error" data-label="Error message">요청 사유를 입력해 주세요.</span>
-    <span class="ds-textarea__count" data-label="Character count">0 / 200자</span>
-  </label>
+<section data-section="variants" data-title="변형" data-desc="필수 여부, 오류 표현, 보조 안내를 입력 영역과 함께 조합합니다.">
+  <div class="state-grid"><article class="state-card"><strong>필수 입력</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">상세 사유 <span class="ds-field__required" aria-hidden="true" data-label="field__required">*</span></span><textarea class="ds-textarea" rows="3" required placeholder="상세 사유를 입력해 주세요." data-label="textarea"></textarea></label><p>필수 표식은 라벨 뒤의 빨간 *로 나타냅니다.</p></article><article class="state-card"><strong>안내가 있는 입력</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">메모</span><textarea class="ds-textarea" rows="3" placeholder="메모를 입력해 주세요." data-label="textarea"></textarea><span class="ds-field__hint" data-label="field__hint"><img src="../icons/info.svg" width="16" height="16" alt="">민감한 개인정보는 입력하지 마세요.</span><span class="ds-textarea__count" data-label="textarea__count">0 / 200자</span></label></article></div>
 </section>
-<section data-sample="상태 > 도움말">
-  <label class="ds-field" data-label="Textarea · Help">
-    <span class="ds-field__label" data-label="Field label">요청 사유</span>
-    <textarea class="ds-textarea" aria-describedby="reason-hint" placeholder="요청 사유를 입력해 주세요." data-label="Textarea · Help"></textarea>
-    <span class="ds-field__hint" id="reason-hint" data-label="Help message">최대 200자까지 입력할 수 있습니다.</span>
-  </label>
+<section data-section="sizes" data-title="크기" data-desc="본문은 지정된 한 가지 고정 높이가 아니라 내용과 화면 맥락에 맞춰 확보합니다.">
+  <div class="size-compare"><article class="size-card"><strong>PC · 내용 기반 높이</strong><textarea class="ds-textarea" rows="3" placeholder="요청 사유를 입력해 주세요." data-label="PC · 3줄 예시"></textarea><span class="measure">최소 높이 별도 확정 없음</span></article><article class="size-card"><strong>모바일 · 폭에 맞춘 줄바꿈</strong><textarea class="ds-textarea" rows="3" placeholder="요청 사유를 입력해 주세요." data-label="MO · 3줄 예시"></textarea><span class="measure">높이와 줄 수는 화면에서 결정</span></article></div>
 </section>
-<section data-sample="상태 > Disabled">
-  <label class="ds-field" data-label="Textarea · Disabled">
-    <span class="ds-field__label" data-label="Field label">메모</span>
-    <textarea class="ds-textarea" disabled data-label="Textarea · Disabled">확인된 내용입니다.</textarea>
-  </label>
+<section data-section="usage" data-title="사용 예" data-desc="회수 사유처럼 맥락이 필요한 장문 입력에 도움말과 글자 수를 둡니다.">
+  <div class="usage-frame"><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">회수 사유 <span class="ds-field__required" aria-hidden="true" data-label="field__required">*</span></span><textarea class="ds-textarea" rows="4" placeholder="회수 사유를 입력해 주세요." data-label="textarea"></textarea><span class="ds-field__hint" data-label="field__hint"><img src="../icons/info.svg" width="16" height="16" alt="">상세 내용은 최대 200자까지 작성할 수 있습니다.</span><span class="ds-textarea__count" data-label="textarea__count">0 / 200자</span></label></div>
+</section>
+<section data-section="dos" data-title="이렇게 사용해요" data-desc="긴 내용 입력에 적절한 작성 맥락과 제한을 제공합니다.">
+  <div class="do-grid"><article class="do-item good"><h3>권장 · 조건과 글자 수를 안내</h3><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">요청 사유</span><textarea class="ds-textarea" rows="3" placeholder="요청 사유를 입력해 주세요." data-label="textarea"></textarea><span class="ds-field__hint" data-label="field__hint"><img src="../icons/info.svg" width="16" height="16" alt="">최대 200자</span><span class="ds-textarea__count" data-label="textarea__count">0 / 200자</span></label></article><article class="do-item bad"><h3>피하기 · 입력 영역만 두고 조건을 생략</h3><textarea class="ds-textarea incorrect" rows="3" aria-label="메모" data-label="textarea incorrect"></textarea></article></div>
 </section>

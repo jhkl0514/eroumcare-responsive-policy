@@ -1,50 +1,31 @@
-<section data-sample="변형(variant) · 크기 > Textfield">
-  <label class="ds-field" data-label="Text input · PC · Inactive">
-    <span class="ds-field__label" data-label="Field label">상품명</span>
-    <input class="ds-input ds-is-inactive" type="text" placeholder="상품명을 입력해 주세요." data-label="Input · Inactive">
-  </label>
+<section data-section="anatomy" data-title="구조" data-desc="입력 필드는 목적을 설명하는 라벨, 값 입력 영역, 필요 시 보조 안내로 구성합니다.">
+  <div class="anatomy-sample"><label class="ds-field anatomy-part" data-part="1" data-label="field anatomy part"><span class="ds-field__label" data-label="field__label">수급자 이름</span></label><span class="anatomy-part" data-part="2"><input class="ds-input" type="text" value="홍길동" aria-label="수급자 이름" data-label="Text input · Default"></span><span class="anatomy-part" data-part="3"><span class="ds-field__hint" data-label="field__hint"><img src="../icons/info.svg" width="16" height="16" alt="">필요한 정보를 입력해 주세요.</span></span></div>
+  <ol class="parts"><li><span class="part-no">1</span><span><b>라벨</b><span>입력할 정보의 목적을 알려줍니다. 필수라면 뒤에 빨간 *를 둡니다.</span></span></li><li><span class="part-no">2</span><span><b>입력 영역</b><span>한 종류의 짧은 값을 입력하거나 확인합니다.</span></span></li><li><span class="part-no">3</span><span><b>도움말</b><span>입력 규칙을 정보 아이콘과 보조 문구로 안내합니다.</span></span></li></ol>
 </section>
-<section data-sample="변형(variant) · 크기 > Textfield">
-  <label class="ds-field" data-label="Text input · MO · Default">
-    <span class="ds-field__label" data-label="Field label">상품명</span>
-    <input class="ds-input" type="text" value="전동침대" data-label="Input · Default">
-  </label>
+<section data-section="states" data-title="상태" data-desc="입력값과 사용 가능 여부, 검증 결과를 시각적으로 구분합니다.">
+  <div class="state-grid">
+    <article class="state-card"><strong>Inactive · 빈 칸</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">상품명</span><input class="ds-input ds-is-inactive" placeholder="상품명을 입력해 주세요." data-label="Inactive"></label><p>값이 아직 입력되지 않은 상태입니다.</p></article>
+    <article class="state-card"><strong>Default · 입력 완료</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">수급자</span><input class="ds-input" value="홍길동" data-label="Default"></label><p>입력된 값을 표시합니다.</p></article>
+    <article class="state-card"><strong>Focused · 입력 중</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">검색어</span><input class="ds-input" autofocus placeholder="검색어를 입력해 주세요." data-label="Focused"></label><p>입력 영역을 선택해 조작 중인 상태입니다.</p></article>
+    <article class="state-card"><strong>Disabled · 비활성</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">주문번호</span><input class="ds-input" value="ORD-000123" disabled data-label="Disabled"></label><p>값과 글자를 흐리게 보여주며 수정할 수 없습니다.</p></article>
+    <article class="state-card"><strong>ReadOnly · 읽기 전용</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">우편번호</span><input class="ds-input ds-is-readonly" value="04524" readonly data-label="ReadOnly"></label><p>값은 읽을 수 있게 유지하고 수정은 막습니다.</p></article>
+    <article class="state-card"><strong>Error · 오류</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">연락처</span><input class="ds-input ds-is-error" value="010-1234" aria-invalid="true" aria-describedby="demo-phone-error" data-label="Error"><span class="ds-field__error" id="demo-phone-error" data-label="field__error"><img src="../icons/error.svg" width="16" height="16" alt="">연락처를 확인해 주세요.</span></label><p>오류 테두리와 아이콘·문구를 함께 표시합니다.</p></article>
+    <article class="state-card"><strong>도움말</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">연락처</span><input class="ds-input" placeholder="숫자만 입력해 주세요." aria-describedby="demo-phone-hint" data-label="Help"><span class="ds-field__hint" id="demo-phone-hint" data-label="field__hint"><img src="../icons/info.svg" width="16" height="16" alt="">숫자만 입력해 주세요.</span></label><p>도움말은 입력 상태와 독립적으로 표시합니다.</p></article>
+  </div>
 </section>
-<section data-sample="사용 규칙 > 필수 입력">
-  <label class="ds-field" data-label="Text input · Required">
-    <span class="ds-field__label" data-label="Field label">상품명 <span class="ds-field__required" aria-hidden="true" data-label="Required marker">*</span></span>
-    <input class="ds-input" type="text" required placeholder="상품명을 입력해 주세요." data-label="Input · Required">
-  </label>
+<section data-section="variants" data-title="변형" data-desc="기본 입력, 필수 입력, 값 지우기 버튼 조합을 확인합니다.">
+  <div class="state-grid">
+    <article class="state-card"><strong>선택 입력</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">상세 주소</span><input class="ds-input ds-is-inactive" placeholder="상세 주소를 입력해 주세요." data-label="Optional"></label><p>필수 표식은 추가하지 않습니다.</p></article>
+    <article class="state-card"><strong>필수 입력</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">연락처 <span class="ds-field__required" aria-hidden="true" data-label="field__required">*</span></span><input class="ds-input ds-is-inactive" required placeholder="연락처를 입력해 주세요." data-label="Required"></label><p>필수 표식은 라벨 뒤에 빨간 *로 표시합니다.</p></article>
+    <article class="state-card"><strong>지우기 액션</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">수급자 검색</span><span class="ds-input-wrap" data-label="input wrap"><input class="ds-input" value="홍길동" aria-label="수급자 검색" data-label="input"><button class="ds-input__clear" type="button" aria-label="입력 지우기" data-label="input__clear"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></span></label><p>입력값이 있을 때만 지우기 동작을 제공합니다.</p></article>
+  </div>
 </section>
-<section data-sample="상태 > Focused">
-  <label class="ds-field" data-label="Text input · Focused">
-    <span class="ds-field__label" data-label="Field label">검색어</span>
-    <input class="ds-input" type="search" placeholder="검색어를 입력해 주세요." data-label="Input · Focus by click">
-  </label>
+<section data-section="sizes" data-title="크기" data-desc="레이아웃 기준에 따라 PC와 모바일 입력 높이를 적용합니다.">
+  <div class="size-compare"><article class="size-card" data-device="pc"><strong>PC · 1025px 이상</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">수급자 이름</span><input class="ds-input" value="홍길동" data-label="PC · 40px"></label><span class="measure">높이 40px</span></article><article class="size-card" data-device="mobile"><strong>모바일 · 1024px 이하</strong><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">수급자 이름</span><input class="ds-input" value="홍길동" data-label="MO · 48px"></label><span class="measure">높이 48px</span></article></div>
 </section>
-<section data-sample="상태 > Disabled">
-  <label class="ds-field" data-label="Text input · Disabled">
-    <span class="ds-field__label" data-label="Field label">주문번호</span>
-    <input class="ds-input" type="text" value="주문번호" disabled data-label="Input · Disabled">
-  </label>
+<section data-section="usage" data-title="사용 예" data-desc="수급자 조회 폼처럼 라벨·입력·도움말을 한 필드 단위로 묶습니다.">
+  <div class="usage-frame"><strong>수급자 조회</strong><div class="sample-row"><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">요양인정번호 <span class="ds-field__required" aria-hidden="true" data-label="field__required">*</span></span><span class="ds-input-wrap" data-label="input wrap"><input class="ds-input ds-is-inactive" placeholder="인정번호를 입력해 주세요." required data-label="input is inactive"><button class="ds-input__clear" type="button" aria-label="입력 지우기" data-label="input__clear"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></span><span class="ds-field__hint" data-label="field__hint"><img src="../icons/info.svg" width="16" height="16" alt="">하이픈 없이 입력해 주세요.</span></label><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="조회">조회</button></div></div>
 </section>
-<section data-sample="상태 > ReadOnly">
-  <label class="ds-field" data-label="Text input · ReadOnly">
-    <span class="ds-field__label" data-label="Field label">우편번호</span>
-    <input class="ds-input ds-is-readonly" type="text" value="우편번호" readonly data-label="Input · ReadOnly">
-  </label>
-</section>
-<section data-sample="상태 > Error">
-  <label class="ds-field" data-label="Text input · Error">
-    <span class="ds-field__label" data-label="Field label">연락처</span>
-    <input class="ds-input ds-is-error" type="tel" aria-invalid="true" aria-describedby="phone-error" value="연락처를 확인해 주세요." data-label="Input · Error">
-    <span class="ds-field__error" id="phone-error" data-label="Error message">연락처를 확인해 주세요.</span>
-  </label>
-</section>
-<section data-sample="상태 > 도움말">
-  <label class="ds-field" data-label="Text input · Help">
-    <span class="ds-field__label" data-label="Field label">연락처</span>
-    <input class="ds-input" type="tel" aria-describedby="phone-hint" placeholder="연락처를 입력해 주세요." data-label="Input · Help">
-    <span class="ds-field__hint" id="phone-hint" data-label="Help message">숫자만 입력해 주세요.</span>
-  </label>
+<section data-section="dos" data-title="이렇게 사용해요" data-desc="필드의 목적·상태·설명을 가까이 배치해 이해를 돕습니다.">
+  <div class="do-grid"><article class="do-item good"><h3>권장 · 라벨과 도움말을 연결</h3><label class="ds-field" data-label="field"><span class="ds-field__label" data-label="field__label">연락처 <span class="ds-field__required" data-label="field__required">*</span></span><input class="ds-input ds-is-inactive" placeholder="연락처를 입력해 주세요." required data-label="input is inactive"><span class="ds-field__hint" data-label="field__hint"><img src="../icons/info.svg" width="16" height="16" alt="">숫자만 입력해 주세요.</span></label></article><article class="do-item bad"><h3>피하기 · placeholder만으로 목적 전달</h3><input class="ds-input incorrect" placeholder="이 정보를 입력" aria-label="입력" data-label="input incorrect"></article></div>
 </section>
