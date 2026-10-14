@@ -131,6 +131,10 @@
   line-height: var(--ds-font-body-ss-regular-line-height);
 }
 
+.ds-field__required {
+  color: var(--ds-color-text-danger-bold);
+}
+
 .ds-input,
 .ds-select__trigger {
   box-sizing: border-box;
@@ -282,6 +286,38 @@
 
 .ds-field__error {
   color: var(--ds-color-red-800);
+}
+
+.ds-field__hint,
+.ds-field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-4);
+}
+
+.ds-field__hint::before,
+.ds-field__error::before {
+  content: "";
+  flex: 0 0 var(--ds-icon-24);
+  inline-size: var(--ds-icon-24);
+  block-size: var(--ds-icon-24);
+  background-color: currentColor;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 18px 18px;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 18px 18px;
+}
+
+.ds-field__hint::before {
+  mask-image: url("../icons/info.svg");
+  -webkit-mask-image: url("../icons/info.svg");
+}
+
+.ds-field__error::before {
+  mask-image: url("../icons/error.svg");
+  -webkit-mask-image: url("../icons/error.svg");
 }
 
 .ds-textarea__count {

@@ -75,6 +75,7 @@ Figma의 오기 `Incative`는 표준 표기 `Inactive`로 정규화한다. 관�
 ## 7. 사용 규칙
 
 - 각 필드에는 입력 목적을 설명하는 label을 연결한다. placeholder는 형식 힌트이며 label을 대신하지 않는다.
+- 필수 입력은 라벨 바로 뒤에 빨간 `*`로 표시한다. 별표만으로 필수 여부를 전달하지 않도록 입력에도 `required` 또는 `aria-required="true"`를 지정한다.
 - 도움말은 입력 조건이 필요한 경우에만 표시한다. 오류는 테두리뿐 아니라 이유를 문장으로 함께 안내한다.
 - Disabled와 ReadOnly를 목적에 맞게 구분한다. 값이 조회만 가능하면 ReadOnly를 사용한다.
 - 값이 있고 필드가 편집 가능한 경우 지우기 동작을 제공할 수 있다. Disabled·ReadOnly·날짜·Select에는 지우기 버튼을 두지 않는다.
@@ -103,6 +104,7 @@ Figma의 오기 `Incative`는 표준 표기 `Inactive`로 정규화한다. 관�
 | 클래스·속성 | 용도 |
 |---|---|
 | `.ds-field`, `.ds-field__label` | 필드와 라벨 |
+| `.ds-field__required` | 필수 라벨 뒤의 빨간 별표 |
 | `.ds-input-wrap`, `.ds-input` | 입력과 지우기 버튼을 묶는 영역, 입력 필드 |
 | `.ds-input__clear` | 입력값 지우기 버튼 |
 | `.ds-field__hint`, `.ds-field__error` | 도움말·오류 문구 |
@@ -113,9 +115,9 @@ Figma의 오기 `Incative`는 표준 표기 `Inactive`로 정규화한다. 관�
 
 ```html
 <label class="ds-field">
-  <span class="ds-field__label">연락처</span>
+  <span class="ds-field__label">연락처 <span class="ds-field__required" aria-hidden="true">*</span></span>
   <span class="ds-input-wrap">
-    <input class="ds-input" type="tel" inputmode="tel" placeholder="연락처" aria-describedby="phone-hint">
+    <input class="ds-input" type="tel" inputmode="tel" placeholder="연락처" aria-describedby="phone-hint" required>
     <button class="ds-input__clear" type="button" aria-label="입력 지우기">
       <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
