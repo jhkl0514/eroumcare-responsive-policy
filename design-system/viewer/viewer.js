@@ -271,13 +271,39 @@
 
   function makeCardPreview(article) {
     const clone = article.cloneNode(true);
-    clone.querySelector("strong, h3")?.remove();
-    clone.querySelector("p")?.remove();
+    clone.querySelectorAll(":scope > strong, :scope > h3, :scope > p").forEach(el => el.remove());
     clone.querySelectorAll("[autofocus]").forEach(el => el.removeAttribute("autofocus"));
     clone.querySelectorAll("button,input,textarea,select").forEach(el => el.tabIndex = -1);
     clone.setAttribute("aria-hidden", "true");
     clone.setAttribute("inert", "");
-    return clone;
+    const shell = document.createElement("div");
+    shell.className = "preview-fit";
+    const content = document.createElement("div");
+    content.className = "preview-fit-content";
+    content.innerHTML = clone.innerHTML;
+    shell.append(content);
+    return shell;
+  }
+
+  function fitPreviews(root = document) {
+    requestAnimationFrame(() => $$(".preview-fit", root).forEach(shell => {
+      const content = $(".preview-fit-content", shell);
+      if (!content) return;
+      content.style.transform = "none";
+      content.style.width = content.style.getPropertyValue("--specimen-width") || "max-content";
+      const width = Math.max(content.scrollWidth, content.getBoundingClientRect().width);
+      const height = Math.max(content.scrollHeight, content.getBoundingClientRect().height);
+      const availableWidth = shell.clientWidth;
+      const availableHeight = shell.clientHeight;
+      if (!width || !height || !availableWidth || !availableHeight) return;
+      const scale = content.classList.contains("modal-size-specimen")
+        ? Math.min(1, availableWidth / 800, availableHeight / height)
+        : Math.min(1, availableWidth / width, availableHeight / height);
+      shell.style.setProperty("--preview-scale", String(scale));
+      shell.style.setProperty("--preview-content-width", `${width}px`);
+      shell.style.setProperty("--preview-content-height", `${height}px`);
+      content.style.transform = `scale(${scale})`;
+    }));
   }
 
   function detailGallery(item, key, data, customCards) {
@@ -287,35 +313,45 @@
     if (!originals.length) return `<div class="panel">${data.html}</div>`;
     const chosen = state.selectedDetails.get(`${item.file}:${key}`) ?? -1;
     const cards = originals.map((original, index) => {
-      const title = compactText($("strong, h3", original)) || `${data.title} ${index + 1}`;
-      const body = compactText($("p, .measure, .sample-caption", original));
-      return `<article class="gallery-card" role="button" tabindex="0" aria-pressed="${index === chosen}" data-card-index="${index}"><div class="gallery-preview">${makeCardPreview(original).innerHTML}</div><div class="gallery-meta"><strong>${esc(title)}</strong><span>${esc(body || "눌러서 상세 규격과 설명 보기")}</span></div></article>`;
+      const title = compactText($(":scope > strong, :scope > h3", original)) || `${data.title} ${index + 1}`;
+      const body = compactText($(":scope > p, :scope > .measure, :scope > .sample-caption", original));
+      return `<article class="gallery-card" role="button" tabindex="0" aria-pressed="${index === chosen}" data-card-index="${index}"><div class="gallery-preview">${makeCardPreview(original).outerHTML}</div><div class="gallery-meta"><strong>${esc(title)}</strong><span>${esc(body || "선택해 상세 보기")}</span></div></article>`;
     }).join("");
-    return `<div class="gallery-grid" data-gallery="${esc(key)}">${cards}</div><div class="gallery-detail-slot" aria-live="polite"></div>`;
+    return `<div class="gallery-grid gallery-count-${Math.min(4, originals.length)}" data-gallery="${esc(key)}" style="--gallery-columns:${Math.min(4, originals.length)}">${cards}</div><div class="gallery-detail-slot" aria-live="polite"></div>`;
   }
 
   function modalTypes(item, data) {
     const typeData = [
-      ["기본 안내형", "짧은 정보를 안내하고 닫기 동작을 제공합니다.", "안내", "요청 내용을 확인해 주세요.", "확인", ""],
-      ["버튼형", "사용자가 취소 또는 진행을 선택합니다.", "주문하기", "주문 완료 후에는 수량과 옵션을 변경할 수 없습니다.", "취소", "확인"],
-      ["정보 확인형", "다음 작업에 필요한 정보를 간결하게 보여줍니다.", "저장할까요?", "입력한 내용을 저장합니다.", "취소", "저장"]
+      ["기본 안내형", "짧은 안내와 확인 동작", "안내", "요청 내용을 확인해 주세요.", "", "확인"],
+      ["버튼형", "취소와 진행을 명확히 구분", "주문하기", "주문 완료 후에는 수량과 옵션을 변경할 수 없습니다.", "취소", "확인"],
+      ["정보 확인형", "저장 전 사용자의 결정을 확인", "저장할까요?", "입력한 내용을 저장합니다.", "취소", "저장"]
     ];
-    const cards = typeData.map(([title, desc, heading, body, secondary, primary]) => `<article class="state-card"><strong>${esc(title)}</strong><p>${esc(desc)}</p><div class="sample-stage"><div class="ds-modal-backdrop"><section class="ds-modal ds-modal--sm" role="group"><header class="ds-modal__header"><h3 class="ds-modal__title">${esc(heading)}</h3></header><div class="ds-modal__body">${esc(body)}</div><footer class="ds-modal__footer">${secondary ? `<button class="ds-btn ds-btn--outline-secondary ds-btn--md">${esc(secondary)}</button>` : ""}<button class="ds-btn ds-btn--primary ds-btn--md">${esc(primary)}</button></footer></section></div></div></article>`);
-    return `<div class="gallery-grid modal-type-grid">${cards.map((card, index) => `<article class="gallery-card" role="button" tabindex="0" aria-pressed="false" data-card-index="${index}"><div class="gallery-preview">${card}</div><div class="gallery-meta"><strong>${esc(typeData[index][0])}</strong><span>${esc(typeData[index][1])}</span></div></article>`).join("")}</div><div class="gallery-detail-slot" aria-live="polite"></div>`;
+    const cards = typeData.map(([title, desc, heading, body, secondary, primary], index) => {
+      const action = secondary ? `<button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button">${esc(secondary)}</button>` : "";
+      return `<article class="gallery-card modal-type-card" role="button" tabindex="0" aria-pressed="false" data-card-index="${index}"><div class="gallery-preview"><div class="preview-fit"><div class="preview-fit-content modal-type-specimen"><section class="ds-modal ds-modal--sm" role="group"><header class="ds-modal__header"><h3 class="ds-modal__title">${esc(heading)}</h3><button class="ds-modal__close" aria-label="닫기"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body">${esc(body)}</div><footer class="ds-modal__footer">${action}<button class="ds-btn ds-btn--primary ds-btn--md" type="button">${esc(primary)}</button></footer></section></div></div></div><div class="gallery-meta"><strong>${esc(title)}</strong><span>${esc(desc)}</span></div></article>`;
+    }).join("");
+    return `<div class="gallery-grid modal-type-grid" style="--gallery-columns:3">${cards}</div><div class="gallery-detail-slot" aria-live="polite"></div>`;
+  }
+
+  function modalStates() {
+    const examples = [
+      ["열림 · 기본 확인", "저장할까요?", "입력한 내용을 저장합니다.", "sm", "명확한 제목과 결정을 제공하는 상태"],
+      ["본문 길이 증가", "주문하기", "주문 완료 후에는 수량과 옵션을 변경할 수 없습니다.", "md", "본문이 늘어나도 액션 영역을 분리" ]
+    ];
+    const cards = examples.map(([title, heading, body, size, desc], index) => `<article class="gallery-card modal-state-card" role="button" tabindex="0" aria-pressed="false" data-card-index="${index}"><div class="gallery-preview"><div class="preview-fit"><div class="preview-fit-content modal-state-specimen"><section class="ds-modal ds-modal--${size}" role="group"><header class="ds-modal__header"><h3 class="ds-modal__title">${heading}</h3><button class="ds-modal__close" type="button" aria-label="닫기"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body">${body}</div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button">취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button">확인</button></footer></section></div></div></div><div class="gallery-meta"><strong>${title}</strong><span>${desc}</span></div></article>`).join("");
+    return `<div class="gallery-grid gallery-count-2 modal-state-grid" data-gallery="states" style="--gallery-columns:2">${cards}</div><div class="gallery-detail-slot" aria-live="polite"></div>`;
   }
 
   function modalSizes() {
     const widths = ["sm", "md", "lg", "xl"].map(size => state.tokens.find(token => token.token === `--ds-modal-width-${size}`)).filter(Boolean);
     const use = { sm: "간단한 알림·확인", md: "일반 안내·결정", lg: "표가 포함된 정보", xl: "넓은 표·문서 정보" };
-    const choices = widths.map(token => {
+    const cards = widths.map(token => {
       const size = token.name.split(" ").pop().toLowerCase();
-      return `<button class="ds-btn ds-btn--outline-secondary ds-btn--sm modal-size-trigger" type="button" data-modal-size="${size}" aria-pressed="${size === "md"}">${size.toUpperCase()} · ${esc(token.value)}</button>`;
+      const heading = size === "sm" ? "저장할까요?" : size === "md" ? "주문하기" : size === "lg" ? "대여 이력" : "주문 정보 확인";
+      const body = size === "lg" ? `<div class="modal-history-table"><div><b>상품</b><b>대여 기간</b><b>상태</b></div><div><span>전동침대 ST-3</span><span>2026.01–2026.10</span><span>이용 중</span></div><div><span>안전 손잡이</span><span>2026.02–2026.10</span><span>이용 중</span></div></div>` : size === "sm" ? "입력한 내용을 저장합니다." : "주문 완료 후에는 수량과 옵션을 변경할 수 없습니다.";
+      return `<article class="modal-size-card"><div class="modal-size-preview"><div class="preview-fit"><div class="preview-fit-content modal-size-specimen" style="--specimen-width:${esc(token.value)}"><section class="ds-modal ds-modal--${size}" role="group"><header class="ds-modal__header"><h3 class="ds-modal__title">${heading}</h3><button class="ds-modal__close" type="button" aria-label="닫기"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body">${body}</div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button">취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button">확인</button></footer></section></div></div></div><div class="modal-size-meta"><strong>${size.toUpperCase()} · ${esc(token.value)}</strong><span>${use[size]}</span><button class="ds-btn ds-btn--outline-secondary ds-btn--sm modal-open" type="button">열기</button></div><div class="modal-demo-backdrop" style="--specimen-width:${esc(token.value)}" hidden><section class="ds-modal ds-modal--${size}" role="dialog" aria-modal="true" aria-labelledby="size-modal-title-${size}"><header class="ds-modal__header"><h3 class="ds-modal__title" id="size-modal-title-${size}">${heading}</h3><button class="ds-modal__close modal-close" type="button" aria-label="닫기"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body">${body}</div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--outline-secondary ds-btn--md modal-close" type="button">취소</button><button class="ds-btn ds-btn--primary ds-btn--md modal-close" type="button">확인</button></footer></section></div></article>`;
     }).join("");
-    const uses = widths.map(token => {
-      const size = token.name.split(" ").pop().toLowerCase();
-      return `<p><strong>${size.toUpperCase()} · ${esc(token.value)}</strong><span>${use[size]}</span></p>`;
-    }).join("");
-    return `<div class="modal-size-controls" role="group" aria-label="모달 크기 선택">${choices}</div><p class="section-note">크기를 선택한 뒤 열어 실제 모달을 확인합니다. 좁은 화면에서는 좌우 여백을 남기고 줄어듭니다. (정책 3-3)</p><div class="modal-demo-stage" data-current-size="md"><button class="ds-btn ds-btn--primary ds-btn--md modal-open" type="button">모달 열기</button><div class="modal-demo-backdrop" hidden><section class="ds-modal ds-modal--md" role="dialog" aria-modal="true" aria-labelledby="size-modal-title"><header class="ds-modal__header"><h3 class="ds-modal__title" id="size-modal-title">주문 정보를 확인해 주세요.</h3><button class="ds-modal__close modal-close" type="button" aria-label="닫기"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body">요청하신 내용을 확인한 뒤 다음 단계로 진행해 주세요.</div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--outline-secondary ds-btn--md modal-close" type="button">취소</button><button class="ds-btn ds-btn--primary ds-btn--md modal-close" type="button">확인</button></footer></section></div></div><div class="modal-size-uses">${uses}</div>`;
+    return `<p class="section-note">네 가지 모달을 같은 비율로 비교하고 각 크기를 실제 폭으로 열어봅니다. (정책 3-3)</p><div class="modal-size-grid" style="--gallery-columns:${Math.min(4, widths.length)}">${cards}</div>`;
   }
 
   function responsiveRule(title) {
@@ -328,7 +364,26 @@
       "Status Chip": ["상태칩은 PC·모바일 같은 크기", "도메인 상태를 대표 정보 가까이에 배치 (정책 3-0, 3-9, 5장)"]
     };
     const [pc, mobile] = rules[title] || ["화면 폭에 맞춰 재배치", "모바일에서도 조작성을 유지"];
-    return '<div class="responsive-rule"><h3>PC / 모바일</h3><div class="responsive-rule-grid"><article><strong>PC · 1025px 이상</strong><span>' + esc(pc) + '</span><div class="responsive-mock responsive-mock-pc"><i></i><i></i><i></i></div></article><article><strong>모바일 · 1024px 이하</strong><span>' + esc(mobile) + '</span><div class="responsive-mock responsive-mock-mobile"><i></i><i></i><i></i></div></article></div></div>';
+    if (title === "Modal") {
+      return `<div class="responsive-rule"><h3>PC / 모바일</h3><div class="responsive-rule-grid"><article><strong>PC · 가운데 모달</strong><span>${withPolicyLinks(pc)}</span><div class="device-frame desktop-frame"><div class="device-toolbar"><i></i><i></i><i></i></div><div class="device-app-content"><span></span><span></span><span></span><span></span></div><div class="device-overlay"><section class="ds-modal ds-modal--sm"><header class="ds-modal__header"><h4 class="ds-modal__title">주문하기</h4><button class="ds-modal__close" aria-label="닫기"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body">주문 내용을 확인해 주세요.</div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--outline-secondary ds-btn--md">취소</button><button class="ds-btn ds-btn--primary ds-btn--md">확인</button></footer></section></div></div></article><article><strong>모바일 · 바텀시트</strong><span>${withPolicyLinks(mobile)}</span><div class="device-frame phone-frame"><div class="phone-speaker"></div><div class="phone-app-content"><span></span><span></span><span></span><span></span></div><div class="phone-overlay"><section class="ds-modal ds-modal--sm"><div class="sheet-handle"></div><header class="ds-modal__header"><h4 class="ds-modal__title">정보 확인</h4><button class="ds-modal__close" aria-label="닫기"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body">입력 내용을 확인해 주세요.</div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--primary ds-btn--md">확인</button></footer></section></div></div></article></div></div>`;
+    }
+    const visual = responsiveComponentMock(title);
+    return `<div class="responsive-rule"><h3>PC / 모바일</h3><div class="responsive-rule-grid"><article><strong>PC · 1025px 이상</strong><span>${withPolicyLinks(pc)}</span><div class="device-frame responsive-device desktop-frame"><div class="device-toolbar"><i></i><i></i><i></i></div><div class="device-content">${visual}</div></div></article><article><strong>모바일 · 1024px 이하</strong><span>${withPolicyLinks(mobile)}</span><div class="device-frame responsive-device phone-frame"><div class="phone-speaker"></div><div class="device-content">${visual}</div></div></article></div></div>`;
+  }
+
+  function withPolicyLinks(text) {
+    return esc(text).replace(/정책\s*(3-\d+)/g, (_, clause) => `<a class="policy-ref" href="../../index.html#${clause}" target="_blank" rel="noopener">정책 ${clause}</a>`);
+  }
+
+  function responsiveComponentMock(title) {
+    const html = {
+      Button: '<div class="sample-row"><button class="ds-btn ds-btn--outline-secondary ds-btn--sm">취소</button><button class="ds-btn ds-btn--primary ds-btn--sm">검색</button></div>',
+      "Text input": '<label class="ds-field"><span class="ds-field__label">수급자 이름</span><input class="ds-input" placeholder="이름을 입력해 주세요."></label>',
+      Textarea: '<label class="ds-field"><span class="ds-field__label">회수 사유</span><textarea class="ds-textarea" rows="2" placeholder="사유를 입력해 주세요."></textarea><span class="ds-textarea__count">0 / 200자</span></label>',
+      Select: '<label class="ds-field"><span class="ds-field__label">주문 상태</span><span class="ds-select"><button class="ds-select__trigger">전체</button></span></label>',
+      "Status Chip": '<div class="sample-row"><span class="ds-chip ds-chip--purchase-received">주문접수</span><span class="ds-chip ds-chip--rental-shipping-preparing">출고준비중</span></div>'
+    };
+    return html[title] || "";
   }
 
   function usageExamples(title) {
@@ -337,11 +392,16 @@
       "Text input": [["수급자 조회 폼","필수 표시와 입력 규칙을 함께 제공합니다.",'<div class="ds-field"><label class="ds-field__label" for="usage-recipient-id">요양인정번호 <span class="ds-field__required">*</span></label><div class="field-control-row"><input class="ds-input" id="usage-recipient-id" placeholder="인정번호 입력" required><button class="ds-btn ds-btn--primary ds-btn--sm" type="button">조회</button></div><span class="ds-field__hint">하이픈 없이 입력해 주세요.</span></div>'],["주문 목록 검색","검색 입력은 실행 버튼을 유지하고 X를 두지 않습니다. (정책 3-2)",'<div class="ds-field"><label class="ds-field__label" for="usage-order-search">검색어</label><div class="field-control-row"><input class="ds-input" id="usage-order-search" type="search" placeholder="수급자명, 주문번호 검색"><button class="ds-btn ds-btn--primary ds-btn--sm" type="button">검색</button></div></div>'],["배송 상세 주소","값이 있는 편집 입력은 지우기 동작을 제공합니다.",'<label class="ds-field"><span class="ds-field__label">상세 주소</span><input class="ds-input" value="가상로 10"></label>']],
       Textarea: [["회수 사유","긴 내용을 입력하고 글자 수를 확인합니다.",'<label class="ds-field"><span class="ds-field__label">회수 사유</span><textarea class="ds-textarea" rows="3" maxlength="200"></textarea><span class="ds-field__hint">상세 사유를 입력해 주세요.</span><span class="ds-textarea__count">0 / 200자</span></label>'],["주문 메모","내부 전달사항을 여러 줄로 작성합니다.",'<label class="ds-field"><span class="ds-field__label">주문 메모</span><textarea class="ds-textarea" rows="3" maxlength="200"></textarea><span class="ds-textarea__count">0 / 200자</span></label>'],["배송 요청사항","오류 이유를 입력 영역과 연결합니다.",'<label class="ds-field"><span class="ds-field__label">요청사항</span><textarea class="ds-textarea ds-is-error" rows="3" aria-invalid="true" maxlength="200"></textarea><span class="ds-field__error">요청사항을 확인해 주세요.</span><span class="ds-textarea__count">0 / 200자</span></label>']],
       Select: [["주문 목록 검색","진행 상태처럼 정해진 조건을 선택합니다.",'<div class="ds-field"><label class="ds-field__label" for="usage-order-status">주문 진행상태</label><div class="field-control-row"><span class="ds-select"><button class="ds-select__trigger" id="usage-order-status" type="button">전체</button></span><button class="ds-btn ds-btn--primary ds-btn--sm" type="button">검색</button></div></div>'],["품목 필터","상품군 목록에서 한 항목을 고릅니다.",'<label class="ds-field"><span class="ds-field__label">품목</span><span class="ds-select"><button class="ds-select__trigger">전체 품목</button></span></label>'],["회수 신청 폼","선택지가 길면 모바일 옵션 시트 흐름을 사용합니다. (정책 3-3)",'<label class="ds-field"><span class="ds-field__label">회수 사유</span><span class="ds-select"><button class="ds-select__trigger">사유 선택</button></span></label>']],
-      Modal: [["주문하기 확인","변경이 제한되는 점과 다음 동작을 확인합니다.","<p>주문 완료 후 수량과 옵션은 변경할 수 없습니다.</p>"],["주문 불가 안내","짧은 안내 뒤 확인 동작을 제공합니다.","<p>선택한 상품은 현재 주문할 수 없습니다.</p>"],["대여 이력 조회","표가 포함되면 넓은 크기를 선택합니다.","<p>대여 이력은 필요한 경우 가로로 이동해 확인합니다.</p>"]],
+      Modal: [["주문하기 확인","주문 완료 후 변경할 수 없는 항목을 안내합니다.",modalUsage("주문하기","주문 완료 후 수량과 옵션을 변경할 수 없습니다.","취소","확인","md")],["주문 불가 안내","불가 사유를 짧게 전달하고 확인을 받습니다.",modalUsage("주문할 수 없습니다","선택한 상품은 현재 주문할 수 없습니다.","","확인","sm")],["대여 이력 조회","정보 표가 포함된 이력은 넓은 모달로 보여줍니다.",modalUsage("대여 이력","","취소","확인","lg",true)]],
       "Status Chip": [["주문 목록","대여 도메인의 대표 상태를 표시합니다.",'<span class="ds-chip ds-chip--rental-shipping-preparing">출고준비중</span>'],["회수 관리","회수 흐름의 진행 상태를 표시합니다.",'<span class="ds-chip ds-chip--collection-requested">회수요청</span>'],["반품·A/S 목록","화면 도메인에 맞는 칩을 선택합니다.",'<span class="ds-chip ds-chip--service-in-progress">A/S진행중</span>']]
     };
-    const cards = (examples[title] || []).map(([name, desc, body]) => '<article class="usage-example"><h3>' + esc(name) + '</h3><p>' + esc(desc) + '</p><div class="sample-row">' + body + '</div></article>').join("");
+    const cards = (examples[title] || []).map(([name, desc, body]) => '<article class="usage-example"><h3>' + esc(name) + '</h3><p>' + esc(desc) + '</p><div class="usage-specimen">' + body + '</div></article>').join("");
     return '<div class="usage-examples-grid">' + cards + responsiveRule(title) + '</div>';
+  }
+
+  function modalUsage(title, body, secondary, primary, size, table = false) {
+    const content = table ? '<div class="modal-history-table"><div><b>상품</b><b>대여 기간</b><b>상태</b></div><div><span>전동침대 ST-3</span><span>2026.01–2026.10</span><span>이용 중</span></div></div>' : esc(body);
+    return `<div class="modal-usage-screen"><div class="preview-fit"><div class="preview-fit-content"><section class="ds-modal ds-modal--${size}" role="group"><header class="ds-modal__header"><h3 class="ds-modal__title">${esc(title)}</h3><button class="ds-modal__close" aria-label="닫기"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M7 7 25 25M25 7 7 25" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="ds-modal__body">${content}</div><footer class="ds-modal__footer">${secondary ? `<button class="ds-btn ds-btn--outline-secondary ds-btn--md">${esc(secondary)}</button>` : ""}<button class="ds-btn ds-btn--primary ds-btn--md">${esc(primary)}</button></footer></section></div></div></div>`;
   }
 
   function principlePairs(title) {
@@ -353,7 +413,19 @@
       Modal: [["한 가지 결정에 집중","안내·확인과 핵심 액션을 담습니다.","긴 입력 폼을 작은 모달에","모바일 입력은 바텀시트입니다. (정책 3-3)"],["내용량에 맞는 크기","네 가지 너비와 용도를 선택합니다.","요소 개수로만 결정","표 포함 여부와 정보 밀도를 봅니다. (정책 3-3)"],["액션 위계 구분","취소와 진행 결과를 다르게 표현합니다.","두 액션을 같은 강조로","주요 동작을 구분합니다."],["오버레이 하나만","새 팝업을 열 때 이전 것을 닫습니다.","모달 중첩","예외적 짧은 입력 외에는 중첩하지 않습니다. (정책 3-3)"]],
       "Status Chip": [["도메인별 칩 사용","주문·대여·회수·A/S·반품을 구분합니다.","같은 이름 임의 재사용","도메인 상태 흐름을 보존합니다. (정책 5장)"],["텍스트와 색 함께","색은 상태 의미를 보조합니다.","색상만으로 전달","읽을 수 있는 라벨을 유지합니다."],["대표 상태 우선","대상 정보 가까이에 상태 하나를 둡니다.","상태를 무작정 나열","한 대상의 현재 상태를 강조합니다."],["기기별 크기 유지","상태칩은 화면 폭으로 바꾸지 않습니다.","임의 축소","표 배지 예외만 적용합니다. (정책 3-0, 3-9)"]]
     };
-    const pairs = (items[title] || []).map(([goodTitle, good, badTitle, bad]) => '<div class="principle-pair"><article class="do-item good"><h3>' + esc(goodTitle) + '</h3><p>' + esc(good) + '</p><small>✓ 권장</small></article><article class="do-item bad"><h3>' + esc(badTitle) + '</h3><p>' + esc(bad) + '</p><small>✕ 주의</small></article></div>').join("");
+    const visualSample = (good) => {
+      const incorrect = good === false;
+      const samples = {
+        Button: incorrect ? '<div class="sample-row"><button class="ds-btn ds-btn--primary ds-btn--sm">취소</button><button class="ds-btn ds-btn--primary ds-btn--sm">닫기</button></div>' : '<div class="sample-row"><button class="ds-btn ds-btn--outline-secondary ds-btn--sm">취소</button><button class="ds-btn ds-btn--primary ds-btn--sm">확인</button></div>',
+        "Text input": incorrect ? '<input class="ds-input" placeholder="010-1234-5678" aria-label="이름 대신 placeholder만 사용">' : '<label class="ds-field"><span class="ds-field__label">휴대폰 번호</span><input class="ds-input" placeholder="번호를 입력해 주세요."></label>',
+        Textarea: incorrect ? '<textarea class="ds-textarea" rows="2" placeholder="내용"></textarea>' : '<label class="ds-field"><span class="ds-field__label">회수 사유</span><textarea class="ds-textarea" rows="2" placeholder="사유를 입력해 주세요."></textarea><span class="ds-field__hint">최대 200자까지 입력할 수 있습니다.</span><span class="ds-textarea__count">0 / 200자</span></label>',
+        Select: incorrect ? '<div class="bad-select-copy">전체, 전동침대, 휠체어, 실외경사로</div>' : '<label class="ds-field"><span class="ds-field__label">품목</span><span class="ds-select"><button class="ds-select__trigger">전체 품목</button></span></label>',
+        Modal: incorrect ? '<div class="nested-modal-demo"><span>주문하기</span><div>두 번째 모달</div></div>' : modalUsage("저장할까요?","입력한 내용을 저장합니다.","취소","확인","sm"),
+        "Status Chip": incorrect ? '<span class="chip-color-only" aria-label="상태를 색상만으로 표시"></span>' : '<div class="sample-row"><span class="ds-chip ds-chip--collection-requested">회수요청</span><span class="ds-chip ds-chip--rental-shipping-preparing">출고준비중</span></div>'
+      };
+      return `<div class="principle-visual ${incorrect ? "incorrect" : ""}">${samples[title] || ""}</div>`;
+    };
+    const pairs = (items[title] || []).map(([goodTitle, good, badTitle, bad]) => '<div class="principle-pair"><article class="do-item good"><h3>' + esc(goodTitle) + '</h3>' + visualSample(true) + '<p>' + withPolicyLinks(good) + '</p><small>✓ 권장</small></article><article class="do-item bad"><h3>' + esc(badTitle) + '</h3>' + visualSample(false) + '<p>' + withPolicyLinks(bad) + '</p><small>✕ 주의</small></article></div>').join("");
     return '<div class="principle-pairs">' + pairs + '</div>';
   }
 
@@ -364,7 +436,7 @@
     if (byType.has("anatomy")) content.push(buildStructure(item, byType.get("anatomy")));
     if (byType.has("variants")) content.push(componentSection("types", "타입", byType.get("variants").description, item.title === "Modal" ? modalTypes(item, byType.get("variants")) : detailGallery(item, "variants", byType.get("variants"))));
     if (byType.has("sizes")) content.push(componentSection("sizes", "크기", byType.get("sizes").description, item.title === "Modal" ? modalSizes() : detailGallery(item, "sizes", byType.get("sizes"))));
-    if (byType.has("states")) content.push(componentSection("states", "상태", byType.get("states").description, detailGallery(item, "states", byType.get("states"))));
+    if (byType.has("states")) content.push(componentSection("states", "상태", byType.get("states").description, item.title === "Modal" ? modalStates() : detailGallery(item, "states", byType.get("states"))));
     if (byType.has("usage")) content.push(componentSection("usage", "사용 예", byType.get("usage").description, usageExamples(item.title)));
     if (byType.has("dos")) {
       content.push(componentSection("usage-principles", "사용 원칙", byType.get("dos").description, principlePairs(item.title)));
@@ -424,7 +496,8 @@
           wrap.append(textarea);
         }
         let clear = $(".viewer-textarea-clear", wrap);
-        if (!clear) {
+        const canClear = !textarea.disabled && !textarea.readOnly && !textarea.classList.contains("ds-is-readonly");
+        if (canClear && !clear) {
           clear = document.createElement("button");
           clear.type = "button";
           clear.className = "viewer-textarea-clear";
@@ -432,14 +505,14 @@
           clear.innerHTML = '<svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
           wrap.append(clear);
         }
-        const countNode = textarea.parentElement.querySelector(".ds-textarea__count") || textarea.closest(".ds-field")?.querySelector(".ds-textarea__count");
+        const countNode = textarea.parentElement.querySelector(".ds-textarea__count") || textarea.closest(".ds-field")?.querySelector(".ds-textarea__count") || wrap.parentElement.querySelector(".ds-textarea__count");
         const max = Number(textarea.maxLength > 0 ? textarea.maxLength : 200);
         textarea.maxLength = max;
         const count = countNode || Object.assign(document.createElement("span"), { className: "ds-textarea__count" });
         if (!countNode) textarea.after(count);
-        const sync = () => { clear.hidden = !textarea.value; count.textContent = `${textarea.value.length} / ${max}자`; };
+        const sync = () => { if (clear) clear.hidden = !textarea.value || !canClear; count.textContent = `${textarea.value.length} / ${max}자`; };
         textarea.addEventListener("input", sync);
-        clear.addEventListener("click", () => { textarea.value = ""; sync(); textarea.focus(); });
+        if (clear) clear.addEventListener("click", () => { textarea.value = ""; sync(); textarea.focus(); });
         sync();
       });
     }
@@ -483,15 +556,17 @@
       }
       const modalOpen = event.target.closest(".modal-open");
       if (modalOpen) {
-        const stage = modalOpen.closest(".modal-demo-stage");
-        $(".modal-demo-backdrop", stage).hidden = false;
-        $(".modal-close", stage)?.focus();
+        const stage = modalOpen.closest(".modal-size-card, .modal-demo-stage");
+        const backdrop = $(".modal-demo-backdrop", stage);
+        backdrop.hidden = false;
+        $(".modal-close", backdrop)?.focus();
         return;
       }
       const modalClose = event.target.closest(".modal-close");
       if (modalClose) {
-        modalClose.closest(".modal-demo-backdrop").hidden = true;
-        $(".modal-open", modalClose.closest(".modal-demo-stage"))?.focus();
+        const backdrop = modalClose.closest(".modal-demo-backdrop");
+        backdrop.hidden = true;
+        $(".modal-open", backdrop.closest(".modal-size-card, .modal-demo-stage"))?.focus();
         return;
       }
       const trigger = event.target.closest(".ds-select__trigger");
@@ -553,6 +628,7 @@
         const page = buildComponentPage(item, ordered);
         $("#page-description").textContent = page.description;
         $("#design-content").innerHTML = page.design;
+        fitPreviews($("#design-content"));
         $("#development-content").innerHTML = developerView(page.tokens, page.classes, page.code);
         enhanceFunctionalSamples(item);
       } catch (error) {
@@ -630,7 +706,8 @@
           if (original) {
             const title = compactText($("strong, h3", original)) || `예시 ${index + 1}`;
             const summary = compactText($("p", original) || $(".measure", original)) || "상태와 시각적 규격을 확인합니다.";
-            slot.innerHTML = `<div class="detail-panel"><div class="detail-panel-head"><div><h3>${esc(title)}</h3><p>${esc(summary)}</p></div><button class="measure-toggle" type="button" aria-pressed="false">치수 보기</button></div><div class="detail-specimen">${makeCardPreview(original).innerHTML}</div><div class="dimension-readout"><span>내부 여백</span><span>요소 높이</span><span>요소 간격</span></div></div>`;
+          slot.innerHTML = `<div class="detail-panel"><div class="detail-panel-head"><div><h3>${esc(title)}</h3><p>${esc(summary)}</p></div><button class="measure-toggle" type="button" aria-pressed="false">치수 보기</button></div><div class="detail-specimen">${makeCardPreview(original).outerHTML}</div><div class="dimension-readout"><span>내부 여백</span><span>요소 높이</span><span>요소 간격</span></div></div>`;
+            fitPreviews(slot);
           }
         }
         slot.scrollIntoView({ behavior: "smooth", block: "nearest" });
