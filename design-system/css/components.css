@@ -131,6 +131,10 @@
   line-height: var(--ds-font-body-ss-regular-line-height);
 }
 
+.ds-field__required {
+  color: var(--ds-color-text-danger-bold);
+}
+
 .ds-input,
 .ds-select__trigger {
   box-sizing: border-box;

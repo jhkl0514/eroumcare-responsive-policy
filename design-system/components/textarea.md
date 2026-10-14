@@ -60,6 +60,7 @@ Textarea 글자 크기 `16px`, 줄 높이 `24px`, 모서리 `4px`는 공통이�
 
 - 사유·메모처럼 여러 줄이 필요한 입력에만 사용한다.
 - 입력 label을 연결하고 placeholder가 label을 대신하지 않게 한다.
+- 필수 입력은 라벨 바로 뒤에 빨간 `*`로 표시한다. 별표만으로 필수 여부를 전달하지 않도록 입력에도 `required` 또는 `aria-required="true"`를 지정한다.
 - 내용이 영역보다 길면 컴포넌트 크기를 무한히 키우지 않고 내부 스크롤을 허용한다.
 - 글자 수 제한이 있으면 최대치와 현재 입력량을 함께 표시한다.
 - 오류는 테두리뿐 아니라 원인을 설명하는 문장으로 전달한다.
@@ -96,8 +97,8 @@ Textarea 글자 크기 `16px`, 줄 높이 `24px`, 모서리 `4px`는 공통이�
 
 ```html
 <label class="ds-field">
-  <span class="ds-field__label">요청 사유</span>
-  <textarea class="ds-textarea" aria-describedby="reason-help" placeholder="요청 사유를 입력해 주세요."></textarea>
+  <span class="ds-field__label">요청 사유 <span class="ds-field__required" aria-hidden="true">*</span></span>
+  <textarea class="ds-textarea" aria-describedby="reason-help" placeholder="요청 사유를 입력해 주세요." required></textarea>
   <span class="ds-field__hint" id="reason-help">최대 200자까지 입력할 수 있습니다.</span>
   <span class="ds-textarea__count" aria-live="polite">0 / 200자</span>
 </label>
