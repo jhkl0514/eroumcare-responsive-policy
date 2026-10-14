@@ -98,7 +98,7 @@
 | 칩 | 선택칩 `Option Chips_Line`(모서리 4) | XL 44·18px / SM 32·14px | 같음 | 그대로 |
 | 탭 | `Tab` | Underline 56 / Outlined 48 / Round 40 | 같음 | 그대로 — 모양(Type)별로 고름 |
 
-**입력칸 상태와 표시**(Disabled·ReadOnly·도움말·에러) — 테두리·배경은 3-2 상태 표, 글자·아이콘 표현까지 상세는 [`text-input.md`](design-system/components/text-input.md)(긴 글은 [`textarea.md`](design-system/components/textarea.md)). 필수 입력은 라벨 뒤 빨간 `*`
+**입력칸 상태와 표시**(Disabled·ReadOnly·도움말·에러) — 테두리·배경은 3-2 상태 표, 글자·아이콘 표현까지 상세는 [`text-input.md`](design-system/components/text-input.md)(긴 글은 [`textarea.md`](design-system/components/textarea.md)). 필수 `*` 표시도 [`text-input.md`](design-system/components/text-input.md)
 
 - 근거: DS `64Q1Re56aiAA8Al89pqjnV` — Textfield `7837:8282`, SelectField `53:698`, SelectOption `6570:11270`, chips `7723:6790`, Tab `7988:12496`, checkbox·Radio·Toggle 컴포넌트
 
@@ -982,6 +982,10 @@ DS "모바일 정의"의 모바일 간격 규칙. 3-1·3-2·카드 목록을 담
 ---
 
 ## 부록. 변경 이력 (본문은 현재 규칙만 — 결정 경위는 여기)
+
+### DS 아이콘·필수 표시 반영 (2026-10-14)
+- ds-docs 병합(`design-system/icons/error.svg`·`info.svg`, `.ds-field__required`) 확인. 3-0에 임시로 다시 적었던 '필수 입력은 라벨 뒤 빨간 `*`'를 text-input.md 링크로 정리(스킬 같이)
+- 제안 페이지 DS-U1: 오류 문구 `.ds-field__error`에 DS CSS가 에러 아이콘을 자동으로 붙임(`::before` + `mask-image`) — 마크업 변경 없음. 필수 별표를 파일 안 스타일 대신 DS `.ds-field__required`로
 
 ### 디자인 시스템 UX 제안 DS-U1·U2 (2026-10-14)
 - `prototypes/ds-proposals.html` 신설 — DS 확정이 아닌 제안(페이지·제안마다 '제안 · 미확정'). DS-U1 그룹 오류 표시: 필수 라디오·체크박스 그룹을 비우고 저장하면 그룹 아래 `.ds-field__error` 문구, 첫 오류 그룹으로 이동, 고르면 즉시 사라짐, 항목 테두리는 그대로. DS-U2 부분 선택: 일부 선택 시 머리 체크박스에 흰 가로선, 없음→전체→해제 / 일부→전체

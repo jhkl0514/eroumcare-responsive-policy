@@ -34,7 +34,7 @@ body{margin:0;background:var(--ds-color-bg-tertiary);color:var(--ds-color-text-p
 /* 입력 폼 배치(3-2): 라벨 125 고정 + 콘텐츠 flex:1 0 0 · 최소 280 → 409에서 줄바꿈 */
 .dsp-row{display:flex;flex-wrap:wrap;gap:var(--ds-space-4);padding:var(--ds-space-12) 0;border-bottom:1px solid var(--ds-color-border-secondary);scroll-margin-top:var(--ds-space-16);}
 .dsp-label{flex:0 0 125px;font-weight:600;padding-top:var(--ds-space-2);}
-.dsp-req{color:var(--ds-color-red-600);margin-left:var(--ds-space-2);}
+.dsp-label .ds-field__required{margin-left:var(--ds-space-2);}
 .dsp-content{flex:1 0 0;min-width:280px;display:flex;flex-direction:column;gap:var(--ds-space-8);}
 .dsp-group{display:flex;flex-wrap:wrap;gap:var(--ds-space-8) var(--ds-space-16);margin:0;padding:0;border:0;}
 .dsp-group.v{flex-direction:column;gap:var(--ds-space-8);}
@@ -89,7 +89,7 @@ body{margin:0;background:var(--ds-color-bg-tertiary);color:var(--ds-color-text-p
 <!-- DS-U1 -->
 <section class="dsp-card" id="ds-u1" aria-labelledby="u1-title">
   <h2 id="u1-title">DS-U1 그룹 오류 표시 (체크박스·라디오) <span class="dsp-tag">제안 · 미확정</span></h2>
-  <p>필수 선택 그룹을 비운 채 저장하면 그룹 아래에 DS 입력칸 오류와 같은 문구(<code>.ds-field__error</code>)를 띄웁니다. 항목 테두리는 바꾸지 않습니다.</p>
+  <p>필수 선택 그룹을 비운 채 저장하면 그룹 아래에 DS 입력칸 오류와 같은 문구(<code>.ds-field__error</code> — 에러 아이콘은 DS CSS가 붙임)를 띄웁니다. 항목 테두리는 바꾸지 않습니다.</p>
   <div class="dsp-cols">
     <div class="dsp-col">
       <h3>현행 — 오류 표시 없음</h3>
@@ -145,10 +145,10 @@ function opt(type, name, value, label, attrs){
 document.querySelectorAll('.u1-form').forEach(function(form){
   var m = form.dataset.mode, p = m + '-';
   form.innerHTML =
-    '<div class="dsp-row" data-group="reason"><div class="dsp-label" id="'+p+'reason-l">취소 사유<span class="dsp-req" aria-hidden="true">*</span></div>'+
+    '<div class="dsp-row" data-group="reason"><div class="dsp-label" id="'+p+'reason-l">취소 사유<span class="ds-field__required" aria-hidden="true">*</span></div>'+
       '<div class="dsp-content"><div class="dsp-group" role="radiogroup" aria-required="true" aria-labelledby="'+p+'reason-l">'+
       REASONS.map(function(r, i){ return opt('radio', p+'reason', i, r); }).join('')+'</div></div></div>'+
-    '<div class="dsp-row" data-group="items"><div class="dsp-label" id="'+p+'items-l">변경할 상품<span class="dsp-req" aria-hidden="true">*</span></div>'+
+    '<div class="dsp-row" data-group="items"><div class="dsp-label" id="'+p+'items-l">변경할 상품<span class="ds-field__required" aria-hidden="true">*</span></div>'+
       '<div class="dsp-content"><div class="dsp-group v" role="group" aria-labelledby="'+p+'items-l">'+
       PRODUCTS.slice(0, 3).map(function(x, i){ return opt('checkbox', p+'items', i, x[0]); }).join('')+'</div></div></div>'+
     '<div class="dsp-actions"><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="reset">초기화</button><button class="ds-btn ds-btn--primary ds-btn--md" type="submit">저장</button></div>'+
