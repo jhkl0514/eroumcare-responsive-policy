@@ -170,6 +170,17 @@ DS 라이브러리에서 공통 굵기 토큰을 확인하지 못해 프레임�
 | `--ds-icon-30` | `30px` | 중대형 아이콘 | 같은 노드 |
 | `--ds-icon-36` | `36px` | 큰 조작 아이콘 | 같은 노드 |
 
+### 아이콘 파일과 사용
+
+오류·도움말 아이콘 원본은 `design-system/icons/`에 SVG로 둔다. 파일 색은 `currentColor`를 사용하므로 적용 위치의 CSS `color`를 따른다.
+
+| 파일 | DS 출처 | 적용 방식 |
+|---|---|---|
+| `icons/error.svg` | DS `icon/x-circle` 노드 [53:260](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=53-260) | `.ds-field__error`의 CSS mask로 표시하며 오류 텍스트와 같은 색을 사용 |
+| `icons/info.svg` | DS `icon_default` 노드 [6185:1733](https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6185-1733) | `.ds-field__hint`의 CSS mask로 표시하며 도움말 텍스트와 같은 색을 사용 |
+
+필드 도움말과 오류에는 각각 `.ds-field__hint`, `.ds-field__error`를 사용하면 `components.css`가 아이콘을 자동으로 붙인다. 독립적으로 사용할 때는 SVG를 복제하거나 색을 고정하지 말고, 해당 파일을 CSS mask로 참조해 컨텍스트의 `color`를 상속시킨다.
+
 <a id="layout"></a>
 ## 6. 브레이크포인트
 
