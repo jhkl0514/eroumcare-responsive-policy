@@ -821,6 +821,8 @@ DS "모바일 정의"의 모바일 간격 규칙. 3-1·3-2·카드 목록을 담
 
 **디자인 시스템**(허브 메뉴 맨 위 '디자인 시스템 열기' → 새 탭)
 
+- DS 뷰어는 `design-system/viewer/` (Codex 담당)
+
 | 파일 | 조항 | 내용 |
 |---|---|---|
 | `ds-viewer.html?item=…` (단독 페이지, 새 탭) | 3-0 외 | 왼쪽 메뉴 = `design-system/nav.json`(그룹 접기, todo는 '준비 중'), 가운데 = `nav.json`의 `sample`(`design-system/samples/*.html`)을 DS CSS와 함께 그린 견본(묶음 제목·[코드] 복사·`data-label`과 클래스 표시, 폭 1024/360), 오른쪽 = '설명문서' 패널(.md 렌더링·목차·Figma 링크 'DS 라이브러리 / 프레임워크', 기본 닫힘·열림 기억·폭 조절, 1024 이하 서랍). 견본 묶음 제목을 누르면 같은 제목의 절로 이동. 예전 `?p=button`·허브 `#ds-viewer.html?p=…` 링크도 열림 |

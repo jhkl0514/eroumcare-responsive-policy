@@ -480,7 +480,7 @@ var CATEGORY_LABEL = {
 ------------------------------------------------------------------- */
 var PROTOS = [
   // --- 디자인 시스템 — 단독 페이지(새 탭). 메뉴·견본·설명문서는 design-system/nav.json·samples·*.md를 뷰어가 직접 읽음 ---
-  { id:"ds-viewer.html", title:"디자인 시스템 열기", category:"design-system", external:true,
+  { id:"ds-viewer.html", title:"디자인 시스템 열기", category:"design-system", external:true, href:"design-system/viewer/",
     desc:"새 탭 · nav.json 메뉴 + 견본 + 설명문서",
     primary:"s30", related:["s1","s5"] },
   { id:"ds-proposals.html", title:"제안(미확정) — DS-U1·U2", category:"design-system",
@@ -807,7 +807,7 @@ if(!/Mac|iPhone|iPad/.test(navigator.platform)) document.getElementById('searchK
 
 function selectProto(id, fromRoute){
   var ext = PROTOS.find(function(x){ return x.id === id && x.external; });
-  if(ext){ window.open('prototypes/'+id, '_blank', 'noopener'); return; }   /* 디자인 시스템 뷰어는 단독 페이지로 */
+  if(ext){ window.open(ext.href || 'prototypes/'+id, '_blank', 'noopener'); return; }   /* 디자인 시스템 뷰어는 단독 페이지로 */
   if(!fromRoute && location.hash.slice(1) !== protoSlug(id)) history.pushState(null, '', '#' + protoSlug(id));
   state.activeId = id;
   var p = PROTOS.find(function(x){ return x.id === id; });
