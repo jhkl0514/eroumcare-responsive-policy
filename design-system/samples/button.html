@@ -1,18 +1,36 @@
-<section data-sample="버튼 종류 > Filled · Primary">
-  <button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary · MD · 기본">주문하기</button>
-  <button class="ds-btn ds-btn--primary ds-btn--md" type="button" disabled data-label="Primary · MD · Disabled">주문하기</button>
+<section data-section="anatomy" data-title="구조" data-desc="버튼은 동작을 나타내는 라벨과 선택형 아이콘으로 구성합니다.">
+  <div class="anatomy-sample">
+    <span class="anatomy-part" data-part="1"><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary · MD · 기본">주문하기</button></span>
+    <span class="anatomy-part" data-part="2"><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="아이콘 포함 · MD"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>확인</button></span>
+  </div>
+  <ol class="parts"><li><span class="part-no">1</span><span><b>라벨</b><span>실행할 동작을 짧고 구체적으로 전달합니다.</span></span></li><li><span class="part-no">2</span><span><b>선택형 아이콘</b><span>동작 이해를 돕는 경우에만 라벨 앞이나 뒤에 둡니다.</span></span></li></ol>
 </section>
-<section data-sample="버튼 종류 > Filled · Secondary">
-  <button class="ds-btn ds-btn--secondary ds-btn--md" type="button" data-label="Secondary · MD · 기본">취소</button>
-  <button class="ds-btn ds-btn--tertiary ds-btn--sm" type="button" data-label="Tertiary · SM · 기본">초기화</button>
+<section data-section="variants" data-title="버튼 종류" data-desc="동작의 우선순위와 맥락에 맞춰 채움형 또는 외곽선형을 선택합니다.">
+  <div class="state-grid">
+    <article class="state-card"><strong>Primary · 가장 중요한 동작</strong><div class="sample-row"><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary · MD">주문하기</button></div><p>한 화면에서 가장 강조할 동작에 사용합니다.</p></article>
+    <article class="state-card"><strong>Secondary · 보조 동작</strong><div class="sample-row"><button class="ds-btn ds-btn--secondary ds-btn--md" type="button" data-label="Secondary · MD">취소</button></div><p>주요 동작을 보완하거나 나란히 둘 때 사용합니다.</p></article>
+    <article class="state-card"><strong>Tertiary · 낮은 우선순위</strong><div class="sample-row"><button class="ds-btn ds-btn--tertiary ds-btn--sm" type="button" data-label="Tertiary · SM">초기화</button></div><p>주요 흐름을 방해하지 않는 보조 액션입니다.</p></article>
+    <article class="state-card"><strong>Outline · 경계가 필요한 보조 동작</strong><div class="sample-row"><button class="ds-btn ds-btn--outline ds-btn--md" type="button" data-label="Outline · MD">상세 보기</button><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="Outline Secondary · MD">취소</button></div><p>배경과 분리하거나 보조 동작을 표현합니다.</p></article>
+  </div>
 </section>
-<section data-sample="버튼 종류 > Outline">
-  <button class="ds-btn ds-btn--outline ds-btn--md" type="button" data-label="Outline · MD · 기본">상세 보기</button>
-  <button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="Outline Secondary · MD · 기본">취소</button>
+<section data-section="states" data-title="상태" data-desc="정의된 hover·active, disabled와 키보드 포커스를 구분합니다.">
+  <div class="state-grid">
+    <article class="state-card"><strong>기본</strong><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary · Default">저장</button><p>사용할 수 있는 기본 상태입니다.</p></article>
+    <article class="state-card"><strong>Hover / Active</strong><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary · Hover:Active">저장</button><p>포인터를 올리거나 눌러 실제 반응을 확인합니다.</p></article>
+    <article class="state-card"><strong>Disabled</strong><button class="ds-btn ds-btn--primary ds-btn--md" type="button" disabled data-label="Primary · Disabled">저장</button><p>현재 맥락에서 실행할 수 없는 동작입니다.</p></article>
+    <article class="state-card"><strong>Focus</strong><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="키보드 포커스 · Tab으로 이동">검색</button><p>Tab 키로 이동해 보이는 포커스를 확인합니다.</p></article>
+  </div>
 </section>
-<section data-sample="상태 > Hover:Active">
-  <button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary · MD · Hover:Active">저장</button>
+<section data-section="sizes" data-title="크기" data-desc="크기별 고정 높이를 기준으로 콘텐츠에 맞춰 너비가 결정됩니다.">
+  <div class="size-compare">
+    <article class="size-card"><strong>PC · 일반 버튼</strong><div class="sample-row"><span class="sample-cell"><button class="ds-btn ds-btn--primary ds-btn--sm" type="button" data-label="SM · 36px">검색</button><span class="measure">높이 36px</span></span><span class="sample-cell"><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="MD · 48px">확인</button><span class="measure">높이 48px</span></span></div></article>
+    <article class="size-card"><strong>모바일 · 하단 액션</strong><div class="sample-row"><span class="sample-cell"><button class="ds-btn ds-btn--primary ds-btn--lg" type="button" data-label="LG · 54px">주문하기</button><span class="measure">높이 54px</span></span><span class="sample-cell"><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="MD · 48px">확인</button><span class="measure">높이 48px</span></span></div></article>
+  </div>
 </section>
-<section data-sample="상태 > Focus">
-  <button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary · MD · Focus">검색</button>
+<section data-section="usage" data-title="사용 예" data-desc="한 화면 안에서 주요 동작과 보조 동작의 위계를 유지합니다.">
+  <div class="usage-frame"><div class="usage-toolbar"><div><strong>주문 상세보기</strong><div class="sample-caption">대여 주문 내용을 확인합니다.</div></div><div class="sample-row"><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="Secondary · 취소">주문취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary · 주문">주문하기</button></div></div></div>
+  <div class="usage-frame"><strong>모달 하단 액션</strong><div class="sample-row"><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="취소">취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="확인">확인</button></div></div>
+</section>
+<section data-section="dos" data-title="이렇게 사용해요" data-desc="시각적 우선순위와 동작 의미를 일치시킵니다.">
+  <div class="do-grid"><article class="do-item good"><h3>권장 · 주요 동작 하나를 강조</h3><div class="sample-row"><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary">저장</button><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-label="Secondary">취소</button></div></article><article class="do-item bad"><h3>피하기 · 동급의 Primary 나열</h3><div class="sample-row incorrect"><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary">취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button" data-label="Primary">닫기</button></div></article></div>
 </section>
