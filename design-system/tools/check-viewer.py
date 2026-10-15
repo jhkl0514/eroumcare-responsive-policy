@@ -5,7 +5,7 @@ import re, sys, pathlib, html, subprocess, time, socket
 
 DS = pathlib.Path(__file__).resolve().parent.parent          # design-system/
 VIEWER = DS / 'viewer'
-SKIP = {'index.html'}                                         # 옛 뷰어
+SKIP = {'index.html', 'item.html'}                            # 주소 연결 · 정리 전 문서 틀
 pages = [VIEWER / p for p in sys.argv[1:]] or sorted(p for p in VIEWER.glob('*.html') if p.name not in SKIP)
 
 def section(src, start, end):

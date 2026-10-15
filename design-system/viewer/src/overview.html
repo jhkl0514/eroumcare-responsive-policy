@@ -1,0 +1,137 @@
+<!--@title-->디자인 시스템 개요<!--/@title-->
+<!--@crumb-->개요<!--/@crumb-->
+<!--@lead-->이로움케어 화면을 만들 때 함께 쓰는 기준입니다. 값은 DS Figma에서 읽고, 쓰임은 정책 허브를 따릅니다. 디자이너는 디자인 탭을, 개발자와 AI는 개발 탭을 봅니다.<!--/@lead-->
+<!--@meta-->
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=36-11730" target="_blank" rel="noopener">Figma · DS 라이브러리 ↗</a>
+        <a href="https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=1-2" target="_blank" rel="noopener">Figma · 프레임워크 ↗</a>
+        <span id="ov-count">문서 현황</span>
+<!--/@meta-->
+<!--@design-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="map">문서 현황</h2>
+          <p class="doc-p">항목을 누르면 문서가 열립니다. 정리 전 문서와 준비 중 항목은 차례로 새 형식으로 만듭니다.</p>
+          <div class="ov-legend">
+            <span><i class="ov-dot ov-dot--new"></i>새 문서</span>
+            <span><i class="ov-dot ov-dot--old"></i>정리 전 문서</span>
+            <span><i class="ov-dot ov-dot--todo"></i>준비 중</span>
+          </div>
+          <div id="ov-map" class="ov-map"></div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="source">기준이 되는 곳</h2>
+          <div class="ov-flow">
+            <div class="ov-flow__step"><p class="ov-flow__k">값</p><p class="ov-flow__t">DS Figma 라이브러리</p><p class="ov-flow__d">색 · 글자 · 크기 · 상태. 변수와 컴포넌트에서 직접 읽습니다.</p></div>
+            <div class="ov-flow__step"><p class="ov-flow__k">구조와 쓰임</p><p class="ov-flow__t">프레임워크 Figma</p><p class="ov-flow__d">어떤 자리에 무엇을 쓰는지, 화면 구성 방식.</p></div>
+            <div class="ov-flow__step"><p class="ov-flow__k">충돌하면</p><p class="ov-flow__t">정책 허브</p><p class="ov-flow__d">셋이 다르면 정책을 따르고, 다른 점은 문서에 적습니다. <a class="doc-policy" href="../../index.html" target="_blank" rel="noopener">정책 허브</a></p></div>
+          </div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="basis">프로젝트 기준</h2>
+          <p class="doc-p">모든 화면에 공통으로 쓰는 값입니다. 자세한 내용은 각 문서에 있습니다.</p>
+          <table class="doc-table">
+            <thead><tr><th>항목</th><th>기준</th></tr></thead>
+            <tbody>
+              <tr><td>PC · 모바일 구분</td><td>1025px 이상 PC, 1024px 이하 모바일. 최소 화면 360 <a class="doc-policy" href="../../index.html#3-0" target="_blank" rel="noopener">3-0</a></td></tr>
+              <tr><td>입력칸 · 셀렉트</td><td>PC 40 · 글자 14, 모바일 48 · 글자 16. 옵션 행 PC 36, 모바일 44 <a class="doc-policy" href="../../index.html#3-2" target="_blank" rel="noopener">3-2</a></td></tr>
+              <tr><td>버튼</td><td>SM 36 · MD 48 · LG 54. 크기는 화면 폭이 아니라 자리로 고릅니다. 입력칸 옆 버튼만 PC 36, 모바일 48 <a class="doc-policy" href="../../index.html#3-4" target="_blank" rel="noopener">3-4</a></td></tr>
+              <tr><td>모달</td><td>폭 340 · 480 · 600 · 800, 화면이 좁으면 좌우 20을 남기고 줄어듭니다 <a class="doc-policy" href="../../index.html#3-3" target="_blank" rel="noopener">3-3</a></td></tr>
+              <tr><td>모바일 카드 목록</td><td>카드 사이 12, 모서리 8, 약한 그림자 <a class="doc-policy" href="../../index.html#3-9" target="_blank" rel="noopener">3-9</a></td></tr>
+              <tr><td>글꼴</td><td>SUIT 하나. 크기 단계에 없는 크기는 만들지 않습니다</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="read">문서 읽는 법</h2>
+          <table class="doc-table">
+            <thead><tr><th>섹션</th><th>담는 것</th></tr></thead>
+            <tbody>
+              <tr><td>개요</td><td>무엇이고 언제 쓰는지, 직접 눌러 보는 예시</td></tr>
+              <tr><td>구조</td><td>구성 요소에 번호를 붙여 이름을 설명</td></tr>
+              <tr><td>상태</td><td>기본 · 입력 중 · 오류 · 비활성 등 모든 상태를 PC · 모바일로</td></tr>
+              <tr><td>크기와 간격</td><td>화면에서 잰 치수</td></tr>
+              <tr><td>사용 예</td><td>실제 업무 화면에서 쓰는 모습</td></tr>
+              <tr><td>사용 원칙</td><td>이렇게 / 이렇게 하지 않기 비교와 정책 근거</td></tr>
+            </tbody>
+          </table>
+        </section>
+<!--/@design-->
+<!--@dev-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-start">시작하기</h2>
+          <p class="doc-p">화면에 아래 네 파일을 넣으면 DS 클래스와 동작(지우기, 셀렉트, 글자 수, 모달)이 붙습니다.</p>
+          <div class="doc-code"><pre>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css"&gt;
+&lt;link rel="stylesheet" href="design-system/css/tokens.css"&gt;
+&lt;link rel="stylesheet" href="design-system/css/typography.css"&gt;
+&lt;link rel="stylesheet" href="design-system/css/components.css"&gt;
+&lt;script defer src="design-system/js/ds.js"&gt;&lt;/script&gt;</pre></div>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-files">파일 구조</h2>
+          <table class="doc-table">
+            <thead><tr><th>위치</th><th>내용</th></tr></thead>
+            <tbody>
+              <tr><td><code>css/tokens.css</code></td><td>색 · 간격 · 모서리 · 그림자 · 글자 변수. <code>tools/build-tokens.js</code>가 만듦(손으로 고치지 않음)</td></tr>
+              <tr><td><code>css/typography.css</code></td><td>텍스트 스타일 클래스 <code>.ds-text-*</code></td></tr>
+              <tr><td><code>css/components.css</code></td><td>컴포넌트 클래스 <code>.ds-*</code></td></tr>
+              <tr><td><code>js/ds.js</code></td><td>컴포넌트 동작</td></tr>
+              <tr><td><code>icons/</code></td><td>아이콘 SVG 75개 + <code>icons.js</code></td></tr>
+              <tr><td><code>tokens/figma-variables.json</code></td><td>Figma 변수 원본</td></tr>
+              <tr><td><code>viewer/src/</code></td><td>문서 페이지 원본. <code>tools/build-viewer.py</code>로 조립</td></tr>
+              <tr><td><code>AGENTS.md</code></td><td>문서 페이지를 만드는 순서 · 규칙 · 보고 양식</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <div class="doc-code"><pre>[이로움케어 DS — 공통]
+- 1024px 이하 모바일, 1025px 이상 PC. 최소 360
+- 색 · 간격은 tokens.css 변수만 사용. 값을 직접 쓰지 않음
+- 컴포넌트는 .ds-* 클래스 + ds.js. 새 스타일을 만들기 전에 이 문서의 컴포넌트를 먼저 찾을 것
+- 정책 허브(CLAUDE.md 3장)가 DS 문서와 다르면 정책을 따름</pre></div>
+        </section>
+<!--/@dev-->
+<!--@after-->
+<style>
+.ov-legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0 0 16px; color: var(--doc-text-2); font-size: 14px; }
+.ov-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.ov-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+.ov-dot--new { background: var(--doc-accent); }
+.ov-dot--old { background: #f5a623; }
+.ov-dot--todo { background: #cfcfd4; }
+.ov-map { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.ov-group { padding: 16px; border: 1px solid var(--doc-line); border-radius: 12px; }
+.ov-group__head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 0 0 8px; }
+.ov-group__head strong { font-size: 15px; }
+.ov-group__head span { color: var(--doc-text-3); font-size: 13px; }
+.ov-group ul { margin: 0; padding: 0; list-style: none; }
+.ov-group a { display: flex; align-items: center; gap: 8px; padding: 6px 0; color: var(--doc-text); font-size: 14px; line-height: 20px; text-decoration: none; }
+.ov-group a:hover span { text-decoration: underline; }
+.ov-group a.is-todo { color: var(--doc-text-3); }
+.ov-flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 16px 0 0; }
+.ov-flow__step { padding: 20px; border: 1px solid var(--doc-line); border-radius: 12px; }
+.ov-flow__k { margin: 0 0 4px; color: var(--doc-text-3); font-size: 13px; font-weight: 700; }
+.ov-flow__t { margin: 0 0 8px; font-size: 17px; font-weight: 700; }
+.ov-flow__d { margin: 0; color: var(--doc-text-2); font-size: 14px; line-height: 22px; }
+@media (max-width: 720px) { .ov-flow { grid-template-columns: minmax(0, 1fr); } }
+</style>
+<!--/@after-->
+<!--@script-->
+  var PAGES = (window.DOC && DOC.pages) || {};
+  fetch('../nav.json').then(function (r) { return r.json(); }).then(function (nav) {
+    var n = { new: 0, old: 0, todo: 0 };
+    document.getElementById('ov-map').innerHTML = nav.filter(function (g) { return g.group !== '개요'; }).map(function (g) {
+      var done = 0;
+      var items = g.items.map(function (it) {
+        var kind = PAGES[it.title] ? 'new' : (it.status === 'todo' ? 'todo' : 'old');
+        n[kind]++; if (kind === 'new') done++;
+        var href = PAGES[it.title] || ('item.html?item=' + encodeURIComponent(it.title));
+        return '<li><a href="' + href + '"' + (kind === 'todo' ? ' class="is-todo"' : '') + '><i class="ov-dot ov-dot--' + kind + '"></i><span>' + it.title + '</span></a></li>';
+      }).join('');
+      return '<div class="ov-group"><p class="ov-group__head"><strong>' + g.group + '</strong><span>' + done + ' / ' + g.items.length + '</span></p><ul>' + items + '</ul></div>';
+    }).join('');
+    document.getElementById('ov-count').textContent = '새 문서 ' + n.new + ' · 정리 전 ' + n.old + ' · 준비 중 ' + n.todo;
+  });
+<!--/@script-->

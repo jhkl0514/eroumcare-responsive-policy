@@ -19,7 +19,7 @@ SHELL = '''<!doctype html>
 <body data-page="{title}">
 <header class="doc-header">
   <button class="doc-menu-btn" id="doc-menu-btn" type="button" aria-label="메뉴" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-  <a class="doc-brand" href="index.html?item=%EB%94%94%EC%9E%90%EC%9D%B8%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%EA%B0%9C%EC%9A%94"><strong>이로움케어</strong><span>디자인 시스템</span></a>
+  <a class="doc-brand" href="overview.html"><strong>이로움케어</strong><span>디자인 시스템</span></a>
   <span class="doc-header__spacer"></span>
   <a class="doc-hub-link" href="../../index.html">← 정책 허브</a>
 </header>
