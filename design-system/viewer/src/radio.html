@@ -1,0 +1,183 @@
+<!--@title-->Radio<!--/@title-->
+<!--@crumb-->Components · Select<!--/@crumb-->
+<!--@lead-->여러 항목 중 하나만 고를 때 씁니다. 하나를 고르면 다른 하나는 자동으로 풀립니다.<!--/@lead-->
+<!--@meta-->
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=52-46" target="_blank" rel="noopener">Figma · Radio ↗</a>
+        <a href="../../index.html#3-7" target="_blank" rel="noopener">정책 3-7 검색 영역 ↗</a>
+        <span>20×20 · PC·모바일 같은 크기</span>
+<!--/@meta-->
+<!--@design-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="overview">개요</h2>
+          <p class="doc-p">대여 주문요청 관리의 품목 필터입니다. 다른 항목을 누르면 앞의 선택이 풀립니다. 방향키로도 옮겨 다닐 수 있습니다.</p>
+          <div class="doc-play">
+            <div class="doc-play__stage">
+              <div class="ds-preview-pc" id="play-wrap" style="max-width:520px">
+                <div class="ds-choice-group" id="play-group" role="radiogroup" aria-label="품목">
+                  <label class="ds-radio"><input class="ds-radio__input" type="radio" name="play-item" value="all" checked><span class="ds-radio__label">전체</span></label>
+                  <label class="ds-radio"><input class="ds-radio__input" type="radio" name="play-item" value="bed"><span class="ds-radio__label">전동침대</span></label>
+                  <label class="ds-radio"><input class="ds-radio__input" type="radio" name="play-item" value="wheelchair"><span class="ds-radio__label">수동휠체어</span></label>
+                  <label class="ds-radio"><input class="ds-radio__input" type="radio" name="play-item" value="ramp"><span class="ds-radio__label">경사로</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="doc-play__controls">
+              <div class="doc-ctl"><span class="doc-ctl__name">화면</span>
+                <div class="doc-seg" id="seg-device"><button type="button" data-value="pc" aria-pressed="true">PC</button><button type="button" data-value="mo" aria-pressed="false">모바일</button></div>
+              </div>
+              <div class="doc-ctl"><label class="doc-check"><input type="checkbox" id="opt-disabled"> 비활성</label></div>
+            </div>
+          </div>
+          <h3 class="doc-h3">언제 쓰나요</h3>
+          <ul class="doc-list">
+            <li>항목이 2~5개이고 하나만 고를 때 — 품목, 기간, 연락 방법</li>
+            <li>모바일 필터는 모두 하나만 고르므로 Radio입니다. <a class="doc-policy" href="../../index.html#3-7" target="_blank" rel="noopener">3-7</a></li>
+            <li>항목이 많으면 <a href="select.html">Select</a>, 여러 개를 고르면 <a href="checkbox.html">Checkbox</a>를 씁니다.</li>
+          </ul>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="anatomy">구조</h2>
+          <div class="doc-stage doc-stage--white">
+            <div class="doc-stage__inner doc-anat ds-preview-pc" style="padding:48px 40px 40px">
+              <div class="ds-choice-group" style="display:inline-flex" data-anat="3" data-anat-side="bottom" data-anat-x="0.85" data-anat-gap="28">
+                <label class="ds-radio"><input class="ds-radio__input" type="radio" name="an" checked tabindex="-1" data-anat="1" data-anat-side="top" data-anat-gap="28"><span class="ds-radio__label" data-anat="2" data-anat-side="top" data-anat-gap="28">전화</span></label>
+                <label class="ds-radio"><input class="ds-radio__input" type="radio" name="an" tabindex="-1"><span class="ds-radio__label">문자</span></label>
+              </div>
+            </div>
+          </div>
+          <ol class="doc-legend">
+            <li><b>1</b><span><strong>원</strong> — 20×20. 고르면 브랜드 색으로 채우고 가운데 흰 점 10.</span></li>
+            <li><b>2</b><span><strong>라벨</strong> — 14 / 줄높이 20. 라벨을 눌러도 선택됩니다.</span></li>
+            <li><b>3</b><span><strong>묶음</strong> — 같은 묶음에서는 하나만 선택됩니다.</span></li>
+          </ol>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="states">상태</h2>
+          <div class="doc-scroll">
+          <table class="doc-table">
+            <thead><tr><th>상태</th><th>선택 안 함</th><th>선택함</th></tr></thead>
+            <tbody>
+              <tr><td>기본<small>테두리 #616161 / 채움 #323DA3</small></td><td><label class="ds-radio"><input class="ds-radio__input" type="radio" tabindex="-1"><span class="ds-radio__label">전화</span></label></td><td><label class="ds-radio"><input class="ds-radio__input" type="radio" checked tabindex="-1"><span class="ds-radio__label">전화</span></label></td></tr>
+              <tr><td>눌림<small>테두리 #333 / 채움 #141E76</small></td><td><label class="ds-radio"><input class="ds-radio__input ds-is-pressed" type="radio" tabindex="-1"><span class="ds-radio__label">전화</span></label></td><td><label class="ds-radio"><input class="ds-radio__input ds-is-pressed" type="radio" checked tabindex="-1"><span class="ds-radio__label">전화</span></label></td></tr>
+              <tr><td>비활성<small>배경 #EEE · 테두리 · 점 · 글자 #BDBDBD</small></td><td><label class="ds-radio"><input class="ds-radio__input" type="radio" disabled><span class="ds-radio__label">전화</span></label></td><td><label class="ds-radio"><input class="ds-radio__input" type="radio" checked disabled><span class="ds-radio__label">전화</span></label></td></tr>
+            </tbody>
+          </table>
+          </div>
+          <p class="doc-note">비활성 + 선택의 가운데 점은 #BDBDBD입니다. 흰 점이 회색 바탕에서 보이지 않아 Checkbox 비활성 체크와 같은 색으로 맞췄습니다(2026-10-15, Figma도 수정).</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="size">크기와 간격</h2>
+          <p class="doc-p">Checkbox와 같습니다. 원은 PC·모바일 모두 20이고, 모바일은 줄 높이 44로 줄 전체를 누릅니다. <a class="doc-policy" href="../../index.html#3-0" target="_blank" rel="noopener">3-0</a></p>
+          <div class="doc-pair">
+            <div class="doc-stage doc-stage--white"><p class="doc-pair__label">PC</p>
+              <div class="doc-measure ds-preview-pc" style="padding:24px 8px 32px" data-dims='[
+                {"d":"x","a":".m1 .ds-radio__input","from":"left","to":"right","on":".m1 .ds-radio__input","at":"top","off":-12},
+                {"d":"x","a":".m1 .ds-radio__input","from":"right","b":".m1 .ds-radio__label","to":"left","on":".m1","at":"bottom","off":12,"below":true},
+                {"d":"x","a":".m1","from":"right","b":".m2","to":"left","on":".m1","at":"top","off":-12}]'>
+                <div class="ds-choice-group"><label class="ds-radio m1"><input class="ds-radio__input" type="radio" name="sz1" checked tabindex="-1"><span class="ds-radio__label">전화</span></label><label class="ds-radio m2"><input class="ds-radio__input" type="radio" name="sz1" tabindex="-1"><span class="ds-radio__label">문자</span></label></div>
+              </div></div>
+            <div class="doc-stage doc-stage--white"><p class="doc-pair__label">모바일 (1024 이하)</p>
+              <div class="doc-measure ds-preview-mo" style="padding:32px 8px 8px 48px" data-dims='[
+                {"d":"y","a":".m3","from":"top","to":"bottom","on":".m3","at":"left","off":-16,"labelLeft":true,"area":true},
+                {"d":"x","a":".m3","from":"right","b":".m4","to":"left","on":".m3","at":"top","off":-8}]'>
+                <div class="ds-choice-group"><label class="ds-radio m3"><input class="ds-radio__input" type="radio" name="sz2" checked tabindex="-1"><span class="ds-radio__label">전화</span></label><label class="ds-radio m4"><input class="ds-radio__input" type="radio" name="sz2" tabindex="-1"><span class="ds-radio__label">문자</span></label></div>
+              </div></div>
+          </div>
+          <table class="doc-table">
+            <thead><tr><th>항목</th><th>PC</th><th>모바일</th></tr></thead>
+            <tbody>
+              <tr><td>원</td><td colspan="2">20×20, 테두리 1. 선택 점 10</td></tr>
+              <tr><td>원 ↔ 라벨</td><td colspan="2">8</td></tr>
+              <tr><td>라벨</td><td colspan="2">14 / 줄높이 20, #1A1A1A</td></tr>
+              <tr><td>항목 사이</td><td>16</td><td>24</td></tr>
+              <tr><td>한 줄 높이</td><td>20</td><td>44</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="usage">사용 예</h2>
+          <h3 class="doc-h3" style="margin-top:16px">모바일 필터 시트</h3>
+          <p class="doc-p">모바일 필터는 하나만 고릅니다. 세로로 놓고 줄 전체를 누릅니다. <a class="doc-policy" href="../../index.html#3-7" target="_blank" rel="noopener">3-7</a></p>
+          <div class="doc-example">
+            <div class="doc-example__bar"><strong>주문요청 관리 — 기간</strong><span>모바일</span></div>
+            <div class="doc-example__body ds-preview-mo" style="max-width:360px">
+              <p style="margin:0 0 4px;font-size:16px;font-weight:700;color:#1a1a1a">기간</p>
+              <div class="ds-choice-group ds-choice-group--column" role="radiogroup" aria-label="기간">
+                <label class="ds-radio"><input class="ds-radio__input" type="radio" name="ex-period" checked><span class="ds-radio__label">3개월</span></label>
+                <label class="ds-radio"><input class="ds-radio__input" type="radio" name="ex-period"><span class="ds-radio__label">일주일</span></label>
+                <label class="ds-radio"><input class="ds-radio__input" type="radio" name="ex-period"><span class="ds-radio__label">이번 달</span></label>
+                <label class="ds-radio"><input class="ds-radio__input" type="radio" name="ex-period"><span class="ds-radio__label">지난달</span></label>
+                <label class="ds-radio"><input class="ds-radio__input" type="radio" name="ex-period"><span class="ds-radio__label">1년</span></label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="principles">사용 원칙</h2>
+          <div class="doc-rules">
+            <div class="doc-rule"><div class="doc-rule__stage ds-preview-pc"><div class="ds-choice-group"><label class="ds-radio"><input class="ds-radio__input" type="radio" name="r1" checked tabindex="-1"><span class="ds-radio__label">전체</span></label><label class="ds-radio"><input class="ds-radio__input" type="radio" name="r1" tabindex="-1"><span class="ds-radio__label">전동침대</span></label><label class="ds-radio"><input class="ds-radio__input" type="radio" name="r1" tabindex="-1"><span class="ds-radio__label">경사로</span></label></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">처음부터 하나가 골라져 있게 합니다(필터는 “전체”).</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage ds-preview-pc"><div class="ds-choice-group"><label class="ds-radio"><input class="ds-radio__input" type="radio" name="r2" tabindex="-1"><span class="ds-radio__label">전동침대</span></label><label class="ds-radio"><input class="ds-radio__input" type="radio" name="r2" tabindex="-1"><span class="ds-radio__label">경사로</span></label></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">아무것도 안 고른 채 시작하면, 한 번 고른 뒤에는 “안 고름”으로 되돌릴 수 없습니다.</p></div></div>
+
+            <div class="doc-rule"><div class="doc-rule__stage ds-preview-pc"><label class="ds-check"><input class="ds-check__input" type="checkbox" checked tabindex="-1"><span class="ds-check__label">문자로 알림 받기</span></label></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">켜고 끄는 한 가지는 체크박스.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage ds-preview-pc"><label class="ds-radio"><input class="ds-radio__input" type="radio" checked tabindex="-1"><span class="ds-radio__label">문자로 알림 받기</span></label></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">라디오 하나만 두면 한 번 켠 뒤 끌 수 없습니다.</p></div></div>
+          </div>
+        </section>
+<!--/@design-->
+<!--@dev-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-markup">기본 마크업</h2>
+          <p class="doc-p">브라우저 기본 <code>input type="radio"</code>를 씁니다. 같은 묶음은 같은 <code>name</code>을 주면 하나만 선택되고, 방향키로 옮겨 다닙니다.</p>
+          <div class="doc-code"><pre>&lt;div class="ds-choice-group" role="radiogroup" aria-label="품목"&gt;
+  &lt;label class="ds-radio"&gt;
+    &lt;input class="ds-radio__input" type="radio" name="item" value="all" checked&gt;
+    &lt;span class="ds-radio__label"&gt;전체&lt;/span&gt;
+  &lt;/label&gt;
+  &lt;label class="ds-radio"&gt;
+    &lt;input class="ds-radio__input" type="radio" name="item" value="bed"&gt;
+    &lt;span class="ds-radio__label"&gt;전동침대&lt;/span&gt;
+  &lt;/label&gt;
+&lt;/div&gt;</pre></div>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-classes">클래스</h2>
+          <table class="doc-table">
+            <thead><tr><th>클래스 · 속성</th><th>뜻</th></tr></thead>
+            <tbody>
+              <tr><td><code>.ds-radio</code></td><td>라벨 전체(누르는 영역). 모바일에서 줄 높이 44</td></tr>
+              <tr><td><code>.ds-radio__input</code></td><td>원. 20×20</td></tr>
+              <tr><td><code>.ds-radio__label</code></td><td>라벨 글자</td></tr>
+              <tr><td><code>.ds-choice-group</code></td><td>묶음(Checkbox와 같음). <code>--column</code>은 세로</td></tr>
+              <tr><td><code>disabled</code></td><td>비활성. 라벨도 회색</td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">Figma Radio 세트의 check · checkLine(원 안에 체크) 모양은 쓰는 곳이 확인되지 않아 넣지 않았습니다.</p>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <div class="doc-code"><pre>[Radio 규칙 — 이로움케어 DS]
+- 마크업: label.ds-radio > input.ds-radio__input[type=radio][name] + span.ds-radio__label. 묶음은 .ds-choice-group[role=radiogroup]
+- 원 20×20, 미선택 테두리 #616161, 선택 #323DA3 + 흰 점 10, 눌림 #141E76, 비활성 #EEE 바탕 · #BDBDBD 테두리와 점
+- 라벨 14/20, 원–라벨 8, 항목 사이 PC 16 · 모바일 24, 모바일 줄 높이 44
+- 처음부터 하나를 골라 둠(필터는 "전체"). 모바일 필터는 모두 Radio
+- 항목이 많으면 Select, 여러 개 고르면 Checkbox, 하나를 켜고 끄면 Checkbox</pre></div>
+        </section>
+<!--/@dev-->
+<!--@script-->
+  var wrap = document.getElementById('play-wrap');
+  document.getElementById('seg-device').addEventListener('doc-seg', function (e) {
+    wrap.classList.toggle('ds-preview-pc', e.detail === 'pc');
+    wrap.classList.toggle('ds-preview-mo', e.detail === 'mo');
+  });
+  document.getElementById('opt-disabled').addEventListener('change', function (e) {
+    document.querySelectorAll('#play-group input').forEach(function (i) { i.disabled = e.target.checked; });
+  });
+<!--/@script-->

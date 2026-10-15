@@ -155,11 +155,28 @@
     if (openSelect && !openSelect.contains(e.target)) close(openSelect);
   });
 
+  /* 체크박스 "전체" 묶음(정책 3-7): [data-ds-check-all] 안에서 value="all"(또는 data-ds-all)이 전체.
+     전체를 켜면 모두 켜지고 끄면 모두 꺼진다. 항목이 모두 켜지면 전체도 켜지고, 하나라도 꺼지면 전체가 꺼진다. */
+  function initCheckAll(root) {
+    root.querySelectorAll('[data-ds-check-all]:not([data-ds-bound])').forEach(function (group) {
+      group.setAttribute('data-ds-bound', '');
+      var boxes = Array.prototype.slice.call(group.querySelectorAll('input[type="checkbox"]'));
+      var all = boxes.filter(function (b) { return b.value === 'all' || b.hasAttribute('data-ds-all'); })[0];
+      if (!all) return;
+      var items = boxes.filter(function (b) { return b !== all && !b.disabled; });
+      group.addEventListener('change', function (e) {
+        if (e.target === all) items.forEach(function (b) { b.checked = all.checked; });
+        else if (items.indexOf(e.target) > -1) all.checked = items.every(function (b) { return b.checked; });
+      });
+    });
+  }
+
   function init(root) {
     root = root || document;
     initClear(root);
     initSelect(root);
     initCount(root);
+    initCheckAll(root);
   }
   window.DS = { init: init, closeSelect: close, openModal: showModal, closeModal: hideModal };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { init(); });

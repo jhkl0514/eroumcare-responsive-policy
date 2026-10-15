@@ -3,7 +3,7 @@
 (function () {
   'use strict';
   // 새 문서 페이지가 있는 항목. 나머지는 item.html이 같은 틀 안에서 기존 문서나 '준비 중'을 보여 준다.
-  var PAGES = { '디자인 시스템 개요': 'overview.html', 'Text input': 'text-input.html', 'Select': 'select.html', 'Textarea': 'textarea.html', 'Button': 'button.html', 'Status Chip': 'status-chip.html', 'Modal': 'modal.html', 'Color': 'color.html', 'Typography': 'typography.html', 'Shape': 'shape.html', 'Layout': 'layout.html', 'Icon': 'icon.html' };
+  var PAGES = { '디자인 시스템 개요': 'overview.html', 'Text input': 'text-input.html', 'Select': 'select.html', 'Textarea': 'textarea.html', 'Button': 'button.html', 'Status Chip': 'status-chip.html', 'Modal': 'modal.html', 'Color': 'color.html', 'Typography': 'typography.html', 'Shape': 'shape.html', 'Layout': 'layout.html', 'Icon': 'icon.html', 'Checkbox': 'checkbox.html', 'Radio': 'radio.html' };
   var LEGACY = 'item.html?item=';
 
   /* ---------- 왼쪽 메뉴 ---------- */

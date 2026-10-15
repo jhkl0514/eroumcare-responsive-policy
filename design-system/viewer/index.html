@@ -8,7 +8,7 @@
   /* 예전 뷰어 주소(?item= · ?p= · #파일)를 새 문서 페이지로 보낸다.
      새 문서가 있는 항목은 그 페이지로, 나머지는 item.html이 같은 틀 안에서 보여 준다. */
   (function () {
-    var NEW = { '디자인 시스템 개요': 'overview.html', 'Color': 'color.html', 'Typography': 'typography.html', 'Shape': 'shape.html', 'Layout': 'layout.html', 'Icon': 'icon.html', 'Text input': 'text-input.html', 'Select': 'select.html', 'Textarea': 'textarea.html', 'Button': 'button.html', 'Status Chip': 'status-chip.html', 'Modal': 'modal.html' };
+    var NEW = { '디자인 시스템 개요': 'overview.html', 'Color': 'color.html', 'Typography': 'typography.html', 'Shape': 'shape.html', 'Layout': 'layout.html', 'Icon': 'icon.html', 'Text input': 'text-input.html', 'Select': 'select.html', 'Textarea': 'textarea.html', 'Button': 'button.html', 'Status Chip': 'status-chip.html', 'Modal': 'modal.html', 'Checkbox': 'checkbox.html', 'Radio': 'radio.html' };
     var q = new URLSearchParams(location.search);
     var key = q.get('item') || q.get('p') || decodeURIComponent((location.hash || '').replace(/^#\??/, '').replace(/^item=/, ''));
     var to = 'overview.html';

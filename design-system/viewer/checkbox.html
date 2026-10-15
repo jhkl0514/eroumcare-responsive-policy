@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Checkbox · 이로움케어 디자인 시스템</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/typography.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="doc.css">
+<script defer src="../js/ds.js"></script>
+<script defer src="doc.js"></script>
+</head>
+<body data-page="Checkbox">
+<header class="doc-header">
+  <button class="doc-menu-btn" id="doc-menu-btn" type="button" aria-label="메뉴" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+  <a class="doc-brand" href="overview.html"><strong>이로움케어</strong><span>디자인 시스템</span></a>
+  <span class="doc-header__spacer"></span>
+  <a class="doc-hub-link" href="../../index.html">← 정책 허브</a>
+</header>
+
+<div class="doc-shell">
+  <nav class="doc-side" id="doc-side" aria-label="디자인 시스템 메뉴"></nav>
+
+  <main class="doc-main">
+    <div class="doc-content">
+      <p class="doc-crumb">Components · Select</p>
+      <h1 class="doc-h1">Checkbox</h1>
+      <p class="doc-lead">여러 항목 중 필요한 만큼 고르거나, 한 가지에 동의할 때 씁니다. 하나만 골라야 하면 Radio를 씁니다.</p>
+      <div class="doc-meta">
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6568-9409" target="_blank" rel="noopener">Figma · checkbox ↗</a>
+        <a href="../../index.html#3-7" target="_blank" rel="noopener">정책 3-7 검색 영역 ↗</a>
+        <span>20×20 · PC·모바일 같은 크기</span>
+      </div>
+
+      <div class="doc-tabs" role="tablist" aria-label="문서 보기">
+        <button class="doc-tab" role="tab" id="tab-design" data-tab="design" aria-controls="panel-design" aria-selected="true">디자인</button>
+        <button class="doc-tab" role="tab" id="tab-dev" data-tab="dev" aria-controls="panel-dev" aria-selected="false">개발</button>
+      </div>
+
+      <div id="panel-design" role="tabpanel" aria-labelledby="tab-design">
+        <section class="doc-section">
+          <h2 class="doc-h2" id="overview">개요</h2>
+          <p class="doc-p">검색 영역의 품목 필터입니다. 직접 눌러 보세요. “전체”와 각 항목이 정책 3-7 규칙대로 함께 움직입니다.</p>
+          <div class="doc-play">
+            <div class="doc-play__stage">
+              <div class="ds-preview-pc" id="play-wrap" style="max-width:520px">
+                <div class="ds-choice-group" id="play-group" role="group" aria-label="품목" data-ds-check-all>
+                  <label class="ds-check"><input class="ds-check__input" type="checkbox" value="all" checked><span class="ds-check__label">전체</span></label>
+                  <label class="ds-check"><input class="ds-check__input" type="checkbox" value="bed"><span class="ds-check__label">전동침대</span></label>
+                  <label class="ds-check"><input class="ds-check__input" type="checkbox" value="wheelchair"><span class="ds-check__label">수동휠체어</span></label>
+                  <label class="ds-check"><input class="ds-check__input" type="checkbox" value="ramp"><span class="ds-check__label">경사로</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="doc-play__controls">
+              <div class="doc-ctl"><span class="doc-ctl__name">화면</span>
+                <div class="doc-seg" id="seg-device"><button type="button" data-value="pc" aria-pressed="true">PC</button><button type="button" data-value="mo" aria-pressed="false">모바일</button></div>
+              </div>
+              <div class="doc-ctl"><label class="doc-check"><input type="checkbox" id="opt-disabled"> 비활성</label></div>
+            </div>
+          </div>
+          <h3 class="doc-h3">언제 쓰나요</h3>
+          <ul class="doc-list">
+            <li>여러 개를 함께 고를 때 — 검색 필터의 품목 · 상태</li>
+            <li>한 가지를 확인하거나 동의할 때 — “주문 변경 내용을 확인했습니다”</li>
+            <li>하나만 골라야 하면 <a href="radio.html">Radio</a>를 씁니다. 모바일 필터는 모두 하나만 고르므로 Radio입니다. <a class="doc-policy" href="../../index.html#3-7" target="_blank" rel="noopener">3-7</a></li>
+          </ul>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="anatomy">구조</h2>
+          <div class="doc-stage doc-stage--white">
+            <div class="doc-stage__inner doc-anat ds-preview-pc" style="padding:48px 40px 40px">
+              <div class="ds-choice-group" style="display:inline-flex" data-anat="3" data-anat-side="bottom" data-anat-x="0.85" data-anat-gap="28">
+                <label class="ds-check"><input class="ds-check__input" type="checkbox" checked tabindex="-1" data-anat="1" data-anat-side="top" data-anat-gap="28"><span class="ds-check__label" data-anat="2" data-anat-side="top" data-anat-gap="28">전동침대</span></label>
+                <label class="ds-check"><input class="ds-check__input" type="checkbox" tabindex="-1"><span class="ds-check__label">수동휠체어</span></label>
+              </div>
+            </div>
+          </div>
+          <ol class="doc-legend">
+            <li><b>1</b><span><strong>상자</strong> — 20×20, 모서리 4. 고르면 브랜드 색으로 채우고 흰 체크.</span></li>
+            <li><b>2</b><span><strong>라벨</strong> — 14 / 줄높이 20. 라벨을 눌러도 선택됩니다.</span></li>
+            <li><b>3</b><span><strong>묶음</strong> — 가로로 놓고, 자리가 모자라면 다음 줄로.</span></li>
+          </ol>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="states">상태</h2>
+          <p class="doc-p">Figma 6가지입니다. 눌림은 손가락이나 마우스를 누르고 있는 동안만 보입니다.</p>
+          <div class="doc-scroll">
+          <table class="doc-table">
+            <thead><tr><th>상태</th><th>선택 안 함</th><th>선택함</th></tr></thead>
+            <tbody>
+              <tr><td>기본<small>테두리 #616161 / 채움 #323DA3</small></td><td><label class="ds-check"><input class="ds-check__input" type="checkbox" tabindex="-1"><span class="ds-check__label">전동침대</span></label></td><td><label class="ds-check"><input class="ds-check__input" type="checkbox" checked tabindex="-1"><span class="ds-check__label">전동침대</span></label></td></tr>
+              <tr><td>눌림<small>테두리 #333 / 채움 #141E76</small></td><td><label class="ds-check"><input class="ds-check__input ds-is-pressed" type="checkbox" tabindex="-1"><span class="ds-check__label">전동침대</span></label></td><td><label class="ds-check"><input class="ds-check__input ds-is-pressed" type="checkbox" checked tabindex="-1"><span class="ds-check__label">전동침대</span></label></td></tr>
+              <tr><td>비활성<small>배경 #EEE · 테두리 · 체크 · 글자 #BDBDBD</small></td><td><label class="ds-check"><input class="ds-check__input" type="checkbox" disabled><span class="ds-check__label">전동침대</span></label></td><td><label class="ds-check"><input class="ds-check__input" type="checkbox" checked disabled><span class="ds-check__label">전동침대</span></label></td></tr>
+            </tbody>
+          </table>
+          </div>
+          <p class="doc-note">비활성 라벨 색은 Figma 세트에 라벨이 없어 다른 비활성 글자(#BDBDBD)에 맞췄습니다.</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="size">크기와 간격</h2>
+          <p class="doc-p">상자는 PC·모바일 모두 20입니다. 모바일에서는 상자를 키우지 않고 줄 높이를 44로 늘려 줄 전체를 누를 수 있게 합니다. <a class="doc-policy" href="../../index.html#3-0" target="_blank" rel="noopener">3-0</a></p>
+          <div class="doc-pair">
+            <div class="doc-stage doc-stage--white"><p class="doc-pair__label">PC</p>
+              <div class="doc-measure ds-preview-pc" style="padding:24px 8px 32px" data-dims='[
+                {"d":"x","a":".m1 .ds-check__input","from":"left","to":"right","on":".m1 .ds-check__input","at":"top","off":-12},
+                {"d":"x","a":".m1 .ds-check__input","from":"right","b":".m1 .ds-check__label","to":"left","on":".m1","at":"bottom","off":12,"below":true},
+                {"d":"x","a":".m1","from":"right","b":".m2","to":"left","on":".m1","at":"top","off":-12}]'>
+                <div class="ds-choice-group"><label class="ds-check m1"><input class="ds-check__input" type="checkbox" checked tabindex="-1"><span class="ds-check__label">전동침대</span></label><label class="ds-check m2"><input class="ds-check__input" type="checkbox" tabindex="-1"><span class="ds-check__label">경사로</span></label></div>
+              </div></div>
+            <div class="doc-stage doc-stage--white"><p class="doc-pair__label">모바일 (1024 이하)</p>
+              <div class="doc-measure ds-preview-mo" style="padding:32px 8px 8px 48px" data-dims='[
+                {"d":"y","a":".m3","from":"top","to":"bottom","on":".m3","at":"left","off":-16,"labelLeft":true,"area":true},
+                {"d":"x","a":".m3","from":"right","b":".m4","to":"left","on":".m3","at":"top","off":-8}]'>
+                <div class="ds-choice-group"><label class="ds-check m3"><input class="ds-check__input" type="checkbox" checked tabindex="-1"><span class="ds-check__label">전동침대</span></label><label class="ds-check m4"><input class="ds-check__input" type="checkbox" tabindex="-1"><span class="ds-check__label">경사로</span></label></div>
+              </div></div>
+          </div>
+          <table class="doc-table">
+            <thead><tr><th>항목</th><th>PC</th><th>모바일</th></tr></thead>
+            <tbody>
+              <tr><td>상자</td><td colspan="2">20×20, 모서리 4, 테두리 1. 체크 아이콘 16</td></tr>
+              <tr><td>상자 ↔ 라벨</td><td colspan="2">8</td></tr>
+              <tr><td>라벨</td><td colspan="2">14 / 줄높이 20, #1A1A1A</td></tr>
+              <tr><td>항목 사이</td><td>16 (넘치면 다음 줄, 줄 사이 8)</td><td>24 (넘치면 다음 줄)</td></tr>
+              <tr><td>한 줄 높이</td><td>20</td><td>44 (줄 전체를 누를 수 있음)</td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">라벨이 두 줄이 되면 상자는 첫 줄에 맞춥니다.</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="usage">사용 예</h2>
+          <h3 class="doc-h3" style="margin-top:16px">검색 영역 필터 (PC)</h3>
+          <p class="doc-p">기본은 “전체”만 체크입니다. 다른 항목을 누르면 “전체”가 풀리고, “전체”를 누르면 모두 체크됩니다. 항목이 모두 체크되면 “전체”도 체크됩니다. <a class="doc-policy" href="../../index.html#3-7" target="_blank" rel="noopener">3-7</a></p>
+          <div class="doc-example">
+            <div class="doc-example__bar"><strong>주문요청 관리 — 검색</strong><span>눌러 보세요</span></div>
+            <div class="doc-example__body ds-preview-pc">
+              <div class="ex-filter">
+                <span class="ex-filter__label">주문상태</span>
+                <div class="ds-choice-group" role="group" aria-label="주문상태" data-ds-check-all>
+                  <label class="ds-check"><input class="ds-check__input" type="checkbox" value="all" checked><span class="ds-check__label">전체</span></label>
+                  <label class="ds-check"><input class="ds-check__input" type="checkbox"><span class="ds-check__label">주문접수</span></label>
+                  <label class="ds-check"><input class="ds-check__input" type="checkbox"><span class="ds-check__label">주문확인중</span></label>
+                  <label class="ds-check"><input class="ds-check__input" type="checkbox"><span class="ds-check__label">상품준비</span></label>
+                  <label class="ds-check"><input class="ds-check__input" type="checkbox"><span class="ds-check__label">배송중</span></label>
+                  <label class="ds-check"><input class="ds-check__input" type="checkbox"><span class="ds-check__label">배송완료</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3 class="doc-h3">확인 · 동의</h3>
+          <p class="doc-p">하나만 쓸 때도 라벨은 문장으로 씁니다. 체크해야 다음 버튼이 켜집니다.</p>
+          <div class="doc-example">
+            <div class="doc-example__bar"><strong>주문 변경 사유</strong><span>체크하면 저장이 켜집니다</span></div>
+            <div class="doc-example__body ds-preview-pc">
+              <label class="ds-check"><input class="ds-check__input" type="checkbox" id="ex-agree"><span class="ds-check__label">변경 내용을 수급자에게 안내했습니다.<br>저장하면 주문 상태가 상품준비로 바뀝니다.</span></label>
+              <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:24px"><button class="ds-btn ds-btn--secondary ds-btn--md" type="button" style="width:120px">취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button" id="ex-save" style="width:120px" disabled>저장</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="principles">사용 원칙</h2>
+          <div class="doc-rules">
+            <div class="doc-rule"><div class="doc-rule__stage ds-preview-pc"><div class="ds-choice-group"><label class="ds-check"><input class="ds-check__input" type="checkbox" checked tabindex="-1"><span class="ds-check__label">전동침대</span></label><label class="ds-check"><input class="ds-check__input" type="checkbox" checked tabindex="-1"><span class="ds-check__label">경사로</span></label></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">여러 개를 함께 고를 수 있을 때 체크박스.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage ds-preview-pc"><div class="ds-choice-group"><label class="ds-check"><input class="ds-check__input" type="checkbox" checked tabindex="-1"><span class="ds-check__label">대여</span></label><label class="ds-check"><input class="ds-check__input" type="checkbox" tabindex="-1"><span class="ds-check__label">구입</span></label></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">둘 중 하나만 되는 선택을 체크박스로 만들면 둘 다 고를 수 있는 것처럼 보입니다. Radio를 씁니다.</p></div></div>
+
+            <div class="doc-rule"><div class="doc-rule__stage ds-preview-mo"><div class="ds-choice-group ds-choice-group--column"><label class="ds-check"><input class="ds-check__input" type="checkbox" checked tabindex="-1"><span class="ds-check__label">문자로 받기</span></label><label class="ds-check"><input class="ds-check__input" type="checkbox" tabindex="-1"><span class="ds-check__label">알림톡으로 받기</span></label></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">모바일은 줄 높이 44. 라벨까지 줄 전체를 누를 수 있습니다. <a class="doc-policy" href="../../index.html#3-0" target="_blank" rel="noopener">3-0</a></p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage"><div style="display:flex;flex-direction:column;gap:4px;font-size:14px"><span style="display:flex;gap:8px;align-items:center"><span class="ex-tiny"></span>문자로 받기</span><span style="display:flex;gap:8px;align-items:center"><span class="ex-tiny"></span>알림톡으로 받기</span></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">작은 상자만 눌리게 두거나 줄 사이를 좁히면 손가락으로 정확히 누르기 어렵습니다.</p></div></div>
+          </div>
+        </section>
+      </div>
+
+      <div id="panel-dev" role="tabpanel" aria-labelledby="tab-dev" hidden>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-markup">기본 마크업</h2>
+          <p class="doc-p">브라우저 기본 <code>input type="checkbox"</code>를 그대로 씁니다. 키보드(Tab · Space)와 화면낭독기가 따로 손대지 않아도 동작합니다.</p>
+          <div class="doc-code"><pre>&lt;div class="ds-choice-group" role="group" aria-label="품목" data-ds-check-all&gt;
+  &lt;label class="ds-check"&gt;
+    &lt;input class="ds-check__input" type="checkbox" name="item" value="all" checked&gt;
+    &lt;span class="ds-check__label"&gt;전체&lt;/span&gt;
+  &lt;/label&gt;
+  &lt;label class="ds-check"&gt;
+    &lt;input class="ds-check__input" type="checkbox" name="item" value="bed"&gt;
+    &lt;span class="ds-check__label"&gt;전동침대&lt;/span&gt;
+  &lt;/label&gt;
+&lt;/div&gt;</pre></div>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-classes">클래스</h2>
+          <table class="doc-table">
+            <thead><tr><th>클래스 · 속성</th><th>뜻</th></tr></thead>
+            <tbody>
+              <tr><td><code>.ds-check</code></td><td>라벨 전체(누르는 영역). 모바일에서 줄 높이 44</td></tr>
+              <tr><td><code>.ds-check__input</code></td><td>상자. 20×20</td></tr>
+              <tr><td><code>.ds-check__label</code></td><td>라벨 글자</td></tr>
+              <tr><td><code>.ds-choice-group</code></td><td>묶음. 가로 배치 · 넘치면 다음 줄. <code>--column</code>은 세로</td></tr>
+              <tr><td><code>data-ds-check-all</code></td><td>묶음에 붙이면 <code>value="all"</code> 항목이 “전체”로 동작(정책 3-7)</td></tr>
+              <tr><td><code>disabled</code></td><td>비활성. 라벨도 회색</td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">그룹 오류 표시(DS-U1)와 부분 선택 표시(DS-U2)는 아직 제안 단계라 넣지 않았습니다.</p>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <div class="doc-code"><pre>[Checkbox 규칙 — 이로움케어 DS]
+- 마크업: label.ds-check > input.ds-check__input[type=checkbox] + span.ds-check__label. 묶음은 .ds-choice-group
+- 상자 20×20 radius 4, 미선택 테두리 #616161, 선택 #323DA3 + 흰 체크, 눌림 #141E76, 비활성 #EEE/#BDBDBD
+- 라벨 14/20 #1A1A1A, 상자–라벨 8, 항목 사이 PC 16 · 모바일 24
+- 모바일(≤1024)은 상자 크기 그대로, 줄 높이 44로 줄 전체 터치
+- "전체"가 있는 필터는 묶음에 data-ds-check-all + 전체 항목 value="all"
+- 하나만 고르는 선택(모바일 필터 포함)은 Radio</pre></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <aside class="doc-toc" aria-label="이 페이지에서">
+    <p class="doc-toc__title">이 페이지에서</p>
+    <nav id="doc-toc-links"></nav>
+  </aside>
+</div>
+<style>
+.ex-filter { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: flex-start; }
+.ex-filter__label { flex: 0 0 96px; color: var(--ds-color-grey-900); font-size: 14px; font-weight: 600; line-height: 20px; }
+.ex-tiny { display: inline-block; width: 12px; height: 12px; border: 1px solid #616161; border-radius: 2px; }
+</style>
+<script>
+window.addEventListener('load', function () {
+  var wrap = document.getElementById('play-wrap');
+  document.getElementById('seg-device').addEventListener('doc-seg', function (e) {
+    wrap.classList.toggle('ds-preview-pc', e.detail === 'pc');
+    wrap.classList.toggle('ds-preview-mo', e.detail === 'mo');
+  });
+  document.getElementById('opt-disabled').addEventListener('change', function (e) {
+    document.querySelectorAll('#play-group input').forEach(function (i) { i.disabled = e.target.checked; });
+  });
+  document.getElementById('ex-agree').addEventListener('change', function (e) {
+    document.getElementById('ex-save').disabled = !e.target.checked;
+  });
+});
+</script>
+</body>
+</html>
