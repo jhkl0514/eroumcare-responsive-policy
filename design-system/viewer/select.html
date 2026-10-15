@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Select · 이로움케어 디자인 시스템</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/typography.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="doc.css">
+<script defer src="../js/ds.js"></script>
+<script defer src="doc.js"></script>
+</head>
+<body data-page="Select">
+<header class="doc-header">
+  <button class="doc-menu-btn" id="doc-menu-btn" type="button" aria-label="메뉴" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+  <a class="doc-brand" href="index.html?item=%EB%94%94%EC%9E%90%EC%9D%B8%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%EA%B0%9C%EC%9A%94"><strong>이로움케어</strong><span>디자인 시스템</span></a>
+  <span class="doc-header__spacer"></span>
+  <a class="doc-hub-link" href="../../index.html">← 정책 허브</a>
+</header>
+
+<div class="doc-shell">
+  <nav class="doc-side" id="doc-side" aria-label="디자인 시스템 메뉴"></nav>
+
+  <main class="doc-main">
+    <div class="doc-content">
+      <p class="doc-crumb">Components · Select</p>
+      <h1 class="doc-h1">Select</h1>
+      <p class="doc-lead">정해진 선택지 중 하나를 고르는 칸입니다. 누르면 아래에 옵션 목록이 열립니다.</p>
+      <div class="doc-meta">
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7837-12839" target="_blank" rel="noopener">Figma · SelectField ↗</a>
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6570-11270" target="_blank" rel="noopener">Figma · SelectOption ↗</a>
+        <a href="../../index.html#3-2" target="_blank" rel="noopener">정책 3-2 입력칸 ↗</a>
+        <a href="../../index.html#3-7" target="_blank" rel="noopener">정책 3-7 검색 영역 ↗</a>
+      </div>
+
+      <div class="doc-tabs" role="tablist" aria-label="문서 보기">
+        <button class="doc-tab" role="tab" id="tab-design" data-tab="design" aria-controls="panel-design" aria-selected="true">디자인</button>
+        <button class="doc-tab" role="tab" id="tab-dev" data-tab="dev" aria-controls="panel-dev" aria-selected="false">개발</button>
+      </div>
+
+      <!-- ========================= 디자인 ========================= -->
+      <div id="panel-design" role="tabpanel" aria-labelledby="tab-design">
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="overview">개요</h2>
+          <p class="doc-p">칸을 눌러 목록을 열고 골라 보세요. 키보드로는 ↓로 열고 ↑↓로 이동, Enter로 고릅니다. 옵션이 6개를 넘으면 목록 안에서 스크롤됩니다.</p>
+          <div class="doc-play">
+            <div class="doc-play__stage" style="min-height:480px;align-items:flex-start">
+              <div class="ds-field ds-preview-pc" id="play-field">
+                <span class="ds-field__label" id="play-label">주문 상태</span>
+                <div class="ds-select" id="play-select">
+                  <button class="ds-select__trigger ds-is-inactive" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="play-label play-value"><span class="ds-select__value ds-is-placeholder" id="play-value">선택</span><span class="ds-select__chevron"></span></button>
+                  <div class="ds-select__list" role="listbox" aria-labelledby="play-label" id="play-list" hidden></div>
+                </div>
+                <p class="ds-field__hint" id="play-help" hidden></p>
+              </div>
+            </div>
+            <div class="doc-play__controls">
+              <div class="doc-ctl"><span class="doc-ctl__name">기기</span>
+                <div class="doc-seg" id="seg-device"><button type="button" data-value="pc" aria-pressed="true">PC</button><button type="button" data-value="mo" aria-pressed="false">모바일</button></div>
+              </div>
+              <div class="doc-ctl"><span class="doc-ctl__name">상태</span>
+                <div class="doc-seg" id="seg-state"><button type="button" data-value="live" aria-pressed="true">직접 선택</button><button type="button" data-value="error" aria-pressed="false">Error</button><button type="button" data-value="disabled" aria-pressed="false">Disabled</button><button type="button" data-value="readonly" aria-pressed="false">ReadOnly</button></div>
+              </div>
+              <div class="doc-ctl"><span class="doc-ctl__name">옵션 수</span>
+                <div class="doc-seg" id="seg-count"><button type="button" data-value="2" aria-pressed="false">2</button><button type="button" data-value="4" aria-pressed="false">4</button><button type="button" data-value="6" aria-pressed="false">6</button><button type="button" data-value="10" aria-pressed="true">10</button></div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="doc-h3">언제 쓰나요</h3>
+          <ul class="doc-list">
+            <li>정해진 값 중 <strong>하나</strong>를 고를 때 — 검색 기준, 주문 상태, 배송요청사항</li>
+            <li>직접 타이핑하는 값은 <a href="text-input.html">Text input</a>, 여러 개를 고르면 체크박스를 씁니다.</li>
+            <li>모바일 리스트 필터는 셀렉트 대신 필터칩 + 단일 선택 시트로 엽니다. <a class="doc-policy" href="../../index.html#3-7" target="_blank" rel="noopener">3-7</a></li>
+          </ul>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="anatomy">구조</h2>
+          <p class="doc-p">SelectField(칸)와 OptionGroup(옵션 패널), SelectOption(옵션 행) 세 부품으로 이루어집니다.</p>
+          <div class="doc-stage doc-stage--white">
+            <div class="doc-stage__inner doc-anat" style="max-width:520px;padding:56px 72px 40px">
+              <div class="ds-field ds-preview-pc">
+                <span class="ds-field__label"><span data-anat="1" data-anat-side="left" data-anat-gap="32">주문 상태</span></span>
+                <div class="ds-select">
+                  <button class="ds-select__trigger" type="button" aria-expanded="true" tabindex="-1" data-anat="2" data-anat-side="left" data-anat-gap="32"><span class="ds-select__value" data-anat="3" data-anat-side="top" data-anat-x="0.5" data-anat-gap="44">주문확인중</span><span class="ds-select__chevron" data-anat="4" data-anat-side="right" data-anat-gap="32"></span></button>
+                  <div class="ds-select__list ds-select__list--static" data-static data-anat="5" data-anat-side="right" data-anat-gap="32" role="listbox" aria-label="구조 예시">
+                    <button class="ds-select__option" type="button" role="option" aria-selected="false" tabindex="-1">신규배정</button>
+                    <button class="ds-select__option" type="button" role="option" aria-selected="true" tabindex="-1" data-anat="6" data-anat-side="left" data-anat-gap="40">주문확인중</button>
+                    <button class="ds-select__option" type="button" role="option" aria-selected="false" tabindex="-1">주문완료</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="doc-legend">
+            <li><b>1</b><span><strong>라벨</strong> — 무엇을 고르는지.</span></li>
+            <li><b>2</b><span><strong>칸(SelectField)</strong> — 입력칸과 같은 크기·상태 규칙.</span></li>
+            <li><b>3</b><span><strong>현재 값</strong> — 고르기 전에는 회색 placeholder.</span></li>
+            <li><b>4</b><span><strong>화살표</strong> — 24. 목록이 열리면 위로 뒤집힙니다.</span></li>
+            <li><b>5</b><span><strong>옵션 패널(OptionGroup)</strong> — 칸 아래 4, 같은 폭.</span></li>
+            <li><b>6</b><span><strong>선택된 옵션</strong> — 연한 파란 배경으로 현재 값 표시.</span></li>
+          </ol>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="states">칸 상태</h2>
+          <p class="doc-p">입력칸(Text input)과 같은 6가지입니다. 목록이 열려 있는 동안은 Focused로 보입니다.</p>
+          <table class="doc-table">
+            <thead><tr><th>상태</th><th class="doc-cell-demo">PC</th><th class="doc-cell-demo doc-hide-sm">모바일</th></tr></thead>
+            <tbody>
+              <tr><td>Inactive<small>고르기 전 · placeholder 회색</small></td>
+                <td class="ds-preview-pc"><div class="ds-select"><button class="ds-select__trigger ds-is-inactive" type="button" tabindex="-1"><span class="ds-select__value">선택</span><span class="ds-select__chevron"></span></button></div></td>
+                <td class="ds-preview-mo doc-hide-sm"><div class="ds-select"><button class="ds-select__trigger ds-is-inactive" type="button" tabindex="-1"><span class="ds-select__value">선택</span><span class="ds-select__chevron"></span></button></div></td></tr>
+              <tr><td>Default<small>값이 선택됨 · 테두리 1px #333</small></td>
+                <td class="ds-preview-pc"><div class="ds-select"><button class="ds-select__trigger" type="button" tabindex="-1"><span class="ds-select__value">주문완료</span><span class="ds-select__chevron"></span></button></div></td>
+                <td class="ds-preview-mo doc-hide-sm"><div class="ds-select"><button class="ds-select__trigger" type="button" tabindex="-1"><span class="ds-select__value">주문완료</span><span class="ds-select__chevron"></span></button></div></td></tr>
+              <tr><td>Focused<small>목록 열림 · 테두리 2px #323DA3 · 화살표 위로</small></td>
+                <td class="ds-preview-pc"><div class="ds-select"><button class="ds-select__trigger" type="button" aria-expanded="true" tabindex="-1"><span class="ds-select__value">주문완료</span><span class="ds-select__chevron"></span></button></div></td>
+                <td class="ds-preview-mo doc-hide-sm"><div class="ds-select"><button class="ds-select__trigger" type="button" aria-expanded="true" tabindex="-1"><span class="ds-select__value">주문완료</span><span class="ds-select__chevron"></span></button></div></td></tr>
+              <tr><td>Disabled<small>고를 수 없음 · 화살표도 흐리게</small></td>
+                <td class="ds-preview-pc"><div class="ds-select"><button class="ds-select__trigger" type="button" disabled><span class="ds-select__value">주문완료</span><span class="ds-select__chevron"></span></button></div></td>
+                <td class="ds-preview-mo doc-hide-sm"><div class="ds-select"><button class="ds-select__trigger" type="button" disabled><span class="ds-select__value">주문완료</span><span class="ds-select__chevron"></span></button></div></td></tr>
+              <tr><td>ReadOnly<small>값은 보이고 바꿀 수 없음</small></td>
+                <td class="ds-preview-pc"><div class="ds-select"><button class="ds-select__trigger ds-is-readonly" type="button" tabindex="-1"><span class="ds-select__value">주문완료</span><span class="ds-select__chevron"></span></button></div></td>
+                <td class="ds-preview-mo doc-hide-sm"><div class="ds-select"><button class="ds-select__trigger ds-is-readonly" type="button" tabindex="-1"><span class="ds-select__value">주문완료</span><span class="ds-select__chevron"></span></button></div></td></tr>
+              <tr><td>Error<small>값 오류 · 테두리 2px #E53935 + 문구</small></td>
+                <td class="ds-preview-pc"><div class="ds-field"><div class="ds-select"><button class="ds-select__trigger ds-is-inactive" type="button" aria-invalid="true" tabindex="-1"><span class="ds-select__value">선택</span><span class="ds-select__chevron"></span></button></div><p class="ds-field__error">배송요청사항을 선택해 주세요.</p></div></td>
+                <td class="ds-preview-mo doc-hide-sm"><div class="ds-field"><div class="ds-select"><button class="ds-select__trigger ds-is-inactive" type="button" aria-invalid="true" tabindex="-1"><span class="ds-select__value">선택</span><span class="ds-select__chevron"></span></button></div><p class="ds-field__error">배송요청사항을 선택해 주세요.</p></div></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="option-states">옵션 행 상태</h2>
+          <p class="doc-p">현재 값은 연한 파란 배경, 마우스를 올리면 회색, 선택된 행에 올리면 조금 더 진한 파랑입니다.</p>
+          <table class="doc-table">
+            <thead><tr><th>상태</th><th class="doc-cell-demo">PC (36)</th><th class="doc-cell-demo doc-hide-sm">모바일 (44)</th></tr></thead>
+            <tbody>
+              <tr><td>기본<small>흰 배경</small></td>
+                <td class="ds-preview-pc"><button class="ds-select__option" type="button" tabindex="-1">신규배정</button></td>
+                <td class="ds-preview-mo doc-hide-sm"><button class="ds-select__option" type="button" tabindex="-1">신규배정</button></td></tr>
+              <tr><td>선택됨<small>#EFF1FD</small></td>
+                <td class="ds-preview-pc"><button class="ds-select__option" type="button" aria-selected="true" tabindex="-1">주문확인중</button></td>
+                <td class="ds-preview-mo doc-hide-sm"><button class="ds-select__option" type="button" aria-selected="true" tabindex="-1">주문확인중</button></td></tr>
+              <tr><td>마우스 올림 · 누름<small>#EEEEEE</small></td>
+                <td class="ds-preview-pc"><button class="ds-select__option ds-is-hover" type="button" tabindex="-1">주문완료</button></td>
+                <td class="ds-preview-mo doc-hide-sm"><button class="ds-select__option ds-is-hover" type="button" tabindex="-1">주문완료</button></td></tr>
+              <tr><td>선택됨 + 올림<small>#CED2F4</small></td>
+                <td class="ds-preview-pc"><button class="ds-select__option ds-is-hover" type="button" aria-selected="true" tabindex="-1">주문확인중</button></td>
+                <td class="ds-preview-mo doc-hide-sm"><button class="ds-select__option ds-is-hover" type="button" aria-selected="true" tabindex="-1">주문확인중</button></td></tr>
+              <tr><td>Disabled<small>#EEE + 테두리 #BDBDBD</small></td>
+                <td class="ds-preview-pc"><button class="ds-select__option" type="button" aria-disabled="true" tabindex="-1">취소요청</button></td>
+                <td class="ds-preview-mo doc-hide-sm"><button class="ds-select__option" type="button" aria-disabled="true" tabindex="-1">취소요청</button></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="size">크기와 간격</h2>
+          <p class="doc-p">칸과 옵션 행은 1024px 이하에서 커집니다. 옵션은 6개까지 보이고, 넘으면 패널 안에서 스크롤됩니다. 아래 숫자는 실제 화면에서 잰 값입니다. <a class="doc-policy" href="../../index.html#3-0" target="_blank" rel="noopener">3-0</a></p>
+          <div class="doc-pair">
+            <div class="doc-stage doc-stage--white">
+              <p class="doc-pair__label">PC</p>
+              <div class="doc-measure ds-preview-pc" style="padding:16px 48px 8px 56px" data-dims='[
+                {"d":"y","a":".ds-select__trigger","from":"top","to":"bottom","at":"right","off":16},
+                {"d":"x","a":".ds-select__chevron","from":"left","to":"right","on":".ds-select__trigger","at":"top","off":-10},
+                {"d":"y","a":".ds-select__trigger","from":"bottom","b":".ds-select__list","to":"top","on":".ds-select__list","at":"left","off":-16,"labelLeft":true},
+                {"d":"y","a":".ds-select__list","from":"top","b":".ds-select__option","to":"top","on":".ds-select__list","at":"mid","area":true},
+                {"d":"y","a":".o1","from":"top","to":"bottom","on":".ds-select__list","at":"right","off":16},
+                {"d":"y","a":".o1","from":"bottom","b":".o2","to":"top","on":".ds-select__list","at":"left","off":-16,"labelLeft":true}]'>
+                <div class="ds-select">
+                  <button class="ds-select__trigger" type="button" aria-expanded="true" tabindex="-1"><span class="ds-select__value">주문확인중</span><span class="ds-select__chevron"></span></button>
+                  <div class="ds-select__list ds-select__list--static" data-static role="listbox" aria-label="PC 치수">
+                    <button class="ds-select__option o1" type="button" role="option" aria-selected="false" tabindex="-1">신규배정</button>
+                    <button class="ds-select__option o2" type="button" role="option" aria-selected="true" tabindex="-1">주문확인중</button>
+                    <button class="ds-select__option" type="button" role="option" aria-selected="false" tabindex="-1">주문완료</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="doc-stage doc-stage--white">
+              <p class="doc-pair__label">모바일 (1024px 이하)</p>
+              <div class="doc-measure ds-preview-mo" style="padding:16px 48px 8px 56px" data-dims='[
+                {"d":"y","a":".ds-select__trigger","from":"top","to":"bottom","at":"right","off":16},
+                {"d":"x","a":".ds-select__chevron","from":"left","to":"right","on":".ds-select__trigger","at":"top","off":-10},
+                {"d":"y","a":".ds-select__trigger","from":"bottom","b":".ds-select__list","to":"top","on":".ds-select__list","at":"left","off":-16,"labelLeft":true},
+                {"d":"y","a":".ds-select__list","from":"top","b":".ds-select__option","to":"top","on":".ds-select__list","at":"mid","area":true},
+                {"d":"y","a":".o1","from":"top","to":"bottom","on":".ds-select__list","at":"right","off":16},
+                {"d":"y","a":".o1","from":"bottom","b":".o2","to":"top","on":".ds-select__list","at":"left","off":-16,"labelLeft":true}]'>
+                <div class="ds-select">
+                  <button class="ds-select__trigger" type="button" aria-expanded="true" tabindex="-1"><span class="ds-select__value">주문확인중</span><span class="ds-select__chevron"></span></button>
+                  <div class="ds-select__list ds-select__list--static" data-static role="listbox" aria-label="모바일 치수">
+                    <button class="ds-select__option o1" type="button" role="option" aria-selected="false" tabindex="-1">신규배정</button>
+                    <button class="ds-select__option o2" type="button" role="option" aria-selected="true" tabindex="-1">주문확인중</button>
+                    <button class="ds-select__option" type="button" role="option" aria-selected="false" tabindex="-1">주문완료</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <table class="doc-table">
+            <thead><tr><th>항목</th><th>PC</th><th>모바일</th></tr></thead>
+            <tbody>
+              <tr><td>칸 높이</td><td>40</td><td>48</td></tr>
+              <tr><td>화살표</td><td>24</td><td>24</td></tr>
+              <tr><td>칸 ↔ 옵션 패널</td><td>4</td><td>4</td></tr>
+              <tr><td>패널 안쪽 여백</td><td>8</td><td>8</td></tr>
+              <tr><td>옵션 행 높이</td><td>36 (위아래 8)</td><td>44 (위아래 10)</td></tr>
+              <tr><td>옵션 사이</td><td>4</td><td>6</td></tr>
+              <tr><td>최대 높이</td><td>옵션 6개 = 252</td><td>옵션 6개 = 310</td></tr>
+              <tr><td>패널 테두리 · 그림자</td><td colspan="2">1px #333, radius 4, elevation/shadow3</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="usage">사용 예</h2>
+          <h3 class="doc-h3" style="margin-top:16px">리스트 검색 기준</h3>
+          <p class="doc-p">옵션은 그 화면 표의 식별 컬럼 이름을 씁니다. 너비는 160 고정. <a class="doc-policy" href="../../index.html#3-7" target="_blank" rel="noopener">3-7</a></p>
+          <div class="doc-example">
+            <div class="doc-example__bar"><strong>회수 관리 · 검색어</strong><span>칸을 눌러 열어 보세요</span></div>
+            <div class="doc-example__body ds-preview-pc" style="padding-bottom:220px">
+              <div class="ex-search">
+                <div class="ds-select">
+                  <button class="ds-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="검색 기준"><span class="ds-select__value">수급자</span><span class="ds-select__chevron"></span></button>
+                  <div class="ds-select__list" role="listbox" hidden>
+                    <button class="ds-select__option" type="button" role="option" aria-selected="true">수급자</button>
+                    <button class="ds-select__option" type="button" role="option" aria-selected="false">요양인정번호</button>
+                    <button class="ds-select__option" type="button" role="option" aria-selected="false">연락처</button>
+                    <button class="ds-select__option" type="button" role="option" aria-selected="false">돌봄 회수 신청번호</button>
+                    <button class="ds-select__option" type="button" role="option" aria-selected="false">원 주문번호</button>
+                  </div>
+                </div>
+                <div class="ds-input"><input class="ds-input__control" type="search" placeholder="검색어 입력" aria-label="검색어" enterkeyhint="search"><button class="ds-input__btn" type="button" aria-label="검색"></button></div>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="doc-h3">폼 안의 선택 + 직접 입력</h3>
+          <p class="doc-p">“직접 입력”을 고르면 바로 아래에 입력칸이 열립니다. 라벨 125 고정 배치는 Text input과 같습니다. <a class="doc-policy" href="../../index.html#3-2" target="_blank" rel="noopener">3-2</a></p>
+          <div class="doc-example">
+            <div class="doc-example__bar"><strong>배송정보 변경</strong><span>“직접 입력”을 골라 보세요</span></div>
+            <div class="doc-example__body" style="padding-bottom:200px">
+              <div class="ex-form">
+                <div class="ex-row"><span class="ex-row__label" id="ex-req-label">배송요청사항</span>
+                  <div class="ex-row__body">
+                    <div class="ds-select" id="ex-req">
+                      <button class="ds-select__trigger ds-is-inactive" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="ex-req-label"><span class="ds-select__value ds-is-placeholder">선택</span><span class="ds-select__chevron"></span></button>
+                      <div class="ds-select__list" role="listbox" hidden>
+                        <button class="ds-select__option" type="button" role="option" aria-selected="false">문 앞에 놓아 주세요</button>
+                        <button class="ds-select__option" type="button" role="option" aria-selected="false">경비실에 맡겨 주세요</button>
+                        <button class="ds-select__option" type="button" role="option" aria-selected="false">배송 전 연락 주세요</button>
+                        <button class="ds-select__option" type="button" role="option" aria-selected="false" data-value="custom">직접 입력</button>
+                      </div>
+                    </div>
+                    <div class="ds-field" id="ex-req-custom" hidden>
+                      <div class="ds-input"><input class="ds-input__control" placeholder="요청사항 입력" aria-label="배송요청사항 직접 입력" maxlength="40"><button class="ds-input__clear" type="button" aria-label="지우기"></button></div>
+                      <p class="ds-field__hint">한글 20자, 영문 40자 이내로 입력해 주세요.</p>
+                    </div>
+                  </div></div>
+              </div>
+            </div>
+          </div>
+          <p class="doc-note">모바일(1024px 이하) 바텀시트 안에서 셀렉트를 누르면 원래 시트 대신 옵션 시트가 열리고, 선택 완료·닫기 후 원래 시트로 돌아옵니다. 오버레이는 한 번에 하나만 엽니다. <a class="doc-policy" href="../../index.html#3-5" target="_blank" rel="noopener">3-5</a> <a class="doc-policy" href="../../index.html#3-3" target="_blank" rel="noopener">3-3</a></p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="principles">사용 원칙</h2>
+          <div class="doc-rules">
+            <div class="doc-rule"><div class="doc-rule__stage ds-preview-pc" style="justify-content:flex-start">
+                <div class="ds-select"><button class="ds-select__trigger" type="button" aria-expanded="true" tabindex="-1"><span class="ds-select__value">주문완료</span><span class="ds-select__chevron"></span></button>
+                  <div class="ds-select__list ds-select__list--static" data-static role="listbox" aria-label="좋은 예"><button class="ds-select__option" type="button" tabindex="-1">주문확인중</button><button class="ds-select__option" type="button" aria-selected="true" tabindex="-1">주문완료</button><button class="ds-select__option" type="button" tabindex="-1">출고준비중</button></div></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">목록을 열면 현재 값이 처음부터 선택 표시되어 있습니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage ds-preview-pc" style="justify-content:flex-start">
+                <div class="ds-select"><button class="ds-select__trigger" type="button" aria-expanded="true" tabindex="-1"><span class="ds-select__value">주문완료</span><span class="ds-select__chevron"></span></button>
+                  <div class="ds-select__list ds-select__list--static" data-static role="listbox" aria-label="나쁜 예"><button class="ds-select__option" type="button" tabindex="-1">주문확인중</button><button class="ds-select__option" type="button" tabindex="-1">주문완료</button><button class="ds-select__option" type="button" tabindex="-1">출고준비중</button></div></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">어떤 값이 골라져 있는지 목록에서 다시 찾아야 합니다.</p></div></div>
+
+            <div class="doc-rule"><div class="doc-rule__stage ds-preview-pc"><div class="ds-field"><span class="ds-field__label">검색 기준</span><div class="ds-select"><button class="ds-select__trigger" type="button" tabindex="-1"><span class="ds-select__value">요양인정번호</span><span class="ds-select__chevron"></span></button></div></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">옵션 이름은 짧은 명사로. 표의 컬럼 이름과 같게 맞춥니다. <a class="doc-policy" href="../../index.html#3-7" target="_blank" rel="noopener">3-7</a></p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage ds-preview-pc"><div class="ds-field"><span class="ds-field__label">검색 기준</span><div class="ds-select"><button class="ds-select__trigger" type="button" tabindex="-1"><span class="ds-select__value">수급자의 요양인정번호로 검색하기</span><span class="ds-select__chevron"></span></button></div></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">문장형 옵션은 칸에서 잘리고 서로 비교하기 어렵습니다.</p></div></div>
+
+            <div class="doc-rule"><div class="doc-rule__stage ds-preview-pc"><div class="ds-select"><button class="ds-select__trigger" type="button" tabindex="-1"><span class="ds-select__value">수급자</span><span class="ds-select__chevron"></span></button></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">DS 셀렉트를 씁니다. 목록 모양·크기가 어느 기기에서나 같습니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage"><select aria-label="나쁜 예" style="height:40px;font:inherit;font-size:14px"><option>수급자</option><option>연락처</option></select></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">브라우저 기본 <code>&lt;select&gt;</code>는 기기마다 모양이 달라 DS와 맞지 않습니다. <a class="doc-policy" href="../../index.html#3-7" target="_blank" rel="noopener">3-7</a></p></div></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ========================= 개발 ========================= -->
+      <div id="panel-dev" role="tabpanel" aria-labelledby="tab-dev" hidden>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-setup">불러오기</h2>
+          <p class="doc-p">열기·닫기·키보드·바깥 클릭 닫기는 <code>ds.js</code>가 처리합니다. 마크업만 맞추면 됩니다.</p>
+          <div class="doc-code"><pre>&lt;link rel="stylesheet" href="design-system/css/tokens.css"&gt;
+&lt;link rel="stylesheet" href="design-system/css/components.css"&gt;
+&lt;script defer src="design-system/js/ds.js"&gt;&lt;/script&gt;</pre></div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-markup">기본 마크업</h2>
+          <div class="doc-code"><pre>&lt;div class="ds-field"&gt;
+  &lt;span class="ds-field__label" id="status-label"&gt;주문 상태&lt;/span&gt;
+  &lt;div class="ds-select"&gt;
+    &lt;button class="ds-select__trigger ds-is-inactive" type="button"
+            aria-haspopup="listbox" aria-expanded="false" aria-labelledby="status-label"&gt;
+      &lt;span class="ds-select__value ds-is-placeholder"&gt;선택&lt;/span&gt;
+      &lt;span class="ds-select__chevron"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;div class="ds-select__list" role="listbox" aria-labelledby="status-label" hidden&gt;
+      &lt;button class="ds-select__option" type="button" role="option" aria-selected="false" data-value="new"&gt;신규배정&lt;/button&gt;
+      &lt;button class="ds-select__option" type="button" role="option" aria-selected="false" data-value="checking"&gt;주문확인중&lt;/button&gt;
+      &lt;button class="ds-select__option" type="button" role="option" aria-selected="false" aria-disabled="true"&gt;취소요청&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre></div>
+          <p class="doc-note">값이 이미 있으면 <code>ds-is-inactive</code>·<code>ds-is-placeholder</code>를 빼고, 해당 옵션에 <code>aria-selected="true"</code>를 줍니다.</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-states">상태 만들기</h2>
+          <table class="doc-table">
+            <thead><tr><th>상태</th><th>방법</th></tr></thead>
+            <tbody>
+              <tr><td>Inactive</td><td>trigger에 <code>.ds-is-inactive</code>, 값에 <code>.ds-is-placeholder</code> (선택하면 ds.js가 제거)</td></tr>
+              <tr><td>Focused</td><td>열리면 자동(<code>aria-expanded="true"</code>), 키보드 포커스는 <code>:focus-visible</code></td></tr>
+              <tr><td>Error</td><td>trigger에 <code>aria-invalid="true"</code> + <code>.ds-field__error</code> 문구</td></tr>
+              <tr><td>Disabled</td><td>trigger에 <code>disabled</code></td></tr>
+              <tr><td>ReadOnly</td><td>trigger에 <code>.ds-is-readonly</code> (눌러도 열리지 않음)</td></tr>
+              <tr><td>옵션 Disabled</td><td>옵션에 <code>aria-disabled="true"</code></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-behavior">동작과 이벤트</h2>
+          <table class="doc-table">
+            <thead><tr><th>입력</th><th>동작</th></tr></thead>
+            <tbody>
+              <tr><td>클릭 · Enter · Space</td><td>목록 열기/닫기. 열리면 현재 값이 보이도록 스크롤</td></tr>
+              <tr><td>↓ / ↑</td><td>목록을 열고 옵션 사이 이동(Disabled 건너뜀)</td></tr>
+              <tr><td>Enter (옵션)</td><td>선택하고 닫은 뒤 칸으로 포커스 복귀</td></tr>
+              <tr><td>Esc · 바깥 클릭 · Tab</td><td>닫기</td></tr>
+              <tr><td>다른 셀렉트 열기</td><td>열려 있던 목록은 자동으로 닫힘(오버레이는 하나만)</td></tr>
+            </tbody>
+          </table>
+          <div class="doc-code"><pre>// 값이 바뀌면 ds-change 이벤트가 .ds-select에서 발생합니다.
+document.querySelector('#status').addEventListener('ds-change', function (e) {
+  console.log(e.detail.value); // data-value, 없으면 옵션 글자
+});
+
+// 마크업을 나중에 그렸다면 다시 연결
+DS.init(container);</pre></div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-classes">클래스</h2>
+          <table class="doc-table">
+            <thead><tr><th>클래스</th><th>역할</th></tr></thead>
+            <tbody>
+              <tr><td><code>.ds-select</code></td><td>칸과 목록을 묶는 위치 기준</td></tr>
+              <tr><td><code>.ds-select__trigger</code></td><td>칸(SelectField). 입력칸과 같은 크기·상태</td></tr>
+              <tr><td><code>.ds-select__value</code></td><td>현재 값. 길면 말줄임</td></tr>
+              <tr><td><code>.ds-select__chevron</code></td><td>화살표 24. 열리면 180° 회전</td></tr>
+              <tr><td><code>.ds-select__list</code></td><td>옵션 패널(OptionGroup). 칸 아래 4, 6개 넘으면 스크롤</td></tr>
+              <tr><td><code>.ds-select__option</code></td><td>옵션 행(SelectOption) PC 36 / 모바일 44</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <p class="doc-p">바이브 코딩할 때 프롬프트에 그대로 붙여 넣는 규칙입니다.</p>
+          <div class="doc-code"><pre>[Select 규칙 — 이로움케어 DS]
+- 네이티브 &lt;select&gt; 금지. .ds-select > button.ds-select__trigger(.ds-select__value + .ds-select__chevron) + .ds-select__list[role=listbox] > button.ds-select__option[role=option]
+- ds.js가 열기/닫기/키보드/바깥 클릭/하나만 열기를 처리. 값 변경은 ds-change 이벤트
+- 칸: PC 40 / 1024px 이하 48, 상태 규칙은 Text input과 동일(열림 = Focused 2px #323DA3)
+- 옵션 패널: 칸 아래 4, 패딩 8, 테두리 1px #333, radius 4, shadow3, 옵션 6개까지 보이고 스크롤
+- 옵션 행: PC 36 / 모바일 44. 선택 #EFF1FD, hover #EEE, 선택+hover #CED2F4, disabled #EEE
+- 현재 값은 목록을 열 때부터 선택 표시. 옵션 이름은 짧은 명사(표 컬럼 이름)
+- 모바일 리스트 필터는 셀렉트가 아니라 필터칩 + 단일 선택 시트(정책 3-7)</pre></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <aside class="doc-toc" aria-label="이 페이지에서">
+    <p class="doc-toc__title">이 페이지에서</p>
+    <nav id="doc-toc-links"></nav>
+  </aside>
+</div>
+
+<script>
+window.addEventListener('load', function () {
+  var ALL = ['전체', '신규배정', '주문확인중', '주문완료', '출고준비중', '출고완료', '배송완료', '취소요청', '주문취소', '취소완료'];
+  var field = document.getElementById('play-field');
+  var sel = document.getElementById('play-select');
+  var trigger = sel.querySelector('.ds-select__trigger');
+  var value = document.getElementById('play-value');
+  var list = document.getElementById('play-list');
+  var help = document.getElementById('play-help');
+  var count = 10, state = 'live', chosen = null;
+  function build() {
+    list.innerHTML = ALL.slice(0, count).map(function (t) {
+      return '<button class="ds-select__option" type="button" role="option" tabindex="-1" aria-selected="' + (t === chosen) + '"' + (t === '취소요청' ? ' aria-disabled="true"' : '') + '>' + t + '</button>';
+    }).join('');
+  }
+  function render() {
+    DS.closeSelect(sel);
+    trigger.disabled = state === 'disabled';
+    trigger.classList.toggle('ds-is-readonly', state === 'readonly');
+    if (state === 'error') trigger.setAttribute('aria-invalid', 'true'); else trigger.removeAttribute('aria-invalid');
+    if ((state === 'disabled' || state === 'readonly') && !chosen) chosen = '주문완료';
+    var empty = !chosen;
+    value.textContent = chosen || '선택';
+    value.classList.toggle('ds-is-placeholder', empty);
+    trigger.classList.toggle('ds-is-inactive', empty);
+    help.hidden = state !== 'error';
+    help.className = 'ds-field__error';
+    help.textContent = '주문 상태를 선택해 주세요.';
+    build();
+  }
+  sel.addEventListener('ds-change', function (e) { chosen = e.detail.value; if (state === 'error') { state = 'live'; document.querySelector('#seg-state [data-value="live"]').click(); } });
+  document.getElementById('seg-device').addEventListener('doc-seg', function (e) {
+    field.classList.toggle('ds-preview-pc', e.detail === 'pc');
+    field.classList.toggle('ds-preview-mo', e.detail === 'mo');
+  });
+  document.getElementById('seg-state').addEventListener('doc-seg', function (e) { state = e.detail; if (state === 'error') chosen = null; render(); });
+  document.getElementById('seg-count').addEventListener('doc-seg', function (e) { count = +e.detail; if (ALL.indexOf(chosen) >= count) chosen = null; render(); });
+  if (window.matchMedia('(max-width: 1024px)').matches) document.querySelector('#seg-device [data-value="mo"]').click();
+  render();
+
+  var req = document.getElementById('ex-req');
+  req.addEventListener('ds-change', function (e) {
+    var custom = document.getElementById('ex-req-custom');
+    custom.hidden = e.detail.value !== 'custom';
+    if (!custom.hidden) custom.querySelector('input').focus();
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+/* 자동 생성 — tools/build-tokens.js. Figma Text styles를 클래스 하나로 쓰는 도구 */
+.ds-text-heading-xxl-heavy { font-family: var(--ds-font-family-suit); font-weight: 900; font-size: 36px; line-height: 46px; letter-spacing: -0.02em; }
+.ds-text-heading-xxl-bold { font-family: var(--ds-font-family-suit); font-weight: 700; font-size: 36px; line-height: 46px; letter-spacing: -0.02em; }
+.ds-text-heading-xl-heavy { font-family: var(--ds-font-family-suit); font-weight: 900; font-size: 32px; line-height: 42px; letter-spacing: -0.02em; }
+.ds-text-heading-xl-bold { font-family: var(--ds-font-family-suit); font-weight: 700; font-size: 32px; line-height: 42px; letter-spacing: -0.02em; }
+.ds-text-heading-lg-heavy { font-family: var(--ds-font-family-suit); font-weight: 900; font-size: 28px; line-height: 38px; letter-spacing: -0.02em; }
+.ds-text-heading-lg-bold { font-family: var(--ds-font-family-suit); font-weight: 700; font-size: 28px; line-height: 38px; letter-spacing: -0.02em; }
+.ds-text-heading-md-heavy { font-family: var(--ds-font-family-suit); font-weight: 900; font-size: 24px; line-height: 34px; letter-spacing: -0.02em; }
+.ds-text-heading-md-bold { font-family: var(--ds-font-family-suit); font-weight: 700; font-size: 24px; line-height: 34px; letter-spacing: -0.02em; }
+.ds-text-heading-sm-heavy { font-family: var(--ds-font-family-suit); font-weight: 900; font-size: 20px; line-height: 30px; letter-spacing: -0.02em; }
+.ds-text-heading-sm-bold { font-family: var(--ds-font-family-suit); font-weight: 700; font-size: 20px; line-height: 30px; letter-spacing: -0.02em; }
+.ds-text-body-md-heavy { font-family: var(--ds-font-family-suit); font-weight: 900; font-size: 18px; line-height: 26px; letter-spacing: -0.015em; }
+.ds-text-body-md-bold { font-family: var(--ds-font-family-suit); font-weight: 700; font-size: 18px; line-height: 26px; letter-spacing: -0.015em; }
+.ds-text-body-md-semibold { font-family: var(--ds-font-family-suit); font-weight: 600; font-size: 18px; line-height: 26px; letter-spacing: -0.015em; }
+.ds-text-body-md-regular { font-family: var(--ds-font-family-suit); font-weight: 400; font-size: 18px; line-height: 26px; letter-spacing: -0.015em; }
+.ds-text-body-md-underline { font-family: var(--ds-font-family-suit); font-weight: 600; font-size: 18px; line-height: 26px; letter-spacing: -0.015em; text-decoration: underline; }
+.ds-text-body-md-strike-through { font-family: var(--ds-font-family-suit); font-weight: 600; font-size: 18px; line-height: 26px; letter-spacing: -0.015em; text-decoration: line-through; }
+.ds-text-body-sm-heavy { font-family: var(--ds-font-family-suit); font-weight: 900; font-size: 16px; line-height: 24px; letter-spacing: -0.015em; }
+.ds-text-body-sm-bold { font-family: var(--ds-font-family-suit); font-weight: 700; font-size: 16px; line-height: 24px; letter-spacing: -0.015em; }
+.ds-text-body-sm-semibold { font-family: var(--ds-font-family-suit); font-weight: 600; font-size: 16px; line-height: 24px; letter-spacing: -0.015em; }
+.ds-text-body-sm-regular { font-family: var(--ds-font-family-suit); font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: -0.015em; }
+.ds-text-body-sm-underline { font-family: var(--ds-font-family-suit); font-weight: 600; font-size: 16px; line-height: 24px; letter-spacing: -0.015em; text-decoration: underline; }
+.ds-text-body-ss-heavy { font-family: var(--ds-font-family-suit); font-weight: 900; font-size: 14px; line-height: 20px; letter-spacing: -0.015em; }
+.ds-text-body-ss-bold { font-family: var(--ds-font-family-suit); font-weight: 700; font-size: 14px; line-height: 20px; letter-spacing: 0; }
+.ds-text-body-ss-semibold { font-family: var(--ds-font-family-suit); font-weight: 600; font-size: 14px; line-height: 20px; letter-spacing: 0; }
+.ds-text-body-ss-regular { font-family: var(--ds-font-family-suit); font-weight: 400; font-size: 14px; line-height: 20px; letter-spacing: 0; }
+.ds-text-body-ss-underline { font-family: var(--ds-font-family-suit); font-weight: 400; font-size: 14px; line-height: 20px; letter-spacing: -0.015em; text-decoration: underline; }
+.ds-text-caption-xs { font-family: var(--ds-font-family-suit); font-weight: 500; font-size: 12px; line-height: 18px; letter-spacing: -0.015em; }
+.ds-text-caption-strike-through { font-family: var(--ds-font-family-suit); font-weight: 500; font-size: 12px; line-height: 18px; letter-spacing: -0.015em; text-decoration: line-through; }

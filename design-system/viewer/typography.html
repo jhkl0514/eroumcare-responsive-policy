@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Typography · 이로움케어 디자인 시스템</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/typography.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="doc.css">
+<script defer src="../js/ds.js"></script>
+<script defer src="doc.js"></script>
+</head>
+<body data-page="Typography">
+<header class="doc-header">
+  <button class="doc-menu-btn" id="doc-menu-btn" type="button" aria-label="메뉴" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+  <a class="doc-brand" href="index.html?item=%EB%94%94%EC%9E%90%EC%9D%B8%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%EA%B0%9C%EC%9A%94"><strong>이로움케어</strong><span>디자인 시스템</span></a>
+  <span class="doc-header__spacer"></span>
+  <a class="doc-hub-link" href="../../index.html">← 정책 허브</a>
+</header>
+
+<div class="doc-shell">
+  <nav class="doc-side" id="doc-side" aria-label="디자인 시스템 메뉴"></nav>
+
+  <main class="doc-main">
+    <div class="doc-content">
+      <p class="doc-crumb">Foundation</p>
+      <h1 class="doc-h1">Typography</h1>
+      <p class="doc-lead">글꼴은 SUIT 하나입니다. 크기 단계(Heading 5 · Body 3 · Caption 1)마다 굵기를 골라 씁니다. 화면마다 새 크기를 만들지 않습니다.</p>
+      <div class="doc-meta">
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=13-314" target="_blank" rel="noopener">Figma · Typography ↗</a>
+        <span>Text styles 28</span>
+      </div>
+
+      <div class="doc-tabs" role="tablist" aria-label="문서 보기">
+        <button class="doc-tab" role="tab" id="tab-design" data-tab="design" aria-controls="panel-design" aria-selected="true">디자인</button>
+        <button class="doc-tab" role="tab" id="tab-dev" data-tab="dev" aria-controls="panel-dev" aria-selected="false">개발</button>
+      </div>
+
+      <div id="panel-design" role="tabpanel" aria-labelledby="tab-design">
+        <section class="doc-section">
+          <h2 class="doc-h2" id="scale">크기 단계</h2>
+          <p class="doc-p">한 줄이 하나의 크기 단계입니다. 굵기를 바꿔 보면 같은 단계 안의 스타일을 확인할 수 있습니다. 보기 문장은 직접 고칠 수 있습니다.</p>
+          <div class="doc-ctl" style="margin:16px 0 8px;flex-wrap:wrap">
+            <span class="doc-ctl__name">굵기</span>
+            <div class="doc-seg" id="seg-weight"><button type="button" data-value="base" aria-pressed="true">기본</button><button type="button" data-value="semibold" aria-pressed="false">SemiBold</button><button type="button" data-value="bold" aria-pressed="false">Bold</button><button type="button" data-value="heavy" aria-pressed="false">Heavy</button></div>
+            <input class="ds-input ds-preview-pc" id="sample" value="수급자 홍길동 님의 대여 주문" aria-label="보기 문장" style="max-width:280px">
+          </div>
+          <div id="scale-list"></div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="usage">어디에 쓰나</h2>
+          <p class="doc-p">컴포넌트에 이미 정해진 크기입니다. 새 화면에서도 같은 자리에는 같은 스타일을 씁니다.</p>
+          <table class="doc-table">
+            <thead><tr><th>자리</th><th>PC</th><th>모바일</th></tr></thead>
+            <tbody>
+              <tr><td>모달 타이틀 · 바텀시트 타이틀</td><td>Heading/<wbr>SM/<wbr>Bold 20</td><td>Heading/<wbr>SM/<wbr>Bold 20</td></tr>
+              <tr><td>모달 본문</td><td>Body/<wbr>MD/<wbr>Regular 18</td><td>Body/<wbr>MD/<wbr>Regular 18</td></tr>
+              <tr><td>입력칸 · 셀렉트 값, 라벨</td><td>Body/<wbr>SS/<wbr>Regular 14</td><td>Body/<wbr>SM/<wbr>Regular 16</td></tr>
+              <tr><td>긴 글(Textarea)</td><td>Body/<wbr>SM/<wbr>Regular 16</td><td>Body/<wbr>SM/<wbr>Regular 16</td></tr>
+              <tr><td>도움말 · 오류 문구</td><td>Body/<wbr>SS/<wbr>Regular 14</td><td>Body/<wbr>SS/<wbr>Regular 14</td></tr>
+              <tr><td>버튼 SM · MD · LG</td><td colspan="2">Body/SS/SemiBold 14 · Body/SM/SemiBold 16 · Body/MD/SemiBold 18</td></tr>
+              <tr><td>상태칩</td><td colspan="2">Body/SS/SemiBold 14</td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">모바일 입력 글자는 16 이상입니다. 16보다 작으면 iOS가 입력칸을 누를 때 화면을 확대합니다. <a class="doc-policy" href="../../index.html#3-2" target="_blank" rel="noopener">3-2</a></p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="font">글꼴</h2>
+          <div class="doc-stage doc-stage--white" id="weights" style="display:grid;gap:12px"></div>
+          <p class="doc-note">SUIT를 읽어 오지 못하면 Apple SD Gothic Neo → Noto Sans KR 순으로 대신 씁니다.</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="rules">줄 높이와 자간</h2>
+          <table class="doc-table">
+            <thead><tr><th>단계</th><th>줄 높이</th><th>자간</th></tr></thead>
+            <tbody>
+              <tr><td>Heading (20~36)</td><td>크기 + 10</td><td>−2%</td></tr>
+              <tr><td>Body MD · SM (16 · 18)</td><td>크기 + 8</td><td>−1.5%</td></tr>
+              <tr><td>Body SS (14)</td><td>20</td><td>0% (Heavy · Underline만 −1.5%)</td></tr>
+              <tr><td>Caption (12)</td><td>18</td><td>−1.5%, Medium</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="principles">사용 원칙</h2>
+          <div class="doc-rules">
+            <div class="doc-rule"><div class="doc-rule__stage"><p class="ds-text-heading-sm-bold" style="margin:0">주문 정보</p><p class="ds-text-body-ss-regular" style="margin:0;color:var(--ds-color-text-secondary)">주문번호 R000-0001</p></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">위계는 정해진 단계 차이로 만듭니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage"><p style="margin:0;font-size:19px;font-weight:700">주문 정보</p><p style="margin:0;font-size:13px;color:#777">주문번호 R000-0001</p></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">19px · 13px처럼 단계에 없는 크기를 만들면 화면마다 위계가 달라집니다.</p></div></div>
+          </div>
+        </section>
+      </div>
+
+      <div id="panel-dev" role="tabpanel" aria-labelledby="tab-dev" hidden>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-class">클래스로 쓰기</h2>
+          <p class="doc-p"><code>typography.css</code>를 넣으면 Figma 텍스트 스타일 이름 그대로 클래스가 있습니다.</p>
+          <div class="doc-code"><pre>&lt;link rel="stylesheet" href="design-system/css/typography.css"&gt;
+
+&lt;h2 class="ds-text-heading-sm-bold"&gt;주문 정보&lt;/h2&gt;
+&lt;p class="ds-text-body-ss-regular"&gt;주문번호 R000-0001&lt;/p&gt;
+
+/* Suit/Heading/SM/Bold → .ds-text-heading-sm-bold
+   Suit/Body/SS/SemiBold → .ds-text-body-ss-semibold
+   Suit/Caption/XS → .ds-text-caption-xs */</pre></div>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-var">변수로 쓰기</h2>
+          <div class="doc-code"><pre>.title {
+  font-family: var(--ds-font-family-suit);
+  font-size: var(--ds-font-heading-sm-bold-size);         /* 20px */
+  line-height: var(--ds-font-heading-sm-bold-line-height); /* 30px */
+  letter-spacing: var(--ds-font-heading-sm-bold-letter-spacing); /* -0.02em */
+  font-weight: var(--ds-font-heading-sm-bold-weight);     /* 700 */
+}</pre></div>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <div class="doc-code"><pre>[Typography 규칙 — 이로움케어 DS]
+- 글꼴 SUIT 하나. 크기는 36·32·28·24·20(Heading) / 18·16·14(Body) / 12(Caption)만
+- 클래스 .ds-text-{heading|body|caption}-{xxl|xl|lg|md|sm|ss|xs}-{heavy|bold|semibold|regular}
+- 모달 타이틀 heading-sm-bold, 모달 본문 body-md-regular, PC 입력 body-ss-regular, 모바일 입력 body-sm-regular(16 이상)
+- 단계에 없는 크기(13·15·19px 등)를 새로 만들지 않음</pre></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <aside class="doc-toc" aria-label="이 페이지에서">
+    <p class="doc-toc__title">이 페이지에서</p>
+    <nav id="doc-toc-links"></nav>
+  </aside>
+</div>
+<style>
+.ty-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 8px 24px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--doc-line-soft); }
+.ty-meta { display: flex; flex-direction: column; gap: 2px; }
+.ty-meta strong { font-size: 14px; }
+.ty-meta span { color: var(--doc-text-3); font-size: 13px; }
+.ty-sample { margin: 0; color: var(--doc-text); overflow-wrap: anywhere; }
+@media (max-width: 720px) { .ty-row { grid-template-columns: minmax(0, 1fr); } }
+</style>
+<script>
+window.addEventListener('load', function () {
+  var STYLES = [
+    ['Heading', 'XXL', 36, 46, '-2%', { base: 'heavy', bold: 'bold', heavy: 'heavy' }],
+    ['Heading', 'XL', 32, 42, '-2%', { base: 'heavy', bold: 'bold', heavy: 'heavy' }],
+    ['Heading', 'LG', 28, 38, '-2%', { base: 'heavy', bold: 'bold', heavy: 'heavy' }],
+    ['Heading', 'MD', 24, 34, '-2%', { base: 'bold', bold: 'bold', heavy: 'heavy' }],
+    ['Heading', 'SM', 20, 30, '-2%', { base: 'bold', bold: 'bold', heavy: 'heavy' }],
+    ['Body', 'MD', 18, 26, '-1.5%', { base: 'regular', semibold: 'semibold', bold: 'bold', heavy: 'heavy' }],
+    ['Body', 'SM', 16, 24, '-1.5%', { base: 'regular', semibold: 'semibold', bold: 'bold', heavy: 'heavy' }],
+    ['Body', 'SS', 14, 20, '0%', { base: 'regular', semibold: 'semibold', bold: 'bold', heavy: 'heavy' }],
+    ['Caption', 'XS', 12, 18, '-1.5%', { base: '' }]
+  ];
+  var W = { regular: 'Regular 400', semibold: 'SemiBold 600', bold: 'Bold 700', heavy: 'Heavy 900', '': 'Medium 500' };
+  var weight = 'base';
+  function render() {
+    var text = document.getElementById('sample').value || '이로움케어';
+    document.getElementById('scale-list').innerHTML = STYLES.map(function (s) {
+      var w = s[5][weight]; var missing = w === undefined; if (missing) w = s[5].base;
+      var cls = 'ds-text-' + s[0].toLowerCase() + '-' + s[1].toLowerCase() + (w ? '-' + w : '');
+      var figma = 'Suit/' + s[0] + '/' + s[1] + (w ? '/' + (w.charAt(0).toUpperCase() + w.slice(1).replace('bold', 'Bold')) : '');
+      return '<div class="ty-row"><div class="ty-meta"><strong>' + figma + '</strong><span>' + s[2] + ' / ' + s[3] + ' · ' + s[4] + ' · ' + W[w] + (missing ? ' · 이 굵기 없음' : '') + '</span></div><p class="' + cls + ' ty-sample">' + text.replace(/</g, '&lt;') + '</p></div>';
+    }).join('');
+  }
+  document.getElementById('seg-weight').addEventListener('doc-seg', function (e) { weight = e.detail; render(); });
+  document.getElementById('sample').addEventListener('input', render);
+  render();
+  document.getElementById('weights').innerHTML = [['Regular', 400], ['Medium', 500], ['SemiBold', 600], ['Bold', 700], ['Heavy', 900]].map(function (w) {
+    return '<div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap"><span style="width:120px;color:#8a8a8a;font-size:14px">' + w[0] + ' ' + w[1] + '</span><span style="font-family:var(--ds-font-family-suit);font-size:24px;font-weight:' + w[1] + '">가나다라 이로움케어 0123456789</span></div>';
+  }).join('');
+});
+</script>
+</body>
+</html>

@@ -11,6 +11,25 @@
   <link rel="stylesheet" href="viewer.css">
   <script defer src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
   <script defer src="viewer.js"></script>
+  <script>
+  /* 새 문서 페이지로 옮긴 항목은 그 페이지로 보낸다. 나머지 항목만 이 뷰어가 보여 준다. */
+  (function () {
+    var DS_NEW_PAGES = { 'Color': 'color.html', 'Typography': 'typography.html', 'Shape': 'shape.html', 'Layout': 'layout.html', 'Icon': 'icon.html', 'Text input': 'text-input.html', 'Select': 'select.html', 'Textarea': 'textarea.html', 'Button': 'button.html', 'Status Chip': 'status-chip.html', 'Modal': 'modal.html' };
+    var q = new URLSearchParams(location.search);
+    var key = q.get('item') || q.get('p') || decodeURIComponent((location.hash || '').replace(/^#\??/, '').replace(/^item=/, ''));
+    if (!key) { location.replace('color.html'); return; }
+    var base = key.split('#')[0].split('/').pop().replace(/\.md$/, '') + '.html';
+    var files = Object.keys(DS_NEW_PAGES).map(function (k) { return DS_NEW_PAGES[k]; });
+    if (DS_NEW_PAGES[key]) { location.replace(DS_NEW_PAGES[key]); return; }
+    if (files.indexOf(base) > -1) { location.replace(base); return; }
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('.nav-item');
+      if (!b) return;
+      var t = b.querySelector('span') && b.querySelector('span').textContent.trim();
+      if (DS_NEW_PAGES[t]) { e.preventDefault(); e.stopImmediatePropagation(); location.href = DS_NEW_PAGES[t]; }
+    }, true);
+  })();
+  </script>
 </head>
 <body>
   <header class="site-header">
