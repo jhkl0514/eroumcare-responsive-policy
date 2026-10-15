@@ -533,6 +533,8 @@
   --ds-icon-clear: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM15.1772 8.8227C15.4408 9.08631 15.4408 9.51369 15.1772 9.7773L12.9545 12L15.1772 14.2227C15.4408 14.4863 15.4408 14.9137 15.1772 15.1773C14.9136 15.4409 14.4862 15.4409 14.2226 15.1773L11.9999 12.9546L9.77717 15.1773C9.51356 15.4409 9.08618 15.4409 8.82257 15.1773C8.55897 14.9137 8.55897 14.4863 8.82257 14.2227L11.0453 12L8.82257 9.7773C8.55897 9.51369 8.55897 9.08631 8.82257 8.8227C9.08618 8.5591 9.51356 8.5591 9.77717 8.8227L11.9999 11.0454L14.2226 8.8227C14.4862 8.5591 14.9136 8.5591 15.1772 8.8227Z'/%3E%3C/svg%3E");
   --ds-icon-search: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M16.4544 17.6115C15.0606 18.7493 13.2805 19.4318 11.341 19.4318C6.87242 19.4318 3.25 15.8094 3.25 11.341C3.25 6.87242 6.87242 3.25 11.341 3.25C15.8094 3.25 19.4318 6.87242 19.4318 11.341C19.4318 13.2805 18.7493 15.0606 17.6115 16.4544L21.0104 19.8533C21.3299 20.1729 21.3299 20.6908 21.0104 21.0104C20.6908 21.3299 20.1729 21.3299 19.8533 21.0104L16.4544 17.6115ZM4.88637 11.341C4.88637 7.77617 7.77617 4.88637 11.341 4.88637C14.9057 4.88637 17.7954 7.77617 17.7954 11.341C17.7954 13.0825 17.1058 14.6629 15.9845 15.8239C15.9546 15.8466 15.9259 15.8715 15.8988 15.8988C15.8715 15.9259 15.8466 15.9546 15.8239 15.9845C14.6629 17.1058 13.0825 17.7954 11.341 17.7954C7.77617 17.7954 4.88637 14.9057 4.88637 11.341Z'/%3E%3C/svg%3E");
   --ds-icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21.0303 5.71967C21.3232 6.01256 21.3232 6.48744 21.0303 6.78033L9.53033 18.2803C9.23744 18.5732 8.76256 18.5732 8.46967 18.2803L2.96967 12.7803C2.67678 12.4874 2.67678 12.0126 2.96967 11.7197C3.26256 11.4268 3.73744 11.4268 4.03033 11.7197L9 16.6893L19.9697 5.71967C20.2626 5.42678 20.7374 5.42678 21.0303 5.71967Z'/%3E%3C/svg%3E");
+  --ds-icon-checkmark-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='2 2 16 16'%3E%3Cpath fill='%23FFFFFF' fill-rule='evenodd' d='M15.8047 5.52858C16.0651 5.78892 16.0651 6.21103 15.8047 6.47138L8.4714 13.8047C8.21106 14.0651 7.78894 14.0651 7.5286 13.8047L4.19526 10.4714C3.93491 10.211 3.93491 9.78892 4.19526 9.52858C4.45561 9.26823 4.87772 9.26823 5.13807 9.52858L8 12.3905L14.8619 5.52858C15.1223 5.26823 15.5444 5.26823 15.8047 5.52858Z'/%3E%3C/svg%3E");
+  --ds-icon-checkmark-disabled: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='2 2 16 16'%3E%3Cpath fill='%23BDBDBD' fill-rule='evenodd' d='M15.8047 5.52858C16.0651 5.78892 16.0651 6.21103 15.8047 6.47138L8.4714 13.8047C8.21106 14.0651 7.78894 14.0651 7.5286 13.8047L4.19526 10.4714C3.93491 10.211 3.93491 9.78892 4.19526 9.52858C4.45561 9.26823 4.87772 9.26823 5.13807 9.52858L8 12.3905L14.8619 5.52858C15.1223 5.26823 15.5444 5.26823 15.8047 5.52858Z'/%3E%3C/svg%3E");
   --ds-icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M25.0328 8.4145C25.4326 8.01467 25.4326 7.36641 25.0328 6.96656C24.633 6.56673 23.9847 6.56673 23.5848 6.96656L15.9993 14.552L8.41383 6.96656C8.01399 6.56673 7.36574 6.56673 6.96589 6.96656C6.56606 7.36641 6.56606 8.01467 6.96589 8.4145L14.5513 16L6.96589 23.5855C6.56606 23.9853 6.56606 24.6336 6.96589 25.0335C7.36574 25.4333 8.01399 25.4333 8.41383 25.0335L15.9993 17.448L23.5848 25.0335C23.9847 25.4333 24.633 25.4333 25.0328 25.0335C25.4326 24.6336 25.4326 23.9853 25.0328 23.5855L17.4473 16L25.0328 8.4145Z'/%3E%3C/svg%3E");
   --ds-icon-chevron-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z'/%3E%3C/svg%3E");
 }
@@ -780,3 +782,83 @@
 .ds-chip--table { min-block-size: 24px; padding-block: 0; font-size: var(--ds-font-caption-xs-size); line-height: var(--ds-font-caption-xs-line-height); }
 .ds-input-wrap { position: relative; display: block; }
 .ds-input-wrap > .ds-input__clear { position: absolute; inset-inline-end: 12px; inset-block-start: 50%; transform: translateY(-50%); }
+
+/* Checkbox · Radio — DS Figma checkbox 6568:9409 · Radio 52:46
+   컨트롤 20×20(PC·모바일 같음), 라벨과 사이 8, 라벨 14/20 #1A1A1A. 항목 사이 16.
+   모바일(1024 이하)은 컨트롤을 키우지 않고 줄 높이를 44로 늘려 줄 전체를 누르게 한다(정책 3-0).
+   native input을 그대로 써서 키보드(Tab · Space · 방향키)와 화면낭독기 동작을 유지한다. */
+.ds-check,
+.ds-radio {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--ds-space-8);
+  min-inline-size: 0;
+  color: var(--ds-color-grey-900);
+  font-family: var(--ds-font-family-suit);
+  font-size: var(--ds-font-body-ss-regular-size);
+  line-height: var(--ds-font-body-ss-regular-line-height);
+  letter-spacing: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.ds-check__input,
+.ds-radio__input {
+  flex: 0 0 20px;
+  inline-size: 20px;
+  block-size: 20px;
+  margin: 0;
+  border: 1px solid var(--ds-color-grey-600);
+  background: var(--ds-color-bg-primary) center / 16px 16px no-repeat;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: inherit;
+}
+.ds-check__input { border-radius: var(--ds-radius-4); }
+.ds-radio__input { border-radius: var(--ds-radius-circle); }
+.ds-check__label,
+.ds-radio__label { min-inline-size: 0; word-break: keep-all; overflow-wrap: break-word; }
+
+/* 눌림(Figma Pressed) */
+:is(.ds-check, .ds-radio):active :is(.ds-check__input, .ds-radio__input):not(:disabled):not(:checked),
+:is(.ds-check__input, .ds-radio__input).ds-is-pressed:not(:checked) { border-color: var(--ds-color-grey-800); }
+
+/* 선택 */
+.ds-check__input:checked {
+  border-color: transparent;
+  background-color: var(--ds-color-darkblue-600);
+  background-image: var(--ds-icon-checkmark-white);
+}
+.ds-radio__input:checked {
+  border-color: transparent;
+  background: radial-gradient(circle at center, var(--ds-color-base-white) 0 4.5px, transparent 5px) var(--ds-color-darkblue-600);
+}
+:is(.ds-check, .ds-radio):active .ds-check__input:checked:not(:disabled),
+.ds-check__input:checked.ds-is-pressed { background-color: var(--ds-color-darkblue-800); }
+:is(.ds-check, .ds-radio):active .ds-radio__input:checked:not(:disabled),
+.ds-radio__input:checked.ds-is-pressed { background: radial-gradient(circle at center, var(--ds-color-base-white) 0 4.5px, transparent 5px) var(--ds-color-darkblue-800); }
+
+/* 비활성 — 상자 #EEE · 테두리 #BDBDBD, 체크·점·라벨 #BDBDBD (Radio 점은 10/15 Figma도 회색으로 수정) */
+:is(.ds-check__input, .ds-radio__input):disabled { border-color: var(--ds-color-grey-400); background-color: var(--ds-color-bg-disabled); }
+.ds-check__input:disabled:checked { background-image: var(--ds-icon-checkmark-disabled); }
+.ds-radio__input:disabled:checked { background: radial-gradient(circle at center, var(--ds-color-grey-400) 0 4.5px, transparent 5px) var(--ds-color-bg-disabled); }
+:is(.ds-check, .ds-radio):has(:disabled) { color: var(--ds-color-grey-400); cursor: default; }
+
+/* 키보드 포커스 */
+:is(.ds-check__input, .ds-radio__input):focus-visible { outline: 2px solid var(--ds-color-darkblue-600); outline-offset: 2px; }
+
+/* 묶음: 가로로 놓고 남으면 다음 줄. 사이 16 */
+.ds-choice-group { display: flex; flex-wrap: wrap; gap: var(--ds-space-8) var(--ds-space-16); min-inline-size: 0; margin: 0; padding: 0; border: 0; }
+.ds-choice-group--column { flex-direction: column; gap: var(--ds-space-12); }
+
+@media (max-width: 1024px) {
+  .ds-check, .ds-radio { padding-block: var(--ds-space-12); }      /* 20 + 12×2 = 44 */
+  .ds-choice-group { column-gap: var(--ds-space-24); row-gap: 0; }
+  .ds-choice-group--column { gap: 0; }
+}
+.ds-preview-pc :is(.ds-check, .ds-radio) { padding-block: 0; }
+.ds-preview-pc .ds-choice-group { gap: var(--ds-space-8) var(--ds-space-16); }
+.ds-preview-pc .ds-choice-group--column { gap: var(--ds-space-12); }
+.ds-preview-mo :is(.ds-check, .ds-radio) { padding-block: var(--ds-space-12); }
+.ds-preview-mo .ds-choice-group { column-gap: var(--ds-space-24); row-gap: 0; }
+.ds-preview-mo .ds-choice-group--column { gap: 0; }
