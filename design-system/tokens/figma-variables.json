@@ -1,0 +1,57 @@
+{
+  "source": "Figma DS 64Q1Re56aiAA8Al89pqjnV · Local variables · Text styles · Effect styles (2026-10-14 확인)",
+  "primitive": {
+    "Color/Base/black": "#000000", "Color/Base/white": "#FFFFFF",
+    "Color/Grey/50": "#FAFAFA", "Color/Grey/100": "#F5F5F5", "Color/Grey/200": "#EEEEEE", "Color/Grey/300": "#E0E0E0", "Color/Grey/400": "#BDBDBD", "Color/Grey/500": "#999999", "Color/Grey/600": "#616161", "Color/Grey/700": "#555555", "Color/Grey/800": "#333333", "Color/Grey/900": "#1A1A1A",
+    "Color/Darkblue/50": "#EFF1FD", "Color/Darkblue/100": "#E3E5F5", "Color/Darkblue/200": "#CED2F4", "Color/Darkblue/300": "#9BA2E8", "Color/Darkblue/400": "#767FD1", "Color/Darkblue/500": "#404BB3", "Color/Darkblue/600": "#323DA3", "Color/Darkblue/700": "#212C91", "Color/Darkblue/800": "#141E76", "Color/Darkblue/900": "#10185C",
+    "Color/lightgreen/50": "#F2FDE4", "Color/lightgreen/100": "#DEFABB", "Color/lightgreen/200": "#C6F68D", "Color/lightgreen/300": "#AAF255", "Color/lightgreen/400": "#90EE02", "Color/lightgreen/500": "#75E900", "Color/lightgreen/600": "#61D800", "Color/lightgreen/700": "#41C300", "Color/lightgreen/800": "#09AF00", "Color/lightgreen/900": "#008B00",
+    "Color/blue/50": "#EFF6FF", "Color/blue/100": "#DBEAFE", "Color/blue/200": "#BFDBFE", "Color/blue/300": "#93C5FD", "Color/blue/400": "#60A5FA", "Color/blue/500": "#3B82F6", "Color/blue/600": "#1477F8", "Color/blue/700": "#1D4ED8", "Color/blue/800": "#1E40AF", "Color/blue/900": "#1E3A8A",
+    "Color/green/50": "#E8F5E9", "Color/green/100": "#C8E6C9", "Color/green/200": "#A5D6A7", "Color/green/300": "#81C784", "Color/green/400": "#66BB6A", "Color/green/500": "#4CAF50", "Color/green/600": "#43A047", "Color/green/700": "#15803D", "Color/green/800": "#166534", "Color/green/900": "#1B5E20",
+    "Color/Yellow/50": "#FFF8E1", "Color/Yellow/100": "#FFECB3", "Color/Yellow/200": "#FFE082", "Color/Yellow/300": "#FFD54F", "Color/Yellow/400": "#FFCA28", "Color/Yellow/500": "#FFC107", "Color/Yellow/600": "#FFB300", "Color/Yellow/700": "#FFA000", "Color/Yellow/800": "#FF8F00", "Color/Yellow/900": "#FF6F00",
+    "Color/orange/50": "#FFF5E6", "Color/orange/100": "#FEE3BE", "Color/orange/200": "#FFC77D", "Color/orange/300": "#FFAF49", "Color/orange/400": "#FF9E22", "Color/orange/500": "#FF8D00", "Color/orange/600": "#FF8120", "Color/orange/700": "#F47100", "Color/orange/800": "#EE6002", "Color/orange/900": "#E54304",
+    "Color/red/50": "#FFEBEE", "Color/red/100": "#FFCDD2", "Color/red/200": "#EF9A9A", "Color/red/300": "#E57373", "Color/red/400": "#EF5350", "Color/red/500": "#F44336", "Color/red/600": "#E53935", "Color/red/700": "#D32F2F", "Color/red/800": "#C62828", "Color/red/900": "#B71C1C"
+  },
+  "theme": {
+    "modes": ["대대여", "이로움돌봄"],
+    "map": { "brand": ["Darkblue", "orange"], "neutral": ["Grey", "Grey"], "Infomation": ["blue", "blue"], "success": ["green", "green"], "danger": ["red", "red"], "brandSub": ["lightgreen", "lightgreen"], "warning": ["Yellow", "Yellow"] }
+  },
+  "semantic": {
+    "Color/text/primary": "neutral/900", "Color/text/secondary": "neutral/600", "Color/text/teritiary": "neutral/500", "Color/text/disabled": "neutral/400",
+    "Color/text/brandSub": "brandSub/800", "Color/text/info": "Infomation/600", "Color/text/info-bold": "Infomation/800", "Color/text/success": "success/600", "Color/text/success-bold": "success/800", "Color/text/danger": "danger/600", "Color/text/danger-bold": "danger/800", "Color/text/warning": "warning/600", "Color/text/warning-bold": "warning/800",
+    "Color/text/Primitive/primary": "brand/600", "Color/text/Primitive/primary-hover:active": "brand/800", "Color/text/Primitive/secondary": "neutral/700", "Color/text/Primitive/secondary-hover:active": "neutral/800", "Color/text/Primitive/inverse": "Base/white",
+    "Color/bg/primary": "Base/white", "Color/bg/secondary": "neutral/50", "Color/bg/teritiary": "neutral/100", "Color/bg/disabled": "neutral/200",
+    "Color/bg/brand_subtle": "brand/100", "Color/bg/brandSub-bold": "brandSub/400", "Color/bg/brandSub-subtle": "brandSub/50", "Color/bg/info-bold": "Infomation/700", "Color/bg/info-subtle": "Infomation/50", "Color/bg/success-bold": "success/700", "Color/bg/success-subtle": "success/50", "Color/bg/danger-bold": "danger/700", "Color/bg/danger-bolder": "danger/900", "Color/bg/danger-subtle": "danger/50", "Color/bg/warning-bold": "warning/700", "Color/bg/warning-subtle": "warning/50",
+    "Color/bg/Primitive/primary": "brand/600", "Color/bg/Primitive/primary-hover:active": "brand/800", "Color/bg/Primitive/secondary": "neutral/200", "Color/bg/Primitive/secondary-hover:active": "neutral/300", "Color/bg/Primitive/selected": "brand/50", "Color/bg/Primitive/selected-hover:active": "brand/200", "Color/bg/Primitive/inverse-bold": "neutral/800", "Color/bg/Primitive/inverse-bolder": "neutral/900",
+    "Color/border/primary": "neutral/400", "Color/border/secondary": "neutral/200", "Color/border/teritiary": "neutral/100", "Color/border/disabled": "neutral/400",
+    "Color/border/brand-subtle": "brand/200", "Color/border/brandSub": "brandSub/800", "Color/border/brandSub_subtle": "brandSub/200", "Color/border/info": "Infomation/600", "Color/border/info-subtle": "Infomation/100", "Color/border/success": "success/600", "Color/border/success-subtle": "success/100", "Color/border/danger": "danger/600", "Color/border/danger-subtle": "danger/100", "Color/border/warning": "warning/600", "Color/border/caution-subtle": "warning/200",
+    "Color/border/Primitive/primary": "brand/600", "Color/border/Primitive/primary-hover:active": "brand/800", "Color/border/Primitive/secondary": "neutral/600", "Color/border/Primitive/secondary-hover:active": "neutral/800", "Color/border/Primitive/teritiary": "neutral/300", "Color/border/Primitive/teritiary-hover:active": "neutral/500", "Color/border/Primitive/inverse": "Base/white",
+    "Color/icon/primary": "neutral/800", "Color/icon/secondary": "neutral/600", "Color/icon/teritiary": "neutral/500", "Color/icon/disabled": "neutral/400",
+    "Color/icon/brand-subtle": "brand/200", "Color/icon/brandSub": "brandSub/300", "Color/icon/brandSub-bold": "brandSub/800", "Color/icon/info": "Infomation/600", "Color/icon/info-bold": "Infomation/800", "Color/icon/success": "success/600", "Color/icon/success-bold": "success/800", "Color/icon/danger": "danger/600", "Color/icon/danger-bold": "danger/800", "Color/icon/warning": "warning/600", "Color/icon/caution-bold": "warning/800",
+    "Color/icon/Primitive/primary": "brand/600", "Color/icon/Primitive/primary-hover:active": "brand/800", "Color/icon/Primitive/secondary": "neutral/700", "Color/icon/Primitive/secondary-hover:active": "neutral/900", "Color/icon/Primitive/teritiary": "neutral/200", "Color/icon/Primitive/teritiary-hover:active": "neutral/300", "Color/icon/Primitive/inverse": "Base/white"
+  },
+  "spacing": [0, 2, 4, 6, 8, 12, 16, 20, 24, 28, 32, 36, 40, 48],
+  "radius": { "radius0": 0, "radius1": 4, "Radius2": 8, "Radius3": 12, "Radius4": 16, "Radius5": 40, "radius-circle": 999 },
+  "border": { "border-1": 1, "border-2": 1.5, "border-3": 2 },
+  "blur": [0, 4, 8, 12],
+  "opacity": [0, 20, 40, 60, 80, 100],
+  "textStyles": [
+    ["Heading/XXL/Heavy", 900, 36, 46, -2], ["Heading/XXL/Bold", 700, 36, 46, -2],
+    ["Heading/XL/Heavy", 900, 32, 42, -2], ["Heading/XL/Bold", 700, 32, 42, -2],
+    ["Heading/LG/Heavy", 900, 28, 38, -2], ["Heading/LG/Bold", 700, 28, 38, -2],
+    ["Heading/MD/Heavy", 900, 24, 34, -2], ["Heading/MD/Bold", 700, 24, 34, -2],
+    ["Heading/SM/Heavy", 900, 20, 30, -2], ["Heading/SM/Bold", 700, 20, 30, -2],
+    ["Body/MD/Heavy", 900, 18, 26, -1.5], ["Body/MD/Bold", 700, 18, 26, -1.5], ["Body/MD/SemiBold", 600, 18, 26, -1.5], ["Body/MD/Regular", 400, 18, 26, -1.5], ["Body/MD/Underline", 600, 18, 26, -1.5, "underline"], ["Body/MD/Strike-through", 600, 18, 26, -1.5, "line-through"],
+    ["Body/SM/Heavy", 900, 16, 24, -1.5], ["Body/SM/Bold", 700, 16, 24, -1.5], ["Body/SM/SemiBold", 600, 16, 24, -1.5], ["Body/SM/Regular", 400, 16, 24, -1.5], ["Body/SM/Underline", 600, 16, 24, -1.5, "underline"],
+    ["Body/SS/Heavy", 900, 14, 20, -1.5], ["Body/SS/Bold", 700, 14, 20, 0], ["Body/SS/SemiBold", 600, 14, 20, 0], ["Body/SS/Regular", 400, 14, 20, 0], ["Body/SS/Underline", 400, 14, 20, -1.5, "underline"],
+    ["Caption/XS", 500, 12, 18, -1.5], ["Caption/Strike-through", 500, 12, 18, -1.5, "line-through"]
+  ],
+  "effects": {
+    "shadow1_default": [[0, 0, 1, 0, 0.20], [0, 2, 16, 0, 0.08]],
+    "elevation/shadow2": [[0, 0, 1, 0, 0.20], [0, 1, 2, 0, 0.12]],
+    "elevation/shadow3": [[0, 0, 2, 0, 0.12], [0, 2, 4, 0, 0.12]],
+    "elevation/shadow4": [[0, 8, 24, 0, 0.20], [0, 0, 4, 0, 0.12]],
+    "elevation/shadow5_Left": [[0, 0, 8, 0, 0.12], [-8, 0, 16, 0, 0.12]],
+    "elevation/shadow6_Top": [[0, -4, 16, 0, 0.12]]
+  },
+  "breakpoint": { "Min-width": { "Mobile": 360, "PC": 1200 }, "Max-width": { "Mobile": 768, "PC": 1920 } }
+}

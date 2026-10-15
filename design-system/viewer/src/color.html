@@ -1,0 +1,160 @@
+<!--@title-->Color<!--/@title-->
+<!--@crumb-->Foundation<!--/@crumb-->
+<!--@lead-->색은 세 층으로 이어집니다. 팔레트(실제 색) → 역할(브랜드·정보·성공…) → 의미(글자·배경·테두리·아이콘). 화면에는 의미 색만 씁니다.<!--/@lead-->
+<!--@meta-->
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=36-11730" target="_blank" rel="noopener">Figma · Variables ↗</a>
+        <span>팔레트 82 · 역할 7 · 의미 86</span>
+<!--/@meta-->
+<!--@design-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="layers">세 층 구조</h2>
+          <p class="doc-p">Figma 변수와 같은 구조입니다. 버튼 채움색을 예로 들면 아래처럼 이어집니다. 그래서 브랜드 색을 바꿔도 화면 코드는 고치지 않습니다.</p>
+          <div class="fd-flow">
+            <div class="fd-flow__step"><p class="fd-flow__k">1 · 팔레트 (Primitive)</p><p class="fd-flow__t">Darkblue 600</p><p class="fd-flow__ex"><span class="fd-dot" style="background:var(--ds-color-darkblue-600)"></span>#323DA3</p></div>
+            <div class="fd-flow__step"><p class="fd-flow__k">2 · 역할 (Theme)</p><p class="fd-flow__t">brand 600</p><p class="fd-flow__ex"><span class="fd-dot" style="background:var(--ds-color-brand-600)"></span>#323DA3</p><p class="fd-flow__sub">이로움돌봄 테마에서는 orange 600</p></div>
+            <div class="fd-flow__step"><p class="fd-flow__k">3 · 의미 (Sementic)</p><p class="fd-flow__t">bg / Primitive / primary</p><p class="fd-flow__ex"><span class="fd-dot" style="background:var(--ds-color-bg-control-primary)"></span>주 버튼 채움</p></div>
+          </div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="palette">팔레트</h2>
+          <p class="doc-p">역할별 10단계. 칸을 누르면 색 값이 복사됩니다. 점이 찍힌 칸은 의미 색에서 실제로 쓰는 단계입니다.</p>
+          <div id="ramps"></div>
+          <p class="doc-note">이로움돌봄 테마는 브랜드 줄만 orange로 바뀝니다(Figma Theme 모드). 나머지 역할은 두 테마가 같습니다.</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="semantic">의미 색</h2>
+          <p class="doc-p">화면을 만들 때 고르는 색입니다. Figma 이름 그대로 적었습니다. “Primitive”는 버튼·선택처럼 누르는 요소에 쓰는 색 묶음입니다.</p>
+          <div class="doc-ctl" style="margin:16px 0 8px"><div class="doc-seg" id="seg-cat"><button type="button" data-value="text" aria-pressed="true">글자</button><button type="button" data-value="bg" aria-pressed="false">배경</button><button type="button" data-value="border" aria-pressed="false">테두리</button><button type="button" data-value="icon" aria-pressed="false">아이콘</button></div></div>
+          <div class="doc-scroll"><table class="fd-sem"><tbody id="sem-rows"></tbody></table></div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="status">상태 색 세트</h2>
+          <p class="doc-p">상태는 배경(연함) + 테두리 + 글자(진함) 세 가지를 한 벌로 씁니다. 상태칩·알림 박스가 이 조합입니다. <a href="status-chip.html">Status Chip</a></p>
+          <div class="fd-sets" id="sets"></div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="contrast">글자 대비</h2>
+          <p class="doc-p">흰 배경 위 글자색의 명도 대비입니다(이 화면에서 계산). 본문은 4.5 이상이 기준입니다.</p>
+          <div class="fd-contrast" id="contrast-grid"></div>
+          <p class="doc-note">회색 #999(tertiary)와 #BDBDBD(disabled)는 4.5에 못 미칩니다. 비어 있는 글자 수·비활성처럼 읽지 않아도 되는 글자에만 씁니다.</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="theme">테마</h2>
+          <p class="doc-p">같은 화면을 이로움돌봄 테마로 바꾸면 브랜드 색만 바뀝니다.</p>
+          <div class="doc-ctl" style="margin:16px 0 0"><div class="doc-seg" id="seg-theme"><button type="button" data-value="" aria-pressed="true">대대여</button><button type="button" data-value="dolbom" aria-pressed="false">이로움돌봄</button></div></div>
+          <div class="doc-stage" id="theme-stage" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center">
+            <button class="ds-btn ds-btn--md" type="button" style="background:var(--ds-color-bg-control-primary);border-color:transparent;color:#fff">주문하기</button>
+            <button class="ds-btn ds-btn--md" type="button" style="border-color:var(--ds-color-border-control-primary);color:var(--ds-color-text-control-primary);font-weight:400">조회</button>
+            <span class="ds-chip" style="--chip-tint-bg:var(--ds-color-bg-brand-subtle);--chip-tint-line:var(--ds-color-border-brand-subtle);--chip-tint-text:var(--ds-color-text-control-primary-hover)">배송완료</span>
+            <span style="padding:8px 12px;border-radius:4px;background:var(--ds-color-bg-control-selected);font-size:14px">선택된 옵션</span>
+          </div>
+          <p class="doc-note">이 미리보기는 의미 색만 써서 그렸습니다. 지금 컴포넌트 CSS 일부는 팔레트 색을 직접 써서 테마를 따르지 않습니다. 이로움돌봄 화면을 만들 때 의미 색으로 바꿔야 합니다.</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="principles">사용 원칙</h2>
+          <div class="doc-rules">
+            <div class="doc-rule"><div class="doc-rule__stage" style="flex-direction:row;align-items:center;justify-content:center;gap:10px"><button class="ds-btn ds-btn--outline-secondary" type="button" tabindex="-1" style="width:120px">초기화</button><button class="ds-btn ds-btn--primary" type="button" tabindex="-1" style="width:120px">검색</button></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">브랜드 색은 주 동작과 선택된 상태에만. 그래서 눈에 띕니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage" style="flex-direction:row;align-items:center;justify-content:center;gap:10px"><span style="padding:6px 10px;border-radius:4px;background:var(--ds-color-darkblue-600);color:#fff;font-size:14px">섹션 제목</span><button class="ds-btn ds-btn--primary" type="button" tabindex="-1" style="width:120px">검색</button></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">장식에 브랜드 색을 쓰면 누를 수 있는 것과 구분되지 않습니다.</p></div></div>
+            <div class="doc-rule"><div class="doc-rule__stage"><p class="ds-field__error" style="margin:0">휴대폰번호 11자리를 입력해 주세요.</p></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">상태는 색 + 아이콘 + 문장으로 함께 알립니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage"><p style="margin:0;color:var(--ds-color-red-800);font-size:14px">010-0000-00</p></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">빨간 글자만으로는 무엇이 잘못됐는지 알 수 없고, 색을 구분하기 어려운 사람은 놓칩니다.</p></div></div>
+          </div>
+        </section>
+<!--/@design-->
+<!--@dev-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-names">변수 이름 규칙</h2>
+          <table class="doc-table">
+            <thead><tr><th>층</th><th>CSS 변수</th><th>Figma 이름</th></tr></thead>
+            <tbody>
+              <tr><td>팔레트</td><td><code>--ds-color-darkblue-600</code></td><td>Color/Darkblue/600</td></tr>
+              <tr><td>역할</td><td><code>--ds-color-brand-600</code> (brand · neutral · info · success · danger · brand-sub · warning)</td><td>Color/brand/600</td></tr>
+              <tr><td>의미</td><td><code>--ds-color-{text|bg|border|icon}-{이름}</code></td><td>Color/text/primary</td></tr>
+              <tr><td>누르는 요소</td><td><code>--ds-color-bg-control-primary</code>, <code>…-primary-hover</code></td><td>Color/bg/Primitive/primary, …primary-hover:active</td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">바꾼 표기: Primitive → control, hover:active → hover, teritiary → tertiary, brandSub → brand-sub. 원래 Figma 이름은 tokens.css 주석과 tokens.json의 figma 항목에 남아 있습니다.</p>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-use">쓰는 법</h2>
+          <div class="doc-code"><pre>.notice { background: var(--ds-color-bg-info-subtle); border: 1px solid var(--ds-color-border-info-subtle); color: var(--ds-color-text-info-bold); }
+
+&lt;!-- 이로움돌봄 테마: 감싸는 요소에 클래스 하나 --&gt;
+&lt;body class="ds-theme-dolbom"&gt;…&lt;/body&gt;</pre></div>
+          <p class="doc-note">tokens.css는 직접 고치지 않습니다. <code>tokens/figma-variables.json</code>을 고친 뒤 <code>node design-system/tools/build-tokens.js</code>를 실행하면 tokens.css · typography.css · tokens.json이 함께 만들어집니다.</p>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <div class="doc-code"><pre>[Color 규칙 — 이로움케어 DS]
+- 화면 CSS에는 의미 색만: --ds-color-{text|bg|border|icon}-*. 팔레트(--ds-color-darkblue-600 등) 직접 사용 금지
+- 주 동작 채움 bg-control-primary(#323DA3), 눌림 bg-control-primary-hover(#141E76), 선택 bg-control-selected(#EFF1FD)
+- 기본 글자 text-primary #1A1A1A, 보조 text-secondary #616161, 비활성 text-disabled #BDBDBD
+- 상태는 bg-*-subtle + border-*-subtle + text-*-bold 세트. 색만으로 상태를 전달하지 않음(아이콘·문장 함께)
+- 이로움돌봄 테마는 .ds-theme-dolbom (브랜드만 orange)</pre></div>
+        </section>
+<!--/@dev-->
+<!--@after-->
+<div class="fd-toast" id="toast" role="status"></div>
+<!--/@after-->
+<!--@script-->
+  var cs = getComputedStyle(document.documentElement);
+  function v(name) { return cs.getPropertyValue(name).trim(); }
+  function toast(t) { var el = document.getElementById('toast'); el.textContent = t; el.classList.add('is-on'); clearTimeout(el._t); el._t = setTimeout(function () { el.classList.remove('is-on'); }, 1200); }
+  function copy(t) { if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).catch(function () {}); toast(t + ' 복사됨'); }
+  function lum(hex) { var c = hex.replace('#', ''); var rgb = [0, 2, 4].map(function (i) { var x = parseInt(c.substr(i, 2), 16) / 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }); return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]; }
+  function ratio(a, b) { var l1 = lum(a), l2 = lum(b); return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05); }
+  function resolve(name) { // var(--x) 체인을 풀어 HEX로
+    var el = document.createElement('i'); el.style.color = 'var(' + name + ')'; document.body.appendChild(el);
+    var rgb = getComputedStyle(el).color.match(/\d+/g); el.remove();
+    return '#' + rgb.slice(0, 3).map(function (n) { return (+n).toString(16).padStart(2, '0'); }).join('').toUpperCase();
+  }
+  var STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+  var ROLES = [['brand', 'Brand', 'Darkblue'], ['neutral', 'Neutral', 'Grey'], ['info', 'Information', 'blue'], ['success', 'Success', 'green'], ['danger', 'Danger', 'red'], ['brand-sub', 'BrandSub', 'lightgreen'], ['warning', 'Warning', 'Yellow'], ['orange', '이로움돌봄 brand', 'orange']];
+  // 의미 색에서 쓰는 단계 표시
+  var used = {};
+  var SEM = {
+    text: [['primary','기본 글자'],['secondary','보조 글자 · PC 라벨'],['tertiary','3차 글자 · 빈 글자 수','Color/text/teritiary'],['disabled','비활성 글자'],['brand-sub','BrandSub 상태 글자','Color/text/brandSub'],['info','정보'],['info-bold','Info 상태칩 글자'],['success','성공'],['success-bold','Success 상태칩 글자'],['danger','위험'],['danger-bold','오류 문구 · Error 칩 글자'],['warning','주의'],['warning-bold','Caution 칩 글자'],['control-primary','외곽선 버튼 · 글자 버튼','Color/text/Primitive/primary'],['control-primary-hover','눌림 · Default 칩 글자','Color/text/Primitive/primary-hover:active'],['control-secondary','Secondary 버튼 글자','Color/text/Primitive/secondary'],['control-secondary-hover','Secondary 눌림','Color/text/Primitive/secondary-hover:active'],['control-inverse','채움 버튼 글자','Color/text/Primitive/inverse']],
+    bg: [['primary','기본 표면'],['secondary','검색 패널'],['tertiary','표 헤더 · 라벨 셀','Color/bg/teritiary'],['disabled','비활성 · 읽기전용 입력'],['brand-subtle','Default 상태 배경','Color/bg/brand_subtle'],['brand-sub-bold','BrandSub 채움','Color/bg/brandSub-bold'],['brand-sub-subtle','BrandSub 상태 배경','Color/bg/brandSub-subtle'],['info-bold','Info 채움'],['info-subtle','Info 상태 배경'],['success-bold','Success 채움'],['success-subtle','Success 상태 배경'],['danger-bold','Error 채움'],['danger-bolder','더 진한 위험'],['danger-subtle','Error 상태 배경'],['warning-bold','Caution 채움'],['warning-subtle','Caution 상태 배경'],['control-primary','주 버튼 채움','Color/bg/Primitive/primary'],['control-primary-hover','주 버튼 눌림','Color/bg/Primitive/primary-hover:active'],['control-secondary','Secondary 버튼','Color/bg/Primitive/secondary'],['control-secondary-hover','Secondary 눌림','Color/bg/Primitive/secondary-hover:active'],['control-selected','선택된 옵션','Color/bg/Primitive/selected'],['control-selected-hover','선택된 옵션 눌림','Color/bg/Primitive/selected-hover:active'],['control-inverse-bold','어두운 표면','Color/bg/Primitive/inverse-bold'],['control-inverse-bolder','가장 어두운 표면','Color/bg/Primitive/inverse-bolder']],
+    border: [['primary','기본 테두리'],['secondary','약한 구분선'],['tertiary','가장 약한 구분선','Color/border/teritiary'],['disabled','비활성 · 읽기전용 입력'],['brand-subtle','Default 칩 테두리'],['brand-sub','BrandSub 강조','Color/border/brandSub'],['brand-sub-subtle','BrandSub 칩 테두리','Color/border/brandSub_subtle'],['info','정보'],['info-subtle','Info 칩 테두리'],['success','성공'],['success-subtle','Success 칩 테두리'],['danger','오류 입력 테두리'],['danger-subtle','Error 칩 테두리'],['warning','Caution 칩 테두리'],['caution-subtle','연한 주의'],['control-primary','입력 Focused · 외곽선 버튼','Color/border/Primitive/primary'],['control-primary-hover','외곽선 버튼 눌림','Color/border/Primitive/primary-hover:active'],['control-secondary','입력 Inactive · 회색 외곽선 버튼','Color/border/Primitive/secondary'],['control-secondary-hover','입력 Default','Color/border/Primitive/secondary-hover:active'],['control-tertiary','연한 외곽선','Color/border/Primitive/teritiary'],['control-tertiary-hover','연한 외곽선 눌림','Color/border/Primitive/teritiary-hover:active'],['control-inverse','어두운 면 위 테두리','Color/border/Primitive/inverse']],
+    icon: [['primary','기본 아이콘'],['secondary','보조 아이콘'],['tertiary','3차 아이콘','Color/icon/teritiary'],['disabled','비활성 아이콘'],['brand-subtle','연한 브랜드'],['brand-sub','BrandSub','Color/icon/brandSub'],['brand-sub-bold','BrandSub 진함','Color/icon/brandSub-bold'],['info','정보'],['info-bold','정보 진함'],['success','성공'],['success-bold','성공 진함'],['danger','위험'],['danger-bold','오류 아이콘'],['warning','주의'],['caution-bold','주의 진함'],['control-primary','누르는 아이콘','Color/icon/Primitive/primary'],['control-primary-hover','눌림','Color/icon/Primitive/primary-hover:active'],['control-secondary','회색 누르는 아이콘','Color/icon/Primitive/secondary'],['control-secondary-hover','회색 눌림','Color/icon/Primitive/secondary-hover:active'],['control-tertiary','연한 누르는 아이콘','Color/icon/Primitive/teritiary'],['control-tertiary-hover','연한 눌림','Color/icon/Primitive/teritiary-hover:active'],['control-inverse','어두운 면 위 아이콘','Color/icon/Primitive/inverse']]
+  };
+  Object.keys(SEM).forEach(function (cat) { SEM[cat].forEach(function (r) { used[resolve('--ds-color-' + cat + '-' + r[0])] = 1; }); });
+  document.getElementById('ramps').innerHTML = ROLES.map(function (r) {
+    return '<div class="fd-ramp"><div class="fd-ramp__name">' + r[1] + '<small>' + r[2] + '</small></div>' + STEPS.map(function (s) {
+      var name = r[0] === 'orange' ? '--ds-color-orange-' + s : '--ds-color-' + r[0] + '-' + s;
+      var hex = resolve(name); var dark = lum(hex) < 0.35;
+      return '<button type="button" class="fd-chip' + (used[hex] && r[0] !== 'orange' ? ' is-used' : '') + '" style="background:' + hex + ';color:' + (dark ? '#fff' : '#1a1a1a') + '" data-copy="' + hex + '" title="' + name + '"><b>' + s + '</b>' + hex + '</button>';
+    }).join('') + '</div>';
+  }).join('');
+  document.getElementById('ramps').addEventListener('click', function (e) { var b = e.target.closest('[data-copy]'); if (b) copy(b.dataset.copy); });
+  function renderSem(cat) {
+    document.getElementById('sem-rows').innerHTML = SEM[cat].map(function (r) {
+      var name = '--ds-color-' + cat + '-' + r[0]; var hex = resolve(name);
+      var figma = r[2] || ('Color/' + cat + '/' + r[0]);
+      var sw = cat === 'text' || cat === 'icon' ? '<span class="fd-dot" style="background:' + hex + '"></span>' : cat === 'border' ? '<span class="fd-dot" style="background:#fff;border:2px solid ' + hex + '"></span>' : '<span class="fd-dot" style="background:' + hex + '"></span>';
+      return '<tr><td>' + sw + '</td><td><strong>' + figma + '</strong></td><td class="fd-hex">' + hex + '</td><td class="fd-use">' + r[1] + '</td></tr>';
+    }).join('');
+  }
+  document.getElementById('seg-cat').addEventListener('doc-seg', function (e) { renderSem(e.detail); });
+  renderSem('text');
+  var SETS = [['info', 'Info', '접수 · 안내', 'info-bold'], ['success', 'Success', '확인 중 · 완료 안내', 'success-bold'], ['warning', 'Caution', '요청 · 준비', 'warning-bold'], ['brand-sub', 'BrandSub', '진행 중', 'brand-sub'], ['brand', 'Default', '최종 완료', 'control-primary-hover'], ['danger', 'Error', '취소 · 불가 · 오류', 'danger-bold']];
+  document.getElementById('sets').innerHTML = SETS.map(function (s) {
+    var bg = s[0] === 'brand' ? 'brand-subtle' : s[0] + '-subtle', bd = s[0] === 'warning' ? 'warning' : (s[0] === 'brand' ? 'brand-subtle' : s[0] + '-subtle');
+    return '<div class="fd-set" style="background:var(--ds-color-bg-' + bg + ');border-color:var(--ds-color-border-' + bd + ');color:var(--ds-color-text-' + s[3] + ')"><strong>' + s[1] + '</strong><span>' + s[2] + '</span></div>';
+  }).join('');
+  var CON = [['text-primary', '기본 글자'], ['text-secondary', '보조 글자'], ['text-control-secondary', 'Secondary 글자'], ['text-control-primary', '브랜드 글자'], ['text-danger-bold', '오류 글자'], ['text-info-bold', 'Info 글자'], ['text-tertiary', '3차 글자'], ['text-disabled', '비활성 글자']];
+  document.getElementById('contrast-grid').innerHTML = CON.map(function (c) {
+    var hex = resolve('--ds-color-' + c[0]); var r = ratio(hex, '#FFFFFF');
+    return '<div><p style="color:' + hex + '">가나다 Aa</p><small>' + c[1] + ' · ' + hex + '</small><small class="' + (r >= 4.5 ? 'fd-pass' : 'fd-fail') + '">' + r.toFixed(1) + ' : 1 ' + (r >= 4.5 ? '통과' : '미달') + '</small></div>';
+  }).join('');
+  document.getElementById('seg-theme').addEventListener('doc-seg', function (e) { document.getElementById('theme-stage').classList.toggle('ds-theme-dolbom', e.detail === 'dolbom'); });
+<!--/@script-->

@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Modal · 이로움케어 디자인 시스템</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/typography.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="doc.css">
+<script defer src="../js/ds.js"></script>
+<script defer src="doc.js"></script>
+</head>
+<body data-page="Modal">
+<header class="doc-header">
+  <button class="doc-menu-btn" id="doc-menu-btn" type="button" aria-label="메뉴" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+  <a class="doc-brand" href="index.html?item=%EB%94%94%EC%9E%90%EC%9D%B8%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%EA%B0%9C%EC%9A%94"><strong>이로움케어</strong><span>디자인 시스템</span></a>
+  <span class="doc-header__spacer"></span>
+  <a class="doc-hub-link" href="../../index.html">← 정책 허브</a>
+</header>
+
+<div class="doc-shell">
+  <nav class="doc-side" id="doc-side" aria-label="디자인 시스템 메뉴"></nav>
+
+  <main class="doc-main">
+    <div class="doc-content">
+      <p class="doc-crumb">Components · Layout</p>
+      <h1 class="doc-h1">Modal</h1>
+      <p class="doc-lead">화면 가운데에 띄워 확인·안내·짧은 선택을 받는 창입니다. 크기는 표가 들어가는지로 고릅니다.</p>
+      <div class="doc-meta">
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=6487-5122" target="_blank" rel="noopener">Figma · Modal ↗</a>
+        <a href="../../index.html#3-3" target="_blank" rel="noopener">정책 3-3 모달 ↗</a>
+        <span>340 · 480 · 600 · 800</span>
+      </div>
+
+      <div class="doc-tabs" role="tablist" aria-label="문서 보기">
+        <button class="doc-tab" role="tab" id="tab-design" data-tab="design" aria-controls="panel-design" aria-selected="true">디자인</button>
+        <button class="doc-tab" role="tab" id="tab-dev" data-tab="dev" aria-controls="panel-dev" aria-selected="false">개발</button>
+      </div>
+
+      <div id="panel-design" role="tabpanel" aria-labelledby="tab-design">
+        <section class="doc-section">
+          <h2 class="doc-h2" id="overview">개요</h2>
+          <p class="doc-p">아래 버튼을 누르면 실제 모달이 열립니다. 닫기(X), 바깥 딤, Esc로 닫힙니다.</p>
+          <div class="doc-stage" style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px">
+            <button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-ds-open="#m-sm">SM 340 열기</button>
+            <button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-ds-open="#m-md">MD 480 열기</button>
+            <button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-ds-open="#m-lg">LG 600 열기</button>
+            <button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-ds-open="#m-xl">XL 800 열기</button>
+          </div>
+          <h3 class="doc-h3">언제 쓰나요</h3>
+          <ul class="doc-list">
+            <li>지금 하는 일을 멈추고 확인받아야 할 때 — 주문하기, 취소 확인, 주문 불가 안내</li>
+            <li>모바일에서 글자·숫자·주소를 입력해야 하면 바텀시트로 엽니다. 안내·확인·선택만 있으면 모바일에서도 모달입니다. <a class="doc-policy" href="../../index.html#3-3" target="_blank" rel="noopener">3-3</a></li>
+            <li>알림만 주면 되는 짧은 정보는 모달 대신 팝오버를 씁니다. <a class="doc-policy" href="../../index.html#3-5" target="_blank" rel="noopener">3-5</a></li>
+          </ul>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="anatomy">구조</h2>
+          <p class="doc-p">타이틀 줄, 구분선, 본문, 버튼 영역 네 부분입니다.</p>
+          <div class="doc-stage">
+            <div class="doc-anat" style="display:flex;justify-content:center;padding:24px 56px">
+              <section class="ds-modal ds-modal--sm" aria-label="구조 예시" style="position:relative">
+                <header class="ds-modal__header" style="position:relative"><h2 class="ds-modal__title" data-anat="1" data-anat-side="top" data-anat-x="0.15" data-anat-gap="28">주문하기</h2><button class="ds-modal__close" type="button" aria-label="닫기" tabindex="-1" data-anat="2" data-anat-side="right" data-anat-gap="40"></button><span style="position:absolute;left:0;right:0;bottom:-1px;height:1px" data-anat="3" data-anat-side="left" data-anat-gap="36"></span></header>
+                <div class="ds-modal__body" data-anat="4" data-anat-side="left" data-anat-gap="36">주문 완료 후에는 수량과 옵션을 변경할 수 없습니다.</div>
+                <footer class="ds-modal__footer" data-anat="5" data-anat-side="right" data-anat-gap="40"><button class="ds-btn ds-btn--secondary ds-btn--md" type="button" tabindex="-1">취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button" tabindex="-1">주문하기</button></footer>
+              </section>
+            </div>
+          </div>
+          <ol class="doc-legend">
+            <li><b>1</b><span><strong>타이틀</strong> — 20 Bold. 무엇을 확인하는지.</span></li>
+            <li><b>2</b><span><strong>닫기</strong> — 32. 오른쪽 끝, 타이틀과 가운데 정렬.</span></li>
+            <li><b>3</b><span><strong>구분선</strong> — 타이틀 아래 16.</span></li>
+            <li><b>4</b><span><strong>본문</strong> — 18 #555. 위 24 · 아래 32.</span></li>
+            <li><b>5</b><span><strong>버튼</strong> — MD 48, 기본 폭 150, 사이 12, 가운데.</span></li>
+          </ol>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="size">크기</h2>
+          <p class="doc-p">기준은 “표가 들어가는가”입니다. 표가 없으면 SM·MD, 있으면 LG·XL. 화면이 크기보다 좁으면 좌우 20을 남기고 줄어듭니다(구간별 규칙 없음). <a class="doc-policy" href="../../index.html#3-3" target="_blank" rel="noopener">3-3</a></p>
+          <div class="ex-sizes">
+            <div class="ex-size"><div class="ex-size__bar" style="width:42.5%"></div><div class="ex-size__row"><strong>SM 340</strong><span>짧은 알림·확인. 본문 3줄 이내</span><button class="ds-btn ds-btn--text" type="button" data-ds-open="#m-sm">열어 보기</button></div></div>
+            <div class="ex-size"><div class="ex-size__bar" style="width:60%"></div><div class="ex-size__row"><strong>MD 480</strong><span>안내·확인·입력·검색 (가장 많이 씀)</span><button class="ds-btn ds-btn--text" type="button" data-ds-open="#m-md">열어 보기</button></div></div>
+            <div class="ex-size"><div class="ex-size__bar" style="width:75%"></div><div class="ex-size__row"><strong>LG 600</strong><span>표 포함 (예: 입고처리)</span><button class="ds-btn ds-btn--text" type="button" data-ds-open="#m-lg">열어 보기</button></div></div>
+            <div class="ex-size"><div class="ex-size__bar" style="width:100%"></div><div class="ex-size__row"><strong>XL 800</strong><span>큰 표·문서 (예: 계약서, 소독필증)</span><button class="ds-btn ds-btn--text" type="button" data-ds-open="#m-xl">열어 보기</button></div></div>
+          </div>
+          <table class="doc-table">
+            <thead><tr><th>항목</th><th>값</th></tr></thead>
+            <tbody>
+              <tr><td>안쪽 여백</td><td>위아래 24 · 좌우 20</td></tr>
+              <tr><td>모서리 · 그림자</td><td>16 · shadow4</td></tr>
+              <tr><td>타이틀</td><td>20 / 줄높이 30 Bold, 닫기 32, 사이 12</td></tr>
+              <tr><td>구분선</td><td>타이틀 아래 16, 1px #BDBDBD</td></tr>
+              <tr><td>본문</td><td>18 / 줄높이 26 #555, 위 24 · 아래 32</td></tr>
+              <tr><td>버튼</td><td>MD 48, 폭 150 고정(1개여도 150), 사이 12, 가운데. 모달 안쪽이 좁으면 같은 비율로 줄어듦 — SM 340에서 144, 360 화면에서 134</td></tr>
+              <tr><td>버튼명이 길 때</td><td>버튼 1개는 글자만큼 늘어남(안쪽 좌우 20, 모달 폭까지). 버튼 2개는 늘리지 말고 이름을 짧게</td></tr>
+              <tr><td>화면이 좁을 때</td><td>폭 = 크기와 (화면 − 40) 중 작은 값. 360 화면에서는 모든 모달이 320</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="kinds">모달과 바텀시트</h2>
+          <p class="doc-p">PC에서는 모두 모달입니다. 모바일(1024px 이하)에서는 입력이 있으면 바텀시트로 바꿉니다. <a class="doc-policy" href="../../index.html#3-3" target="_blank" rel="noopener">3-3</a> <a class="doc-policy" href="../../index.html#3-5" target="_blank" rel="noopener">3-5</a></p>
+          <table class="doc-table">
+            <thead><tr><th>내용</th><th>PC</th><th>모바일</th></tr></thead>
+            <tbody>
+              <tr><td>안내 · 확인</td><td>모달</td><td>모달</td></tr>
+              <tr><td>선택만</td><td>모달</td><td>모달 (선택지가 길면 바텀시트)</td></tr>
+              <tr><td>글자 · 숫자 · 주소 · 사유 입력</td><td>모달</td><td>바텀시트</td></tr>
+              <tr><td>표</td><td>모달 (표 가로 스크롤)</td><td>모달 (표 가로 스크롤)</td></tr>
+            </tbody>
+          </table>
+          <div class="doc-stage" style="display:flex;justify-content:center"><button class="ds-btn ds-btn--outline-secondary ds-btn--md" type="button" data-ds-open="#m-sheet">바텀시트 열어 보기</button></div>
+          <p class="doc-note">PC에서는 휴대폰 틀 안에서 화면 아래로부터 올라오는 모습으로 보여 줍니다. 휴대폰으로 보면 실제 화면 크기로 열립니다.</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="usage">사용 예</h2>
+          <div class="ex-usage">
+            <div class="ex-usage__item"><strong>주문 불가 안내</strong><span>MD · 버튼 하나</span><button class="ds-btn ds-btn--outline-secondary" type="button" data-ds-open="#m-alert">열기</button></div>
+            <div class="ex-usage__item"><strong>모달 안 셀렉트</strong><span>MD · 목록이 모달 밖으로 펼쳐짐</span><button class="ds-btn ds-btn--outline-secondary" type="button" data-ds-open="#m-select">열기</button></div>
+            <div class="ex-usage__item"><strong>긴 본문</strong><span>MD · 본문만 스크롤, 타이틀·버튼 고정</span><button class="ds-btn ds-btn--outline-secondary" type="button" data-ds-open="#m-long">열기</button></div>
+          </div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="principles">사용 원칙</h2>
+          <div class="doc-rules">
+            <div class="doc-rule"><div class="doc-rule__stage"><div class="ex-mini"><b>회수 요청</b><p>이로움에 회수를 요청할까요?</p><div><span class="ds-btn ds-btn--secondary">취소</span><span class="ds-btn ds-btn--primary">회수 요청</span></div></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">버튼은 두 개까지. 오른쪽이 주 동작이고 라벨은 동작 이름입니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage"><div class="ex-mini"><b>회수 요청</b><p>이로움에 회수를 요청할까요?</p><div><span class="ds-btn ds-btn--secondary">취소</span><span class="ds-btn ds-btn--outline">나중에</span><span class="ds-btn ds-btn--primary">확인</span></div></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">버튼이 셋이면 폭이 줄어 라벨이 잘리고, 무엇이 주 동작인지 흐려집니다.</p></div></div>
+
+            <div class="doc-rule"><div class="doc-rule__stage"><div class="ex-mini"><b>상품 변경</b><p>변경할 상품을 선택해 주세요.</p><div><span class="ds-btn ds-btn--secondary">취소</span><span class="ds-btn ds-btn--primary">상품 변경</span></div></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">오버레이는 하나만. 새 창이 필요하면 지금 창을 닫고 엽니다. <a class="doc-policy" href="../../index.html#3-3" target="_blank" rel="noopener">3-3</a></p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage"><div class="ex-mini ex-mini--stack"><b>상품 변경</b><p>변경할 상품을 선택해 주세요.</p><div class="ex-mini ex-mini--over"><b>확인</b><p>정말 변경할까요?</p></div></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">모달 위에 모달을 쌓으면 어느 창의 버튼인지 헷갈립니다. (공인인증서 비밀번호처럼 정책에 적힌 예외만 허용)</p></div></div>
+          </div>
+        </section>
+      </div>
+
+      <div id="panel-dev" role="tabpanel" aria-labelledby="tab-dev" hidden>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-markup">기본 마크업</h2>
+          <p class="doc-p">여는 버튼에 <code>data-ds-open="#id"</code>를 주면 <code>ds.js</code>가 열고 닫습니다(닫기 · 딤 · Esc, 하나만 열림, 닫으면 여는 버튼으로 포커스 복귀).</p>
+          <div class="doc-code"><pre>&lt;button class="ds-btn ds-btn--primary" type="button" data-ds-open="#order-modal"&gt;주문하기&lt;/button&gt;
+
+&lt;div class="ds-modal-backdrop" id="order-modal" hidden&gt;
+  &lt;section class="ds-modal ds-modal--md" role="dialog" aria-modal="true" aria-labelledby="order-title"&gt;
+    &lt;header class="ds-modal__header"&gt;
+      &lt;h2 class="ds-modal__title" id="order-title"&gt;주문하기&lt;/h2&gt;
+      &lt;button class="ds-modal__close" type="button" aria-label="닫기"&gt;&lt;/button&gt;
+    &lt;/header&gt;
+    &lt;div class="ds-modal__body"&gt;주문 완료 후에는 수량과 옵션을 변경할 수 없습니다.&lt;/div&gt;
+    &lt;footer class="ds-modal__footer"&gt;
+      &lt;button class="ds-btn ds-btn--secondary" type="button" data-ds-close&gt;취소&lt;/button&gt;
+      &lt;button class="ds-btn ds-btn--primary" type="button"&gt;주문하기&lt;/button&gt;
+    &lt;/footer&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</pre></div>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-classes">클래스</h2>
+          <table class="doc-table">
+            <thead><tr><th>클래스</th><th>역할</th></tr></thead>
+            <tbody>
+              <tr><td><code>.ds-modal--sm/md/lg/xl</code></td><td>340 / 480 / 600 / 800. 좁으면 좌우 20 남기고 줄어듦</td></tr>
+              <tr><td><code>.ds-modal__body--scroll</code></td><td>긴 본문을 본문 안에서만 스크롤. 셀렉트가 들어 있으면 쓰지 않음(목록이 잘림)</td></tr>
+              <tr><td><code>[data-ds-close]</code></td><td>누르면 닫히는 버튼(취소 등)</td></tr>
+              <tr><td><code>.ds-bottom-sheet</code></td><td>모바일 입력용 시트. 상단 모서리 40, 하단 버튼 LG 54</td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">모달 버튼은 크기 클래스를 주지 않아도 48 · 폭 150으로 맞춰집니다. 버튼이 하나면 긴 이름에 맞춰 늘어납니다.</p>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <div class="doc-code"><pre>[Modal 규칙 — 이로움케어 DS]
+- .ds-modal-backdrop[hidden] > section.ds-modal.ds-modal--{sm|md|lg|xl}[role=dialog] > header(.ds-modal__title + .ds-modal__close) + .ds-modal__body + footer.ds-modal__footer
+- 크기: 표 없으면 sm 340·md 480, 표 있으면 lg 600·xl 800. 좁은 화면은 좌우 20 남기고 축소(미디어쿼리 없음)
+- 여백 24/20, radius 16, shadow4, 타이틀 20 Bold, 본문 18 #555, 버튼 MD 48 · 폭 150 · 사이 12 · 가운데
+- 버튼 최대 2개(오른쪽 주 동작). 오버레이는 하나만. 모바일에서 입력이 있으면 바텀시트</pre></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <aside class="doc-toc" aria-label="이 페이지에서">
+    <p class="doc-toc__title">이 페이지에서</p>
+    <nav id="doc-toc-links"></nav>
+  </aside>
+</div>
+<div class="ds-modal-backdrop" id="m-sm" hidden><section class="ds-modal ds-modal--sm" role="dialog" aria-modal="true" aria-labelledby="t-sm"><header class="ds-modal__header"><h2 class="ds-modal__title" id="t-sm">네트워크 확인</h2><button class="ds-modal__close" type="button" aria-label="닫기"></button></header><div class="ds-modal__body">네트워크가 연결되지 않았어요.<br>Wi-Fi 또는 데이터를 확인해 주세요.</div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--secondary" type="button" data-ds-close>닫기</button><button class="ds-btn ds-btn--primary" type="button" data-ds-close>다시 시도</button></footer></section></div>
+<div class="ds-modal-backdrop" id="m-md" hidden><section class="ds-modal ds-modal--md" role="dialog" aria-modal="true" aria-labelledby="t-md"><header class="ds-modal__header"><h2 class="ds-modal__title" id="t-md">주문하기</h2><button class="ds-modal__close" type="button" aria-label="닫기"></button></header><div class="ds-modal__body">주문 완료 후에는 수량과 옵션을 변경할 수 없습니다. 주문할까요?</div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--secondary" type="button" data-ds-close>취소</button><button class="ds-btn ds-btn--primary" type="button" data-ds-close>주문하기</button></footer></section></div>
+<div class="ds-modal-backdrop" id="m-lg" hidden><section class="ds-modal ds-modal--lg" role="dialog" aria-modal="true" aria-labelledby="t-lg"><header class="ds-modal__header"><h2 class="ds-modal__title" id="t-lg">대여 이력</h2><button class="ds-modal__close" type="button" aria-label="닫기"></button></header><div class="ds-modal__body"><div class="doc-scroll"><table class="ex-list"><thead><tr><th>상품명</th><th>대여 시작일</th><th>상태</th></tr></thead><tbody><tr><td>보행 보조기</td><td>2026-01-05</td><td><span class="ds-chip ds-chip--rental-delivered">배송완료</span></td></tr><tr><td>전동 침대</td><td>2026-03-12</td><td><span class="ds-chip ds-chip--rental-shipped">출고완료</span></td></tr><tr><td>목욕 의자</td><td>2026-05-20</td><td><span class="ds-chip ds-chip--rental-cancelled">주문취소</span></td></tr></tbody></table></div></div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--primary" type="button" data-ds-close>확인</button></footer></section></div>
+<div class="ds-modal-backdrop" id="m-xl" hidden><section class="ds-modal ds-modal--xl" role="dialog" aria-modal="true" aria-labelledby="t-xl"><header class="ds-modal__header"><h2 class="ds-modal__title" id="t-xl">요양정보 조회 결과</h2><button class="ds-modal__close" type="button" aria-label="닫기"></button></header><div class="ds-modal__body"><div class="doc-scroll"><table class="ex-list"><thead><tr><th>구분</th><th>품목</th><th>급여 한도</th><th>사용 금액</th><th>잔액</th></tr></thead><tbody><tr><td>대여</td><td>전동 침대</td><td>0,000,000원</td><td>000,000원</td><td>0,000,000원</td></tr><tr><td>대여</td><td>수동 휠체어</td><td>0,000,000원</td><td>000,000원</td><td>0,000,000원</td></tr><tr><td>판매</td><td>목욕 의자</td><td>0,000,000원</td><td>00,000원</td><td>0,000,000원</td></tr></tbody></table></div></div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--primary" type="button" data-ds-close>확인</button></footer></section></div>
+<div class="ds-modal-backdrop" id="m-alert" hidden><section class="ds-modal ds-modal--md" role="dialog" aria-modal="true" aria-labelledby="t-alert"><header class="ds-modal__header"><h2 class="ds-modal__title" id="t-alert">주문할 수 없어요</h2><button class="ds-modal__close" type="button" aria-label="닫기"></button></header><div class="ds-modal__body">요양정보를 먼저 조회해야 주문할 수 있습니다.</div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--primary" type="button" data-ds-close>확인</button></footer></section></div>
+<div class="ds-modal-backdrop" id="m-select" hidden><section class="ds-modal ds-modal--md" role="dialog" aria-modal="true" aria-labelledby="t-select"><header class="ds-modal__header"><h2 class="ds-modal__title" id="t-select">회수 요청</h2><button class="ds-modal__close" type="button" aria-label="닫기"></button></header><div class="ds-modal__body"><div class="ds-field"><span class="ds-field__label" id="sel-l">회수 희망 시간</span><div class="ds-select"><button class="ds-select__trigger ds-is-inactive" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="sel-l"><span class="ds-select__value ds-is-placeholder">선택</span><span class="ds-select__chevron"></span></button><div class="ds-select__list" role="listbox" hidden><button class="ds-select__option" type="button" role="option" aria-selected="false">오전 (9시~12시)</button><button class="ds-select__option" type="button" role="option" aria-selected="false">오후 (12시~18시)</button><button class="ds-select__option" type="button" role="option" aria-selected="false">시간 상관없음</button><button class="ds-select__option" type="button" role="option" aria-selected="false">통화 후 결정</button></div></div></div></div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--secondary" type="button" data-ds-close>취소</button><button class="ds-btn ds-btn--primary" type="button" data-ds-close>회수 요청</button></footer></section></div>
+<div class="ds-modal-backdrop" id="m-long" hidden><section class="ds-modal ds-modal--md" role="dialog" aria-modal="true" aria-labelledby="t-long"><header class="ds-modal__header"><h2 class="ds-modal__title" id="t-long">대여 약관</h2><button class="ds-modal__close" type="button" aria-label="닫기"></button></header><div class="ds-modal__body ds-modal__body--scroll" id="long-body"></div><footer class="ds-modal__footer"><button class="ds-btn ds-btn--primary" type="button" data-ds-close>확인</button></footer></section></div>
+<div class="ds-modal-backdrop doc-phone-backdrop" id="m-sheet" hidden><div class="doc-phone"><div class="doc-phone__screen"><div class="doc-phone__app" aria-hidden="true"><div class="doc-phone__status"><span>9:41</span><span>●●● ▮</span></div><div class="doc-phone__bar">회수 요청</div><div class="doc-phone__ghost"><i style="width:40%"></i><b></b><i style="width:30%"></i><b></b><i style="width:50%"></i><b></b></div></div><div class="doc-phone__dim" data-ds-close></div><section class="ds-bottom-sheet" role="dialog" aria-modal="true" aria-labelledby="t-sheet"><header class="ds-modal__header" style="border:0;padding:0"><h2 class="ds-modal__title" id="t-sheet">회수지 주소 수정</h2><button class="ds-modal__close" type="button" aria-label="닫기"></button></header><div class="ds-bottom-sheet__body ds-preview-mo"><div class="ds-field"><span class="ds-field__label">상세주소</span><div class="ds-input"><input class="ds-input__control" value="101동 1001호" aria-label="상세주소"><button class="ds-input__clear" type="button" aria-label="지우기"></button></div></div></div><footer class="ds-bottom-sheet__footer"><button class="ds-btn ds-btn--secondary" type="button" data-ds-close style="flex:0 0 120px">취소</button><button class="ds-btn ds-btn--primary" type="button" data-ds-close>저장</button></footer></section></div></div></div>
+<style>
+.doc-scroll { overflow-x: auto; }
+.doc-phone-backdrop { align-items: end; padding: 24px 24px 0; }
+.doc-phone { position: relative; width: 375px; max-width: 100%; height: min(760px, calc(100dvh - 24px)); padding: 10px 10px 0; border-radius: 48px 48px 0 0; background: #1a1a1a; box-shadow: 0 -8px 40px rgba(0,0,0,.25); transform: translateY(0); animation: doc-phone-up .28s cubic-bezier(.2,.8,.2,1); }
+.doc-phone__screen { position: relative; height: 100%; overflow: hidden; border-radius: 38px 38px 0 0; background: #f5f5f5; transform: translateZ(0); }
+.doc-phone__app { display: flex; flex-direction: column; height: 100%; }
+.doc-phone__status { display: flex; justify-content: space-between; padding: 14px 28px 6px; font-size: 13px; font-weight: 700; color: #1a1a1a; }
+.doc-phone__bar { padding: 12px 20px; background: #fff; border-bottom: 1px solid #eee; font-size: 18px; font-weight: 700; text-align: center; color: #1a1a1a; }
+.doc-phone__ghost { display: flex; flex-direction: column; gap: 10px; padding: 24px 20px; }
+.doc-phone__ghost i { display: block; height: 12px; border-radius: 4px; background: #e0e0e0; }
+.doc-phone__ghost b { display: block; height: 48px; margin-bottom: 12px; border-radius: 4px; background: #fff; border: 1px solid #e0e0e0; }
+.doc-phone__dim { position: absolute; inset: 0; background: rgba(0,0,0,.4); }
+.doc-phone .ds-bottom-sheet { animation: doc-sheet-up .32s cubic-bezier(.2,.8,.2,1) .08s both; }
+@keyframes doc-phone-up { from { transform: translateY(40px); opacity: 0; } }
+@keyframes doc-sheet-up { from { transform: translateY(100%); } }
+@media (max-width: 480px) {
+  .doc-phone-backdrop { padding: 0; }
+  .doc-phone { width: 100%; height: 100%; padding: 0; border-radius: 0; background: none; box-shadow: none; animation: none; }
+  .doc-phone__screen { border-radius: 0; background: transparent; }
+  .doc-phone__app { display: none; }
+  .doc-phone__dim { background: transparent; }
+}
+@media (prefers-reduced-motion: reduce) { .doc-phone, .doc-phone .ds-bottom-sheet { animation: none; } }
+
+.ex-list { width: 100%; min-width: 480px; border-collapse: collapse; font-size: 14px; line-height: 20px; }
+.ex-list th { padding: 10px 12px; background: #f5f5f5; color: #555; font-weight: 600; text-align: left; border-bottom: 1px solid #e0e0e0; white-space: nowrap; }
+.ex-list td { padding: 10px 12px; border-bottom: 1px solid #eee; color: #1a1a1a; white-space: nowrap; }
+.ex-sizes { display: flex; flex-direction: column; gap: 16px; margin: 16px 0 0; }
+.ex-size__bar { height: 8px; border-radius: 4px; background: #ced2f4; }
+.ex-size__row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; margin-top: 8px; }
+.ex-size__row strong { min-width: 72px; font-size: 15px; }
+.ex-size__row span { flex: 1 1 200px; color: #555; font-size: 15px; }
+.ex-usage { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 16px 0 0; }
+.ex-usage__item { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 20px; border: 1px solid #e6e6e6; border-radius: 12px; }
+.ex-usage__item span { color: #8a8a8a; font-size: 14px; margin-bottom: 12px; }
+@media (max-width: 720px) { .ex-usage { grid-template-columns: minmax(0, 1fr); } }
+.ex-mini { position: relative; width: 100%; max-width: 280px; margin: 0 auto; padding: 16px; border-radius: 12px; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,.14); }
+.ex-mini b { display: block; padding-bottom: 8px; border-bottom: 1px solid #bdbdbd; font-size: 15px; }
+.ex-mini p { margin: 12px 0 16px; color: #555; font-size: 14px; line-height: 20px; }
+.ex-mini > div { display: flex; gap: 8px; }
+.ex-mini > div .ds-btn { flex: 1 1 0; min-width: 0; padding: 0 4px; pointer-events: none; }
+.ex-mini > .ex-mini--over { display: block; }
+.ex-mini--over { position: absolute; left: 40px; right: -12px; top: 40px; max-width: none; }
+</style>
+<script>
+window.addEventListener('load', function () {
+  var long = document.getElementById('long-body');
+  var html = '';
+  for (var i = 1; i <= 12; i++) html += '<p style="margin:0 0 16px">제' + i + '조 대여 기간 동안 상품은 이로움케어의 소유이며, 수급자는 선량한 관리자의 주의로 사용해야 합니다. 예시 문구입니다.</p>';
+  long.innerHTML = html;
+});
+</script>
+</body>
+</html>

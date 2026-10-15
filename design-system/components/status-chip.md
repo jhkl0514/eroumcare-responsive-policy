@@ -201,3 +201,10 @@ Figma 출처: 파일 `64Q1Re56aiAA8Al89pqjnV` / 노드 ID `13139:11578`, `13864:
 |---|---|---|---|
 | 상태 타입 | Info, Success, Caution, BrandSub, Default, Danger, Neutral, Neutral-white | Info, Success, Error, Default, BrandSub, Caution | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [10:15762](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=10-15762) |
 | 시각 변형 | DS 시맨틱 상태 색상 매핑을 사용 | Filled, Transparent, Outline | 이로움케어 프레임워크 Figma(AD6zHJIIn6yJ0ifS8w5pYv) 노드 [10:15762](https://www.figma.com/design/AD6zHJIIn6yJ0ifS8w5pYv?node-id=10-15762) |
+
+## 정책 반영 이력
+
+| 정책 조항 | 정책 기준 | 반영 내용 |
+|---|---|---|
+| 정책 3-0 | 일반 상태칩은 화면 폭에 따라 크기를 바꾸지 않는다. | 반응형 설명에서 칩 크기는 유지하고 주변 배치만 바뀌도록 명시했다. |
+| 정책 3-9, 5장 | 목록과 상세에서 대상 도메인 상태를 대표 정보 가까이에 명확한 텍스트로 표시한다. | 주문·회수·A/S 등 실제 상태 견본을 추가하고 색상만으로 의미를 전달하지 않도록 했다. |

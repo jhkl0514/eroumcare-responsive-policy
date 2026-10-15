@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Status Chip · 이로움케어 디자인 시스템</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/typography.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="doc.css">
+<script defer src="../js/ds.js"></script>
+<script defer src="doc.js"></script>
+</head>
+<body data-page="Status Chip">
+<header class="doc-header">
+  <button class="doc-menu-btn" id="doc-menu-btn" type="button" aria-label="메뉴" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+  <a class="doc-brand" href="index.html?item=%EB%94%94%EC%9E%90%EC%9D%B8%20%EC%8B%9C%EC%8A%A4%ED%85%9C%20%EA%B0%9C%EC%9A%94"><strong>이로움케어</strong><span>디자인 시스템</span></a>
+  <span class="doc-header__spacer"></span>
+  <a class="doc-hub-link" href="../../index.html">← 정책 허브</a>
+</header>
+
+<div class="doc-shell">
+  <nav class="doc-side" id="doc-side" aria-label="디자인 시스템 메뉴"></nav>
+
+  <main class="doc-main">
+    <div class="doc-content">
+      <p class="doc-crumb">Components · Layout</p>
+      <h1 class="doc-h1">Status Chip</h1>
+      <p class="doc-lead">주문접수·출고완료처럼 진행에 따라 바뀌는 상태를 보여 주는 칩입니다. 누르는 요소가 아닙니다.</p>
+      <div class="doc-meta">
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7772-7752" target="_blank" rel="noopener">Figma · Status chip ↗</a>
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=13139-11578" target="_blank" rel="noopener">Figma · 업무별 상태칩 ↗</a>
+        <span>높이 32 · 글자 14</span>
+      </div>
+
+      <div class="doc-tabs" role="tablist" aria-label="문서 보기">
+        <button class="doc-tab" role="tab" id="tab-design" data-tab="design" aria-controls="panel-design" aria-selected="true">디자인</button>
+        <button class="doc-tab" role="tab" id="tab-dev" data-tab="dev" aria-controls="panel-dev" aria-selected="false">개발</button>
+      </div>
+
+      <div id="panel-design" role="tabpanel" aria-labelledby="tab-design">
+        <section class="doc-section">
+          <h2 class="doc-h2" id="overview">업무별 상태칩</h2>
+          <p class="doc-p">화면에서 실제로 쓰는 칩입니다. 모두 <strong>Tinted-Outline · 둥근 모양 · 아이콘 없음</strong>이고, 같은 의미의 단계는 업무가 달라도 같은 색을 씁니다.</p>
+          <div class="doc-scroll"><table class="doc-table doc-chip-flow">
+            <thead><tr><th>색 의미</th><th>주문(구입)</th><th>대여</th><th>회수</th><th>반품</th><th>A/S</th></tr></thead>
+            <tbody>
+              <tr><td>접수<small>Info · 파랑</small></td><td><span class="ds-chip ds-chip--order-received">주문접수</span></td><td><span class="ds-chip ds-chip--rental-assigned">신규배정</span></td><td><span class="ds-chip ds-chip--collect-received">회수접수</span></td><td><span class="ds-chip ds-chip--return-received">반품접수</span></td><td><span class="ds-chip ds-chip--as-received">A/S접수</span></td></tr>
+              <tr><td>확인 중<small>Success · 초록</small></td><td><span class="ds-chip ds-chip--order-confirming">주문확인중</span></td><td><span class="ds-chip ds-chip--rental-confirming">주문확인중</span></td><td><span class="ds-chip ds-chip--collect-confirming">회수확인중</span></td><td><span class="ds-chip ds-chip--return-confirmed">반품접수 확인</span></td><td><span class="ds-chip ds-chip--as-confirmed">A/S접수 확인</span></td></tr>
+              <tr><td>요청 · 준비<small>Caution · 주황</small></td><td><span class="ds-chip ds-chip--order-preparing">상품준비</span><br><span class="ds-chip ds-chip--order-cancel-requested">취소요청</span></td><td><span class="ds-chip ds-chip--rental-preparing">출고준비중</span><br><span class="ds-chip ds-chip--rental-cancel-requested">취소요청</span></td><td><span class="ds-chip ds-chip--collect-requested">회수요청</span></td><td><span class="ds-chip ds-chip--return-requested">반품요청</span><br><span class="ds-chip ds-chip--return-collect-requested">회수요청</span></td><td>—</td></tr>
+              <tr><td>진행 중<small>BrandSub · 연두</small></td><td><span class="ds-chip ds-chip--order-shipping">출고중</span><br><span class="ds-chip ds-chip--order-shipped">출고완료</span></td><td><span class="ds-chip ds-chip--rental-completed">주문완료</span><br><span class="ds-chip ds-chip--rental-shipped">출고완료</span></td><td><span class="ds-chip ds-chip--collect-preparing">회수준비중</span></td><td><span class="ds-chip ds-chip--return-collecting">회수진행</span></td><td><span class="ds-chip ds-chip--as-in-progress">A/S진행중</span></td></tr>
+              <tr><td>완료<small>Default · 남색</small></td><td><span class="ds-chip ds-chip--order-delivered">배송완료</span></td><td><span class="ds-chip ds-chip--rental-delivered">배송완료</span></td><td><span class="ds-chip ds-chip--collect-completed">회수완료</span></td><td><span class="ds-chip ds-chip--return-completed">반품완료</span><br><span class="ds-chip ds-chip--return-withdrawn">반품철회</span></td><td><span class="ds-chip ds-chip--as-completed">A/S완료</span></td></tr>
+              <tr><td>취소 · 불가<small>Error · 빨강</small></td><td><span class="ds-chip ds-chip--order-cancelled">주문취소</span></td><td><span class="ds-chip ds-chip--rental-cancelled">주문취소</span></td><td><span class="ds-chip ds-chip--collect-cancelled">회수취소</span></td><td><span class="ds-chip ds-chip--return-cancelled">반품접수 취소</span><br><span class="ds-chip ds-chip--return-not-allowed">반품접수 불가</span><br><span class="ds-chip ds-chip--return-unavailable">반품불가</span></td><td><span class="ds-chip ds-chip--as-cancelled">A/S접수 취소</span><br><span class="ds-chip ds-chip--as-not-allowed">A/S접수 불가</span><br><span class="ds-chip ds-chip--as-unavailable">A/S 불가</span></td></tr>
+              <tr><td>종결 · 보조<small>Neutral · 회색</small></td><td><span class="ds-chip ds-chip--order-item-processing">상품별 처리 중</span><br><span class="ds-chip ds-chip--order-additional">추가상품</span><br><span class="ds-chip ds-chip--order-multi">+2개 상태</span></td><td><span class="ds-chip ds-chip--rental-cancel-completed">취소완료</span></td><td><span class="ds-chip ds-chip--collect-cancel-completed">회수취소완료</span></td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table></div>
+          <p class="doc-note">Figma 업무별 세트(Status chip-Order · Rental · Collect · AS · Return) 기준입니다. 대여 “주문완료”는 연두(BrandSub)로 되어 있어, 이전에 정한 “주문완료 = 초록” 결정과 다릅니다. Figma를 따랐고 확인이 필요합니다.</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="anatomy">구조</h2>
+          <div class="doc-stage doc-stage--white">
+            <div class="doc-anat" style="display:flex;justify-content:center;padding:56px 24px 48px">
+              <span class="ds-chip ds-chip--info" data-anat="3" data-anat-side="right" data-anat-gap="32"><span class="ds-chip__icon" data-anat="1" data-anat-side="top" data-anat-gap="32"></span><span data-anat="2" data-anat-side="bottom" data-anat-gap="32">신규배정</span></span>
+            </div>
+          </div>
+          <ol class="doc-legend">
+            <li><b>1</b><span><strong>아이콘</strong> — 선택. 업무 화면 칩에는 쓰지 않습니다.</span></li>
+            <li><b>2</b><span><strong>상태 이름</strong> — 14 SemiBold, 한 줄.</span></li>
+            <li><b>3</b><span><strong>배경 · 테두리</strong> — 스타일에 따라 달라집니다.</span></li>
+          </ol>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="colors">색과 스타일</h2>
+          <p class="doc-p">7가지 색 × 4가지 스타일. 업무 칩은 세 번째 열(Tinted-Outline)만 씁니다.</p>
+          <div class="doc-ctl" style="margin:16px 0 0">
+            <span class="doc-ctl__name">모양</span><div class="doc-seg" id="seg-shape"><button type="button" data-value="round" aria-pressed="true">Rounded</button><button type="button" data-value="square" aria-pressed="false">Square</button></div>
+            <label class="doc-check"><input type="checkbox" id="opt-icon" checked> 아이콘</label>
+          </div>
+          <div class="doc-scroll"><table class="doc-table doc-chip-matrix">
+            <thead><tr><th>색</th><th>Filled</th><th>Transparent</th><th>Tinted-Outline</th><th>Outline</th></tr></thead>
+            <tbody id="chip-rows"></tbody>
+          </table></div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="size">크기</h2>
+          <p class="doc-p">한 가지 크기만 있습니다. PC·모바일 같습니다.</p>
+          <div class="doc-stage doc-stage--white">
+            <div class="doc-measure" style="display:flex;justify-content:center;gap:48px;padding:32px 40px 24px" data-dims='[
+              {"d":"y","a":".c1","from":"top","to":"bottom","at":"right","off":10},
+              {"d":"x","a":".c1","from":"left","b":".c1t","to":"left","on":".c1","at":"top","off":-10},
+              {"d":"x","a":".c2","from":"left","b":".c2i","to":"left","on":".c2","at":"top","off":-10},
+              {"d":"x","a":".c2i","from":"left","to":"right","on":".c2","at":"bottom","off":10,"below":true},
+              {"d":"x","a":".c2i","from":"right","b":".c2t","to":"left","on":".c2","at":"top","off":-10}]'>
+              <span class="ds-chip ds-chip--rental-assigned c1"><span class="c1t">신규배정</span></span>
+              <span class="ds-chip ds-chip--info c2"><span class="ds-chip__icon c2i"></span><span class="c2t">신규배정</span></span>
+            </div>
+          </div>
+          <table class="doc-table">
+            <thead><tr><th>항목</th><th>값</th></tr></thead>
+            <tbody>
+              <tr><td>높이</td><td>32</td></tr>
+              <tr><td>좌우 여백</td><td>12</td></tr>
+              <tr><td>아이콘 · 간격</td><td>24 · 4</td></tr>
+              <tr><td>글자</td><td>14 / 줄높이 20 · SemiBold</td></tr>
+              <tr><td>모서리</td><td>Rounded 999 · Square 4</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="usage">사용 예</h2>
+          <h3 class="doc-h3" style="margin-top:16px">리스트 표의 상태 열</h3>
+          <div class="doc-example"><div class="doc-example__bar"><strong>대여 주문요청관리</strong><span>예시 값은 모두 가상입니다</span></div>
+            <div class="doc-example__body doc-scroll" style="padding:0">
+              <table class="ex-list"><thead><tr><th>상태</th><th>돌봄주문번호</th><th>수급자</th><th>상품명</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="ds-chip ds-chip--rental-assigned">신규배정</span></td><td>R000-0001</td><td>홍*동</td><td>보행 보조기</td></tr>
+                  <tr><td><span class="ds-chip ds-chip--rental-confirming">주문확인중</span></td><td>R000-0002</td><td>김*수</td><td>전동 침대</td></tr>
+                  <tr><td><span class="ds-chip ds-chip--rental-shipped">출고완료</span></td><td>R000-0003</td><td>이*희</td><td>욕창 예방 매트리스</td></tr>
+                  <tr><td><span class="ds-chip ds-chip--rental-delivered">배송완료</span></td><td>R000-0004</td><td>박*호</td><td>수동 휠체어</td></tr>
+                  <tr><td><span class="ds-chip ds-chip--rental-cancelled">주문취소</span></td><td>R000-0005</td><td>최*영</td><td>목욕 의자</td></tr>
+                </tbody></table>
+            </div></div>
+          <h3 class="doc-h3">모바일 카드</h3>
+          <p class="doc-p">카드 맨 위 왼쪽에 상태칩, 그 아래 주요 정보. <a class="doc-policy" href="../../index.html#3-9" target="_blank" rel="noopener">3-9</a></p>
+          <div class="doc-stage" style="display:flex;justify-content:center">
+            <div class="ex-card"><span class="ds-chip ds-chip--rental-confirming">주문확인중</span><strong>전동 침대</strong><span>R000-0002 · 김*수</span></div>
+          </div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="principles">사용 원칙</h2>
+          <div class="doc-rules">
+            <div class="doc-rule"><div class="doc-rule__stage" style="flex-direction:row;flex-wrap:wrap;justify-content:center;gap:8px"><span class="ds-chip ds-chip--rental-assigned">신규배정</span><span class="ds-chip ds-chip--rental-confirming">주문확인중</span><span class="ds-chip ds-chip--rental-delivered">배송완료</span></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">한 목록 안에서는 같은 스타일(Tinted-Outline)로, 색만 바뀌게 합니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage" style="flex-direction:row;flex-wrap:wrap;justify-content:center;gap:8px"><span class="ds-chip ds-chip--info ds-chip--filled">신규배정</span><span class="ds-chip ds-chip--success ds-chip--outline">주문확인중</span><span class="ds-chip ds-chip--default ds-chip--transparent ds-chip--square">배송완료</span></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">스타일·모양을 섞으면 색보다 모양 차이가 먼저 보여 상태를 비교하기 어렵습니다.</p></div></div>
+
+            <div class="doc-rule"><div class="doc-rule__stage" style="align-items:center"><span class="ds-chip ds-chip--return-not-allowed">반품접수 불가</span></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">상태 이름은 정해진 짧은 명사. 이유는 칩 밖에 문장으로 씁니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage" style="align-items:center"><span class="ds-chip ds-chip--return-not-allowed">기간이 지나 반품할 수 없어요</span></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">문장을 칩에 넣으면 표 열 폭이 늘고 다른 행과 맞지 않습니다.</p></div></div>
+          </div>
+        </section>
+      </div>
+
+      <div id="panel-dev" role="tabpanel" aria-labelledby="tab-dev" hidden>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-markup">업무 칩 마크업</h2>
+          <p class="doc-p">업무 상태 클래스 하나만 붙이면 됩니다. 색은 클래스가 정합니다.</p>
+          <div class="doc-code"><pre>&lt;span class="ds-chip ds-chip--rental-assigned"&gt;신규배정&lt;/span&gt;
+&lt;span class="ds-chip ds-chip--order-cancelled"&gt;주문취소&lt;/span&gt;</pre></div>
+          <table class="doc-table">
+            <thead><tr><th>업무</th><th>클래스</th></tr></thead>
+            <tbody>
+              <tr><td>주문(구입)</td><td><code>order-received · order-confirming · order-preparing · order-shipping · order-shipped · order-delivered · order-cancel-requested · order-cancelled · order-item-processing · order-additional · order-multi</code></td></tr>
+              <tr><td>대여</td><td><code>rental-assigned · rental-confirming · rental-completed · rental-preparing · rental-shipped · rental-delivered · rental-cancel-requested · rental-cancelled · rental-cancel-completed</code></td></tr>
+              <tr><td>회수</td><td><code>collect-received · collect-confirming · collect-requested · collect-preparing · collect-completed · collect-cancelled · collect-cancel-completed</code></td></tr>
+              <tr><td>반품</td><td><code>return-received · return-confirmed · return-requested · return-collect-requested · return-collecting · return-completed · return-withdrawn · return-cancelled · return-not-allowed · return-unavailable</code></td></tr>
+              <tr><td>A/S</td><td><code>as-received · as-confirmed · as-in-progress · as-completed · as-cancelled · as-not-allowed · as-unavailable</code></td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-generic">색 × 스타일 조합</h2>
+          <div class="doc-code"><pre>&lt;!-- 색: info · success · error · default · brand-sub · caution · neutral --&gt;
+&lt;!-- 스타일: (없음 = Tinted-Outline) · filled · transparent · outline / 모양: (없음 = Rounded) · square --&gt;
+&lt;span class="ds-chip ds-chip--info ds-chip--filled"&gt;
+  &lt;span class="ds-chip__icon"&gt;&lt;/span&gt;Status chip
+&lt;/span&gt;</pre></div>
+          <p class="doc-note">칩 색은 모두 팔레트 변수에서 가져옵니다(Filled 배경은 700, Outline 테두리는 600 단계). 값을 직접 쓰지 않습니다.</p>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <div class="doc-code"><pre>[Status Chip 규칙 — 이로움케어 DS]
+- 업무 화면: &lt;span class="ds-chip ds-chip--{업무}-{상태}"&gt;이름&lt;/span&gt; (Tinted-Outline · Rounded · 아이콘 없음)
+- 색 의미: 접수=Info 파랑, 확인중=Success 초록, 요청·준비=Caution 주황, 진행=BrandSub 연두, 완료=Default 남색, 취소·불가=Error 빨강, 종결·보조=Neutral 회색
+- 높이 32, 좌우 12, 14/20 SemiBold, 누르는 요소 아님(버튼·필터칩과 구분)
+- 한 목록에서 스타일·모양을 섞지 않음. 이름은 짧은 명사, 이유는 칩 밖에</pre></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <aside class="doc-toc" aria-label="이 페이지에서">
+    <p class="doc-toc__title">이 페이지에서</p>
+    <nav id="doc-toc-links"></nav>
+  </aside>
+</div>
+<style>
+.doc-scroll { overflow-x: auto; }
+.doc-chip-flow { min-width: 760px; }
+.doc-chip-flow td { vertical-align: top; line-height: 40px; }
+.doc-chip-flow td:first-child { line-height: 22px; padding-top: 25px; }
+.doc-chip-flow th:first-child { width: 120px; }
+.doc-chip-matrix { min-width: 640px; }
+.doc-chip-matrix th:first-child { width: 110px; }
+.ex-list { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 14px; }
+.ex-list th { padding: 12px 16px; background: #f5f5f5; color: #555; font-weight: 600; text-align: left; border-bottom: 1px solid #e0e0e0; }
+.ex-list td { padding: 12px 16px; border-bottom: 1px solid #eee; color: #1a1a1a; }
+.ex-card { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; width: 320px; max-width: 100%; padding: 16px 20px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fff; }
+.ex-card strong { font-size: 16px; }
+.ex-card span:last-child { color: #616161; font-size: 14px; }
+</style>
+<script>
+window.addEventListener('load', function () {
+  var COLORS = [['info', 'Info'], ['success', 'Success'], ['error', 'Error'], ['default', 'Default'], ['brand-sub', 'BrandSub'], ['caution', 'Caution'], ['neutral', 'Neutral']];
+  var STYLES = ['filled', 'transparent', '', 'outline'];
+  var shape = 'round';
+  function render() {
+    var icon = document.getElementById('opt-icon').checked;
+    document.getElementById('chip-rows').innerHTML = COLORS.map(function (c) {
+      return '<tr><td>' + c[1] + '</td>' + STYLES.map(function (s) {
+        return '<td><span class="ds-chip ds-chip--' + c[0] + (s ? ' ds-chip--' + s : '') + (shape === 'square' ? ' ds-chip--square' : '') + '">' + (icon ? '<span class="ds-chip__icon"></span>' : '') + 'Status chip</span></td>';
+      }).join('') + '</tr>';
+    }).join('');
+  }
+  document.getElementById('seg-shape').addEventListener('doc-seg', function (e) { shape = e.detail; render(); });
+  document.getElementById('opt-icon').addEventListener('change', render);
+  render();
+});
+</script>
+</body>
+</html>

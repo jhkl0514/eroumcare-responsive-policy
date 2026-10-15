@@ -1,0 +1,125 @@
+<!--@title-->Icon<!--/@title-->
+<!--@crumb-->Foundation<!--/@crumb-->
+<!--@lead-->DS Figma 아이콘(icon_default)을 그대로 옮겼습니다. 기본 크기 24, 색은 글자색을 따라갑니다.<!--/@lead-->
+<!--@meta-->
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=1572-7725" target="_blank" rel="noopener">Figma · icon_default ↗</a>
+        <span id="icon-count">아이콘</span>
+<!--/@meta-->
+<!--@design-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="library">아이콘 목록</h2>
+          <p class="doc-p">아이콘을 누르면 이름이 복사됩니다. 크기와 색을 바꿔 실제로 보이는 모습을 확인해 보세요.</p>
+          <div class="doc-ctl" style="margin:16px 0 0;flex-wrap:wrap">
+            <input class="ds-input ds-preview-pc" id="icon-q" type="search" placeholder="이름 찾기 (예: chevron)" aria-label="아이콘 이름 찾기" style="max-width:240px">
+            <span class="doc-ctl__name">크기</span><div class="doc-seg" id="seg-size"><button type="button" data-value="16" aria-pressed="false">16</button><button type="button" data-value="20" aria-pressed="false">20</button><button type="button" data-value="24" aria-pressed="true">24</button><button type="button" data-value="36" aria-pressed="false">36</button></div>
+            <span class="doc-ctl__name">색</span><div class="doc-seg" id="seg-color"><button type="button" data-value="#333333" aria-pressed="true">기본</button><button type="button" data-value="#323DA3" aria-pressed="false">브랜드</button><button type="button" data-value="#BDBDBD" aria-pressed="false">비활성</button><button type="button" data-value="#C62828" aria-pressed="false">오류</button></div>
+          </div>
+          <div class="ic-grid" id="icon-grid"></div>
+          <p class="doc-note" id="icon-skipped">휠체어 · 침대 · 경사로 · 위치처럼 원 안에 흰 그림이 있는 업무용 아이콘은 원만 색이 바뀌고 흰 그림은 그대로입니다. number(숫자 원)는 색이 고정입니다.</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="size">크기</h2>
+          <div class="doc-stage doc-stage--white" style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:32px" id="size-row"></div>
+          <table class="doc-table">
+            <thead><tr><th>크기</th><th>쓰는 자리</th></tr></thead>
+            <tbody>
+              <tr><td>24</td><td>기본. 입력칸 아이콘 · 지우기 · 셀렉트 화살표 · 도움말 · 상태칩 아이콘</td></tr>
+              <tr><td>32</td><td>모달 · 바텀시트 닫기</td></tr>
+              <tr><td>16 · 20 · 30 · 36</td><td>프레임워크 크기 단계. 지금 DS 컴포넌트에서 쓰는 곳은 없습니다</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="color">색</h2>
+          <p class="doc-p">아이콘 색은 Figma 의미 색(Color/icon/*)을 씁니다. 글자 옆 아이콘은 글자와 같은 색을 따라갑니다.</p>
+          <div class="doc-stage doc-stage--white ic-colors" id="color-row"></div>
+          <p class="doc-note">예외 — 도움말은 아이콘 #333 · 글자 #616161로 색이 다릅니다(Figma Textfield). <a href="text-input.html">Text input</a></p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="principles">사용 원칙</h2>
+          <div class="doc-rules">
+            <div class="doc-rule"><div class="doc-rule__stage" style="align-items:center"><button class="ds-btn ds-btn--outline-secondary ds-btn--icon" type="button" tabindex="-1" aria-label="검색"><span class="ds-btn__icon"></span></button></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">뜻이 분명한 아이콘(돋보기 = 검색)만 글자 없이 씁니다. 화면 읽기용 이름은 꼭 붙입니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage" style="align-items:center" id="bad-icon"></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">뜻이 여러 가지인 아이콘(계약서 확인 등)은 글자 없이 쓰면 무엇을 하는지 알 수 없습니다.</p></div></div>
+            <div class="doc-rule"><div class="doc-rule__stage" style="align-items:center" id="good-size"></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">24 그대로. 옆 아이콘·글자와 크기와 줄이 맞습니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage" style="align-items:center" id="bad-size"></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">27처럼 단계에 없는 크기는 옆 아이콘보다 커 보이고 줄이 어긋납니다.</p></div></div>
+          </div>
+        </section>
+<!--/@design-->
+<!--@dev-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-files">파일</h2>
+          <p class="doc-p">아이콘마다 SVG 파일이 있고, 모든 아이콘을 담은 <code>icons.js</code>도 있습니다. 채움색은 <code>currentColor</code>라 CSS <code>color</code>로 바꿉니다.</p>
+          <div class="doc-code"><pre>design-system/icons/search.svg      ← 아이콘 하나 (이름은 소문자)
+design-system/icons/icons.js        ← window.DS_ICONS = { "search": { figma, node, w, h, svg } }
+
+&lt;!-- 1) 파일 그대로 --&gt;
+&lt;img src="design-system/icons/search.svg" width="24" height="24" alt=""&gt;   (색 바꿀 수 없음)
+
+&lt;!-- 2) 색을 바꾸려면 mask --&gt;
+&lt;span class="icon" style="--icon:url(design-system/icons/search.svg)"&gt;&lt;/span&gt;
+.icon { width: 24px; height: 24px; background: currentColor; -webkit-mask: var(--icon) center / contain no-repeat; mask: var(--icon) center / contain no-repeat; }</pre></div>
+          <p class="doc-note">입력칸 · 셀렉트 · 지우기 · 도움말 · 오류 · 닫기 아이콘은 components.css 안에 이미 들어 있어 따로 넣지 않아도 됩니다.</p>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <div class="doc-code"><pre>[Icon 규칙 — 이로움케어 DS]
+- 아이콘은 design-system/icons/{이름}.svg (Figma icon_default). 새로 그리지 말고 목록에서 고름
+- 기본 24, 닫기 32. 단계에 없는 크기 금지
+- 색은 currentColor → 부모 color로. 기본 #333, 비활성 #BDBDBD, 오류 #C62828
+- 글자 없는 아이콘 버튼은 aria-label 필수, 뜻이 분명한 아이콘(검색·닫기·더보기)만</pre></div>
+        </section>
+<!--/@dev-->
+<!--@after-->
+<script src="../icons/icons.js"></script>
+<div class="fd-toast" id="toast" role="status"></div>
+<style>
+.ic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; margin: 16px 0 0; }
+.ic-cell { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 6px 12px; border: 1px solid var(--doc-line); border-radius: 10px; background: #fff; color: #333; font: inherit; cursor: pointer; }
+.ic-cell:hover { border-color: #bdbdbd; background: var(--doc-stage); }
+.ic-cell svg { display: block; }
+.ic-colors svg { flex-shrink: 0; }
+.ic-cell span { max-width: 100%; color: var(--doc-text-2); font-size: 12px; line-height: 16px; overflow-wrap: anywhere; text-align: center; }
+.ic-colors { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.ic-colors div { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--doc-text-2); }
+@media (max-width: 720px) { .ic-colors { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>
+<!--/@after-->
+<!--@script-->
+  var ICONS = window.DS_ICONS || {};
+  var names = Object.keys(ICONS).sort();
+  document.getElementById('icon-count').textContent = '아이콘 ' + names.length;
+  function svg(name, size, color) {
+    var i = ICONS[name]; if (!i) return '';
+    var s = size || 24, k = s / Math.max(i.w, i.h), w = Math.round(i.w * k), h = Math.round(i.h * k);
+    return '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + i.w + ' ' + i.h + '" fill="none" style="color:' + (color || 'inherit') + '" aria-hidden="true">' + i.svg + '</svg>';
+  }
+  var size = 24, color = '#333333', q = '';
+  function render() {
+    document.getElementById('icon-grid').innerHTML = names.filter(function (n) { return !q || n.indexOf(q) > -1 || ICONS[n].figma.toLowerCase().indexOf(q) > -1; }).map(function (n) {
+      return '<button type="button" class="ic-cell" data-name="' + n + '" title="Figma icon=' + ICONS[n].figma + ' · ' + ICONS[n].node + '">' + svg(n, size, color) + '<span>' + n + '</span></button>';
+    }).join('') || '<p class="doc-p">찾는 아이콘이 없습니다.</p>';
+  }
+  render();
+  document.getElementById('icon-q').addEventListener('input', function (e) { q = e.target.value.trim().toLowerCase(); render(); });
+  document.getElementById('seg-size').addEventListener('doc-seg', function (e) { size = +e.detail; render(); });
+  document.getElementById('seg-color').addEventListener('doc-seg', function (e) { color = e.detail; render(); });
+  document.getElementById('icon-grid').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-name]'); if (!b) return;
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(b.dataset.name).catch(function () {});
+    var t = document.getElementById('toast'); t.textContent = b.dataset.name + ' 복사됨'; t.classList.add('is-on'); clearTimeout(t._t); t._t = setTimeout(function () { t.classList.remove('is-on'); }, 1200);
+  });
+  var sk = window.DS_ICONS_SKIPPED || [];
+  if (sk.length) document.getElementById('icon-skipped').textContent = '아직 옮기지 않은 아이콘 ' + sk.length + '개: ' + sk.join(', ') + '. 여러 색이 섞이거나 모양이 복잡한 업무용 아이콘이라 Figma에서 확인해 주세요.';
+  document.getElementById('size-row').innerHTML = [16, 20, 24, 30, 36].map(function (s) { return '<div style="display:flex;flex-direction:column;align-items:center;gap:8px">' + svg('search', s, '#333') + '<span style="font-size:13px;color:#8a8a8a">' + s + '</span></div>'; }).join('');
+  document.getElementById('color-row').innerHTML = [['#333333', 'icon/primary · 기본'], ['#616161', 'icon/secondary · 보조'], ['#BDBDBD', 'icon/disabled · 비활성'], ['#323DA3', 'icon/Primitive/primary · 누르는 아이콘'], ['#C62828', 'icon/danger-bold · 오류'], ['#166534', 'icon/success-bold · 성공'], ['#1E40AF', 'icon/info-bold · 정보'], ['#FF8F00', 'icon/caution-bold · 주의']].map(function (c) { return '<div>' + svg('info', 24, c[0]) + c[1] + '</div>'; }).join('');
+  document.getElementById('bad-icon').innerHTML = '<button class="ds-btn ds-btn--outline-secondary ds-btn--icon" type="button" tabindex="-1" aria-label="나쁜 예" style="color:#333">' + svg('contract_check', 24) + '</button>';
+  document.getElementById('good-size').innerHTML = svg('calendar', 24, '#333');
+  document.getElementById('bad-size').innerHTML = svg('calendar', 27, '#333');
+<!--/@script-->

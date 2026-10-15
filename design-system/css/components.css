@@ -1,328 +1,415 @@
-/* Buttons */
+/* Buttons — DS Figma Button 7696:4607 (Filled 37:1737 · outline 7697:19531 · Transparent 7697:19911 · Tinted-Outline 12789:11546 · IconButton 12136:20228)
+   크기는 화면 폭이 아니라 쓰는 자리로 고른다(정책 3-0·3-4). 기본은 SM 36.
+   Hover·Active는 Figma의 Hover:Active 한 가지 표현을 같이 쓴다. */
 .ds-btn {
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ds-space-4);
+  gap: var(--ds-space-8);
   min-inline-size: 0;
-  min-block-size: var(--ds-space-36);
-  padding-inline: var(--ds-space-16);
-  border: 1px solid var(--ds-color-border-primary);
+  block-size: 36px;
+  margin: 0;
+  padding: 0 calc(var(--ds-space-16) - 1px); /* 테두리 포함 16 */
+  border: 1px solid var(--ds-color-grey-600);
   border-radius: var(--ds-radius-4);
   background: var(--ds-color-bg-primary);
-  color: var(--ds-color-text-primary);
+  color: var(--ds-color-grey-700);
   font-family: var(--ds-font-family-suit);
-  font-size: var(--ds-font-body-ss-semibold-size);
-  line-height: var(--ds-font-body-ss-semibold-line-height);
+  font-size: 14px;
+  line-height: 20px;
   font-weight: 600;
+  letter-spacing: 0;
   text-align: center;
   text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
 }
+.ds-btn--sm { block-size: 36px; font-size: 14px; line-height: 20px; letter-spacing: 0; }
+.ds-btn--md { block-size: 48px; font-size: 16px; line-height: 24px; letter-spacing: -0.015em; }
+.ds-btn--lg { block-size: 54px; font-size: 18px; line-height: 26px; letter-spacing: -0.015em; }
+.ds-btn--block { display: flex; inline-size: 100%; }
+/* 입력칸 옆 버튼: 칸 높이를 따른다. PC 36(칸 40, 같은 높이 버튼 없음) · 모바일 48(칸 48) */
+.ds-btn--field { block-size: var(--ds-field-btn-h); font-size: var(--ds-field-btn-size); line-height: var(--ds-field-btn-lh); letter-spacing: var(--ds-field-btn-ls); }
+.ds-btn--round { border-radius: var(--ds-radius-circle); }
 
-.ds-btn--primary {
-  border-color: var(--ds-color-darkblue-600);
-  background: var(--ds-color-darkblue-600);
-  color: var(--ds-color-base-white);
+/* Filled */
+.ds-btn--primary { border-color: transparent; background: var(--ds-color-darkblue-600); color: var(--ds-color-base-white); }
+.ds-btn--primary:is(:hover, :active, .ds-is-hover):not(:disabled) { background: var(--ds-color-darkblue-800); }
+.ds-btn--secondary { border-color: transparent; background: var(--ds-color-grey-200); color: var(--ds-color-grey-700); }
+.ds-btn--secondary:is(:hover, :active, .ds-is-hover):not(:disabled) { background: var(--ds-color-grey-300); color: var(--ds-color-grey-800); }
+.ds-btn--tertiary { border-color: transparent; background: var(--ds-color-darkblue-100); color: var(--ds-color-darkblue-600); }
+.ds-btn--tertiary:is(:hover, :active, .ds-is-hover):not(:disabled) { background: var(--ds-color-darkblue-200); color: var(--ds-color-darkblue-800); }
+.ds-btn:is(.ds-btn--primary, .ds-btn--secondary, .ds-btn--tertiary):disabled {
+  border-color: transparent; background: var(--ds-color-grey-200); color: var(--ds-color-grey-400);
 }
 
-.ds-btn--secondary {
-  border-color: var(--ds-color-grey-300);
-  background: var(--ds-color-grey-300);
-  color: var(--ds-color-text-primary);
-}
+/* Outline — Figma 글자 Regular */
+.ds-btn--outline,
+.ds-btn--outline-secondary,
+.ds-btn--outline-tertiary { background: var(--ds-color-bg-primary); }
+/* Figma outline 7697:19531 — Default·Secondary SemiBold, Teritiary만 Regular */
+.ds-btn--outline-tertiary { font-weight: 400; }
+.ds-btn--outline { border-color: var(--ds-color-darkblue-600); color: var(--ds-color-darkblue-600); }
+.ds-btn--outline:is(:hover, :active, .ds-is-hover):not(:disabled) { border-color: var(--ds-color-darkblue-800); background: var(--ds-color-darkblue-200); color: var(--ds-color-darkblue-800); }
+.ds-btn--outline-secondary { border-color: var(--ds-color-grey-600); color: var(--ds-color-grey-700); }
+.ds-btn--outline-secondary:is(:hover, :active, .ds-is-hover):not(:disabled) { background: var(--ds-color-grey-300); color: var(--ds-color-grey-800); }
+.ds-btn--outline-tertiary { border-color: var(--ds-color-grey-400); color: var(--ds-color-grey-600); }
+.ds-btn--outline-tertiary:is(:hover, :active, .ds-is-hover):not(:disabled) { border-color: var(--ds-color-grey-800); color: var(--ds-color-grey-800); }
+.ds-btn:is(.ds-btn--outline, .ds-btn--outline-secondary):disabled { border-color: var(--ds-color-grey-400); background: transparent; color: var(--ds-color-grey-400); }
+.ds-btn--outline-tertiary:disabled { border-color: var(--ds-color-grey-400); background: var(--ds-color-grey-100); color: var(--ds-color-grey-400); }
 
-.ds-btn--tertiary {
-  border-color: var(--ds-color-bg-tertiary);
-  background: var(--ds-color-bg-tertiary);
-  color: var(--ds-color-text-primary);
-}
+/* Transparent(글자 버튼) */
+.ds-btn--text { border-color: transparent; background: transparent; color: var(--ds-color-darkblue-600); }
+.ds-btn--text:is(:hover, :active, .ds-is-hover):not(:disabled) { background: var(--ds-color-darkblue-200); color: var(--ds-color-darkblue-800); }
+.ds-btn--text-secondary { border-color: transparent; background: transparent; color: var(--ds-color-grey-700); }
+.ds-btn--text-secondary:is(:hover, :active, .ds-is-hover):not(:disabled) { background: var(--ds-color-grey-300); color: var(--ds-color-grey-800); }
+.ds-btn:is(.ds-btn--text, .ds-btn--text-secondary):disabled { background: transparent; color: var(--ds-color-grey-400); }
 
-.ds-btn--outline {
-  border-color: var(--ds-color-darkblue-600);
-  background: var(--ds-color-bg-primary);
-  color: var(--ds-color-darkblue-600);
-}
+/* Tinted-Outline */
+.ds-btn--tinted { border-color: var(--ds-color-darkblue-600); background: var(--ds-color-darkblue-100); color: var(--ds-color-darkblue-600); }
+.ds-btn--tinted:is(:hover, :active, .ds-is-hover):not(:disabled) { background: var(--ds-color-darkblue-200); color: var(--ds-color-darkblue-800); }
+.ds-btn--tinted-secondary { border-color: var(--ds-color-grey-600); background: var(--ds-color-grey-50); color: var(--ds-color-grey-700); }
+.ds-btn--tinted-secondary:is(:hover, :active, .ds-is-hover):not(:disabled) { background: var(--ds-color-grey-300); color: var(--ds-color-grey-800); }
+.ds-btn:is(.ds-btn--tinted, .ds-btn--tinted-secondary):disabled { border-color: var(--ds-color-grey-400); background: var(--ds-color-grey-200); color: var(--ds-color-grey-400); }
 
-.ds-btn--outline-secondary {
-  border-color: var(--ds-color-grey-600);
-  background: var(--ds-color-bg-primary);
-  color: var(--ds-color-text-neutral);
-}
+/* IconButton: 정사각형, 아이콘 24 */
+.ds-btn--icon { inline-size: 36px; padding: 0; }
+.ds-btn--icon.ds-btn--md { inline-size: 48px; }
+.ds-btn--icon.ds-btn--lg { inline-size: 54px; }
+.ds-btn__icon { flex: 0 0 24px; inline-size: 24px; block-size: 24px; background-color: currentColor; -webkit-mask: var(--ds-icon-search) center / 24px 24px no-repeat; mask: var(--ds-icon-search) center / 24px 24px no-repeat; }
 
-.ds-btn--primary:hover:not(:disabled) {
-  border-color: var(--ds-color-darkblue-800);
-  background: var(--ds-color-darkblue-800);
-}
-
-.ds-btn--secondary:hover:not(:disabled) {
-  border-color: var(--ds-color-grey-200);
-  background: var(--ds-color-grey-200);
-}
-
-.ds-btn--tertiary:hover:not(:disabled),
-.ds-btn--outline:hover:not(:disabled) {
-  border-color: var(--ds-color-darkblue-50);
-  background: var(--ds-color-darkblue-50);
-}
-
-.ds-btn--outline-secondary:hover:not(:disabled) {
-  border-color: var(--ds-color-grey-600);
-  background: var(--ds-color-grey-300);
-  color: var(--ds-color-grey-800);
-}
-
-.ds-btn--sm {
-  min-block-size: var(--ds-space-36);
-  font-size: var(--ds-font-body-ss-semibold-size);
-  line-height: var(--ds-font-body-ss-semibold-line-height);
-}
-
-.ds-btn--md {
-  min-block-size: var(--ds-space-48);
-  font-size: var(--ds-font-body-sm-semibold-size);
-  line-height: var(--ds-font-body-sm-semibold-line-height);
-}
-
-.ds-btn--lg {
-  min-block-size: calc(var(--ds-space-40) + var(--ds-space-12) + var(--ds-space-2));
-  font-size: var(--ds-font-body-md-semibold-size);
-  line-height: var(--ds-font-body-md-semibold-line-height);
-}
-
-.ds-btn--block {
-  display: flex;
-  inline-size: 100%;
-}
-
+.ds-btn:disabled { cursor: not-allowed; }
 .ds-btn:focus-visible,
-.ds-input__clear:focus-visible,
 .ds-modal__close:focus-visible {
-  outline: var(--ds-space-2) solid var(--ds-color-darkblue-600);
-  outline-offset: var(--ds-space-2);
+  outline: 2px solid var(--ds-color-darkblue-600);
+  outline-offset: 2px;
 }
 
-.ds-btn:disabled {
-  border-color: var(--ds-color-border-primary);
-  background: var(--ds-color-bg-disabled);
-  color: var(--ds-color-text-disabled);
-  cursor: not-allowed;
+/* Inputs · Select — DS Figma Textfield 7837:8282 · SelectField 7837:12839 · SelectOption 6570:11270 · OptionGroup 7984:8451
+   크기는 아래 변수 하나로 PC/MO 전환한다(정책 3-0·3-2: 1024px 이하 입력칸·셀렉트·옵션 행만 MO).
+   .ds-preview-pc / .ds-preview-mo 는 문서에서 두 크기를 나란히 보여 줄 때만 쓴다(화면 구현에는 쓰지 않음). */
+:root,
+.ds-preview-pc {
+  --ds-ctl-h: 40px;
+  --ds-ctl-size: var(--ds-font-body-ss-regular-size);
+  --ds-ctl-lh: var(--ds-font-body-ss-regular-line-height);
+  --ds-ctl-ls: 0;
+  --ds-field-gap: var(--ds-space-4);
+  --ds-label-size: var(--ds-font-body-ss-regular-size);
+  --ds-label-lh: var(--ds-font-body-ss-regular-line-height);
+  --ds-label-ls: 0;
+  --ds-label-color: var(--ds-color-grey-600);
+  --ds-inactive-border: var(--ds-color-grey-600);
+  --ds-opt-h: 36px;
+  --ds-opt-py: var(--ds-space-8);
+  --ds-optgroup-gap: var(--ds-space-4);
+  --ds-clear-hit: 24px;
+  --ds-field-btn-h: 36px;
+  --ds-field-btn-size: 14px;
+  --ds-field-btn-lh: 20px;
+  --ds-field-btn-ls: 0;
+}
+@media (max-width: 1024px) {
+  :root {
+    --ds-ctl-h: 48px;
+    --ds-ctl-size: var(--ds-font-body-sm-regular-size);
+    --ds-ctl-lh: var(--ds-font-body-sm-regular-line-height);
+    --ds-ctl-ls: -0.015em;
+    --ds-field-gap: var(--ds-space-8);
+    --ds-label-size: var(--ds-font-body-sm-regular-size);
+    --ds-label-lh: var(--ds-font-body-sm-regular-line-height);
+    --ds-label-ls: -0.015em;
+    --ds-label-color: var(--ds-color-grey-900);
+    --ds-inactive-border: var(--ds-color-grey-400);
+    --ds-opt-h: 44px;
+    --ds-opt-py: 10px;
+    --ds-optgroup-gap: var(--ds-space-6);
+    --ds-clear-hit: 40px;
+    --ds-field-btn-h: 48px;
+    --ds-field-btn-size: 16px;
+    --ds-field-btn-lh: 24px;
+    --ds-field-btn-ls: -0.015em;
+  }
+}
+.ds-preview-pc {
+  --ds-ctl-h: 40px;
+  --ds-field-btn-h: 36px;
+  --ds-field-btn-size: 14px;
+  --ds-field-btn-lh: 20px;
+  --ds-field-btn-ls: 0;
+}
+.ds-preview-mo {
+  --ds-ctl-h: 48px;
+  --ds-ctl-size: var(--ds-font-body-sm-regular-size);
+  --ds-ctl-lh: var(--ds-font-body-sm-regular-line-height);
+  --ds-ctl-ls: -0.015em;
+  --ds-field-gap: var(--ds-space-8);
+  --ds-label-size: var(--ds-font-body-sm-regular-size);
+  --ds-label-lh: var(--ds-font-body-sm-regular-line-height);
+  --ds-label-ls: -0.015em;
+  --ds-label-color: var(--ds-color-grey-900);
+  --ds-inactive-border: var(--ds-color-grey-400);
+  --ds-opt-h: 44px;
+  --ds-opt-py: 10px;
+  --ds-optgroup-gap: var(--ds-space-6);
+  --ds-clear-hit: 40px;
+  --ds-field-btn-h: 48px;
+  --ds-field-btn-size: 16px;
+  --ds-field-btn-lh: 24px;
+  --ds-field-btn-ls: -0.015em;
 }
 
-.ds-btn--outline-secondary:disabled {
-  border-color: var(--ds-color-grey-400);
-  background: var(--ds-color-bg-primary);
-  color: var(--ds-color-text-disabled);
-}
-
-/* Inputs */
+/* Field: 라벨 + 입력칸 + 도움말 */
 .ds-field {
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-4);
+  gap: var(--ds-field-gap);
   min-inline-size: 0;
-  color: var(--ds-color-text-primary);
   font-family: var(--ds-font-family-suit);
 }
-
 .ds-field__label {
-  color: var(--ds-color-text-secondary);
-  font-size: var(--ds-font-body-ss-regular-size);
-  line-height: var(--ds-font-body-ss-regular-line-height);
-}
-
-.ds-field__required {
-  color: var(--ds-color-text-danger-bold);
-}
-
-.ds-input,
-.ds-select__trigger {
-  box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--ds-space-4);
-  inline-size: 100%;
-  min-inline-size: 0;
-  min-block-size: var(--ds-space-40);
-  padding-inline: var(--ds-space-12);
-  border: 1px solid var(--ds-color-grey-600);
-  border-radius: var(--ds-radius-4);
-  background: var(--ds-color-bg-primary);
-  color: var(--ds-color-text-primary);
-  font-family: var(--ds-font-family-suit);
-  font-size: var(--ds-font-body-ss-regular-size);
-  line-height: var(--ds-font-body-ss-regular-line-height);
-  text-align: start;
+  color: var(--ds-label-color);
+  font-size: var(--ds-label-size);
+  line-height: var(--ds-label-lh);
+  letter-spacing: var(--ds-label-ls);
 }
-
-.ds-input::placeholder {
-  color: var(--ds-color-text-disabled);
-  opacity: 1;
-}
-
-.ds-input {
-  border-color: var(--ds-color-grey-800);
-}
-
-.ds-input:focus:not(:disabled):not([readonly]):not(.ds-is-readonly):not([aria-invalid="true"]):not(.ds-is-error) {
-  border: var(--ds-space-2) solid var(--ds-color-darkblue-600);
-  outline: 0;
-}
-
-.ds-input.ds-is-inactive {
-  background: var(--ds-color-bg-primary);
-  border-color: var(--ds-color-grey-600);
-}
-
-@media (max-width: 1024px) {
-  .ds-input.ds-is-inactive {
-    border-color: var(--ds-color-grey-400);
-  }
-}
-
-.ds-input-wrap {
-  position: relative;
-  display: block;
-  inline-size: 100%;
-  min-inline-size: 0;
-}
-
-.ds-input-wrap .ds-input {
-  padding-inline-end: var(--ds-space-40);
-}
-
-.ds-input__clear {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-end: var(--ds-space-8);
-  display: none;
-  place-items: center;
-  min-inline-size: var(--ds-space-24);
-  min-block-size: var(--ds-space-24);
-  padding: 0;
-  transform: translateY(-50%);
-  border: 0;
-  border-radius: var(--ds-radius-circle);
-  background: var(--ds-color-bg-tertiary);
-  color: var(--ds-color-text-secondary);
-  cursor: pointer;
-}
-
-.ds-input-wrap:focus-within .ds-input:not(:placeholder-shown):not(:disabled):not([readonly]):not(.ds-is-readonly) + .ds-input__clear {
-  display: grid;
-}
-
-.ds-input[aria-invalid="true"],
-.ds-input.ds-is-error,
-.ds-select__trigger[aria-invalid="true"],
-.ds-select__trigger.ds-is-error {
-  border: var(--ds-space-2) solid var(--ds-color-red-600);
-}
-
-.ds-input:disabled,
-.ds-input.ds-is-readonly,
-.ds-select__trigger:disabled,
-.ds-select__trigger.ds-is-readonly {
-  border-color: var(--ds-color-border-primary);
-  background: var(--ds-color-bg-disabled);
-}
-
-.ds-input:disabled,
-.ds-select__trigger:disabled {
-  color: var(--ds-color-text-disabled);
-  cursor: not-allowed;
-}
-
-.ds-textarea {
-  box-sizing: border-box;
-  inline-size: 100%;
-  min-inline-size: 0;
-  padding: var(--ds-space-20) var(--ds-space-20) var(--ds-space-12);
-  border: 1px solid var(--ds-color-grey-600);
-  border-radius: var(--ds-radius-4);
-  background: var(--ds-color-bg-primary);
-  color: var(--ds-color-text-primary);
-  font-family: var(--ds-font-family-suit);
-  font-size: var(--ds-font-body-sm-regular-size);
-  line-height: var(--ds-font-body-sm-regular-line-height);
-  resize: vertical;
-}
-
-.ds-textarea::placeholder {
-  color: var(--ds-color-text-disabled);
-  opacity: 1;
-}
-
-.ds-textarea:focus:not(:disabled):not([readonly]):not(.ds-is-readonly):not([aria-invalid="true"]):not(.ds-is-error),
-.ds-select__trigger:focus-visible:not(:disabled):not(.ds-is-readonly):not([aria-invalid="true"]):not(.ds-is-error),
-.ds-select__trigger[aria-expanded="true"]:not(:disabled):not(.ds-is-readonly):not([aria-invalid="true"]):not(.ds-is-error) {
-  border: var(--ds-space-2) solid var(--ds-color-darkblue-600);
-  outline: 0;
-}
-
-.ds-textarea[aria-invalid="true"],
-.ds-textarea.ds-is-error {
-  border: var(--ds-space-2) solid var(--ds-color-red-600);
-}
-
-.ds-textarea:disabled,
-.ds-textarea.ds-is-readonly {
-  border-color: var(--ds-color-border-primary);
-  background: var(--ds-color-bg-disabled);
-}
-
-.ds-field__hint,
-.ds-field__error,
-.ds-textarea__count {
-  font-family: var(--ds-font-family-suit);
-  font-size: var(--ds-font-caption-xs-size);
-  line-height: var(--ds-font-caption-xs-line-height);
-}
-
-.ds-field__hint {
-  color: var(--ds-color-text-secondary);
-}
-
-.ds-field__error {
+.ds-field__required {
+  margin-inline-start: calc(var(--ds-space-4) * -1 + 2px);
   color: var(--ds-color-red-800);
 }
 
+/* 도움말·오류: 아이콘 24 + 14/20, 간격 4. 도움말 아이콘 #333 / 글자 #616161, 오류는 둘 다 #C62828 */
 .ds-field__hint,
 .ds-field__error {
   display: flex;
   align-items: flex-start;
   gap: var(--ds-space-4);
+  margin: 0;
+  color: var(--ds-color-grey-600);
+  font-size: var(--ds-font-body-ss-regular-size);
+  line-height: var(--ds-font-body-ss-regular-line-height);
+  letter-spacing: 0;
 }
-
 .ds-field__hint::before,
 .ds-field__error::before {
   content: "";
-  flex: 0 0 var(--ds-icon-24);
-  inline-size: var(--ds-icon-24);
-  block-size: var(--ds-icon-24);
-  background-color: currentColor;
-  mask-position: center;
-  mask-repeat: no-repeat;
-  mask-size: 18px 18px;
-  -webkit-mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 18px 18px;
+  flex: 0 0 24px;
+  inline-size: 24px;
+  block-size: 24px;
+  margin-block: -2px;
+  background-color: var(--ds-color-grey-800);
+  -webkit-mask: var(--ds-icon-info) center / 24px 24px no-repeat;
+  mask: var(--ds-icon-info) center / 24px 24px no-repeat;
 }
-
-.ds-field__hint::before {
-  mask-image: url("../icons/info.svg");
-  -webkit-mask-image: url("../icons/info.svg");
+.ds-field__error {
+  color: var(--ds-color-red-800);
 }
-
+.ds-field[hidden],
+.ds-field__hint[hidden],
+.ds-field__error[hidden] {
+  display: none;
+}
 .ds-field__error::before {
-  mask-image: url("../icons/error.svg");
-  -webkit-mask-image: url("../icons/error.svg");
+  background-color: var(--ds-color-red-800);
+  -webkit-mask-image: var(--ds-icon-x-circle);
+  mask-image: var(--ds-icon-x-circle);
 }
 
-.ds-textarea__count {
-  color: var(--ds-color-text-tertiary);
-  text-align: end;
+/* 입력칸 박스. <input class="ds-input"> 단독으로도, <div class="ds-input"> 안에 아이콘·입력·지우기를 넣어도 된다.
+   2px 테두리(Focused·Error)는 inset 그림자로 1px을 더해 글자가 밀리지 않게 한다. */
+.ds-input,
+.ds-select__trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-4);
+  inline-size: 100%;
+  min-inline-size: 0;
+  block-size: var(--ds-ctl-h);
+  margin: 0;
+  padding: 0 calc(var(--ds-space-12) - 1px); /* Figma 안쪽 선 기준 12 = 테두리 1 + 11 */
+  border: 1px solid var(--ds-color-grey-800);
+  border-radius: var(--ds-radius-4);
+  background: var(--ds-color-bg-primary);
+  color: var(--ds-color-grey-800);
+  font-family: var(--ds-font-family-suit);
+  font-size: var(--ds-ctl-size);
+  line-height: var(--ds-ctl-lh);
+  letter-spacing: var(--ds-ctl-ls);
+  text-align: start;
+  outline: 0;
+}
+.ds-input__control {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  block-size: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  outline: 0;
+}
+.ds-input::placeholder,
+.ds-input__control::placeholder {
+  color: var(--ds-color-grey-400);
+  opacity: 1;
+}
+.ds-input::-webkit-search-cancel-button,
+.ds-input__control::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* Inactive: 비어 있고 선택 전 */
+.ds-input:placeholder-shown,
+.ds-input:has(.ds-input__control:placeholder-shown),
+.ds-input.ds-is-inactive,
+.ds-select__trigger.ds-is-inactive {
+  border-color: var(--ds-inactive-border);
+}
+/* Focused: 입력 중 · 목록 열림 */
+.ds-input:focus,
+.ds-input:focus-within,
+.ds-input.ds-is-focused,
+.ds-select__trigger:focus-visible,
+.ds-select__trigger[aria-expanded="true"],
+.ds-select__trigger.ds-is-focused {
+  border-color: var(--ds-color-darkblue-600);
+  box-shadow: inset 0 0 0 1px var(--ds-color-darkblue-600);
+  color: var(--ds-color-grey-900);
+}
+/* Error */
+.ds-input[aria-invalid="true"],
+.ds-input:has([aria-invalid="true"]),
+.ds-input.ds-is-error,
+.ds-select__trigger[aria-invalid="true"],
+.ds-select__trigger.ds-is-error {
+  border-color: var(--ds-color-red-600);
+  box-shadow: inset 0 0 0 1px var(--ds-color-red-600);
+  color: var(--ds-color-grey-700);
+}
+/* Disabled · ReadOnly: 배경 #EEE, 테두리 #BDBDBD. 글자색만 다르다 */
+.ds-input:disabled,
+.ds-input:has(.ds-input__control:disabled),
+.ds-input.ds-is-disabled,
+.ds-input[readonly],
+.ds-input:has(.ds-input__control[readonly]),
+.ds-input.ds-is-readonly,
+.ds-select__trigger:disabled,
+.ds-select__trigger.ds-is-readonly {
+  border-color: var(--ds-color-grey-400);
+  box-shadow: none;
+  background: var(--ds-color-bg-disabled);
+}
+.ds-input:disabled,
+.ds-input:has(.ds-input__control:disabled),
+.ds-input.ds-is-disabled,
+.ds-select__trigger:disabled {
+  color: var(--ds-color-grey-400);
+  cursor: not-allowed;
+}
+.ds-input[readonly],
+.ds-input:has(.ds-input__control[readonly]),
+.ds-input.ds-is-readonly,
+.ds-select__trigger.ds-is-readonly {
+  color: var(--ds-color-grey-900);
+}
+.ds-input:disabled::placeholder,
+.ds-input__control:disabled::placeholder {
+  color: var(--ds-color-grey-400);
+}
+
+/* 아이콘 24: Leading(돋보기 등) · 지우기 · 셀렉트 화살표 */
+.ds-input__icon,
+.ds-select__chevron {
+  flex: 0 0 24px;
+  inline-size: 24px;
+  block-size: 24px;
+  background-color: var(--ds-color-grey-800);
+  -webkit-mask: var(--ds-icon-search) center / 24px 24px no-repeat;
+  mask: var(--ds-icon-search) center / 24px 24px no-repeat;
+}
+.ds-input__icon--check {
+  -webkit-mask-image: var(--ds-icon-check);
+  mask-image: var(--ds-icon-check);
+}
+.ds-input:has(.ds-input__control:disabled) .ds-input__icon,
+.ds-input.ds-is-disabled .ds-input__icon {
+  background-color: var(--ds-color-grey-400);
+}
+
+/* 지우기(X): 값이 있고 편집 가능할 때만 보인다(정책 3-2). 아이콘 24, 모바일 터치 영역 40 */
+.ds-input__clear {
+  position: relative;
+  flex: 0 0 24px;
+  display: none;
+  inline-size: 24px;
+  block-size: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.ds-input__clear::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--ds-color-icon-tertiary); /* 상태와 관계없이 한 색 #999 */
+  -webkit-mask: var(--ds-icon-clear) center / 24px 24px no-repeat;
+  mask: var(--ds-icon-clear) center / 24px 24px no-repeat;
+}
+.ds-input__clear::after {
+  content: "";
+  position: absolute;
+  inset: calc((24px - var(--ds-clear-hit)) / 2);
+}
+.ds-input:has(.ds-input__control:not(:placeholder-shown):not(:disabled):not([readonly])) .ds-input__clear,
+.ds-input__clear.ds-is-visible {
+  display: block;
+}
+.ds-input__clear:hover::before { background-color: var(--ds-color-icon-secondary); }
+.ds-input__clear:focus-visible {
+  outline: 2px solid var(--ds-color-darkblue-600);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+/* 오른쪽 실행 버튼(검색 입력의 돋보기). 장식 아이콘이 아니라 버튼이며, 검색 입력에는 지우기(X)를 두지 않는다(정책 3-2) */
+.ds-input__btn {
+  position: relative;
+  flex: 0 0 24px;
+  inline-size: 24px;
+  block-size: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.ds-input__btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--ds-color-grey-800);
+  -webkit-mask: var(--ds-icon-search) center / 24px 24px no-repeat;
+  mask: var(--ds-icon-search) center / 24px 24px no-repeat;
+}
+.ds-input__btn::after {
+  content: "";
+  position: absolute;
+  inset: calc((24px - var(--ds-clear-hit)) / 2);
+}
+.ds-input__btn:focus-visible {
+  outline: 2px solid var(--ds-color-darkblue-600);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Select */
@@ -333,325 +420,363 @@
   min-inline-size: 0;
   font-family: var(--ds-font-family-suit);
 }
-
 .ds-select__trigger {
   cursor: pointer;
 }
+.ds-select__value {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-select__value.ds-is-placeholder,
+.ds-select__trigger.ds-is-inactive .ds-select__value {
+  color: var(--ds-color-grey-400);
+}
+.ds-select__chevron {
+  -webkit-mask-image: var(--ds-icon-chevron-down);
+  mask-image: var(--ds-icon-chevron-down);
+  transition: transform 0.15s ease;
+}
+.ds-select__trigger[aria-expanded="true"] .ds-select__chevron {
+  transform: rotate(180deg);
+}
+.ds-select__trigger:disabled .ds-select__chevron,
+.ds-select__trigger.ds-is-readonly .ds-select__chevron {
+  background-color: var(--ds-color-grey-400);
+}
+.ds-select__trigger.ds-is-readonly {
+  cursor: default;
+}
 
+/* OptionGroup: 패딩 8, 테두리 1px #333, radius 4, shadow3. 옵션 6개까지 보이고 넘치면 안에서 스크롤 */
 .ds-select__list {
   position: absolute;
-  z-index: 2;
-  inset-block-start: 100%;
+  z-index: 20;
+  inset-block-start: calc(100% + var(--ds-space-4));
   inset-inline: 0;
   box-sizing: border-box;
-  max-block-size: calc(var(--ds-space-48) * 6 + var(--ds-space-32));
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-optgroup-gap);
+  max-block-size: calc(var(--ds-opt-h) * 6 + var(--ds-optgroup-gap) * 5 + var(--ds-space-8) * 2);
+  margin: 0;
+  padding: calc(var(--ds-space-8) - 1px); /* 테두리 포함 8 */
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: var(--ds-space-8);
   border: 1px solid var(--ds-color-grey-800);
   border-radius: var(--ds-radius-4);
   background: var(--ds-color-bg-primary);
   box-shadow: var(--ds-shadow-3);
+  list-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ds-color-grey-400) transparent;
+}
+.ds-select__list[hidden] {
+  display: none;
+}
+.ds-select__list--static {
+  position: static;
+  margin-block-start: var(--ds-space-4);
 }
 
+/* SelectOption: PC 36(8/8/8/12 · 14/20), MO 44(10/8/10/12 · 16/24) */
 .ds-select__option {
+  box-sizing: border-box;
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: var(--ds-space-8);
   inline-size: 100%;
-  min-block-size: var(--ds-space-36);
-  padding-block: var(--ds-space-8);
-  padding-inline: var(--ds-space-12) var(--ds-space-8);
-  border: 0;
+  min-block-size: var(--ds-opt-h);
+  margin: 0;
+  padding: calc(var(--ds-opt-py) - 1px) calc(var(--ds-space-8) - 1px) calc(var(--ds-opt-py) - 1px) calc(var(--ds-space-12) - 1px); /* 테두리 포함 */
+  border: 1px solid transparent;
   border-radius: var(--ds-radius-4);
   background: var(--ds-color-bg-primary);
-  color: var(--ds-color-text-primary);
+  color: var(--ds-color-grey-900);
   font-family: var(--ds-font-family-suit);
-  font-size: var(--ds-font-body-ss-regular-size);
-  line-height: var(--ds-font-body-ss-regular-line-height);
+  font-size: var(--ds-ctl-size);
+  line-height: var(--ds-ctl-lh);
+  letter-spacing: var(--ds-ctl-ls);
   text-align: start;
   cursor: pointer;
 }
-
 .ds-select__option:hover,
+.ds-select__option.ds-is-hover {
+  background: var(--ds-color-grey-200);
+}
 .ds-select__option[aria-selected="true"] {
   background: var(--ds-color-darkblue-50);
 }
-
-.ds-select__option:focus-visible {
-  outline: var(--ds-space-2) solid var(--ds-color-darkblue-600);
-  outline-offset: calc(var(--ds-space-2) * -1);
+.ds-select__option[aria-selected="true"]:hover,
+.ds-select__option[aria-selected="true"].ds-is-hover {
+  background: var(--ds-color-darkblue-200);
 }
-
+.ds-select__option[aria-disabled="true"],
 .ds-select__option:disabled {
+  border-color: var(--ds-color-grey-400);
   background: var(--ds-color-bg-disabled);
-  color: var(--ds-color-text-disabled);
+  color: var(--ds-color-grey-400);
   cursor: not-allowed;
 }
+.ds-select__option:focus-visible {
+  outline: 2px solid var(--ds-color-darkblue-600);
+  outline-offset: -2px;
+}
 
-/* Modal and BottomSheet. Keep overflow visible so a child select list can escape. */
+/* 아이콘 원본: DS Figma에서 내보낸 24×24 SVG(icon_default · icon/x-circle) */
+:root {
+  --ds-icon-info: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 11.2569C12.4104 11.2569 12.7431 11.5896 12.7431 12V15.3027C12.7431 15.7131 12.4104 16.0459 12 16.0459C11.5896 16.0459 11.2569 15.7131 11.2569 15.3027V12C11.2569 11.5896 11.5896 11.2569 12 11.2569Z'/%3E%3Cpath d='M12 7.80551C11.5075 7.80551 11.1083 8.20476 11.1083 8.69726C11.1083 9.18975 11.5075 9.589 12 9.589H12.0082C12.5008 9.589 12.9 9.18975 12.9 8.69726C12.9 8.20476 12.5008 7.80551 12.0082 7.80551H12Z'/%3E%3Cpath fill-rule='evenodd' d='M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12ZM12 4.48624C7.85027 4.48624 4.48624 7.85027 4.48624 12C4.48624 16.1497 7.85027 19.5138 12 19.5138C16.1498 19.5138 19.5138 16.1497 19.5138 12C19.5138 7.85027 16.1498 4.48624 12 4.48624Z'/%3E%3C/svg%3E");
+  --ds-icon-x-circle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12.0003 4.29175C7.74313 4.29175 4.29199 7.74289 4.29199 12.0001C4.29199 16.2573 7.74313 19.7084 12.0003 19.7084C16.2575 19.7084 19.7087 16.2573 19.7087 12.0001C19.7087 7.74289 16.2575 4.29175 12.0003 4.29175ZM3.04199 12.0001C3.04199 7.05253 7.05277 3.04175 12.0003 3.04175C16.9479 3.04175 20.9587 7.05253 20.9587 12.0001C20.9587 16.9476 16.9479 20.9584 12.0003 20.9584C7.05277 20.9584 3.04199 16.9476 3.04199 12.0001ZM14.9422 9.05812C15.1863 9.3022 15.1863 9.69793 14.9422 9.942L12.8842 12.0001L14.9422 14.0581C15.1863 14.3022 15.1863 14.6979 14.9422 14.942C14.6982 15.1861 14.3024 15.1861 14.0584 14.942L12.0003 12.8839L9.94225 14.942C9.69817 15.1861 9.30244 15.1861 9.05836 14.942C8.81429 14.6979 8.81429 14.3022 9.05836 14.0581L11.1164 12.0001L9.05836 9.942C8.81429 9.69793 8.81429 9.3022 9.05836 9.05812C9.30244 8.81404 9.69817 8.81404 9.94225 9.05812L12.0003 11.1162L14.0584 9.05812C14.3024 8.81404 14.6982 8.81404 14.9422 9.05812Z'/%3E%3C/svg%3E");
+  --ds-icon-clear: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM15.1772 8.8227C15.4408 9.08631 15.4408 9.51369 15.1772 9.7773L12.9545 12L15.1772 14.2227C15.4408 14.4863 15.4408 14.9137 15.1772 15.1773C14.9136 15.4409 14.4862 15.4409 14.2226 15.1773L11.9999 12.9546L9.77717 15.1773C9.51356 15.4409 9.08618 15.4409 8.82257 15.1773C8.55897 14.9137 8.55897 14.4863 8.82257 14.2227L11.0453 12L8.82257 9.7773C8.55897 9.51369 8.55897 9.08631 8.82257 8.8227C9.08618 8.5591 9.51356 8.5591 9.77717 8.8227L11.9999 11.0454L14.2226 8.8227C14.4862 8.5591 14.9136 8.5591 15.1772 8.8227Z'/%3E%3C/svg%3E");
+  --ds-icon-search: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M16.4544 17.6115C15.0606 18.7493 13.2805 19.4318 11.341 19.4318C6.87242 19.4318 3.25 15.8094 3.25 11.341C3.25 6.87242 6.87242 3.25 11.341 3.25C15.8094 3.25 19.4318 6.87242 19.4318 11.341C19.4318 13.2805 18.7493 15.0606 17.6115 16.4544L21.0104 19.8533C21.3299 20.1729 21.3299 20.6908 21.0104 21.0104C20.6908 21.3299 20.1729 21.3299 19.8533 21.0104L16.4544 17.6115ZM4.88637 11.341C4.88637 7.77617 7.77617 4.88637 11.341 4.88637C14.9057 4.88637 17.7954 7.77617 17.7954 11.341C17.7954 13.0825 17.1058 14.6629 15.9845 15.8239C15.9546 15.8466 15.9259 15.8715 15.8988 15.8988C15.8715 15.9259 15.8466 15.9546 15.8239 15.9845C14.6629 17.1058 13.0825 17.7954 11.341 17.7954C7.77617 17.7954 4.88637 14.9057 4.88637 11.341Z'/%3E%3C/svg%3E");
+  --ds-icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21.0303 5.71967C21.3232 6.01256 21.3232 6.48744 21.0303 6.78033L9.53033 18.2803C9.23744 18.5732 8.76256 18.5732 8.46967 18.2803L2.96967 12.7803C2.67678 12.4874 2.67678 12.0126 2.96967 11.7197C3.26256 11.4268 3.73744 11.4268 4.03033 11.7197L9 16.6893L19.9697 5.71967C20.2626 5.42678 20.7374 5.42678 21.0303 5.71967Z'/%3E%3C/svg%3E");
+  --ds-icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M25.0328 8.4145C25.4326 8.01467 25.4326 7.36641 25.0328 6.96656C24.633 6.56673 23.9847 6.56673 23.5848 6.96656L15.9993 14.552L8.41383 6.96656C8.01399 6.56673 7.36574 6.56673 6.96589 6.96656C6.56606 7.36641 6.56606 8.01467 6.96589 8.4145L14.5513 16L6.96589 23.5855C6.56606 23.9853 6.56606 24.6336 6.96589 25.0335C7.36574 25.4333 8.01399 25.4333 8.41383 25.0335L15.9993 17.448L23.5848 25.0335C23.9847 25.4333 24.633 25.4333 25.0328 25.0335C25.4326 24.6336 25.4326 23.9853 25.0328 23.5855L17.4473 16L25.0328 8.4145Z'/%3E%3C/svg%3E");
+  --ds-icon-chevron-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z'/%3E%3C/svg%3E");
+}
+
+/* Textarea — DS Figma TextAreaField 7697:14799
+   박스 안쪽 여백 20/20/12/20, 글자 16/24(PC·모바일 같음, 정책 3-2), 글자 영역 3줄(72), 아래 오른쪽 글자 수 14/20.
+   박스와 도움말 사이 8. 상태 규칙은 입력칸과 같다(Inactive 테두리 #616161). */
+.ds-textarea {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-4);
+  inline-size: 100%;
+  min-inline-size: 0;
+  padding: calc(var(--ds-space-20) - 1px) calc(var(--ds-space-20) - 1px) calc(var(--ds-space-12) - 1px);
+  border: 1px solid var(--ds-color-grey-800);
+  border-radius: var(--ds-radius-4);
+  background: var(--ds-color-bg-primary);
+  font-family: var(--ds-font-family-suit);
+}
+.ds-textarea__control {
+  display: block;
+  inline-size: 100%;
+  min-block-size: 72px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ds-color-grey-900);
+  font: inherit;
+  font-size: var(--ds-font-body-sm-regular-size);
+  line-height: var(--ds-font-body-sm-regular-line-height);
+  letter-spacing: -0.015em;
+  resize: none; /* 늘리기는 .ds-textarea--resize 를 붙였을 때만 */
+  outline: 0;
+}
+.ds-textarea__control::placeholder { color: var(--ds-color-grey-400); opacity: 1; }
+.ds-textarea__count {
+  align-self: flex-end;
+  color: var(--ds-color-grey-900);
+  font-size: var(--ds-font-body-ss-regular-size);
+  line-height: var(--ds-font-body-ss-regular-line-height);
+  font-variant-numeric: tabular-nums;
+}
+.ds-field:has(> .ds-textarea) { gap: var(--ds-space-8); }
+.ds-textarea:has(.ds-textarea__control:placeholder-shown) { border-color: var(--ds-color-grey-600); }
+.ds-textarea:has(.ds-textarea__control:placeholder-shown) .ds-textarea__count { color: var(--ds-color-grey-500); }
+.ds-textarea:focus-within,
+.ds-textarea.ds-is-focused { border-color: var(--ds-color-darkblue-600); box-shadow: inset 0 0 0 1px var(--ds-color-darkblue-600); }
+.ds-textarea:has([aria-invalid="true"]),
+.ds-textarea.ds-is-error { border-color: var(--ds-color-red-600); box-shadow: inset 0 0 0 1px var(--ds-color-red-600); }
+.ds-textarea:has(.ds-textarea__control:disabled),
+.ds-textarea:has(.ds-textarea__control[readonly]) { border-color: var(--ds-color-grey-400); box-shadow: none; background: var(--ds-color-bg-disabled); }
+.ds-textarea:has(.ds-textarea__control:disabled) :is(.ds-textarea__control, .ds-textarea__count) { color: var(--ds-color-grey-400); }
+.ds-textarea:has(.ds-textarea__control[readonly]) .ds-textarea__count { color: var(--ds-color-grey-900); }
+.ds-textarea__count.ds-is-over { color: var(--ds-color-red-800); }
+
+/* Modal — DS Figma Modal 6487:5122 (sm 6437:10238 · md 6437:10242 · lg 6437:10246 · xl 6437:10250)
+   여백 24/20, radius 16, shadow4. 타이틀 20/30 Bold + 닫기 32, 아래 16에 구분선, 본문 위 24 · 아래 32, 본문 18/26 #555.
+   폭은 정해진 크기와 (화면 - 좌우 20) 중 작은 값 하나로 계산한다(정책 3-3, 미디어쿼리 없음). */
 .ds-modal-backdrop {
   position: fixed;
   z-index: 10;
   inset: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   padding: var(--ds-space-20);
   background: color-mix(in srgb, var(--ds-color-base-black) 40%, transparent);
 }
-
+.ds-modal-backdrop[hidden] { display: none; }
 .ds-modal {
+  --ds-modal-w: var(--ds-modal-width-md);
   position: relative;
   box-sizing: border-box;
-  inline-size: 100%;
-  max-inline-size: var(--ds-modal-width-md);
-  max-block-size: 100%;
-  padding: var(--ds-space-24);
-  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  inline-size: min(var(--ds-modal-w), 100%);
+  min-inline-size: 0;
+  max-block-size: calc(100vh - var(--ds-space-40));
+  max-block-size: calc(100dvh - var(--ds-space-40));
+  padding: var(--ds-space-24) var(--ds-space-20);
   border-radius: var(--ds-radius-16);
-  background: var(--ds-color-bg-primary, #FFF);
+  background: var(--ds-color-bg-primary);
   box-shadow: var(--ds-shadow-4);
-  color: var(--ds-color-text-primary);
+  color: var(--ds-color-grey-900);
   font-family: var(--ds-font-family-suit);
 }
-
-.ds-modal--sm {
-  max-inline-size: var(--ds-modal-width-sm);
-}
-
-.ds-modal--md {
-  max-inline-size: var(--ds-modal-width-md);
-}
-
-.ds-modal--lg {
-  max-inline-size: var(--ds-modal-width-lg);
-}
-
-.ds-modal--xl {
-  max-inline-size: var(--ds-modal-width-xl);
-}
-
-.ds-modal__header,
-.ds-modal__footer {
+.ds-modal--sm { --ds-modal-w: var(--ds-modal-width-sm); }
+.ds-modal--md { --ds-modal-w: var(--ds-modal-width-md); }
+.ds-modal--lg { --ds-modal-w: var(--ds-modal-width-lg); }
+.ds-modal--xl { --ds-modal-w: var(--ds-modal-width-xl); }
+.ds-modal__header {
   display: flex;
   align-items: center;
   gap: var(--ds-space-12);
-}
-
-.ds-modal__header {
-  justify-content: space-between;
   padding-block-end: var(--ds-space-16);
-  border-block-end: var(--ds-border-1) solid var(--ds-color-border-primary);
-  margin-block-end: var(--ds-space-24);
+  border-block-end: 1px solid var(--ds-color-grey-400);
 }
-
 .ds-modal__title {
-  margin: 0;
-  color: var(--ds-color-text-primary);
-  font-size: var(--ds-font-heading-sm-bold-size);
-  line-height: var(--ds-font-heading-sm-bold-line-height);
-}
-
-.ds-modal__body {
-  position: relative;
-  overflow: visible;
-}
-
-.ds-modal__footer {
-  justify-content: center;
-  margin-block-start: var(--ds-space-24);
-}
-
-.ds-modal__footer > .ds-btn {
-  flex: 0 1 calc(var(--ds-space-48) * 3 + var(--ds-space-6));
+  flex: 1 1 auto;
   min-inline-size: 0;
-  min-block-size: var(--ds-space-48);
+  margin: 0;
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
-
 .ds-modal__close {
-  display: inline-grid;
-  place-items: center;
-  inline-size: var(--ds-space-32);
-  block-size: var(--ds-space-32);
-  flex: 0 0 var(--ds-space-32);
+  position: relative;
+  flex: 0 0 32px;
+  inline-size: 32px;
+  block-size: 32px;
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--ds-color-text-primary);
   cursor: pointer;
 }
-
-.ds-modal .ds-modal__close svg {
-  display: block;
-  inline-size: var(--ds-space-32);
-  block-size: var(--ds-space-32);
+.ds-modal__close::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--ds-color-grey-800);
+  -webkit-mask: var(--ds-icon-close) center / 32px 32px no-repeat;
+  mask: var(--ds-icon-close) center / 32px 32px no-repeat;
+}
+.ds-modal__body {
+  position: relative;
+  min-block-size: 0;
+  padding: var(--ds-space-24) 0 var(--ds-space-32);
+  color: var(--ds-color-grey-700);
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: -0.015em;
+}
+.ds-modal__body--scroll { overflow-y: auto; overscroll-behavior: contain; }
+.ds-modal__footer {
+  display: flex;
+  justify-content: center;
+  gap: var(--ds-space-12);
+}
+/* 모달 버튼: MD 48, 기본 폭 150. 좁으면 같은 비율로 줄어든다(sm 340에서는 144) */
+.ds-modal__footer > .ds-btn {
+  flex: 0 1 150px;
+  min-inline-size: 0;
+  block-size: 48px;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.015em;
 }
 
+.ds-modal__footer > .ds-btn:only-child {
+  flex: 0 1 auto;
+  min-inline-size: min(150px, 100%);
+  max-inline-size: 100%;
+  padding-inline: calc(var(--ds-space-20) - 1px); /* 버튼 1개: 글자만큼 늘어남(정책 3-3) */
+}
+
+/* BottomSheet — 정책 3-5: 상단 radius 40, 위 32 · 좌우 20, 하단 버튼 LG 54 · 위아래 32 */
+/* Textarea 크기 조절(선택): PC에서 오른쪽 아래를 잡고 세로로만 늘린다. 모바일은 끈다 */
+.ds-textarea--resize .ds-textarea__control { resize: vertical; min-block-size: 72px; max-block-size: 480px; }
+@media (max-width: 1024px) { .ds-textarea--resize .ds-textarea__control { resize: none; } }
 .ds-bottom-sheet {
   position: fixed;
   z-index: 10;
   inset-inline: 0;
   inset-block-end: 0;
   box-sizing: border-box;
-  max-block-size: 100%;
-  padding: var(--ds-space-32) var(--ds-space-20);
-  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  max-block-size: 90%;
+  padding: var(--ds-space-32) var(--ds-space-20) 0;
   border-radius: var(--ds-radius-40) var(--ds-radius-40) 0 0;
   background: var(--ds-color-bg-primary);
   box-shadow: var(--ds-shadow-4);
-  color: var(--ds-color-text-primary);
+  color: var(--ds-color-grey-900);
   font-family: var(--ds-font-family-suit);
 }
+.ds-bottom-sheet__body { position: relative; min-block-size: 0; overflow-y: auto; padding-block-start: var(--ds-space-16); }
+.ds-bottom-sheet__footer { display: flex; gap: var(--ds-space-8); padding: var(--ds-space-32) 0 calc(var(--ds-space-32) + env(safe-area-inset-bottom, 0px)); }
+.ds-bottom-sheet__footer > .ds-btn { flex: 1 1 0; block-size: 54px; font-size: 18px; line-height: 26px; }
 
-.ds-bottom-sheet__body {
-  position: relative;
-  overflow: visible;
-}
-
-.ds-bottom-sheet__footer {
-  display: flex;
-  gap: var(--ds-space-8);
-  margin-block-start: var(--ds-space-32);
-}
-
-.ds-bottom-sheet__footer > .ds-btn {
-  flex: 1 1 0;
-}
-
-/* Status chips */
+/* Status chip — DS Figma 7772:7752 (Status chip 6102:7138)
+   높이 32, 여백 4/12, 아이콘 24 + 간격 4, 14/20 SemiBold. 모양 Rounded(기본) / Square(.ds-chip--square)
+   상태(info·success·error·default·brand-sub·caution·neutral) × 스타일(filled·transparent·outline·tinted) 조합.
+   업무 화면의 상태칩은 모두 Tinted-Outline · Rounded · 아이콘 없음(Status chip-Order/Rental/Collect/AS/Return). */
 .ds-chip {
+  /* 상태별 색 6가지: 채움, 채움 위 글자, 채움 위 아이콘, 연한 배경, 연한 테두리, 진한 테두리, 글자 */
+  --chip-solid: var(--ds-color-grey-300);
+  --chip-on-solid: var(--ds-color-grey-900);
+  --chip-on-solid-icon: var(--ds-color-grey-800);
+  --chip-tint: var(--ds-color-grey-100);
+  --chip-tint-bg: var(--chip-tint);
+  --chip-tint-line: var(--ds-color-grey-400);
+  --chip-line: var(--ds-color-grey-400);
+  --chip-text: var(--ds-color-grey-600);
+  --chip-tint-text: var(--chip-text);
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--ds-space-4);
-  min-block-size: var(--ds-space-32);
-  padding: var(--ds-space-4) var(--ds-space-12);
-  border: 1px solid var(--ds-color-border-primary);
+  block-size: 32px;
+  padding: 0 calc(var(--ds-space-12) - 1px);
+  border: 1px solid var(--chip-tint-line);
   border-radius: var(--ds-radius-circle);
-  background: var(--ds-color-bg-tertiary);
-  color: var(--ds-color-text-neutral);
+  background: var(--chip-tint-bg);
+  color: var(--chip-tint-text);
   font-family: var(--ds-font-family-suit);
-  font-size: var(--ds-font-body-ss-semibold-size);
-  line-height: var(--ds-font-body-ss-semibold-line-height);
+  font-size: 14px;
+  line-height: 20px;
   font-weight: 600;
   white-space: nowrap;
+  vertical-align: middle;
 }
+.ds-chip--square { border-radius: var(--ds-radius-4); }
+.ds-chip__icon { flex: 0 0 24px; inline-size: 24px; block-size: 24px; background-color: currentColor; -webkit-mask: var(--ds-icon-info) center / 24px 24px no-repeat; mask: var(--ds-icon-info) center / 24px 24px no-repeat; }
 
-.ds-chip--info,
-.ds-chip--purchase-received,
-.ds-chip--rental-assigned,
-.ds-chip--collection-received,
-.ds-chip--service-received,
-.ds-chip--return-received {
-  border-color: var(--ds-color-border-info-subtle);
-  background: var(--ds-color-bg-info-subtle);
-  color: var(--ds-color-text-info-bold);
-}
+/* 상태 색 (Figma 값. 팔레트 토큰이 없는 값은 tokens.json 추가 대상) */
+.ds-chip--info { --chip-solid: var(--ds-color-blue-700); --chip-on-solid: #FFFFFF; --chip-on-solid-icon: #FFFFFF; --chip-tint: var(--ds-color-blue-50); --chip-tint-line: var(--ds-color-blue-100); --chip-line: var(--ds-color-blue-600); --chip-text: var(--ds-color-blue-800); }
+.ds-chip--success { --chip-solid: var(--ds-color-green-700); --chip-on-solid: #FFFFFF; --chip-on-solid-icon: #FFFFFF; --chip-tint: var(--ds-color-green-50); --chip-tint-line: var(--ds-color-green-100); --chip-line: var(--ds-color-green-600); --chip-text: var(--ds-color-green-800); }
+.ds-chip--error, .ds-chip--danger { --chip-solid: var(--ds-color-red-700); --chip-on-solid: #FFFFFF; --chip-on-solid-icon: #FFFFFF; --chip-tint: var(--ds-color-red-50); --chip-tint-line: var(--ds-color-red-100); --chip-line: var(--ds-color-red-600); --chip-text: var(--ds-color-red-800); }
+.ds-chip--default { --chip-solid: var(--ds-color-darkblue-800); --chip-on-solid: #FFFFFF; --chip-on-solid-icon: #FFFFFF; --chip-tint: var(--ds-color-darkblue-50); --chip-tint-bg: var(--ds-color-darkblue-100); --chip-tint-line: var(--ds-color-darkblue-200); --chip-line: var(--ds-color-darkblue-600); --chip-text: var(--ds-color-darkblue-800); }
+.ds-chip--brand-sub { --chip-solid: var(--ds-color-lightgreen-400); --chip-tint: var(--ds-color-lightgreen-50); --chip-tint-line: var(--ds-color-lightgreen-200); --chip-line: var(--ds-color-lightgreen-800); --chip-text: var(--ds-color-lightgreen-800); }
+.ds-chip--caution { --chip-solid: var(--ds-color-yellow-700); --chip-tint: var(--ds-color-yellow-50); --chip-tint-line: var(--ds-color-yellow-600); --chip-line: var(--ds-color-yellow-600); --chip-text: var(--ds-color-yellow-800); }
+.ds-chip--neutral { --chip-tint-text: var(--ds-color-grey-700); }
 
-.ds-chip--success,
-.ds-chip--purchase-confirming,
-.ds-chip--rental-confirming,
-.ds-chip--collection-confirming,
-.ds-chip--service-confirmed,
-.ds-chip--return-confirmed {
-  border-color: var(--ds-color-border-success-subtle);
-  background: var(--ds-color-bg-success-subtle);
-  color: var(--ds-color-text-success-bold);
-}
+/* 스타일 (기본 = tinted) */
+.ds-chip--filled { border-color: transparent; background: var(--chip-solid); color: var(--chip-on-solid); }
+.ds-chip--filled .ds-chip__icon { background-color: var(--chip-on-solid-icon); }
+.ds-chip--transparent { border-color: transparent; background: var(--chip-tint); color: var(--chip-text); }
+.ds-chip--outline { border-color: var(--chip-line); background: var(--ds-color-bg-primary); color: var(--chip-text); }
 
-.ds-chip--caution,
-.ds-chip--purchase-preparing,
-.ds-chip--purchase-cancel-requested,
-.ds-chip--rental-shipping-preparing,
-.ds-chip--rental-cancel-requested,
-.ds-chip--collection-requested,
-.ds-chip--return-requested,
-.ds-chip--return-collection-requested {
-  border-color: var(--ds-color-border-warning);
-  background: var(--ds-color-bg-warning-subtle);
-  color: var(--ds-color-text-warning-bold);
-}
+/* 업무 상태 → 상태 색(Figma Status chip-Order 13139:11578 · Rental 13864:12146 · Collect 13920:12833 · AS 13027:12231 · Return 13079:12197) */
+.ds-chip--order-received, .ds-chip--purchase-received, .ds-chip--rental-assigned, .ds-chip--collect-received, .ds-chip--collection-received, .ds-chip--as-received, .ds-chip--service-received, .ds-chip--return-received { --chip-tint: var(--ds-color-blue-50); --chip-tint-bg: var(--ds-color-blue-50); --chip-tint-line: var(--ds-color-blue-100); --chip-tint-text: var(--ds-color-blue-800); }
+.ds-chip--order-confirming, .ds-chip--purchase-confirming, .ds-chip--rental-confirming, .ds-chip--collect-confirming, .ds-chip--collection-confirming, .ds-chip--as-confirmed, .ds-chip--service-confirmed, .ds-chip--return-confirmed { --chip-tint: var(--ds-color-green-50); --chip-tint-bg: var(--ds-color-green-50); --chip-tint-line: var(--ds-color-green-100); --chip-tint-text: var(--ds-color-green-800); }
+.ds-chip--order-preparing, .ds-chip--purchase-preparing, .ds-chip--order-cancel-requested, .ds-chip--purchase-cancel-requested, .ds-chip--rental-preparing, .ds-chip--rental-shipping-preparing, .ds-chip--rental-cancel-requested, .ds-chip--collect-requested, .ds-chip--collection-requested, .ds-chip--return-requested, .ds-chip--return-collect-requested, .ds-chip--return-collection-requested { --chip-tint: var(--ds-color-yellow-50); --chip-tint-bg: var(--ds-color-yellow-50); --chip-tint-line: var(--ds-color-yellow-600); --chip-tint-text: var(--ds-color-yellow-800); }
+.ds-chip--order-shipping, .ds-chip--purchase-shipping, .ds-chip--order-shipped, .ds-chip--purchase-shipped, .ds-chip--rental-completed, .ds-chip--rental-shipped, .ds-chip--collect-preparing, .ds-chip--collection-preparing, .ds-chip--as-in-progress, .ds-chip--service-in-progress, .ds-chip--return-collecting, .ds-chip--return-collection-progress { --chip-tint: var(--ds-color-lightgreen-50); --chip-tint-bg: var(--ds-color-lightgreen-50); --chip-tint-line: var(--ds-color-lightgreen-200); --chip-tint-text: var(--ds-color-lightgreen-800); }
+.ds-chip--order-delivered, .ds-chip--purchase-delivered, .ds-chip--rental-delivered, .ds-chip--collect-completed, .ds-chip--collection-completed, .ds-chip--as-completed, .ds-chip--service-completed, .ds-chip--return-completed, .ds-chip--return-withdrawn { --chip-tint: var(--ds-color-darkblue-100); --chip-tint-bg: var(--ds-color-darkblue-100); --chip-tint-line: var(--ds-color-darkblue-200); --chip-tint-text: var(--ds-color-darkblue-800); }
+.ds-chip--order-cancelled, .ds-chip--purchase-cancelled, .ds-chip--rental-cancelled, .ds-chip--collect-cancelled, .ds-chip--collection-cancelled, .ds-chip--as-cancelled, .ds-chip--service-cancelled, .ds-chip--as-not-allowed, .ds-chip--service-not-available, .ds-chip--as-unavailable, .ds-chip--service-unavailable, .ds-chip--return-cancelled, .ds-chip--return-not-allowed, .ds-chip--return-unavailable { --chip-tint: var(--ds-color-red-50); --chip-tint-bg: var(--ds-color-red-50); --chip-tint-line: var(--ds-color-red-100); --chip-tint-text: var(--ds-color-red-800); }
+.ds-chip--order-item-processing, .ds-chip--order-additional, .ds-chip--purchase-additional-product, .ds-chip--rental-cancel-completed, .ds-chip--rental-cancellation-completed, .ds-chip--collect-cancel-completed, .ds-chip--collection-cancellation-completed { --chip-tint-text: var(--ds-color-grey-700); }
+.ds-chip--order-multi { border-color: transparent; color: var(--ds-color-grey-600); }
 
-.ds-chip--brand-sub,
-.ds-chip--purchase-shipping,
-.ds-chip--purchase-shipped,
-.ds-chip--rental-completed,
-.ds-chip--rental-shipped,
-.ds-chip--collection-preparing,
-.ds-chip--service-in-progress,
-.ds-chip--return-collection-progress {
-  border-color: var(--ds-color-lightgreen-200);
-  background: var(--ds-color-bg-brand-subtle);
-  color: var(--ds-color-text-brand-sub);
-}
-
-.ds-chip--default,
-.ds-chip--purchase-delivered,
-.ds-chip--rental-delivered,
-.ds-chip--collection-completed,
-.ds-chip--service-completed,
-.ds-chip--return-completed,
-.ds-chip--return-withdrawn {
-  border-color: var(--ds-color-border-brand);
-  background: var(--ds-color-bg-brand);
-  color: var(--ds-color-text-primary-hover-active);
-}
-
-.ds-chip--danger,
-.ds-chip--purchase-cancelled,
-.ds-chip--rental-cancelled,
-.ds-chip--collection-cancelled,
-.ds-chip--service-cancelled,
-.ds-chip--service-unavailable,
-.ds-chip--service-not-available,
-.ds-chip--return-cancelled,
-.ds-chip--return-unavailable,
-.ds-chip--return-not-allowed {
-  border-color: var(--ds-color-border-danger-subtle);
-  background: var(--ds-color-bg-danger-subtle);
-  color: var(--ds-color-text-danger-bold);
-}
-
-.ds-chip--neutral,
-.ds-chip--rental-cancellation-completed,
-.ds-chip--collection-cancellation-completed {
-  border-color: var(--ds-color-border-primary);
-  background: var(--ds-color-bg-tertiary);
-  color: var(--ds-color-text-neutral);
-}
-
-.ds-chip--neutral-white,
-.ds-chip--purchase-additional-product {
-  border-color: var(--ds-color-border-primary);
-  background: var(--ds-color-bg-primary);
-  color: var(--ds-color-text-neutral);
-}
-
-.ds-chip--table {
-  min-block-size: var(--ds-space-24);
-  padding-block: var(--ds-space-0);
-  font-size: var(--ds-font-caption-xs-size);
-  line-height: var(--ds-font-caption-xs-line-height);
-}
-
-/* foundations.md breakpoint rule: mobile layout applies through 1024px. */
-@media (max-width: 1024px) {
-  .ds-input,
-  .ds-select__trigger {
-    min-block-size: var(--ds-space-48);
-    padding-block: var(--ds-space-0);
-    font-size: var(--ds-font-body-sm-regular-size);
-    line-height: var(--ds-font-body-sm-regular-line-height);
-  }
-
-  .ds-select__option {
-    min-block-size: calc(var(--ds-space-40) + var(--ds-space-4));
-    padding-block: calc(var(--ds-space-8) + var(--ds-space-2));
-    font-size: var(--ds-font-body-sm-regular-size);
-    line-height: var(--ds-font-body-sm-regular-line-height);
-  }
-
-  .ds-bottom-sheet {
-    inline-size: 100%;
-  }
-}
+/* 이전 이름 호환 — 옛 샘플·뷰어(purchase-*, collection-*, service-* 등)가 깨지지 않게. 새 화면은 위 이름을 쓴다 */
+.ds-chip--table { min-block-size: 24px; padding-block: 0; font-size: var(--ds-font-caption-xs-size); line-height: var(--ds-font-caption-xs-line-height); }
+.ds-input-wrap { position: relative; display: block; }
+.ds-input-wrap > .ds-input__clear { position: absolute; inset-inline-end: 12px; inset-block-start: 50%; transform: translateY(-50%); }

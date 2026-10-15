@@ -1,5 +1,6 @@
+/* 자동 생성 — tools/build-tokens.js. 직접 고치지 말고 tokens/figma-variables.json을 고친 뒤 다시 실행 */
 :root {
-  /* foundations.md 1-1 원본 팔레트 */
+  /* 1. 팔레트 (Figma Primitive) */
   --ds-color-base-black: #000000; /* Color/Base/black */
   --ds-color-base-white: #FFFFFF; /* Color/Base/white */
   --ds-color-grey-50: #FAFAFA; /* Color/Grey/50 */
@@ -15,96 +16,355 @@
   --ds-color-darkblue-50: #EFF1FD; /* Color/Darkblue/50 */
   --ds-color-darkblue-100: #E3E5F5; /* Color/Darkblue/100 */
   --ds-color-darkblue-200: #CED2F4; /* Color/Darkblue/200 */
+  --ds-color-darkblue-300: #9BA2E8; /* Color/Darkblue/300 */
+  --ds-color-darkblue-400: #767FD1; /* Color/Darkblue/400 */
+  --ds-color-darkblue-500: #404BB3; /* Color/Darkblue/500 */
   --ds-color-darkblue-600: #323DA3; /* Color/Darkblue/600 */
+  --ds-color-darkblue-700: #212C91; /* Color/Darkblue/700 */
   --ds-color-darkblue-800: #141E76; /* Color/Darkblue/800 */
+  --ds-color-darkblue-900: #10185C; /* Color/Darkblue/900 */
+  --ds-color-lightgreen-50: #F2FDE4; /* Color/lightgreen/50 */
+  --ds-color-lightgreen-100: #DEFABB; /* Color/lightgreen/100 */
+  --ds-color-lightgreen-200: #C6F68D; /* Color/lightgreen/200 */
+  --ds-color-lightgreen-300: #AAF255; /* Color/lightgreen/300 */
+  --ds-color-lightgreen-400: #90EE02; /* Color/lightgreen/400 */
+  --ds-color-lightgreen-500: #75E900; /* Color/lightgreen/500 */
+  --ds-color-lightgreen-600: #61D800; /* Color/lightgreen/600 */
+  --ds-color-lightgreen-700: #41C300; /* Color/lightgreen/700 */
+  --ds-color-lightgreen-800: #09AF00; /* Color/lightgreen/800 */
+  --ds-color-lightgreen-900: #008B00; /* Color/lightgreen/900 */
   --ds-color-blue-50: #EFF6FF; /* Color/blue/50 */
   --ds-color-blue-100: #DBEAFE; /* Color/blue/100 */
+  --ds-color-blue-200: #BFDBFE; /* Color/blue/200 */
+  --ds-color-blue-300: #93C5FD; /* Color/blue/300 */
+  --ds-color-blue-400: #60A5FA; /* Color/blue/400 */
+  --ds-color-blue-500: #3B82F6; /* Color/blue/500 */
+  --ds-color-blue-600: #1477F8; /* Color/blue/600 */
+  --ds-color-blue-700: #1D4ED8; /* Color/blue/700 */
   --ds-color-blue-800: #1E40AF; /* Color/blue/800 */
+  --ds-color-blue-900: #1E3A8A; /* Color/blue/900 */
   --ds-color-green-50: #E8F5E9; /* Color/green/50 */
   --ds-color-green-100: #C8E6C9; /* Color/green/100 */
+  --ds-color-green-200: #A5D6A7; /* Color/green/200 */
+  --ds-color-green-300: #81C784; /* Color/green/300 */
+  --ds-color-green-400: #66BB6A; /* Color/green/400 */
+  --ds-color-green-500: #4CAF50; /* Color/green/500 */
+  --ds-color-green-600: #43A047; /* Color/green/600 */
+  --ds-color-green-700: #15803D; /* Color/green/700 */
   --ds-color-green-800: #166534; /* Color/green/800 */
+  --ds-color-green-900: #1B5E20; /* Color/green/900 */
   --ds-color-yellow-50: #FFF8E1; /* Color/Yellow/50 */
+  --ds-color-yellow-100: #FFECB3; /* Color/Yellow/100 */
+  --ds-color-yellow-200: #FFE082; /* Color/Yellow/200 */
+  --ds-color-yellow-300: #FFD54F; /* Color/Yellow/300 */
+  --ds-color-yellow-400: #FFCA28; /* Color/Yellow/400 */
+  --ds-color-yellow-500: #FFC107; /* Color/Yellow/500 */
   --ds-color-yellow-600: #FFB300; /* Color/Yellow/600 */
+  --ds-color-yellow-700: #FFA000; /* Color/Yellow/700 */
   --ds-color-yellow-800: #FF8F00; /* Color/Yellow/800 */
-  --ds-color-lightgreen-50: #F2FDE4; /* Color/lightgreen/50 */
-  --ds-color-lightgreen-200: #C6F68D; /* Color/lightgreen/200 */
-  --ds-color-lightgreen-800: #09AF00; /* Color/lightgreen/800 */
+  --ds-color-yellow-900: #FF6F00; /* Color/Yellow/900 */
+  --ds-color-orange-50: #FFF5E6; /* Color/orange/50 */
+  --ds-color-orange-100: #FEE3BE; /* Color/orange/100 */
+  --ds-color-orange-200: #FFC77D; /* Color/orange/200 */
+  --ds-color-orange-300: #FFAF49; /* Color/orange/300 */
+  --ds-color-orange-400: #FF9E22; /* Color/orange/400 */
+  --ds-color-orange-500: #FF8D00; /* Color/orange/500 */
+  --ds-color-orange-600: #FF8120; /* Color/orange/600 */
+  --ds-color-orange-700: #F47100; /* Color/orange/700 */
+  --ds-color-orange-800: #EE6002; /* Color/orange/800 */
+  --ds-color-orange-900: #E54304; /* Color/orange/900 */
   --ds-color-red-50: #FFEBEE; /* Color/red/50 */
   --ds-color-red-100: #FFCDD2; /* Color/red/100 */
+  --ds-color-red-200: #EF9A9A; /* Color/red/200 */
+  --ds-color-red-300: #E57373; /* Color/red/300 */
+  --ds-color-red-400: #EF5350; /* Color/red/400 */
+  --ds-color-red-500: #F44336; /* Color/red/500 */
   --ds-color-red-600: #E53935; /* Color/red/600 */
+  --ds-color-red-700: #D32F2F; /* Color/red/700 */
   --ds-color-red-800: #C62828; /* Color/red/800 */
+  --ds-color-red-900: #B71C1C; /* Color/red/900 */
 
-  /* foundations.md 1-2 시맨틱 컬러 */
-  --ds-color-text-primary: var(--ds-color-grey-900); /* Color/text/primary */
-  --ds-color-text-secondary: var(--ds-color-grey-600); /* Color/text/secondary */
-  --ds-color-text-tertiary: var(--ds-color-grey-500); /* Color/text/teritiary */
-  --ds-color-text-disabled: var(--ds-color-grey-400); /* Color/text/disabled */
-  --ds-color-text-info-bold: var(--ds-color-blue-800); /* Color/text/info-bold */
-  --ds-color-text-success-bold: var(--ds-color-green-800); /* Color/text/success-bold */
-  --ds-color-text-warning-bold: var(--ds-color-yellow-800); /* Color/text/warning-bold */
-  --ds-color-text-brand-sub: var(--ds-color-lightgreen-800); /* Color/text/brandSub */
-  --ds-color-text-primary-hover-active: var(--ds-color-darkblue-800); /* Color/text/Primitive/primary-hover:active */
-  --ds-color-text-danger-bold: var(--ds-color-red-800); /* Color/text/danger-bold */
-  --ds-color-text-neutral: var(--ds-color-grey-700); /* Color/text/Primitive/secondary */
+  /* 2. 역할 팔레트 (Figma Theme · 대대여 모드) */
+  --ds-color-brand-50: var(--ds-color-darkblue-50); /* Color/brand/50 */
+  --ds-color-brand-100: var(--ds-color-darkblue-100); /* Color/brand/100 */
+  --ds-color-brand-200: var(--ds-color-darkblue-200); /* Color/brand/200 */
+  --ds-color-brand-300: var(--ds-color-darkblue-300); /* Color/brand/300 */
+  --ds-color-brand-400: var(--ds-color-darkblue-400); /* Color/brand/400 */
+  --ds-color-brand-500: var(--ds-color-darkblue-500); /* Color/brand/500 */
+  --ds-color-brand-600: var(--ds-color-darkblue-600); /* Color/brand/600 */
+  --ds-color-brand-700: var(--ds-color-darkblue-700); /* Color/brand/700 */
+  --ds-color-brand-800: var(--ds-color-darkblue-800); /* Color/brand/800 */
+  --ds-color-brand-900: var(--ds-color-darkblue-900); /* Color/brand/900 */
+  --ds-color-neutral-50: var(--ds-color-grey-50); /* Color/neutral/50 */
+  --ds-color-neutral-100: var(--ds-color-grey-100); /* Color/neutral/100 */
+  --ds-color-neutral-200: var(--ds-color-grey-200); /* Color/neutral/200 */
+  --ds-color-neutral-300: var(--ds-color-grey-300); /* Color/neutral/300 */
+  --ds-color-neutral-400: var(--ds-color-grey-400); /* Color/neutral/400 */
+  --ds-color-neutral-500: var(--ds-color-grey-500); /* Color/neutral/500 */
+  --ds-color-neutral-600: var(--ds-color-grey-600); /* Color/neutral/600 */
+  --ds-color-neutral-700: var(--ds-color-grey-700); /* Color/neutral/700 */
+  --ds-color-neutral-800: var(--ds-color-grey-800); /* Color/neutral/800 */
+  --ds-color-neutral-900: var(--ds-color-grey-900); /* Color/neutral/900 */
+  --ds-color-info-50: var(--ds-color-blue-50); /* Color/Infomation/50 */
+  --ds-color-info-100: var(--ds-color-blue-100); /* Color/Infomation/100 */
+  --ds-color-info-200: var(--ds-color-blue-200); /* Color/Infomation/200 */
+  --ds-color-info-300: var(--ds-color-blue-300); /* Color/Infomation/300 */
+  --ds-color-info-400: var(--ds-color-blue-400); /* Color/Infomation/400 */
+  --ds-color-info-500: var(--ds-color-blue-500); /* Color/Infomation/500 */
+  --ds-color-info-600: var(--ds-color-blue-600); /* Color/Infomation/600 */
+  --ds-color-info-700: var(--ds-color-blue-700); /* Color/Infomation/700 */
+  --ds-color-info-800: var(--ds-color-blue-800); /* Color/Infomation/800 */
+  --ds-color-info-900: var(--ds-color-blue-900); /* Color/Infomation/900 */
+  --ds-color-success-50: var(--ds-color-green-50); /* Color/success/50 */
+  --ds-color-success-100: var(--ds-color-green-100); /* Color/success/100 */
+  --ds-color-success-200: var(--ds-color-green-200); /* Color/success/200 */
+  --ds-color-success-300: var(--ds-color-green-300); /* Color/success/300 */
+  --ds-color-success-400: var(--ds-color-green-400); /* Color/success/400 */
+  --ds-color-success-500: var(--ds-color-green-500); /* Color/success/500 */
+  --ds-color-success-600: var(--ds-color-green-600); /* Color/success/600 */
+  --ds-color-success-700: var(--ds-color-green-700); /* Color/success/700 */
+  --ds-color-success-800: var(--ds-color-green-800); /* Color/success/800 */
+  --ds-color-success-900: var(--ds-color-green-900); /* Color/success/900 */
+  --ds-color-danger-50: var(--ds-color-red-50); /* Color/danger/50 */
+  --ds-color-danger-100: var(--ds-color-red-100); /* Color/danger/100 */
+  --ds-color-danger-200: var(--ds-color-red-200); /* Color/danger/200 */
+  --ds-color-danger-300: var(--ds-color-red-300); /* Color/danger/300 */
+  --ds-color-danger-400: var(--ds-color-red-400); /* Color/danger/400 */
+  --ds-color-danger-500: var(--ds-color-red-500); /* Color/danger/500 */
+  --ds-color-danger-600: var(--ds-color-red-600); /* Color/danger/600 */
+  --ds-color-danger-700: var(--ds-color-red-700); /* Color/danger/700 */
+  --ds-color-danger-800: var(--ds-color-red-800); /* Color/danger/800 */
+  --ds-color-danger-900: var(--ds-color-red-900); /* Color/danger/900 */
+  --ds-color-brand-sub-50: var(--ds-color-lightgreen-50); /* Color/brandSub/50 */
+  --ds-color-brand-sub-100: var(--ds-color-lightgreen-100); /* Color/brandSub/100 */
+  --ds-color-brand-sub-200: var(--ds-color-lightgreen-200); /* Color/brandSub/200 */
+  --ds-color-brand-sub-300: var(--ds-color-lightgreen-300); /* Color/brandSub/300 */
+  --ds-color-brand-sub-400: var(--ds-color-lightgreen-400); /* Color/brandSub/400 */
+  --ds-color-brand-sub-500: var(--ds-color-lightgreen-500); /* Color/brandSub/500 */
+  --ds-color-brand-sub-600: var(--ds-color-lightgreen-600); /* Color/brandSub/600 */
+  --ds-color-brand-sub-700: var(--ds-color-lightgreen-700); /* Color/brandSub/700 */
+  --ds-color-brand-sub-800: var(--ds-color-lightgreen-800); /* Color/brandSub/800 */
+  --ds-color-brand-sub-900: var(--ds-color-lightgreen-900); /* Color/brandSub/900 */
+  --ds-color-warning-50: var(--ds-color-yellow-50); /* Color/warning/50 */
+  --ds-color-warning-100: var(--ds-color-yellow-100); /* Color/warning/100 */
+  --ds-color-warning-200: var(--ds-color-yellow-200); /* Color/warning/200 */
+  --ds-color-warning-300: var(--ds-color-yellow-300); /* Color/warning/300 */
+  --ds-color-warning-400: var(--ds-color-yellow-400); /* Color/warning/400 */
+  --ds-color-warning-500: var(--ds-color-yellow-500); /* Color/warning/500 */
+  --ds-color-warning-600: var(--ds-color-yellow-600); /* Color/warning/600 */
+  --ds-color-warning-700: var(--ds-color-yellow-700); /* Color/warning/700 */
+  --ds-color-warning-800: var(--ds-color-yellow-800); /* Color/warning/800 */
+  --ds-color-warning-900: var(--ds-color-yellow-900); /* Color/warning/900 */
+
+  /* 3. 의미 색 (Figma Semantic) */
+  --ds-color-text-primary: var(--ds-color-neutral-900); /* Color/text/primary */
+  --ds-color-text-secondary: var(--ds-color-neutral-600); /* Color/text/secondary */
+  --ds-color-text-tertiary: var(--ds-color-neutral-500); /* Color/text/teritiary */
+  --ds-color-text-disabled: var(--ds-color-neutral-400); /* Color/text/disabled */
+  --ds-color-text-brand-sub: var(--ds-color-brand-sub-800); /* Color/text/brandSub */
+  --ds-color-text-info: var(--ds-color-info-600); /* Color/text/info */
+  --ds-color-text-info-bold: var(--ds-color-info-800); /* Color/text/info-bold */
+  --ds-color-text-success: var(--ds-color-success-600); /* Color/text/success */
+  --ds-color-text-success-bold: var(--ds-color-success-800); /* Color/text/success-bold */
+  --ds-color-text-danger: var(--ds-color-danger-600); /* Color/text/danger */
+  --ds-color-text-danger-bold: var(--ds-color-danger-800); /* Color/text/danger-bold */
+  --ds-color-text-warning: var(--ds-color-warning-600); /* Color/text/warning */
+  --ds-color-text-warning-bold: var(--ds-color-warning-800); /* Color/text/warning-bold */
+  --ds-color-text-control-primary: var(--ds-color-brand-600); /* Color/text/Primitive/primary */
+  --ds-color-text-control-primary-hover: var(--ds-color-brand-800); /* Color/text/Primitive/primary-hover:active */
+  --ds-color-text-control-secondary: var(--ds-color-neutral-700); /* Color/text/Primitive/secondary */
+  --ds-color-text-control-secondary-hover: var(--ds-color-neutral-800); /* Color/text/Primitive/secondary-hover:active */
+  --ds-color-text-control-inverse: var(--ds-color-base-white); /* Color/text/Primitive/inverse */
   --ds-color-bg-primary: var(--ds-color-base-white); /* Color/bg/primary */
-  --ds-color-bg-secondary: var(--ds-color-grey-50); /* Color/bg/secondary */
-  --ds-color-bg-tertiary: var(--ds-color-grey-100); /* Color/bg/teritiary */
-  --ds-color-bg-disabled: var(--ds-color-grey-200); /* Color/bg/disabled */
-  --ds-color-bg-info-subtle: var(--ds-color-blue-50); /* Color/bg/info-subtle */
-  --ds-color-bg-success-subtle: var(--ds-color-green-50); /* Color/bg/success-subtle */
-  --ds-color-bg-warning-subtle: var(--ds-color-yellow-50); /* Color/bg/warning-subtle */
-  --ds-color-bg-brand-subtle: var(--ds-color-lightgreen-50); /* Color/bg/brandSub-subtle */
-  --ds-color-bg-brand: var(--ds-color-darkblue-100); /* Color/bg/brand_subtle */
-  --ds-color-bg-danger-subtle: var(--ds-color-red-50); /* Color/bg/danger-subtle */
-  --ds-color-border-primary: var(--ds-color-grey-400); /* Color/border/primary */
-  --ds-color-border-secondary: var(--ds-color-grey-200); /* Color/border/secondary */
-  --ds-color-border-info-subtle: var(--ds-color-blue-100); /* Color/border/info-subtle */
-  --ds-color-border-success-subtle: var(--ds-color-green-100); /* Color/border/success-subtle */
-  --ds-color-border-warning: var(--ds-color-yellow-600); /* Color/border/warning */
-  --ds-color-border-brand-subtle: var(--ds-color-lightgreen-200); /* Color/border/brandSub_subtle */
-  --ds-color-border-brand: var(--ds-color-darkblue-200); /* Color/border/brand-subtle */
-  --ds-color-border-danger-subtle: var(--ds-color-red-100); /* Color/border/danger-subtle */
+  --ds-color-bg-secondary: var(--ds-color-neutral-50); /* Color/bg/secondary */
+  --ds-color-bg-tertiary: var(--ds-color-neutral-100); /* Color/bg/teritiary */
+  --ds-color-bg-disabled: var(--ds-color-neutral-200); /* Color/bg/disabled */
+  --ds-color-bg-brand-subtle: var(--ds-color-brand-100); /* Color/bg/brand_subtle */
+  --ds-color-bg-brand-sub-bold: var(--ds-color-brand-sub-400); /* Color/bg/brandSub-bold */
+  --ds-color-bg-brand-sub-subtle: var(--ds-color-brand-sub-50); /* Color/bg/brandSub-subtle */
+  --ds-color-bg-info-bold: var(--ds-color-info-700); /* Color/bg/info-bold */
+  --ds-color-bg-info-subtle: var(--ds-color-info-50); /* Color/bg/info-subtle */
+  --ds-color-bg-success-bold: var(--ds-color-success-700); /* Color/bg/success-bold */
+  --ds-color-bg-success-subtle: var(--ds-color-success-50); /* Color/bg/success-subtle */
+  --ds-color-bg-danger-bold: var(--ds-color-danger-700); /* Color/bg/danger-bold */
+  --ds-color-bg-danger-bolder: var(--ds-color-danger-900); /* Color/bg/danger-bolder */
+  --ds-color-bg-danger-subtle: var(--ds-color-danger-50); /* Color/bg/danger-subtle */
+  --ds-color-bg-warning-bold: var(--ds-color-warning-700); /* Color/bg/warning-bold */
+  --ds-color-bg-warning-subtle: var(--ds-color-warning-50); /* Color/bg/warning-subtle */
+  --ds-color-bg-control-primary: var(--ds-color-brand-600); /* Color/bg/Primitive/primary */
+  --ds-color-bg-control-primary-hover: var(--ds-color-brand-800); /* Color/bg/Primitive/primary-hover:active */
+  --ds-color-bg-control-secondary: var(--ds-color-neutral-200); /* Color/bg/Primitive/secondary */
+  --ds-color-bg-control-secondary-hover: var(--ds-color-neutral-300); /* Color/bg/Primitive/secondary-hover:active */
+  --ds-color-bg-control-selected: var(--ds-color-brand-50); /* Color/bg/Primitive/selected */
+  --ds-color-bg-control-selected-hover: var(--ds-color-brand-200); /* Color/bg/Primitive/selected-hover:active */
+  --ds-color-bg-control-inverse-bold: var(--ds-color-neutral-800); /* Color/bg/Primitive/inverse-bold */
+  --ds-color-bg-control-inverse-bolder: var(--ds-color-neutral-900); /* Color/bg/Primitive/inverse-bolder */
+  --ds-color-border-primary: var(--ds-color-neutral-400); /* Color/border/primary */
+  --ds-color-border-secondary: var(--ds-color-neutral-200); /* Color/border/secondary */
+  --ds-color-border-tertiary: var(--ds-color-neutral-100); /* Color/border/teritiary */
+  --ds-color-border-disabled: var(--ds-color-neutral-400); /* Color/border/disabled */
+  --ds-color-border-brand-subtle: var(--ds-color-brand-200); /* Color/border/brand-subtle */
+  --ds-color-border-brand-sub: var(--ds-color-brand-sub-800); /* Color/border/brandSub */
+  --ds-color-border-brand-sub-subtle: var(--ds-color-brand-sub-200); /* Color/border/brandSub_subtle */
+  --ds-color-border-info: var(--ds-color-info-600); /* Color/border/info */
+  --ds-color-border-info-subtle: var(--ds-color-info-100); /* Color/border/info-subtle */
+  --ds-color-border-success: var(--ds-color-success-600); /* Color/border/success */
+  --ds-color-border-success-subtle: var(--ds-color-success-100); /* Color/border/success-subtle */
+  --ds-color-border-danger: var(--ds-color-danger-600); /* Color/border/danger */
+  --ds-color-border-danger-subtle: var(--ds-color-danger-100); /* Color/border/danger-subtle */
+  --ds-color-border-warning: var(--ds-color-warning-600); /* Color/border/warning */
+  --ds-color-border-caution-subtle: var(--ds-color-warning-200); /* Color/border/caution-subtle */
+  --ds-color-border-control-primary: var(--ds-color-brand-600); /* Color/border/Primitive/primary */
+  --ds-color-border-control-primary-hover: var(--ds-color-brand-800); /* Color/border/Primitive/primary-hover:active */
+  --ds-color-border-control-secondary: var(--ds-color-neutral-600); /* Color/border/Primitive/secondary */
+  --ds-color-border-control-secondary-hover: var(--ds-color-neutral-800); /* Color/border/Primitive/secondary-hover:active */
+  --ds-color-border-control-tertiary: var(--ds-color-neutral-300); /* Color/border/Primitive/teritiary */
+  --ds-color-border-control-tertiary-hover: var(--ds-color-neutral-500); /* Color/border/Primitive/teritiary-hover:active */
+  --ds-color-border-control-inverse: var(--ds-color-base-white); /* Color/border/Primitive/inverse */
+  --ds-color-icon-primary: var(--ds-color-neutral-800); /* Color/icon/primary */
+  --ds-color-icon-secondary: var(--ds-color-neutral-600); /* Color/icon/secondary */
+  --ds-color-icon-tertiary: var(--ds-color-neutral-500); /* Color/icon/teritiary */
+  --ds-color-icon-disabled: var(--ds-color-neutral-400); /* Color/icon/disabled */
+  --ds-color-icon-brand-subtle: var(--ds-color-brand-200); /* Color/icon/brand-subtle */
+  --ds-color-icon-brand-sub: var(--ds-color-brand-sub-300); /* Color/icon/brandSub */
+  --ds-color-icon-brand-sub-bold: var(--ds-color-brand-sub-800); /* Color/icon/brandSub-bold */
+  --ds-color-icon-info: var(--ds-color-info-600); /* Color/icon/info */
+  --ds-color-icon-info-bold: var(--ds-color-info-800); /* Color/icon/info-bold */
+  --ds-color-icon-success: var(--ds-color-success-600); /* Color/icon/success */
+  --ds-color-icon-success-bold: var(--ds-color-success-800); /* Color/icon/success-bold */
+  --ds-color-icon-danger: var(--ds-color-danger-600); /* Color/icon/danger */
+  --ds-color-icon-danger-bold: var(--ds-color-danger-800); /* Color/icon/danger-bold */
+  --ds-color-icon-warning: var(--ds-color-warning-600); /* Color/icon/warning */
+  --ds-color-icon-caution-bold: var(--ds-color-warning-800); /* Color/icon/caution-bold */
+  --ds-color-icon-control-primary: var(--ds-color-brand-600); /* Color/icon/Primitive/primary */
+  --ds-color-icon-control-primary-hover: var(--ds-color-brand-800); /* Color/icon/Primitive/primary-hover:active */
+  --ds-color-icon-control-secondary: var(--ds-color-neutral-700); /* Color/icon/Primitive/secondary */
+  --ds-color-icon-control-secondary-hover: var(--ds-color-neutral-900); /* Color/icon/Primitive/secondary-hover:active */
+  --ds-color-icon-control-tertiary: var(--ds-color-neutral-200); /* Color/icon/Primitive/teritiary */
+  --ds-color-icon-control-tertiary-hover: var(--ds-color-neutral-300); /* Color/icon/Primitive/teritiary-hover:active */
+  --ds-color-icon-control-inverse: var(--ds-color-base-white); /* Color/icon/Primitive/inverse */
+  /* 이전 이름(호환용) */
+  --ds-color-text-primary-hover-active: var(--ds-color-text-control-primary-hover);
+  --ds-color-text-neutral: var(--ds-color-text-control-secondary);
+  --ds-color-bg-brand: var(--ds-color-bg-brand-subtle);
+  --ds-color-border-brand: var(--ds-color-border-brand-subtle);
 
-  /* foundations.md 2 타이포 */
-  --ds-font-family-suit: "SUIT", sans-serif; /* SUIT Text Styles */
-  --ds-font-heading-xxl-heavy-size: 36px; /* Heading/XXL/Heavy */
-  --ds-font-heading-xxl-heavy-line-height: 46px; /* Heading/XXL/Heavy */
-  --ds-font-heading-xxl-heavy-letter-spacing: -0.02em; /* Heading/XXL/Heavy, -2% */
-  --ds-font-heading-xl-heavy-size: 32px; /* Heading/XL/Heavy */
-  --ds-font-heading-xl-heavy-line-height: 42px; /* Heading/XL/Heavy */
-  --ds-font-heading-xl-heavy-letter-spacing: -0.02em; /* Heading/XL/Heavy, -2% */
-  --ds-font-heading-lg-heavy-size: 28px; /* Heading/LG/Heavy */
-  --ds-font-heading-lg-heavy-line-height: 38px; /* Heading/LG/Heavy */
-  --ds-font-heading-lg-heavy-letter-spacing: -0.02em; /* Heading/LG/Heavy, -2% */
-  --ds-font-heading-md-bold-size: 24px; /* Heading/MD/Bold */
-  --ds-font-heading-md-bold-line-height: 34px; /* Heading/MD/Bold */
-  --ds-font-heading-md-bold-letter-spacing: -0.02em; /* Heading/MD/Bold, -2% */
-  --ds-font-heading-sm-bold-size: 20px; /* Heading/SM/Bold */
-  --ds-font-heading-sm-bold-line-height: 30px; /* Heading/SM/Bold */
-  --ds-font-heading-sm-bold-letter-spacing: -0.02em; /* Heading/SM/Bold, -2% */
-  --ds-font-body-md-regular-size: 18px; /* Body/MD/Regular */
-  --ds-font-body-md-regular-line-height: 26px; /* Body/MD/Regular */
-  --ds-font-body-md-regular-letter-spacing: -0.015em; /* Body/MD/Regular, -1.5% */
-  --ds-font-body-md-semibold-size: 18px; /* Body/MD/SemiBold */
-  --ds-font-body-md-semibold-line-height: 26px; /* Body/MD/SemiBold */
-  --ds-font-body-md-semibold-letter-spacing: -0.015em; /* Body/MD/SemiBold, -1.5% */
-  --ds-font-body-sm-regular-size: 16px; /* Body/SM/Regular */
-  --ds-font-body-sm-regular-line-height: 24px; /* Body/SM/Regular */
-  --ds-font-body-sm-regular-letter-spacing: -0.015em; /* Body/SM/Regular, -1.5% */
-  --ds-font-body-sm-semibold-size: 16px; /* Body/SM/SemiBold */
-  --ds-font-body-sm-semibold-line-height: 24px; /* Body/SM/SemiBold */
-  --ds-font-body-sm-semibold-letter-spacing: -0.015em; /* Body/SM/SemiBold, -1.5% */
-  --ds-font-body-ss-regular-size: 14px; /* Body/SS/Regular */
-  --ds-font-body-ss-regular-line-height: 20px; /* Body/SS/Regular */
-  --ds-font-body-ss-regular-letter-spacing: 0; /* Body/SS/Regular */
-  --ds-font-body-ss-semibold-size: 14px; /* Body/SS/Semibold */
-  --ds-font-body-ss-semibold-line-height: 20px; /* Body/SS/Semibold */
-  --ds-font-body-ss-semibold-letter-spacing: 0; /* Body/SS/Semibold */
-  --ds-font-caption-xs-size: 12px; /* Caption/XS */
-  --ds-font-caption-xs-line-height: 18px; /* Caption/XS */
-  --ds-font-caption-xs-letter-spacing: -0.015em; /* Caption/XS, -1.5% */
+  /* 4. 글자 (Figma Text styles · SUIT) */
+  --ds-font-family-suit: "SUIT", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --ds-font-heading-xxl-heavy-size: 36px; /* Suit/Heading/XXL/Heavy */
+  --ds-font-heading-xxl-heavy-line-height: 46px;
+  --ds-font-heading-xxl-heavy-letter-spacing: -0.02em; /* -2% */
+  --ds-font-heading-xxl-heavy-weight: 900;
+  --ds-font-heading-xxl-bold-size: 36px; /* Suit/Heading/XXL/Bold */
+  --ds-font-heading-xxl-bold-line-height: 46px;
+  --ds-font-heading-xxl-bold-letter-spacing: -0.02em; /* -2% */
+  --ds-font-heading-xxl-bold-weight: 700;
+  --ds-font-heading-xl-heavy-size: 32px; /* Suit/Heading/XL/Heavy */
+  --ds-font-heading-xl-heavy-line-height: 42px;
+  --ds-font-heading-xl-heavy-letter-spacing: -0.02em; /* -2% */
+  --ds-font-heading-xl-heavy-weight: 900;
+  --ds-font-heading-xl-bold-size: 32px; /* Suit/Heading/XL/Bold */
+  --ds-font-heading-xl-bold-line-height: 42px;
+  --ds-font-heading-xl-bold-letter-spacing: -0.02em; /* -2% */
+  --ds-font-heading-xl-bold-weight: 700;
+  --ds-font-heading-lg-heavy-size: 28px; /* Suit/Heading/LG/Heavy */
+  --ds-font-heading-lg-heavy-line-height: 38px;
+  --ds-font-heading-lg-heavy-letter-spacing: -0.02em; /* -2% */
+  --ds-font-heading-lg-heavy-weight: 900;
+  --ds-font-heading-lg-bold-size: 28px; /* Suit/Heading/LG/Bold */
+  --ds-font-heading-lg-bold-line-height: 38px;
+  --ds-font-heading-lg-bold-letter-spacing: -0.02em; /* -2% */
+  --ds-font-heading-lg-bold-weight: 700;
+  --ds-font-heading-md-heavy-size: 24px; /* Suit/Heading/MD/Heavy */
+  --ds-font-heading-md-heavy-line-height: 34px;
+  --ds-font-heading-md-heavy-letter-spacing: -0.02em; /* -2% */
+  --ds-font-heading-md-heavy-weight: 900;
+  --ds-font-heading-md-bold-size: 24px; /* Suit/Heading/MD/Bold */
+  --ds-font-heading-md-bold-line-height: 34px;
+  --ds-font-heading-md-bold-letter-spacing: -0.02em; /* -2% */
+  --ds-font-heading-md-bold-weight: 700;
+  --ds-font-heading-sm-heavy-size: 20px; /* Suit/Heading/SM/Heavy */
+  --ds-font-heading-sm-heavy-line-height: 30px;
+  --ds-font-heading-sm-heavy-letter-spacing: -0.02em; /* -2% */
+  --ds-font-heading-sm-heavy-weight: 900;
+  --ds-font-heading-sm-bold-size: 20px; /* Suit/Heading/SM/Bold */
+  --ds-font-heading-sm-bold-line-height: 30px;
+  --ds-font-heading-sm-bold-letter-spacing: -0.02em; /* -2% */
+  --ds-font-heading-sm-bold-weight: 700;
+  --ds-font-body-md-heavy-size: 18px; /* Suit/Body/MD/Heavy */
+  --ds-font-body-md-heavy-line-height: 26px;
+  --ds-font-body-md-heavy-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-md-heavy-weight: 900;
+  --ds-font-body-md-bold-size: 18px; /* Suit/Body/MD/Bold */
+  --ds-font-body-md-bold-line-height: 26px;
+  --ds-font-body-md-bold-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-md-bold-weight: 700;
+  --ds-font-body-md-semibold-size: 18px; /* Suit/Body/MD/SemiBold */
+  --ds-font-body-md-semibold-line-height: 26px;
+  --ds-font-body-md-semibold-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-md-semibold-weight: 600;
+  --ds-font-body-md-regular-size: 18px; /* Suit/Body/MD/Regular */
+  --ds-font-body-md-regular-line-height: 26px;
+  --ds-font-body-md-regular-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-md-regular-weight: 400;
+  --ds-font-body-md-underline-size: 18px; /* Suit/Body/MD/Underline */
+  --ds-font-body-md-underline-line-height: 26px;
+  --ds-font-body-md-underline-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-md-underline-weight: 600;
+  --ds-font-body-md-strike-through-size: 18px; /* Suit/Body/MD/Strike-through */
+  --ds-font-body-md-strike-through-line-height: 26px;
+  --ds-font-body-md-strike-through-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-md-strike-through-weight: 600;
+  --ds-font-body-sm-heavy-size: 16px; /* Suit/Body/SM/Heavy */
+  --ds-font-body-sm-heavy-line-height: 24px;
+  --ds-font-body-sm-heavy-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-sm-heavy-weight: 900;
+  --ds-font-body-sm-bold-size: 16px; /* Suit/Body/SM/Bold */
+  --ds-font-body-sm-bold-line-height: 24px;
+  --ds-font-body-sm-bold-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-sm-bold-weight: 700;
+  --ds-font-body-sm-semibold-size: 16px; /* Suit/Body/SM/SemiBold */
+  --ds-font-body-sm-semibold-line-height: 24px;
+  --ds-font-body-sm-semibold-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-sm-semibold-weight: 600;
+  --ds-font-body-sm-regular-size: 16px; /* Suit/Body/SM/Regular */
+  --ds-font-body-sm-regular-line-height: 24px;
+  --ds-font-body-sm-regular-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-sm-regular-weight: 400;
+  --ds-font-body-sm-underline-size: 16px; /* Suit/Body/SM/Underline */
+  --ds-font-body-sm-underline-line-height: 24px;
+  --ds-font-body-sm-underline-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-sm-underline-weight: 600;
+  --ds-font-body-ss-heavy-size: 14px; /* Suit/Body/SS/Heavy */
+  --ds-font-body-ss-heavy-line-height: 20px;
+  --ds-font-body-ss-heavy-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-ss-heavy-weight: 900;
+  --ds-font-body-ss-bold-size: 14px; /* Suit/Body/SS/Bold */
+  --ds-font-body-ss-bold-line-height: 20px;
+  --ds-font-body-ss-bold-letter-spacing: 0; /* 0% */
+  --ds-font-body-ss-bold-weight: 700;
+  --ds-font-body-ss-semibold-size: 14px; /* Suit/Body/SS/SemiBold */
+  --ds-font-body-ss-semibold-line-height: 20px;
+  --ds-font-body-ss-semibold-letter-spacing: 0; /* 0% */
+  --ds-font-body-ss-semibold-weight: 600;
+  --ds-font-body-ss-regular-size: 14px; /* Suit/Body/SS/Regular */
+  --ds-font-body-ss-regular-line-height: 20px;
+  --ds-font-body-ss-regular-letter-spacing: 0; /* 0% */
+  --ds-font-body-ss-regular-weight: 400;
+  --ds-font-body-ss-underline-size: 14px; /* Suit/Body/SS/Underline */
+  --ds-font-body-ss-underline-line-height: 20px;
+  --ds-font-body-ss-underline-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-body-ss-underline-weight: 400;
+  --ds-font-caption-xs-size: 12px; /* Suit/Caption/XS */
+  --ds-font-caption-xs-line-height: 18px;
+  --ds-font-caption-xs-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-caption-xs-weight: 500;
+  --ds-font-caption-strike-through-size: 12px; /* Suit/Caption/Strike-through */
+  --ds-font-caption-strike-through-line-height: 18px;
+  --ds-font-caption-strike-through-letter-spacing: -0.015em; /* -1.5% */
+  --ds-font-caption-strike-through-weight: 500;
 
-  /* foundations.md 3 간격 */
+  /* 5. 간격 (Figma spacing) */
   --ds-space-0: 0; /* spacing/0 */
   --ds-space-2: 2px; /* spacing/2 */
   --ds-space-4: 4px; /* spacing/4 */
@@ -114,52 +374,83 @@
   --ds-space-16: 16px; /* spacing/16 */
   --ds-space-20: 20px; /* spacing/20 */
   --ds-space-24: 24px; /* spacing/24 */
+  --ds-space-28: 28px; /* spacing/28 */
   --ds-space-32: 32px; /* spacing/32 */
   --ds-space-36: 36px; /* spacing/36 */
   --ds-space-40: 40px; /* spacing/40 */
   --ds-space-48: 48px; /* spacing/48 */
 
-  /* foundations.md 4 모서리 */
-  --ds-radius-0: 0; /* radius0 */
-  --ds-radius-4: 4px; /* radius1 */
-  --ds-radius-8: 8px; /* Radius2 */
-  --ds-radius-12: 12px; /* Radius3 */
-  --ds-radius-16: 16px; /* Radius4 */
-  --ds-radius-40: 40px; /* Radius5 */
-  --ds-radius-circle: 999px; /* radius-circle */
+  /* 6. 모서리 · 테두리 (Figma border/radius · border/border) */
+  --ds-radius-0: 0; /* border/radius/radius0 */
+  --ds-radius-4: 4px; /* border/radius/radius1 */
+  --ds-radius-8: 8px; /* border/radius/Radius2 */
+  --ds-radius-12: 12px; /* border/radius/Radius3 */
+  --ds-radius-16: 16px; /* border/radius/Radius4 */
+  --ds-radius-40: 40px; /* border/radius/Radius5 */
+  --ds-radius-circle: 999px; /* border/radius/radius-circle */
+  --ds-border-1: 1px; /* border/border/border-1 */
+  --ds-border-1-5: 1.5px; /* border/border/border-2 */
+  --ds-border-2: 2px; /* border/border/border-3 */
 
-  /* foundations.md Shape: Framework Figma Shape 1:10475 */
-  --ds-border-1: 1px;
-  --ds-border-1-5: 1.5px;
-  --ds-border-2: 2px;
+  /* 7. 그림자 (Figma Effect styles) */
+  --ds-shadow-default: 0 0 1px 0 rgba(0, 0, 0, 0.20), 0 2px 16px 0 rgba(0, 0, 0, 0.08); /* shadow1_default */
+  --ds-shadow-2: 0 0 1px 0 rgba(0, 0, 0, 0.20), 0 1px 2px 0 rgba(0, 0, 0, 0.12); /* elevation/shadow2 */
+  --ds-shadow-3: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 4px 0 rgba(0, 0, 0, 0.12); /* elevation/shadow3 */
+  --ds-shadow-4: 0 8px 24px 0 rgba(0, 0, 0, 0.20), 0 0 4px 0 rgba(0, 0, 0, 0.12); /* elevation/shadow4 */
+  --ds-shadow-5-left: 0 0 8px 0 rgba(0, 0, 0, 0.12), -8px 0 16px 0 rgba(0, 0, 0, 0.12); /* elevation/shadow5_Left */
+  --ds-shadow-6-top: 0 -4px 16px 0 rgba(0, 0, 0, 0.12); /* elevation/shadow6_Top */
+  --ds-shadow-card-list: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0.5px rgba(0, 0, 0, 0.2); /* 정책 3-9 카드 목록 */
 
-  /* foundations.md Icon: Framework Figma Icon 1:9425 */
+  /* 8. 흐림 · 투명도 (Figma blur · opacity) */
+  --ds-blur-0: 0; /* blur/blur-0 */
+  --ds-blur-4: 4px; /* blur/blur-4 */
+  --ds-blur-8: 8px; /* blur/blur-8 */
+  --ds-blur-12: 12px; /* blur/blur-12 */
+  --ds-opacity-0: 0; /* opacity/opacity-0 */
+  --ds-opacity-20: 0.2; /* opacity/opacity-20 */
+  --ds-opacity-40: 0.4; /* opacity/opacity-40 */
+  --ds-opacity-60: 0.6; /* opacity/opacity-60 */
+  --ds-opacity-80: 0.8; /* opacity/opacity-80 */
+  --ds-opacity-100: 1; /* opacity/opacity-100 */
+
+  /* 9. 아이콘 크기 (프레임워크 Icon 1:9425) · 모달 폭 (Modal 6487:5122) · 화면 폭 (정책 1장) */
   --ds-icon-16: 16px;
   --ds-icon-20: 20px;
   --ds-icon-24: 24px;
   --ds-icon-30: 30px;
   --ds-icon-36: 36px;
-
-  /* foundations.md 5 그림자 */
-  --ds-shadow-default: 0 0 1px rgba(0, 0, 0, 0.2), 0 2px 16px rgba(0, 0, 0, 0.08); /* shadow1_default */
-  --ds-shadow-2: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.12); /* elevation/shadow2 */
-  --ds-shadow-3: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.12); /* elevation/shadow3 */
-  --ds-shadow-4: 0 8px 24px 0 rgba(0, 0, 0, 0.20), 0 0 4px 0 rgba(0, 0, 0, 0.12); /* elevation/shadow4 */
-  --ds-shadow-5-left: 0 0 8px rgba(0, 0, 0, 0.12), -8px 0 16px rgba(0, 0, 0, 0.12); /* elevation/shadow5_Left */
-  --ds-shadow-6-top: 0 -4px 16px rgba(0, 0, 0, 0.12); /* elevation/shadow6_Top */
-  --ds-shadow-card-list: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0.5px rgba(0, 0, 0, 0.2); /* 카드 목록 그림자 */
-
-  /* foundations.md 7: Figma DS 기준(노드 6487:5122), CLAUDE.md 3-3 갱신 예정 */
   --ds-modal-width-sm: 340px; /* Modal/sm */
   --ds-modal-width-md: 480px; /* Modal/md */
   --ds-modal-width-lg: 600px; /* Modal/lg */
   --ds-modal-width-xl: 800px; /* Modal/xl */
-
-  /* 뷰포트 기준 문서화 전용. 미디어쿼리에는 숫자 기준을 직접 사용합니다. */
-  --ds-breakpoint-mobile-min: 360px;
-  --ds-breakpoint-mobile-max: 1024px;
+  --ds-breakpoint-mobile-min: 360px; /* 문서용. 미디어쿼리에는 숫자를 직접 쓴다 */
+  --ds-breakpoint-mobile-max: 1024px; /* 1024 이하 모바일 · 1025 이상 PC */
 }
 
-/* foundations.md 6: 프로젝트 전환 폭 1024px, 최소 모바일 폭 360px.
-   CSS 사용자 정의 속성은 미디어쿼리 조건에 쓸 수 없어 토큰으로 선언하지 않습니다.
-   Figma 디자인 캔버스 폭은 Mobile 360-768px, PC 1200-1920px입니다. */
+/* 이로움돌봄 테마: 브랜드 색만 주황으로 바뀐다(Figma Theme 이로움돌봄 모드) */
+.ds-theme-dolbom {
+  --ds-color-brand-50: var(--ds-color-orange-50);
+  --ds-color-brand-100: var(--ds-color-orange-100);
+  --ds-color-brand-200: var(--ds-color-orange-200);
+  --ds-color-brand-300: var(--ds-color-orange-300);
+  --ds-color-brand-400: var(--ds-color-orange-400);
+  --ds-color-brand-500: var(--ds-color-orange-500);
+  --ds-color-brand-600: var(--ds-color-orange-600);
+  --ds-color-brand-700: var(--ds-color-orange-700);
+  --ds-color-brand-800: var(--ds-color-orange-800);
+  --ds-color-brand-900: var(--ds-color-orange-900);
+  /* 브랜드를 참조하는 의미 색은 여기서 다시 선언해야 새 브랜드 값으로 계산된다 */
+  --ds-color-text-control-primary: var(--ds-color-brand-600); /* Color/text/Primitive/primary */
+  --ds-color-text-control-primary-hover: var(--ds-color-brand-800); /* Color/text/Primitive/primary-hover:active */
+  --ds-color-bg-brand-subtle: var(--ds-color-brand-100); /* Color/bg/brand_subtle */
+  --ds-color-bg-control-primary: var(--ds-color-brand-600); /* Color/bg/Primitive/primary */
+  --ds-color-bg-control-primary-hover: var(--ds-color-brand-800); /* Color/bg/Primitive/primary-hover:active */
+  --ds-color-bg-control-selected: var(--ds-color-brand-50); /* Color/bg/Primitive/selected */
+  --ds-color-bg-control-selected-hover: var(--ds-color-brand-200); /* Color/bg/Primitive/selected-hover:active */
+  --ds-color-border-brand-subtle: var(--ds-color-brand-200); /* Color/border/brand-subtle */
+  --ds-color-border-control-primary: var(--ds-color-brand-600); /* Color/border/Primitive/primary */
+  --ds-color-border-control-primary-hover: var(--ds-color-brand-800); /* Color/border/Primitive/primary-hover:active */
+  --ds-color-icon-brand-subtle: var(--ds-color-brand-200); /* Color/icon/brand-subtle */
+  --ds-color-icon-control-primary: var(--ds-color-brand-600); /* Color/icon/Primitive/primary */
+  --ds-color-icon-control-primary-hover: var(--ds-color-brand-800); /* Color/icon/Primitive/primary-hover:active */
+}

@@ -1,0 +1,188 @@
+<!--@title-->Button<!--/@title-->
+<!--@crumb-->Components · Action<!--/@crumb-->
+<!--@lead-->저장·검색·주문하기처럼 동작을 실행하는 버튼입니다. 크기는 화면 폭이 아니라 놓이는 자리로 고릅니다.<!--/@lead-->
+<!--@meta-->
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7696-4607" target="_blank" rel="noopener">Figma · Button ↗</a>
+        <a href="../../index.html#3-4" target="_blank" rel="noopener">정책 3-4 액션 버튼 배치 ↗</a>
+        <span>SM 36 · MD 48 · LG 54</span>
+<!--/@meta-->
+<!--@design-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="overview">개요</h2>
+          <p class="doc-p">종류·위계·크기를 바꿔 보고, 버튼에 마우스를 올려 눌림 색을 확인해 보세요.</p>
+          <div class="doc-play">
+            <div class="doc-play__stage"><div style="width:auto;max-width:none"><button class="ds-btn ds-btn--primary ds-btn--md" type="button" id="play-btn">주문하기</button></div></div>
+            <div class="doc-play__controls">
+              <div class="doc-ctl"><span class="doc-ctl__name">종류</span>
+                <div class="doc-seg" id="seg-kind"><button type="button" data-value="filled" aria-pressed="true">Filled</button><button type="button" data-value="outline" aria-pressed="false">Outline</button><button type="button" data-value="tinted" aria-pressed="false">Tinted</button><button type="button" data-value="text" aria-pressed="false">Text</button></div></div>
+              <div class="doc-ctl"><span class="doc-ctl__name">위계</span>
+                <div class="doc-seg" id="seg-level"><button type="button" data-value="1" aria-pressed="true">Default</button><button type="button" data-value="2" aria-pressed="false">Secondary</button><button type="button" data-value="3" aria-pressed="false">Tertiary</button></div></div>
+              <div class="doc-ctl"><span class="doc-ctl__name">크기</span>
+                <div class="doc-seg" id="seg-size"><button type="button" data-value="sm" aria-pressed="false">SM 36</button><button type="button" data-value="md" aria-pressed="true">MD 48</button><button type="button" data-value="lg" aria-pressed="false">LG 54</button></div></div>
+              <div class="doc-ctl"><label class="doc-check"><input type="checkbox" id="opt-round"> 둥근 모양</label><label class="doc-check"><input type="checkbox" id="opt-disabled"> Disabled</label></div>
+            </div>
+          </div>
+          <p class="doc-caption" id="play-note"></p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="types">종류와 상태</h2>
+          <p class="doc-p">한 영역의 주 동작은 Filled Default 하나. 보조 동작은 Secondary나 Outline으로 한 단계 낮춥니다. 눌림 표현은 버튼에만 있습니다.</p>
+          <div class="doc-scroll"><table class="doc-table doc-btn-table">
+            <thead><tr><th>종류</th><th>기본</th><th>올림 · 누름</th><th>Disabled</th></tr></thead>
+            <tbody id="type-rows"></tbody>
+          </table></div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="size">크기</h2>
+          <p class="doc-p">버튼은 1024px 이하에서도 크기가 바뀌지 않습니다. 하단 고정 버튼과 바텀시트 버튼만 LG 54를 씁니다. 숫자는 실제 화면에서 잰 값입니다. <a class="doc-policy" href="../../index.html#3-4" target="_blank" rel="noopener">3-4</a></p>
+          <div class="doc-stage doc-stage--white">
+            <div class="doc-measure" style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:56px;padding:32px 40px 32px 24px" data-dims='[
+              {"d":"y","a":".b1","from":"top","to":"bottom","at":"right","off":10},
+              {"d":"y","a":".b2","from":"top","to":"bottom","at":"right","off":10},
+              {"d":"y","a":".b3","from":"top","to":"bottom","at":"right","off":10},
+              {"d":"x","a":".b3","from":"left","b":".t3","to":"left","on":".b3","at":"top","off":-10},
+              {"d":"x","a":".b1","from":"left","b":".t1","to":"left","on":".b1","at":"top","off":-10}]'>
+              <button class="ds-btn ds-btn--primary ds-btn--sm b1" type="button" tabindex="-1"><span class="t1">SM 버튼</span></button>
+              <button class="ds-btn ds-btn--primary ds-btn--md b2" type="button" tabindex="-1">MD 버튼</button>
+              <button class="ds-btn ds-btn--primary ds-btn--lg b3" type="button" tabindex="-1"><span class="t3">LG 버튼</span></button>
+            </div>
+          </div>
+          <table class="doc-table">
+            <thead><tr><th>크기</th><th>높이 · 글자</th><th>쓰는 자리</th></tr></thead>
+            <tbody>
+              <tr><td>SM</td><td>36 · 14/20</td><td>PC 입력칸 옆, 검색 영역, 표 안, 작은 보조 동작</td></tr>
+              <tr><td>MD</td><td>48 · 16/24</td><td>모달 버튼, 일반 주요 동작, 모바일 입력칸 옆</td></tr>
+              <tr><td>LG</td><td>54 · 18/26</td><td>모바일 하단 고정 버튼, 바텀시트 하단 버튼</td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">좌우 여백은 모든 크기에서 16, 모서리 4(둥근 모양 999), 아이콘과 글자 사이 8. 너비는 글자에 맞춰 늘어나고 공통 최소 너비는 두지 않습니다. 모달 버튼만 기본 150입니다.</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="usage">사용 예</h2>
+          <h3 class="doc-h3" style="margin-top:16px">검색 영역 하단</h3>
+          <p class="doc-p">초기화(외곽선) + 검색(채움), 각 130×36, 사이 10, 가운데 정렬. <a class="doc-policy" href="../../index.html#3-7" target="_blank" rel="noopener">3-7</a></p>
+          <div class="doc-example"><div class="doc-example__bar"><strong>PC 검색 패널</strong><span>SM 36</span></div>
+            <div class="doc-example__body" style="display:flex;justify-content:center;gap:10px"><button class="ds-btn ds-btn--outline-secondary" type="button" style="width:130px">초기화</button><button class="ds-btn ds-btn--primary" type="button" style="width:130px">검색</button></div></div>
+
+          <h3 class="doc-h3">입력칸 옆 버튼</h3>
+          <p class="doc-p">모바일에서는 입력칸과 같은 높이 48(MD)을 씁니다. PC는 칸 40과 같은 높이의 버튼이 없어 SM 36을 칸 가운데에 맞춥니다. <code>ds-btn--field</code> 하나로 화면 폭에 따라 자동으로 바뀝니다.</p>
+          <div class="doc-pair">
+            <div class="doc-stage doc-stage--white"><p class="doc-pair__label">PC (칸 40 · 버튼 36)</p><div class="ex-inline ds-preview-pc"><input class="ds-input" value="00000" readonly aria-label="우편번호 PC"><button class="ds-btn ds-btn--outline-secondary ds-btn--field" type="button">우편번호 찾기</button></div></div>
+            <div class="doc-stage doc-stage--white"><p class="doc-pair__label">모바일 (칸 48 · 버튼 48)</p><div class="ex-inline ds-preview-mo"><input class="ds-input" value="00000" readonly aria-label="우편번호 모바일"><button class="ds-btn ds-btn--outline-secondary ds-btn--field" type="button">우편번호 찾기</button></div></div>
+          </div>
+
+          <h3 class="doc-h3">모바일 하단 고정</h3>
+          <p class="doc-p">화면 아래에 붙고 버튼이 폭을 나눠 씁니다. 높이 LG 54, 보조 버튼 120 + 주 버튼 나머지, 영역 여백 위 32 · 좌우 20 · 아래 20 + 안전 영역. <a class="doc-policy" href="../../index.html#3-4" target="_blank" rel="noopener">3-4</a></p>
+          <div class="doc-stage" style="display:flex;justify-content:center">
+            <div class="ex-phone">
+              <div class="ex-phone__body"><p class="ex-phone__title">주문 상세보기</p><div class="ex-phone__line"></div><div class="ex-phone__line" style="width:70%"></div><div class="ex-phone__line" style="width:85%"></div></div>
+              <div class="ex-phone__bar"><button class="ds-btn ds-btn--secondary ds-btn--lg" type="button" style="flex:0 0 120px">주문취소</button><button class="ds-btn ds-btn--primary ds-btn--lg" type="button" style="flex:1 1 auto">주문하기</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="principles">사용 원칙</h2>
+          <div class="doc-rules">
+            <div class="doc-rule"><div class="doc-rule__stage" style="flex-direction:row;align-items:center;justify-content:center;gap:10px"><button class="ds-btn ds-btn--outline-secondary" type="button" tabindex="-1" style="width:130px">초기화</button><button class="ds-btn ds-btn--primary" type="button" tabindex="-1" style="width:130px">검색</button></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">주 동작 하나만 채움. 무엇을 누르면 되는지 바로 보입니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage" style="flex-direction:row;align-items:center;justify-content:center;gap:10px"><button class="ds-btn ds-btn--primary" type="button" tabindex="-1" style="width:130px">초기화</button><button class="ds-btn ds-btn--primary" type="button" tabindex="-1" style="width:130px">검색</button></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">둘 다 채우면 초기화를 잘못 눌러 조건이 지워지기 쉽습니다.</p></div></div>
+
+            <div class="doc-rule"><div class="doc-rule__stage" style="flex-direction:row;align-items:center;justify-content:center;gap:12px"><button class="ds-btn ds-btn--secondary ds-btn--md" type="button" tabindex="-1" style="width:140px">취소</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button" tabindex="-1" style="width:140px">회수 요청</button></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">라벨은 눌렀을 때 일어나는 일을 그대로 씁니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage" style="flex-direction:row;align-items:center;justify-content:center;gap:12px"><button class="ds-btn ds-btn--secondary ds-btn--md" type="button" tabindex="-1" style="width:140px">아니요</button><button class="ds-btn ds-btn--primary ds-btn--md" type="button" tabindex="-1" style="width:140px">네</button></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">“네 / 아니요”는 질문을 다시 읽어야 뜻을 알 수 있습니다.</p></div></div>
+
+            <div class="doc-rule"><div class="doc-rule__stage ds-preview-mo"><div class="ex-inline"><input class="ds-input" value="00000" readonly tabindex="-1" aria-label="좋은 예"><button class="ds-btn ds-btn--outline-secondary ds-btn--field" type="button" tabindex="-1">우편번호 찾기</button></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">모바일에서는 버튼을 칸과 같은 높이 48로 맞춥니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage ds-preview-mo"><div class="ex-inline"><input class="ds-input" value="00000" readonly tabindex="-1" aria-label="나쁜 예"><button class="ds-btn ds-btn--outline-secondary" type="button" tabindex="-1">우편번호 찾기</button></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">칸은 48인데 버튼만 36이면 한 줄의 높이가 어긋나 보이고, 손가락으로 누르기도 작습니다.</p></div></div>
+          </div>
+        </section>
+<!--/@design-->
+<!--@dev-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-markup">기본 마크업</h2>
+          <p class="doc-p"><code>.ds-btn</code> + 종류 1개 + 크기 1개를 조합합니다. 크기를 빼면 SM 36입니다.</p>
+          <div class="doc-code"><pre>&lt;button class="ds-btn ds-btn--primary ds-btn--md" type="button"&gt;주문하기&lt;/button&gt;
+&lt;button class="ds-btn ds-btn--outline-secondary" type="button"&gt;우편번호 찾기&lt;/button&gt;
+&lt;button class="ds-btn ds-btn--primary" type="button" disabled&gt;저장&lt;/button&gt;
+
+&lt;!-- 아이콘 버튼: 라벨은 aria-label로 --&gt;
+&lt;button class="ds-btn ds-btn--outline-secondary ds-btn--icon" type="button" aria-label="검색"&gt;
+  &lt;span class="ds-btn__icon"&gt;&lt;/span&gt;
+&lt;/button&gt;</pre></div>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-classes">클래스</h2>
+          <table class="doc-table">
+            <thead><tr><th>클래스</th><th>Figma</th></tr></thead>
+            <tbody>
+              <tr><td><code>--primary</code> / <code>--secondary</code> / <code>--tertiary</code></td><td>Button/Filled Default · Secondary · Teritiary</td></tr>
+              <tr><td><code>--outline</code> / <code>--outline-secondary</code> / <code>--outline-tertiary</code></td><td>Button/outline Default · Secondary · Teritiary (글자 SemiBold, Teritiary만 Regular)</td></tr>
+              <tr><td><code>--tinted</code> / <code>--tinted-secondary</code></td><td>Button/Tinted-Outline</td></tr>
+              <tr><td><code>--text</code> / <code>--text-secondary</code></td><td>Button/Transparent</td></tr>
+              <tr><td><code>--sm</code> / <code>--md</code> / <code>--lg</code></td><td>SM_36px · MD_48px · LG_54px</td></tr>
+              <tr><td><code>--round</code></td><td>Shape=Round (outline)</td></tr>
+              <tr><td><code>--icon</code> + <code>.ds-btn__icon</code></td><td>Button/IconButton</td></tr>
+              <tr><td><code>--block</code></td><td>부모 폭 전체</td></tr>
+              <tr><td><code>--field</code></td><td>입력칸 옆 버튼. PC 36 · 모바일(1024 이하) 48로 칸 높이를 따름</td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">Hover와 Active는 같은 색입니다(Figma Hover:Active). 키보드 포커스는 2px 파란 테두리로 표시합니다.</p>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <div class="doc-code"><pre>[Button 규칙 — 이로움케어 DS]
+- &lt;button class="ds-btn ds-btn--{primary|secondary|tertiary|outline|outline-secondary|outline-tertiary|tinted|tinted-secondary|text|text-secondary} ds-btn--{sm|md|lg}"&gt;
+- 크기는 자리로 고름: 입력칸 옆 = .ds-btn--field (PC 36 · 모바일 48 자동), 검색 영역·표 = SM 36, 모달 = MD 48(폭 150, 좁으면 같이 줄어듦), 모바일 하단 고정·바텀시트 = LG 54
+- 1024px 이하에서 크기가 바뀌는 버튼은 입력칸 옆(.ds-btn--field)뿐. 나머지는 그대로. 입력칸 옆 버튼은 align-items:center
+- 한 영역에 Filled Default는 하나. 라벨은 동작 이름(“회수 요청”), “네/아니요” 금지
+- 모바일 하단 고정: 여백 32/20/20+safe-area, 보조 120 + 주 버튼 나머지</pre></div>
+        </section>
+<!--/@dev-->
+<!--@after-->
+<style>
+.doc-scroll { overflow-x: auto; }
+.doc-btn-table { min-width: 600px; }
+.doc-btn-table td { text-align: left; }
+.doc-btn-table td:not(:first-child) .ds-btn { width: 100%; max-width: 140px; }
+.ex-phone { position: relative; width: 320px; max-width: 100%; height: 360px; border: 1px solid #e0e0e0; border-radius: 24px; background: #fff; overflow: hidden; }
+.ex-phone__body { padding: 24px 20px; display: flex; flex-direction: column; gap: 12px; }
+.ex-phone__title { margin: 0 0 8px; font-size: 18px; font-weight: 700; }
+.ex-phone__line { height: 12px; border-radius: 6px; background: #f0f0f2; }
+.ex-phone__bar { position: absolute; left: 0; right: 0; bottom: 0; display: flex; gap: 8px; padding: 32px 20px 20px; background: linear-gradient(to bottom, rgba(255,255,255,0), #fff 32px); }
+</style>
+<!--/@after-->
+<!--@script-->
+  var ROWS = [
+    ['Filled · Default', 'ds-btn--primary', '주문하기'], ['Filled · Secondary', 'ds-btn--secondary', '취소'], ['Filled · Tertiary', 'ds-btn--tertiary', '상품변경'],
+    ['Outline · Default', 'ds-btn--outline', '조회'], ['Outline · Secondary', 'ds-btn--outline-secondary', '우편번호 찾기'], ['Outline · Tertiary', 'ds-btn--outline-tertiary', '더보기'],
+    ['Tinted · Default', 'ds-btn--tinted', '추가'], ['Tinted · Secondary', 'ds-btn--tinted-secondary', '초기화'],
+    ['Text · Default', 'ds-btn--text', '전체보기'], ['Text · Secondary', 'ds-btn--text-secondary', '닫기']
+  ];
+  document.getElementById('type-rows').innerHTML = ROWS.map(function (r) {
+    function b(extra, dis) { return '<button class="ds-btn ' + r[1] + extra + '" type="button" tabindex="-1"' + (dis ? ' disabled' : '') + '>' + r[2] + '</button>'; }
+    return '<tr><td>' + r[0] + '</td><td>' + b('') + '</td><td>' + b(' ds-is-hover') + '</td><td>' + b('', true) + '</td></tr>';
+  }).join('');
+  var MAP = { filled: ['ds-btn--primary', 'ds-btn--secondary', 'ds-btn--tertiary'], outline: ['ds-btn--outline', 'ds-btn--outline-secondary', 'ds-btn--outline-tertiary'], tinted: ['ds-btn--tinted', 'ds-btn--tinted-secondary', null], text: ['ds-btn--text', 'ds-btn--text-secondary', null] };
+  var st = { kind: 'filled', level: 1, size: 'md' };
+  var btn = document.getElementById('play-btn'), note = document.getElementById('play-note');
+  function render() {
+    var cls = MAP[st.kind][st.level - 1];
+    note.textContent = cls ? '' : '이 종류에는 Tertiary가 없어 Secondary로 보여 줍니다.';
+    cls = cls || MAP[st.kind][1];
+    var round = document.getElementById('opt-round').checked;
+    btn.className = 'ds-btn ' + cls + ' ds-btn--' + st.size + (round ? ' ds-btn--round' : '');
+    btn.disabled = document.getElementById('opt-disabled').checked;
+  }
+  document.getElementById('seg-kind').addEventListener('doc-seg', function (e) { st.kind = e.detail; render(); });
+  document.getElementById('seg-level').addEventListener('doc-seg', function (e) { st.level = +e.detail; render(); });
+  document.getElementById('seg-size').addEventListener('doc-seg', function (e) { st.size = e.detail; render(); });
+  ['opt-round', 'opt-disabled'].forEach(function (id) { document.getElementById(id).addEventListener('change', render); });
+  render();
+<!--/@script-->
