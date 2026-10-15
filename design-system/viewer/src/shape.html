@@ -1,0 +1,106 @@
+<!--@title-->Shape<!--/@title-->
+<!--@crumb-->Foundation<!--/@crumb-->
+<!--@lead-->모서리 · 테두리 굵기 · 그림자입니다. 요소마다 정해진 값이 있고, 같은 종류의 요소는 같은 값을 씁니다.<!--/@lead-->
+<!--@meta-->
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=36-11730" target="_blank" rel="noopener">Figma · Variables · Effect styles ↗</a>
+        <span>모서리 7 · 테두리 3 · 그림자 6</span>
+<!--/@meta-->
+<!--@design-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="radius">모서리</h2>
+          <div class="sh-grid" id="radius-grid"></div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="border">테두리 굵기</h2>
+          <div class="sh-grid sh-grid--3">
+            <div class="sh-card"><div class="sh-line" style="border-top:1px solid #333"></div><strong>1px</strong><span>border-1 · 기본 테두리, 구분선</span></div>
+            <div class="sh-card"><div class="sh-line" style="border-top:1.5px solid #333"></div><strong>1.5px</strong><span>border-2 · 선 아이콘 굵기</span></div>
+            <div class="sh-card"><div class="sh-line" style="border-top:2px solid #323da3"></div><strong>2px</strong><span>border-3 · 입력 Focused · Error</span></div>
+          </div>
+          <p class="doc-note">2px 테두리는 안쪽으로 1px을 더해 그립니다. 그래서 상태가 바뀌어도 칸 크기와 글자 위치가 그대로입니다.</p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="shadow">그림자</h2>
+          <p class="doc-p">숫자가 클수록 더 떠 보입니다. 화면 위에 겹쳐 뜨는 것일수록 큰 그림자를 씁니다.</p>
+          <div class="sh-grid" id="shadow-grid"></div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="map">요소별 값</h2>
+          <table class="doc-table">
+            <thead><tr><th>요소</th><th>모서리</th><th>테두리</th><th>그림자</th></tr></thead>
+            <tbody>
+              <tr><td>입력칸 · 셀렉트 · 버튼</td><td>4</td><td>1 (Focused·Error 2)</td><td>없음</td></tr>
+              <tr><td>옵션 패널</td><td>4</td><td>1 #333</td><td>shadow3</td></tr>
+              <tr><td>상태칩</td><td>999 (Square 4)</td><td>1</td><td>없음</td></tr>
+              <tr><td>모바일 카드</td><td>8</td><td>—</td><td>카드 목록</td></tr>
+              <tr><td>모달 · 팝오버</td><td>16</td><td>팝오버만 1 #BDBDBD</td><td>shadow4</td></tr>
+              <tr><td>바텀시트</td><td>위 40</td><td>—</td><td>shadow4</td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">카드 목록 그림자는 Figma 효과 스타일이 아니라 정책 3-9에서 정한 값입니다. <a class="doc-policy" href="../../index.html#3-9" target="_blank" rel="noopener">3-9</a> <a class="doc-policy" href="../../index.html#3-5" target="_blank" rel="noopener">3-5</a></p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="principles">사용 원칙</h2>
+          <div class="doc-rules">
+            <div class="doc-rule"><div class="doc-rule__stage" style="flex-direction:row;align-items:center;justify-content:center;gap:8px"><input class="ds-input ds-preview-pc" value="홍길동" tabindex="-1" aria-label="좋은 예" style="max-width:160px"><button class="ds-btn ds-btn--outline-secondary" type="button" tabindex="-1">조회</button></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">나란히 놓이는 입력칸과 버튼은 같은 모서리 4.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage" style="flex-direction:row;align-items:center;justify-content:center;gap:8px"><input class="ds-input ds-preview-pc" value="홍길동" tabindex="-1" aria-label="나쁜 예" style="max-width:160px;border-radius:12px"><button class="ds-btn ds-btn--outline-secondary ds-btn--round" type="button" tabindex="-1">조회</button></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">모서리가 섞이면 같은 줄의 요소가 서로 다른 것처럼 보입니다.</p></div></div>
+            <div class="doc-rule"><div class="doc-rule__stage"><div style="padding:16px;border-radius:8px;background:#fff;box-shadow:var(--ds-shadow-card-list);font-size:14px">카드 하나</div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">화면에 붙어 있는 카드는 약한 그림자.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage"><div style="padding:16px;border-radius:8px;background:#fff;box-shadow:var(--ds-shadow-4);font-size:14px">카드 하나</div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">모달용 큰 그림자를 카드에 쓰면 눌러야 할 팝업처럼 보입니다.</p></div></div>
+          </div>
+        </section>
+<!--/@design-->
+<!--@dev-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-vars">변수</h2>
+          <table class="doc-table">
+            <thead><tr><th>CSS 변수</th><th>Figma</th></tr></thead>
+            <tbody>
+              <tr><td><code>--ds-radius-0 · 4 · 8 · 12 · 16 · 40 · circle</code></td><td>border/radius/radius0 · radius1 · Radius2 · Radius3 · Radius4 · Radius5 · radius-circle</td></tr>
+              <tr><td><code>--ds-border-1 · 1-5 · 2</code></td><td>border/border/border-1 · border-2 · border-3</td></tr>
+              <tr><td><code>--ds-shadow-default · 2 · 3 · 4 · 5-left · 6-top</code></td><td>shadow1_default · elevation/shadow2~6</td></tr>
+              <tr><td><code>--ds-shadow-card-list</code></td><td>정책 3-9</td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">CSS 이름은 값(px)으로, Figma 이름은 순번으로 되어 있어 border-2(Figma)가 1.5px입니다. 헷갈리지 않게 CSS는 값으로 부릅니다.</p>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <div class="doc-code"><pre>[Shape 규칙 — 이로움케어 DS]
+- 모서리: 입력·버튼·옵션 4, 모바일 카드 8, 모달·팝오버 16, 바텀시트 위 40, 칩 999
+- 테두리 1px 기본, 강조(Focused·Error) 2px은 inset 1px을 더해 크기 변화 없이
+- 그림자: 옵션 패널 shadow3, 모달·시트 shadow4, 카드 목록 shadow-card-list. 카드에 shadow4 금지</pre></div>
+        </section>
+<!--/@dev-->
+<!--@after-->
+<style>
+.sh-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 16px 0 0; }
+.sh-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.sh-card { display: flex; flex-direction: column; gap: 4px; padding: 20px; border: 1px solid var(--doc-line); border-radius: 12px; }
+.sh-card strong { font-size: 16px; }
+.sh-card span { color: var(--doc-text-3); font-size: 13px; line-height: 19px; }
+.sh-box { width: 72px; height: 72px; margin-bottom: 12px; background: var(--ds-color-darkblue-100); border: 1px solid var(--ds-color-darkblue-200); }
+.sh-line { width: 100%; margin: 20px 0 24px; }
+.sh-shadow { height: 88px; margin: 8px 8px 20px; border-radius: 8px; background: #fff; }
+.sh-stage { padding: 4px; border-radius: 8px; background: var(--doc-stage); }
+@media (max-width: 720px) { .sh-grid, .sh-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>
+<!--/@after-->
+<!--@script-->
+  var R = [['0', '0', '각진 표 · 구분 요소'], ['4', '4', '입력 · 버튼 · 옵션'], ['8', '8', '모바일 카드'], ['12', '12', '정해진 자리 없음'], ['16', '16', '모달 · 팝오버'], ['40', '40', '바텀시트 위 모서리'], ['circle', '999', '상태칩 · 필터칩']];
+  document.getElementById('radius-grid').innerHTML = R.map(function (r) {
+    var style = r[0] === '40' ? 'border-radius:40px 40px 0 0;width:100%;height:56px' : 'border-radius:var(--ds-radius-' + r[0] + ')' + (r[0] === 'circle' ? ';width:100%;height:36px' : '');
+    return '<div class="sh-card"><div class="sh-box" style="' + style + '"></div><strong>' + r[1] + '</strong><span>' + r[2] + '</span></div>';
+  }).join('');
+  var S = [['default', 'shadow1_default', '넓게 퍼지는 기본 그림자'], ['2', 'shadow2', '가장 낮은 높이'], ['3', 'shadow3', '옵션 패널 · 드롭다운'], ['4', 'shadow4', '모달 · 바텀시트 · 팝오버'], ['5-left', 'shadow5_Left', '왼쪽으로 드리움'], ['6-top', 'shadow6_Top', '위쪽으로 드리움'], ['card-list', '카드 목록', '모바일 카드 (정책 3-9)']];
+  document.getElementById('shadow-grid').innerHTML = S.map(function (s) {
+    return '<div class="sh-card"><div class="sh-stage"><div class="sh-shadow" style="box-shadow:var(--ds-shadow-' + s[0] + ')"></div></div><strong>' + s[1] + '</strong><span>' + s[2] + '</span></div>';
+  }).join('');
+<!--/@script-->

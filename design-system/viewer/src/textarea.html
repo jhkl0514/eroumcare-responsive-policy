@@ -1,0 +1,223 @@
+<!--@title-->Textarea<!--/@title-->
+<!--@crumb-->Components · Input<!--/@crumb-->
+<!--@lead-->사유·메모처럼 여러 줄로 길게 쓰는 값을 받는 입력칸입니다. 오른쪽 아래에 글자 수가 보입니다.<!--/@lead-->
+<!--@meta-->
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=7697-14799" target="_blank" rel="noopener">Figma · TextAreaField ↗</a>
+        <a href="../../index.html#3-2" target="_blank" rel="noopener">정책 3-2 입력칸 ↗</a>
+        <span>PC·모바일 같은 크기 · 글자 16</span>
+<!--/@meta-->
+<!--@design-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="overview">개요</h2>
+          <p class="doc-p">아래 칸에 직접 입력해 보세요. 글자 수가 실시간으로 바뀌고, 최대 글자 수에 닿으면 숫자가 빨갛게 바뀝니다.</p>
+          <div class="doc-play">
+            <div class="doc-play__stage">
+              <div class="ds-field" id="play-field">
+                <label class="ds-field__label" for="play-ta">회수 요청 사유</label>
+                <div class="ds-textarea"><textarea class="ds-textarea__control" id="play-ta" rows="3" maxlength="200" placeholder="사유를 입력해 주세요" aria-describedby="play-help"></textarea><span class="ds-textarea__count">0/200자</span></div>
+                <p class="ds-field__hint" id="play-help">수급자에게 그대로 전달됩니다.</p>
+              </div>
+            </div>
+            <div class="doc-play__controls">
+              <div class="doc-ctl"><span class="doc-ctl__name">상태</span>
+                <div class="doc-seg" id="seg-state"><button type="button" data-value="live" aria-pressed="true">직접 입력</button><button type="button" data-value="error" aria-pressed="false">Error</button><button type="button" data-value="disabled" aria-pressed="false">Disabled</button><button type="button" data-value="readonly" aria-pressed="false">ReadOnly</button></div>
+              </div>
+              <div class="doc-ctl"><label class="doc-check"><input type="checkbox" id="opt-help" checked> 도움말</label></div>
+            </div>
+          </div>
+          <h3 class="doc-h3">언제 쓰나요</h3>
+          <ul class="doc-list">
+            <li>줄바꿈이 필요한 긴 글 — 취소·회수 사유, 상담 메모, 배송 요청 직접 입력</li>
+            <li>이름·번호처럼 한 줄 값은 <a href="text-input.html">Text input</a>을 씁니다.</li>
+            <li>글자 크기는 PC·모바일 모두 16입니다(입력칸·셀렉트와 달리 크기가 바뀌지 않음). <a class="doc-policy" href="../../index.html#3-2" target="_blank" rel="noopener">3-2</a></li>
+          </ul>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="anatomy">구조</h2>
+          <p class="doc-p">글자 수는 박스 안 오른쪽 아래에 있고, 도움말은 박스 밖에 있습니다.</p>
+          <div class="doc-stage doc-stage--white">
+            <div class="doc-stage__inner doc-anat" style="max-width:520px;padding:48px 72px 56px">
+              <div class="ds-field">
+                <span class="ds-field__label"><span data-anat="1" data-anat-side="left" data-anat-gap="32">회수 요청 사유</span></span>
+                <div class="ds-textarea" data-anat="2" data-anat-side="left" data-anat-gap="32"><textarea class="ds-textarea__control" rows="3" maxlength="200" tabindex="-1" aria-label="구조 예시" data-anat="3" data-anat-side="top" data-anat-x="0.6" data-anat-gap="48">수급자 요청으로 회수 일정을 다음 주로 미룹니다.</textarea><span class="ds-textarea__count" data-anat="4" data-anat-side="right" data-anat-gap="40">25/200자</span></div>
+                <p class="ds-field__hint" data-anat="5" data-anat-side="bottom" data-anat-x="0.2" data-anat-gap="28">수급자에게 그대로 전달됩니다.</p>
+              </div>
+            </div>
+          </div>
+          <ol class="doc-legend">
+            <li><b>1</b><span><strong>라벨</strong> — 무엇을 쓰는지.</span></li>
+            <li><b>2</b><span><strong>입력 박스</strong> — 상태 규칙은 Text input과 같습니다.</span></li>
+            <li><b>3</b><span><strong>글자 영역</strong> — 기본 3줄(72). 더 쓰면 아래로 늘릴 수 있습니다.</span></li>
+            <li><b>4</b><span><strong>글자 수</strong> — 현재/최대. 비어 있으면 회색.</span></li>
+            <li><b>5</b><span><strong>도움말 / 오류</strong> — 박스 아래 8.</span></li>
+          </ol>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="states">상태</h2>
+          <p class="doc-p">Text input과 같은 6가지입니다. 비어 있을 때는 글자 수도 회색입니다.</p>
+          <table class="doc-table">
+            <thead><tr><th>상태</th><th class="doc-cell-demo" style="width:70%">예시</th></tr></thead>
+            <tbody>
+              <tr><td>Inactive<small>비어 있음 · 테두리 #616161 · 글자 수 #999</small></td><td><div class="ds-textarea"><textarea class="ds-textarea__control" rows="3" placeholder="사유를 입력해 주세요" tabindex="-1" aria-label="Inactive"></textarea><span class="ds-textarea__count">0/200자</span></div></td></tr>
+              <tr><td>Default<small>입력 완료 · 테두리 1px #333</small></td><td><div class="ds-textarea"><textarea class="ds-textarea__control" rows="3" tabindex="-1" aria-label="Default">수급자 요청으로 회수 일정을 미룹니다.</textarea><span class="ds-textarea__count">20/200자</span></div></td></tr>
+              <tr><td>Focused<small>입력 중 · 테두리 2px #323DA3</small></td><td><div class="ds-textarea ds-is-focused"><textarea class="ds-textarea__control" rows="3" tabindex="-1" aria-label="Focused">입력 중..</textarea><span class="ds-textarea__count">6/200자</span></div></td></tr>
+              <tr><td>Disabled<small>배경 #EEE · 글자 #BDBDBD</small></td><td><div class="ds-textarea"><textarea class="ds-textarea__control" rows="3" disabled aria-label="Disabled">비활성</textarea><span class="ds-textarea__count">3/200자</span></div></td></tr>
+              <tr><td>ReadOnly<small>배경 #EEE · 글자 #1A1A1A</small></td><td><div class="ds-textarea"><textarea class="ds-textarea__control" rows="3" readonly tabindex="-1" aria-label="ReadOnly">수급자 요청으로 회수 일정을 미룹니다.</textarea><span class="ds-textarea__count">20/200자</span></div></td></tr>
+              <tr><td>Error<small>테두리 2px #E53935 + 문구</small></td><td><div class="ds-field"><div class="ds-textarea"><textarea class="ds-textarea__control" rows="3" aria-invalid="true" tabindex="-1" aria-label="Error">미룸</textarea><span class="ds-textarea__count">2/200자</span></div><p class="ds-field__error">사유를 5자 이상 입력해 주세요.</p></div></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="size">크기와 간격</h2>
+          <p class="doc-p">PC와 모바일이 같습니다. 아래 숫자는 실제 화면에서 잰 값입니다.</p>
+          <div class="doc-stage doc-stage--white">
+            <div class="doc-measure" style="max-width:460px;margin:0 auto;padding:16px 80px 8px 56px" data-dims='[
+              {"d":"y","a":".ds-textarea","from":"top","b":".ds-textarea__control","to":"top","on":".ds-textarea","at":"mid","area":true},
+              {"d":"x","a":".ds-textarea","from":"left","b":".ds-textarea__control","to":"left","on":".ds-textarea__control","at":"mid","area":true,"below":true},
+              {"d":"y","a":".ds-textarea__control","from":"top","to":"bottom","on":".ds-textarea","at":"right","off":44},
+              {"d":"y","a":".ds-textarea__count","from":"bottom","b":".ds-textarea","to":"bottom","on":".ds-textarea","at":"right","off":16},
+              {"d":"y","a":".ds-textarea","from":"bottom","b":".ds-field__hint","to":"top","on":".ds-textarea","at":"left","off":-16,"labelLeft":true}]'>
+              <div class="ds-field">
+                <div class="ds-textarea"><textarea class="ds-textarea__control" rows="3" tabindex="-1" aria-label="치수">Text</textarea><span class="ds-textarea__count">4/200자</span></div>
+                <p class="ds-field__hint">도움말</p>
+              </div>
+            </div>
+          </div>
+          <table class="doc-table">
+            <thead><tr><th>항목</th><th>값</th></tr></thead>
+            <tbody>
+              <tr><td>박스 안쪽 여백</td><td>위 20 · 좌우 20 · 아래 12</td></tr>
+              <tr><td>글자</td><td>16 / 줄높이 24 (PC·모바일 같음)</td></tr>
+              <tr><td>글자 영역 기본 높이</td><td>72 (3줄)</td></tr>
+              <tr><td>글자 영역 ↔ 글자 수</td><td>4</td></tr>
+              <tr><td>글자 수</td><td>14 / 줄높이 20, 오른쪽 정렬</td></tr>
+              <tr><td>박스 ↔ 도움말</td><td>8</td></tr>
+              <tr><td>모서리</td><td>4</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="resize">높이 늘리기 (선택)</h2>
+          <p class="doc-p">긴 메모처럼 길게 쓸 수 있는 칸에만 켭니다. PC에서 오른쪽 아래 모서리를 잡고 아래로 끌면 세로로만 늘어납니다(최대 480). 모바일에서는 손잡이가 작아 끕니다. 기본은 꺼져 있습니다.</p>
+          <div class="doc-stage doc-stage--white">
+            <div class="ds-field ds-preview-pc" style="max-width:480px;margin:0 auto">
+              <label class="ds-field__label" for="rs-ta">상담 메모</label>
+              <div class="ds-textarea ds-textarea--resize"><textarea class="ds-textarea__control" id="rs-ta" rows="3" maxlength="1000" placeholder="오른쪽 아래를 잡고 늘려 보세요"></textarea><span class="ds-textarea__count">0/1000자</span></div>
+            </div>
+          </div>
+          <table class="doc-table">
+            <thead><tr><th>칸</th><th>늘리기</th></tr></thead>
+            <tbody>
+              <tr><td>사유 · 요청사항 (200자 이하)</td><td>끔 — 3줄 안에서 스크롤</td></tr>
+              <tr><td>메모 · 상담 내용 (긴 글)</td><td>켬 (PC만)</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="usage">사용 예</h2>
+          <h3 class="doc-h3" style="margin-top:16px">취소 사유 입력</h3>
+          <p class="doc-p">사유를 고르는 셀렉트에서 “직접 입력”을 고르면 바로 아래에 Textarea가 열립니다. 라벨 125 고정 배치. <a class="doc-policy" href="../../index.html#3-2" target="_blank" rel="noopener">3-2</a></p>
+          <div class="doc-example">
+            <div class="doc-example__bar"><strong>주문 취소</strong><span>“직접 입력”을 골라 보세요</span></div>
+            <div class="doc-example__body" style="padding-bottom:180px">
+              <div class="ex-form">
+                <div class="ex-row"><span class="ex-row__label" id="ex-reason-label">취소 사유<span class="ds-field__required">*</span></span>
+                  <div class="ex-row__body">
+                    <div class="ds-select" id="ex-reason">
+                      <button class="ds-select__trigger ds-is-inactive" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="ex-reason-label"><span class="ds-select__value ds-is-placeholder">선택</span><span class="ds-select__chevron"></span></button>
+                      <div class="ds-select__list" role="listbox" hidden>
+                        <button class="ds-select__option" type="button" role="option" aria-selected="false">수급자 단순 변심</button>
+                        <button class="ds-select__option" type="button" role="option" aria-selected="false">상품 재고 없음</button>
+                        <button class="ds-select__option" type="button" role="option" aria-selected="false" data-value="custom">직접 입력</button>
+                      </div>
+                    </div>
+                    <div class="ds-field" id="ex-reason-custom" hidden>
+                      <div class="ds-textarea"><textarea class="ds-textarea__control" rows="3" maxlength="200" placeholder="취소 사유를 입력해 주세요" aria-label="취소 사유 직접 입력"></textarea><span class="ds-textarea__count">0/200자</span></div>
+                    </div>
+                  </div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="principles">사용 원칙</h2>
+          <div class="doc-rules">
+            <div class="doc-rule"><div class="doc-rule__stage"><div class="ds-textarea"><textarea class="ds-textarea__control" rows="3" tabindex="-1" aria-label="좋은 예">배송 전에 꼭 연락 부탁드립니다.</textarea><span class="ds-textarea__count">17/200자</span></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">최대 글자 수를 처음부터 보여 줍니다. 쓰는 중에 얼마나 남았는지 알 수 있습니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage"><div class="ds-field"><div class="ds-textarea"><textarea class="ds-textarea__control" rows="3" tabindex="-1" aria-label="나쁜 예">배송 전에 꼭 연락 부탁드립니다. 문 앞에 두지 마시고 경비실에...</textarea></div><p class="ds-field__error">200자를 넘었습니다.</p></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">제한을 숨겨 두었다가 저장할 때 오류로 알리면 다시 고쳐 써야 합니다.</p></div></div>
+
+            <div class="doc-rule"><div class="doc-rule__stage ds-preview-pc"><div class="ds-field"><span class="ds-field__label">이름</span><input class="ds-input" value="홍길동" tabindex="-1" aria-label="좋은 예"></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">한 줄로 끝나는 값은 Text input. 칸 높이가 다른 입력과 맞습니다.</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage"><div class="ds-field"><span class="ds-field__label">이름</span><div class="ds-textarea"><textarea class="ds-textarea__control" rows="3" tabindex="-1" aria-label="나쁜 예">홍길동</textarea><span class="ds-textarea__count">3/20자</span></div></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">짧은 값에 Textarea를 쓰면 폼 줄 높이가 들쭉날쭉해지고 엔터가 줄바꿈이 됩니다.</p></div></div>
+          </div>
+        </section>
+<!--/@design-->
+<!--@dev-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-markup">기본 마크업</h2>
+          <p class="doc-p"><code>.ds-textarea__count</code>가 있으면 <code>ds.js</code>가 입력할 때마다 글자 수를 셉니다. 최대 글자 수는 <code>maxlength</code>로 정합니다.</p>
+          <div class="doc-code"><pre>&lt;div class="ds-field"&gt;
+  &lt;label class="ds-field__label" for="reason"&gt;회수 요청 사유&lt;/label&gt;
+  &lt;div class="ds-textarea"&gt;
+    &lt;textarea class="ds-textarea__control" id="reason" rows="3" maxlength="200"
+              placeholder="사유를 입력해 주세요" aria-describedby="reason-help"&gt;&lt;/textarea&gt;
+    &lt;span class="ds-textarea__count"&gt;0/200자&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;p class="ds-field__hint" id="reason-help"&gt;수급자에게 그대로 전달됩니다.&lt;/p&gt;
+&lt;/div&gt;</pre></div>
+          <p class="doc-p">높이 늘리기를 켤 때는 박스에 <code>ds-textarea--resize</code>를 더합니다. CSS 한 줄(<code>resize: vertical</code>)이라 개발 부담은 없습니다.</p>
+          <div class="doc-code"><pre>&lt;div class="ds-textarea ds-textarea--resize"&gt; … &lt;/div&gt;</pre></div>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-states">상태 만들기</h2>
+          <table class="doc-table">
+            <thead><tr><th>상태</th><th>방법</th></tr></thead>
+            <tbody>
+              <tr><td>Inactive · Default · Focused</td><td>자동(<code>:placeholder-shown</code>, <code>:focus-within</code>)</td></tr>
+              <tr><td>Error</td><td>textarea에 <code>aria-invalid="true"</code> + <code>.ds-field__error</code></td></tr>
+              <tr><td>Disabled</td><td>textarea에 <code>disabled</code></td></tr>
+              <tr><td>ReadOnly</td><td>textarea에 <code>readonly</code></td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">줄바꿈을 허용하므로 엔터로 폼을 제출하지 않습니다. <a class="doc-policy" href="../../index.html#3-12" target="_blank" rel="noopener">3-12</a></p>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <div class="doc-code"><pre>[Textarea 규칙 — 이로움케어 DS]
+- 마크업: .ds-field > .ds-field__label + .ds-textarea(> textarea.ds-textarea__control[maxlength] + .ds-textarea__count) + .ds-field__hint|.ds-field__error
+- 박스 안쪽 20/20/12/20, 글자 16/24(PC·모바일 같음), 기본 3줄, 글자 수는 박스 안 오른쪽 아래 "0/200자"
+- 상태는 Text input과 같음(빈 칸 테두리 #616161, 입력 중 2px #323DA3, 오류 2px #E53935 + 문구)
+- 한 줄 값에는 쓰지 않음. 엔터는 줄바꿈, 제출은 버튼으로만
+- 높이 늘리기는 기본 끔. 긴 메모 칸만 .ds-textarea--resize (PC 세로만, 최대 480, 모바일 끔)</pre></div>
+        </section>
+<!--/@dev-->
+<!--@script-->
+  var ta = document.getElementById('play-ta');
+  var help = document.getElementById('play-help');
+  var state = 'live';
+  function render() {
+    ta.disabled = state === 'disabled';
+    ta.readOnly = state === 'readonly';
+    if (state === 'error') ta.setAttribute('aria-invalid', 'true'); else ta.removeAttribute('aria-invalid');
+    if (state !== 'live' && !ta.value) ta.value = state === 'error' ? '미룸' : '수급자 요청으로 회수 일정을 다음 주로 미룹니다.';
+    help.hidden = !(document.getElementById('opt-help').checked || state === 'error');
+    help.className = state === 'error' ? 'ds-field__error' : 'ds-field__hint';
+    help.textContent = state === 'error' ? '사유를 5자 이상 입력해 주세요.' : '수급자에게 그대로 전달됩니다.';
+    ta.dispatchEvent(new Event('input'));
+  }
+  document.getElementById('seg-state').addEventListener('doc-seg', function (e) { state = e.detail; if (state === 'live') ta.value = ''; render(); });
+  document.getElementById('opt-help').addEventListener('change', render);
+  document.getElementById('ex-reason').addEventListener('ds-change', function (e) {
+    var c = document.getElementById('ex-reason-custom');
+    c.hidden = e.detail.value !== 'custom';
+    if (!c.hidden) c.querySelector('textarea').focus();
+  });
+<!--/@script-->

@@ -1,0 +1,147 @@
+<!--@title-->Layout<!--/@title-->
+<!--@crumb-->Foundation<!--/@crumb-->
+<!--@lead-->간격 단계와 화면 폭 기준입니다. 1024px을 기준으로 PC와 모바일이 나뉘고, 줄바꿈은 정해진 폭 공식으로 일어납니다.<!--/@lead-->
+<!--@meta-->
+        <a href="https://www.figma.com/design/64Q1Re56aiAA8Al89pqjnV?node-id=36-11730" target="_blank" rel="noopener">Figma · spacing · Breakpoint ↗</a>
+        <a href="../../index.html#3-2" target="_blank" rel="noopener">정책 3-2 입력 폼 배치 ↗</a>
+        <span>1024 · 360</span>
+<!--/@meta-->
+<!--@design-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="spacing">간격 단계</h2>
+          <p class="doc-p">간격은 이 14단계 안에서만 고릅니다. 막대 길이가 실제 크기입니다.</p>
+          <div id="space-list" class="ly-space"></div>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="breakpoints">화면 폭 기준</h2>
+          <div class="ly-bp">
+            <div class="ly-bp__bar">
+              <span class="ly-bp__seg ly-bp__seg--min" style="flex:0 0 18%">360 미만</span>
+              <span class="ly-bp__seg ly-bp__seg--mo" style="flex:0 0 42%">모바일 360 ~ 1024</span>
+              <span class="ly-bp__seg ly-bp__seg--pc" style="flex:1 1 auto">PC 1025 ~</span>
+            </div>
+            <div class="ly-bp__ticks"><span style="left:18%">360</span><span style="left:60%">1024 | 1025</span></div>
+          </div>
+          <table class="doc-table">
+            <thead><tr><th>구간</th><th>바뀌는 것</th></tr></thead>
+            <tbody>
+              <tr><td>PC (1025 이상)</td><td>입력칸 · 셀렉트 40, 옵션 행 36, 글자 14</td></tr>
+              <tr><td>모바일 (1024 이하)</td><td>입력칸 · 셀렉트 48, 옵션 행 44, 글자 16. 버튼 · 칩 · 탭은 그대로</td></tr>
+              <tr><td>360 미만</td><td>지원 최소 폭. 레이아웃이 깨지지 않게만 둡니다</td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">Figma Breakpoint 변수(Mobile 360~768, PC 1200~1920)는 디자인 프레임 크기입니다. 코드의 전환 기준은 정책의 1024입니다. <a class="doc-policy" href="../../index.html#3-0" target="_blank" rel="noopener">3-0</a></p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="form">입력 폼 배치</h2>
+          <p class="doc-p">라벨 125 고정 + 입력 영역 최소 폭. 화면이 줄어 둘이 한 줄에 안 들어가는 순간 라벨이 위로 올라갑니다. 줄바꿈 지점은 미디어쿼리가 아니라 이 공식의 결과입니다. 아래 막대를 움직여 보세요.</p>
+          <div class="doc-stage doc-stage--white">
+            <div class="doc-ctl" style="margin-bottom:16px"><span class="doc-ctl__name">영역 폭</span><input type="range" id="form-w" min="300" max="620" value="520" style="flex:1;max-width:320px"><strong id="form-w-label" style="font-variant-numeric:tabular-nums">520px</strong>
+              <div class="doc-seg" id="seg-mode"><button type="button" data-value="edit" aria-pressed="true">수정 모드</button><button type="button" data-value="view" aria-pressed="false">조회 모드</button></div></div>
+            <div class="ly-form-wrap"><div class="ly-form" id="form-demo">
+              <div class="ly-form__row"><span class="ly-form__label">상세주소</span><div class="ly-form__body"><input class="ds-input ds-preview-pc" value="101동 1001호" aria-label="상세주소" tabindex="-1"></div></div>
+            </div></div>
+            <p class="doc-caption" id="form-note"></p>
+          </div>
+          <table class="doc-table">
+            <thead><tr><th>모드</th><th>공식</th><th>줄바꿈 지점</th></tr></thead>
+            <tbody>
+              <tr><td>수정</td><td>라벨 125 + 간격 4 + 입력 최소 280</td><td>409px</td></tr>
+              <tr><td>조회</td><td>라벨 125 + 간격 8 + 값 최소 180</td><td>313px</td></tr>
+              <tr><td>PC</td><td colspan="2">입력 영역은 최대 480에서 멈춤</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="mobile">모바일 여백</h2>
+          <table class="doc-table">
+            <thead><tr><th>자리</th><th>여백</th></tr></thead>
+            <tbody>
+              <tr><td>하단 고정 버튼 영역</td><td>위 32 · 좌우 20 · 아래 20 + 안전 영역 <a class="doc-policy" href="../../index.html#3-4" target="_blank" rel="noopener">3-4</a></td></tr>
+              <tr><td>본문 맨 아래 일반 버튼</td><td>위 48 · 아래 20 <a class="doc-policy" href="../../index.html#3-4" target="_blank" rel="noopener">3-4</a></td></tr>
+              <tr><td>바텀시트</td><td>위 32 · 좌우 20, 하단 버튼 영역 위아래 32 <a class="doc-policy" href="../../index.html#3-5" target="_blank" rel="noopener">3-5</a></td></tr>
+              <tr><td>모달</td><td>화면 좌우 20을 남기고 줄어듦 <a class="doc-policy" href="../../index.html#3-3" target="_blank" rel="noopener">3-3</a></td></tr>
+            </tbody>
+          </table>
+          <p class="doc-note">화면별 세부 간격은 정책 3-8 모바일 간격을 따릅니다. <a class="doc-policy" href="../../index.html#3-8" target="_blank" rel="noopener">3-8</a></p>
+        </section>
+
+        <section class="doc-section">
+          <h2 class="doc-h2" id="principles">사용 원칙</h2>
+          <div class="doc-rules">
+            <div class="doc-rule"><div class="doc-rule__stage"><div style="display:flex;flex-direction:column;gap:8px"><span class="ly-blk"></span><span class="ly-blk"></span><span class="ly-blk"></span></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>이렇게</p><p class="doc-rule__text">같은 관계의 요소는 같은 간격(여기선 8).</p></div></div>
+            <div class="doc-rule doc-rule--bad"><div class="doc-rule__stage"><div style="display:flex;flex-direction:column"><span class="ly-blk"></span><span class="ly-blk" style="margin-top:5px"></span><span class="ly-blk" style="margin-top:11px"></span></div></div>
+              <div class="doc-rule__body"><p class="doc-rule__verdict"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>이렇게 하지 않기</p><p class="doc-rule__text">5 · 11처럼 단계에 없는 간격은 미세하게 어긋나 보입니다.</p></div></div>
+          </div>
+        </section>
+<!--/@design-->
+<!--@dev-->
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-vars">변수</h2>
+          <div class="doc-code"><pre>--ds-space-0 · 2 · 4 · 6 · 8 · 12 · 16 · 20 · 24 · 28 · 32 · 36 · 40 · 48   /* Figma spacing/* */
+
+/* 화면 전환은 숫자로 (CSS 변수는 미디어쿼리 조건에 못 씀) */
+@media (max-width: 1024px) { … }</pre></div>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-form">폼 배치 코드</h2>
+          <div class="doc-code"><pre>.form-row { display: flex; flex-wrap: wrap; align-items: flex-start; column-gap: 4px; row-gap: 8px; }
+.form-row__label { flex: 0 0 125px; }
+.form-row__body { flex: 1 0 0; min-width: 280px; max-width: 480px; } /* 조회 모드: min-width 180, gap 8 */</pre></div>
+          <p class="doc-note">미디어쿼리 없이 flex-wrap만으로 409px(조회 313px)에서 줄이 바뀝니다.</p>
+        </section>
+        <section class="doc-section">
+          <h2 class="doc-h2" id="dev-ai">AI 코딩용 요약</h2>
+          <div class="doc-code"><pre>[Layout 규칙 — 이로움케어 DS]
+- 간격은 --ds-space-{0,2,4,6,8,12,16,20,24,28,32,36,40,48}만
+- 1024px 이하 모바일(입력류만 커짐), 최소 지원 360px
+- 입력 폼: 라벨 125 고정 + 입력 min 280(조회 180) flex-wrap, PC 입력 영역 max 480. 줄바꿈용 미디어쿼리 금지
+- 모바일 하단 고정 버튼 영역 padding: 32px 20px calc(20px + env(safe-area-inset-bottom))</pre></div>
+        </section>
+<!--/@dev-->
+<!--@after-->
+<style>
+.ly-space { display: flex; flex-direction: column; gap: 4px; margin: 16px 0 0; }
+.ly-space__row { display: grid; grid-template-columns: 56px 216px minmax(0, 1fr); align-items: center; gap: 16px; padding: 6px 0; border-bottom: 1px solid var(--doc-line-soft); font-size: 14px; }
+.ly-space__row strong { font-variant-numeric: tabular-nums; }
+.ly-space__bar { height: 16px; background: var(--ds-color-darkblue-300); border-radius: 2px; }
+.ly-space__row span:last-child { color: var(--doc-text-3); font-size: 13px; }
+.ly-bp { margin: 16px 0 8px; }
+.ly-bp__bar { display: flex; height: 48px; border-radius: 8px; overflow: hidden; font-size: 13px; font-weight: 700; }
+.ly-bp__seg { display: flex; align-items: center; justify-content: center; padding: 0 8px; text-align: center; }
+.ly-bp__seg--min { background: #f0f0f2; color: #8a8a8a; }
+.ly-bp__seg--mo { background: var(--ds-color-lightgreen-100); color: #1a5e00; }
+.ly-bp__seg--pc { background: var(--ds-color-darkblue-100); color: var(--ds-color-darkblue-800); }
+.ly-bp__ticks { position: relative; height: 24px; font-size: 12px; color: var(--doc-text-3); }
+.ly-bp__ticks span { position: absolute; top: 4px; transform: translateX(-50%); white-space: nowrap; }
+.ly-form-wrap { overflow-x: auto; padding: 8px 0; }
+.ly-form { box-sizing: content-box; padding: 16px; border: 1px dashed #e5397a; background: #fff; }
+.ly-form__row { display: flex; flex-wrap: wrap; align-items: center; column-gap: 4px; row-gap: 8px; }
+.ly-form__label { flex: 0 0 125px; font-size: 14px; font-weight: 600; background: rgba(229,57,122,.1); }
+.ly-form__body { flex: 1 0 0; min-width: 280px; max-width: 480px; }
+.ly-form--view .ly-form__row { column-gap: 8px; }
+.ly-form--view .ly-form__body { min-width: 180px; }
+.ly-blk { display: block; width: 180px; height: 28px; border-radius: 4px; background: var(--ds-color-darkblue-100); }
+@media (max-width: 720px) { .ly-space__row { grid-template-columns: 44px 1fr; } .ly-space__row span:last-child { grid-column: 1 / -1; } }
+</style>
+<!--/@after-->
+<!--@script-->
+  var SP = [[0, ''], [2, '미세 조정'], [4, '라벨–칸 · 아이콘–글자 · 칩 안 간격'], [6, '모바일 옵션 행 사이 · 필터칩 사이'], [8, '모바일 라벨–칸 · 옵션 패널 안쪽 · 같은 무리 사이'], [12, '입력칸 좌우 · 모달 버튼 사이'], [16, '버튼 좌우 · 모달 타이틀 아래'], [20, '모바일 화면 좌우 · 모달 좌우'], [24, '모달 위아래 · 모달 본문 위'], [28, ''], [32, '모달 본문 아래 · 하단 버튼 영역 위'], [36, 'SM 버튼 높이'], [40, 'PC 입력칸 높이'], [48, '모바일 입력칸 · MD 버튼 높이']];
+  document.getElementById('space-list').innerHTML = SP.map(function (s) {
+    return '<div class="ly-space__row"><strong>' + s[0] + '</strong><span class="ly-space__bar" style="width:' + (s[0] * 4) + 'px;max-width:100%"></span><span>' + (s[1] || '—') + '</span></div>';
+  }).join('');
+  var range = document.getElementById('form-w'), demo = document.getElementById('form-demo'), mode = 'edit';
+  function upd() {
+    var w = +range.value; demo.style.width = w + 'px';
+    document.getElementById('form-w-label').textContent = w + 'px';
+    var bp = mode === 'edit' ? 409 : 313;
+    document.getElementById('form-note').textContent = (w >= bp ? '한 줄 — ' : '두 줄 — ') + '줄바꿈 지점 ' + bp + 'px';
+  }
+  range.addEventListener('input', upd);
+  document.getElementById('seg-mode').addEventListener('doc-seg', function (e) { mode = e.detail; demo.classList.toggle('ly-form--view', mode === 'view'); upd(); });
+  upd();
+<!--/@script-->
