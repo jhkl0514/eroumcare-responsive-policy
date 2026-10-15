@@ -315,6 +315,8 @@ body.modal-open #bottom-bar{visibility:hidden;}
 textarea.input{height:auto;min-height:96px;padding:12px;resize:vertical;font-size:16px;line-height:1.5;}
 textarea.input:focus{padding:11px;}
 .zip-row{display:flex;gap:8px;align-items:center;}
+.zip-row .btn-sm{height:48px;font-size:16px;}   /* 입력칸 옆 버튼: PC 36(칸 40 가운데) / 모바일 48(입력칸과 같은 높이), 3-4 */
+@container pf (min-width:1024.02px){ .zip-row .btn-sm{height:36px;font-size:14px;} }
 .list-btn-wrap{display:flex;justify-content:flex-end;padding:48px 20px 20px;}
 @container pf (min-width:1024.02px){ .list-btn-wrap{padding:48px 40px 40px;} }
 .result-box{margin:20px 20px 0;padding:16px;border-radius:4px;background:var(--note-bg);border:1px solid var(--note-border);color:var(--note-text);font-size:14px;line-height:1.5;}

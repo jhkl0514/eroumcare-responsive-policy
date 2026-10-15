@@ -215,8 +215,10 @@ select.dv-input{background-color:var(--card);color:var(--input-text-active);
 textarea.dv-input{height:auto;}
 .select-box{min-height:48px;font-size:16px;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;}
 .bottom-actions .btn{height:54px;font-size:18px;padding:0;display:flex;align-items:center;justify-content:center;}
+.zip-btn{height:48px;font-size:16px;padding:0 16px;}   /* 입력칸 옆 버튼: PC 36(칸 40 가운데) / 모바일 48(입력칸과 같은 높이), 3-4 */
 @container pf (min-width: 1024.02px){
   .dv-input{height:40px;font-size:14px;}
+  .zip-btn{height:36px;font-size:14px;}
   .select-box{min-height:40px;font-size:14px;}
   .bottom-actions{display:none;}   /* PC는 타이틀 옆 버튼만(3-4) — 뒤쪽 sticky 규칙이 덮어쓰던 것 정정 */
 }
@@ -542,7 +544,7 @@ function renderDelivery(s, t){
     '<div class="dv-head"><div class="dv-title">배송정보</div></div>'+
     '<div class="dv-row"><div class="dv-label">이름<span style="color:var(--text-danger)">*</span></div><div class="dv-content-edit"><input class="dv-input" value="홍길동" enterkeyhint="next"></div></div>'+
     '<div class="dv-row"><div class="dv-label">주소<span style="color:var(--text-danger)">*</span></div><div class="dv-content-edit">'+
-      '<div style="display:flex;gap:8px;margin-bottom:6px;align-items:center;"><input class="dv-input" value="16495" readonly><button class="mode-btn" style="flex-shrink:0;">우편번호</button></div>'+
+      '<div style="display:flex;gap:8px;margin-bottom:6px;align-items:center;"><input class="dv-input" value="16495" readonly><button class="mode-btn zip-btn" style="flex-shrink:0;">우편번호</button></div>'+
       '<input class="dv-input" value="경기 수원시 영통구 광교로 32 (이의동, 아름학교)" readonly style="margin-bottom:6px;"><input class="dv-input" placeholder="상세주소 입력" enterkeyhint="next"></div></div>'+
     '<div class="dv-row"><div class="dv-label">전화번호</div><div class="dv-content-edit"><input class="dv-input" placeholder="- 없이 숫자만 입력" inputmode="tel" enterkeyhint="next"></div></div>'+
     '<div class="dv-row"><div class="dv-label">휴대폰번호<span style="color:var(--text-danger)">*</span></div><div class="dv-content-edit"><input class="dv-input" value="010-1234-5689" inputmode="tel" enterkeyhint="next"></div></div>'+

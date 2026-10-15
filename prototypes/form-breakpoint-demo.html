@@ -95,11 +95,12 @@ body{margin:0;background:var(--bg);color:var(--text-primary);
 .readonly-text{padding:8px 0;font-size:14px;color:var(--text-primary);overflow-wrap:break-word;word-break:keep-all;}
 /* ---- 3-0 모바일 크기: 입력류 MO(48·16px, 옵션 행 44), 하단 고정·시트 버튼 LG 54 ---- */
 .zip-combo{align-items:center;}
-.zip-btn{height:36px;padding:0 16px;}
+.zip-btn{height:36px;padding:0 16px;}   /* 입력칸 옆 버튼: PC 36(칸 40 가운데) / 모바일 48(입력칸과 같은 높이), 3-4 */
 .field-input,.field-select{height:40px;box-sizing:border-box;}
 @container pf (max-width:1024px){
   .field-input,.field-select{height:48px;font-size:16px;padding-top:0;padding-bottom:0;}
   .field-textarea{font-size:16px;}
+  .zip-btn{height:48px;font-size:16px;}
 }
 </style>
 </head>

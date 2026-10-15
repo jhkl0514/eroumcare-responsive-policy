@@ -104,15 +104,16 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
   .modal-overlay[data-sheet="1"] .modal-actions .btn{flex:1;}
   .modal-overlay[data-sheet="1"] .form-input{height:48px;font-size:16px;}
   .modal-overlay[data-sheet="1"] textarea.form-input{height:auto;min-height:96px;}
-  .modal-overlay[data-sheet="1"] .zip-btn{height:36px;}
+  .modal-overlay[data-sheet="1"] .zip-btn{height:48px;font-size:16px;}
   .modal-overlay[data-sheet="1"] .modal-actions .btn{height:54px;font-size:16px;}
 }
 /* ---- 3-0 모바일 크기: 입력류 MO(48·16px, 옵션 행 44), 하단 고정·시트 버튼 LG 54 ---- */
 .modal-actions .btn{height:48px;padding:0 20px;display:flex;align-items:center;justify-content:center;}
-.zip-btn{height:36px;padding:0 16px;}
+.zip-btn{height:36px;padding:0 16px;}   /* 입력칸 옆 버튼: PC 36(칸 40 가운데) / 모바일 48(입력칸과 같은 높이), 3-4 */
 @container pf (max-width: 1024px){
   .form-input{height:48px;font-size:16px;}
   textarea.form-input{height:auto;min-height:96px;}
+  .zip-btn{height:48px;font-size:16px;}
   .search-row{min-height:44px;font-size:16px;padding:10px 8px 10px 12px;}
   .modal-overlay[data-sheet="1"] .modal-actions .btn{height:54px;font-size:18px;}
 }

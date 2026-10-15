@@ -226,13 +226,14 @@ select.form-input{padding-right:34px;appearance:none;-webkit-appearance:none;-mo
 }
 /* ---- 3-0 모바일 크기: 입력류 MO(48·16px, 옵션 행 44), 하단 고정·시트 버튼 LG 54 ---- */
 .modal-actions .btn{height:48px;padding:0 20px;display:flex;align-items:center;justify-content:center;}
-.zip-btn{height:36px;padding:0 16px;}
+.zip-btn{height:36px;padding:0 16px;}   /* 입력칸 옆 버튼: PC 36(칸 40 가운데) / 모바일 48(입력칸과 같은 높이), 3-4 */
 /* 모달 버튼: 150 고정, 모달이 좁으면 줄어듦(PC·모바일 같음, 3-3). 바텀시트는 Full */
 .modal-actions{justify-content:center;gap:12px;}
 .modal-actions .btn{flex:0 1 150px;min-width:0;}
 .modal-actions .btn:only-child{flex:0 1 auto;min-width:min(150px,100%);max-width:100%;white-space:nowrap;overflow:hidden;}
 @container pf (max-width:1024px){
   select.form-input, input.form-input{height:48px;font-size:16px;}
+  .zip-btn{height:48px;font-size:16px;}
   textarea.form-input, textarea.memo-input{font-size:16px;}
   .actions-bottom.has-buttons .btn{height:54px;font-size:18px;padding:0;display:flex;align-items:center;justify-content:center;flex:1;}
   .overlay.is-sheet{align-items:flex-end;padding:0;}
