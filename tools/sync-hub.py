@@ -13,15 +13,19 @@ import re, sys, html as H, os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INFO_SVG = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor"/></svg>'
 
+# 새 문서 페이지가 있는 DS 항목(design-system/viewer/<이름>.html). 나머지는 viewer/item.html?item=<이름>
+DS_PAGES = {'color','typography','shape','layout','icon','text-input','select','textarea','button','status-chip','modal','checkbox','radio'}
+
 def inline(t):
     t = H.escape(t, quote=False)
     t = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', t)
     t = re.sub(r'`([^`]+)`', r'<span class="mono">\1</span>', t)
-    # [글자](링크) → 링크. design-system/*.md는 디자인 시스템 뷰어(새 탭)의 해당 문서로
+    # [글자](링크) → 링크. design-system/*.md는 디자인 시스템 문서 페이지(새 탭)로
     def _link(m):
         url = m.group(2)
         if url.startswith('design-system/') and url.endswith('.md'):
-            return '<a href="prototypes/ds-viewer.html?item=' + url[len('design-system/'):] + '" target="_blank" rel="noopener">' + m.group(1) + '</a>'
+            stem = url.rsplit('/', 1)[-1][:-3]
+            url = 'design-system/viewer/' + (stem + '.html' if stem in DS_PAGES else 'item.html?item=' + stem)
         return '<a href="' + url + '" target="_blank" rel="noopener">' + m.group(1) + '</a>'
     t = re.sub(r'\[([^\]]+)\]\(([^)\s]+)\)', _link, t)
     # {chip:상태} / {chip:상태:표기} → 상태칩 미리보기(prototypes/status-chip.css, 5장)

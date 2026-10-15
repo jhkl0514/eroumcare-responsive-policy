@@ -88,7 +88,7 @@
 | 긴 글 `TextAreaField` | 여러 줄 입력(사유·메모) | 3-2 |
 | 모달 / 바텀시트 / 옵션 시트 | 팝업 형태 | 3-3 |
 
-**크기 기준표** — 입력칸은 [`text-input.md`](design-system/components/text-input.md), 긴 글은 [`textarea.md`](design-system/components/textarea.md), 셀렉트·옵션 행은 [`select.md`](design-system/components/select.md), 버튼 SM 36 / MD 48 / LG 54는 [`button.md`](design-system/components/button.md), 모달 크기·모달 버튼은 [`modal.md`](design-system/components/modal.md). 아래는 DS 문서에 없는 컴포넌트만
+**크기 기준표** — 입력칸은 [`text-input.md`](design-system/viewer/text-input.html), 긴 글은 [`textarea.md`](design-system/viewer/textarea.html), 셀렉트·옵션 행은 [`select.md`](design-system/viewer/select.html), 버튼 SM 36 / MD 48 / LG 54는 [`button.md`](design-system/viewer/button.html), 모달 크기·모달 버튼은 [`modal.md`](design-system/viewer/modal.html). 아래는 DS 문서에 없는 컴포넌트만
 
 | 구분 | 컴포넌트 | PC (1025px 이상) | 모바일 (1024px 이하) | 바뀌나 |
 |---|---|---|---|---|
@@ -98,7 +98,7 @@
 | 칩 | 선택칩 `Option Chips_Line`(모서리 4) | XL 44·18px / SM 32·14px | 같음 | 그대로 |
 | 탭 | `Tab` | Underline 56 / Outlined 48 / Round 40 | 같음 | 그대로 — 모양(Type)별로 고름 |
 
-**입력칸 상태와 표시**(Disabled·ReadOnly·도움말·에러) — 테두리·배경은 3-2 상태 표, 글자·아이콘 표현까지 상세는 [`text-input.md`](design-system/components/text-input.md)(긴 글은 [`textarea.md`](design-system/components/textarea.md)). 필수 `*` 표시도 [`text-input.md`](design-system/components/text-input.md)
+**입력칸 상태와 표시**(Disabled·ReadOnly·도움말·에러) — 테두리·배경은 3-2 상태 표, 글자·아이콘 표현까지 상세는 [`text-input.md`](design-system/viewer/text-input.html)(긴 글은 [`textarea.md`](design-system/viewer/textarea.html)). 필수 `*` 표시도 [`text-input.md`](design-system/viewer/text-input.html)
 
 - 근거: DS `64Q1Re56aiAA8Al89pqjnV` — Textfield `7837:8282`, SelectField `53:698`, SelectOption `6570:11270`, chips `7723:6790`, Tab `7988:12496`, checkbox·Radio·Toggle 컴포넌트
 
@@ -127,7 +127,7 @@
 - PC(1025px 이상)에서 입력 콘텐츠 영역은 `max-width:480px`에서 멈춘다
 - **반응형이어도 입력류 컴포넌트는 PC·모바일 변형을 바꿔 쓴다.** DS 입력류는 `Device=PC` / `Device=MO` 변형이 따로 있고, **1024px 이하에서는 MO 변형**(CSS 미디어쿼리로 크기 전환)을 쓴다. 같은 DOM을 재배치하는 반응형 화면이라고 PC 크기를 그대로 두지 않는다
 
-  - 크기: 입력칸·셀렉트 높이 PC 40 / 모바일 48, 옵션 행 PC 36 / 모바일 44, 글자 PC 14px / 모바일 16px(긴 글은 둘 다 16px) — 패딩까지 상세는 [`text-input.md`](design-system/components/text-input.md)·[`textarea.md`](design-system/components/textarea.md)·[`select.md`](design-system/components/select.md)
+  - 크기: 입력칸·셀렉트 높이 PC 40 / 모바일 48, 옵션 행 PC 36 / 모바일 44, 글자 PC 14px / 모바일 16px(긴 글은 둘 다 16px) — 패딩까지 상세는 [`text-input.md`](design-system/viewer/text-input.html)·[`textarea.md`](design-system/viewer/textarea.html)·[`select.md`](design-system/viewer/select.html)
 
   버튼은 이 원칙에서 빠진다 — 버튼은 PC 크기 그대로, 하단 고정·바텀시트 하단만 LG 54. 입력칸 옆 버튼만 입력칸 높이를 따른다(3-4)
   - **예외 없음 — 모달 안 입력류도 1024px 이하에서는 MO 크기**다. 코드는 미디어쿼리 하나로 페이지·모달·바텀시트의 입력칸·셀렉트·옵션 행을 모두 MO로 바꾼다("모달 안만 PC 유지" 같은 예외를 두면 개발이 위치를 구분해야 해서 경우의 수가 늘어난다). **디자인은 모달을 PC 하나로 관리**하고 "모바일(1024px 이하)에서는 입력류 MO 크기 자동 적용" 메모만 단다. 모바일 모달 안 셀렉트는 선택만 하는 팝업(예: 회수 요청하기)에만 생기므로 실제 경우도 적다
@@ -143,7 +143,7 @@
   | ReadOnly | 값은 보이지만 수정 불가 | 1px `#bdbdbd` | `#eee` |
 
   버튼으로만 채우는 칸(우편번호·기본주소 등)은 **ReadOnly** 스타일
-  - 근거: Figma `Textfield` MO Default `53:137`, Disabled `53:141`. 상태 정의(Inactive·Default·Focused)는 이로움케어 프레임워크 1.0.4 'Text input'(사내 웹 문서 — URL은 적지 않음). 상세는 [`design-system/components/text-input.md`](design-system/components/text-input.md)
+  - 근거: Figma `Textfield` MO Default `53:137`, Disabled `53:141`. 상태 정의(Inactive·Default·Focused)는 이로움케어 프레임워크 1.0.4 'Text input'(사내 웹 문서 — URL은 적지 않음). 상세는 [`design-system/components/text-input.md`](design-system/viewer/text-input.html)
 - **입력칸 안 정렬**: 입력칸·셀렉트·날짜 칸 안의 글자와 아이콘(달력·화살표·돋보기)은 **세로 가운데 정렬**(`display:flex; align-items:center`). 크기는 **높이**(PC 40 / 모바일 48)로 정하고 위아래 패딩은 두지 않는다(좌우만 12) — 위아래 패딩으로 높이를 맞추면 글꼴·줄 높이에 따라 글자가 위나 아래로 쏠린다
 - **지우기(X) 버튼**: 텍스트 입력칸은 **값이 없으면 X 없음, 값이 있으면 X 노출**. 읽기전용·비활성 칸, 날짜·셀렉트 칸(오른쪽에 달력·화살표 아이콘이 있는 칸)에는 X 없음. X를 누르면 값만 지우고 포커스는 그 칸에 유지(모바일 키보드 유지). 아이콘 24, 모바일 터치 영역 40×40 이상. 입력 글자가 X 밑으로 들어가지 않게 오른쪽 패딩을 X 폭만큼 확보. 입력칸 오른쪽에 돋보기 등 다른 아이콘이 있을 때도 같은 원칙
   - **예외 — 검색 입력칸은 X를 두지 않는다.** 오른쪽 돋보기는 장식이 아니라 **검색을 실행하는 버튼**이라 오른쪽에 고정하고, 그 자리를 X와 나눠 쓰지 않는다(DS의 왼쪽 아이콘 Leading Icon은 표시용이라 돋보기 버튼을 옮기는 용도로 쓰지 않음). 대신 **입력칸을 다시 누르면 글자 전체를 선택**해서 바로 새 검색어를 칠 수 있게 한다. `type="search"`는 브라우저가 기본 "×"를 자동으로 붙이므로 CSS(`::-webkit-search-cancel-button{display:none}`)로 숨긴다
@@ -173,7 +173,7 @@
 | **옵션 시트** | 바텀시트 안 셀렉트를 누르면 원래 시트 **대신** 열리는 선택 목록(아래) |
 | **전체 화면** | 입력 항목이 많아 바텀시트 최대 높이를 넘는 폼은 팝업이 아니라 새 화면으로 |
 
-**모달 크기는 4단계** — sm **340** / md **480** / lg **600** / xl **800**(Figma DS `Modal` `6487:5122`). md·lg·xl은 "테이블(행/열 데이터) 포함 여부"로 정한다 — 요소 개수가 아님. 안내·확인·입력·검색 모달 **480**, 테이블 포함형 **600 / 800**(입고처리 600, 계약서·소독필증 800). sm 340을 쓰는 경우는 [`design-system/components/modal.md`](design-system/components/modal.md)를 따른다.
+**모달 크기는 4단계** — sm **340** / md **480** / lg **600** / xl **800**(Figma DS `Modal` `6487:5122`). md·lg·xl은 "테이블(행/열 데이터) 포함 여부"로 정한다 — 요소 개수가 아님. 안내·확인·입력·검색 모달 **480**, 테이블 포함형 **600 / 800**(입고처리 600, 계약서·소독필증 800). sm 340을 쓰는 경우는 [`design-system/components/modal.md`](design-system/viewer/modal.html)를 따른다.
 
 **모달 모양**: 모서리 **16px**, 그림자 `elevation/shadow4`(`0 8px 24px rgba(0,0,0,.2), 0 0 4px rgba(0,0,0,.12)`).
 
@@ -204,7 +204,7 @@
   | 390 | 340 | 350 | 350 | 350 |
   | 360 | 320 | 320 | 320 | 320 |
 
-- 340은 별도 크기(sm)다. 같은 폭 규칙을 따라 360 화면에서는 320이 된다. 용도는 [`design-system/components/modal.md`](design-system/components/modal.md)
+- 340은 별도 크기(sm)다. 같은 폭 규칙을 따라 360 화면에서는 320이 된다. 용도는 [`design-system/components/modal.md`](design-system/viewer/modal.html)
 - **바텀시트 안의 요소**
   - 입력 폼은 모바일 크기(입력 48, 버튼 54)
   - **셀렉트**(목록이 정해진 선택): 누르면 **옵션 시트**(선택 행 틴트 + 체크, 하단 "선택완료")가 원래 시트 **대신** 열리고, 선택완료·닫기 시 원래 시트로 돌아간다(3-7 날짜 선택 시트와 같은 흐름)
@@ -766,7 +766,7 @@ DS "모바일 정의"의 모바일 간격 규칙. 3-1·3-2·카드 목록을 담
 
 ## 5. DS 시맨틱 컬러 / 상태칩
 
-> **칩 실물·색 표 → [디자인 시스템 > Status Chip](design-system/components/status-chip.md)** — 시맨틱 색 8단계와 구입·대여·회수·A/S·반품 상태별 매핑, 실제 칩 견본은 여기서 본다
+> **칩 실물·색 표 → [디자인 시스템 > Status Chip](design-system/viewer/status-chip.html)** — 시맨틱 색 8단계와 구입·대여·회수·A/S·반품 상태별 매핑, 실제 칩 견본은 여기서 본다
 
 상태칩은 **도메인마다 별도 Figma 컴포넌트**를 쓴다 — `Status chip-Order`(구입 `13139:11578`), `Status chip-Rental`(대여 `13864:12146`), `Status chip-Return`(회수 `13920:12833`, 구 `-Collect`), `Status chip-AS`(`13027:12231`), 반품(`13079:12197`). DS 라이브러리 `64Q1Re56aiAA8Al89pqjnV`. 같은 라벨(배송완료·취소요청 등)이 있어도 다른 컴포넌트이므로 화면 도메인에 맞는 것을 쓴다.
 
@@ -986,6 +986,11 @@ DS "모바일 정의"의 모바일 간격 규칙. 3-1·3-2·카드 목록을 담
 
 ## 부록. 변경 이력 (본문은 현재 규칙만 — 결정 경위는 여기)
 
+### DS 문서 링크를 새 문서 페이지로 · Radio 비활성 선택 (2026-10-15)
+- 정책 본문의 DS 문서 링크(`design-system/components/*.md`)를 새 문서 페이지(`design-system/viewer/*.html`, 예: `text-input.html`)로 바꿈. 새 페이지가 없는 항목은 `design-system/viewer/item.html?item=이름`. 허브는 `tools/sync-hub.py`가 같은 규칙으로 변환
+- 부록 'DS와 겹치는 값 정리'의 DS에 없는 컴포넌트에서 체크박스를 뺌 — DS 문서(`checkbox.html`·`radio.html`)가 생김
+- Radio 비활성 + 선택 상태의 점 색을 흰색 → `#BDBDBD`로(Figma도 수정)
+
 ### 입력칸 옆 버튼 높이 (2026-10-15)
 - 3-4 입력칸 옆 버튼(우편번호 등)을 모바일(1024px 이하) **48**(입력칸과 같은 높이), PC **36**(칸 40 가운데 정렬)으로 변경(사용자). 글자도 모바일 16px / PC 14px로 3-4에 명시(사용자, DS `ds-btn--field`와 같음). DS 클래스 `ds-btn--field`가 화면 폭에 따라 자동 전환. 이전: PC·모바일 모두 SM 36 + 가운데 정렬(2026-10-02 '버튼 크기' 결정). 3-0 한 줄 원칙·3-2 버튼 문장도 같이 고침
 - 프로토타입 반영: 폼 데모·모달 갤러리·회수 상세·대여 상세·구입 상세의 우편번호 버튼을 모바일 48·16px / PC 36·14px로. DS `ds-btn--field`(토큰 `--ds-field-btn-*`)는 Codex가 `ds-docs`에 추가(8baaf32) — `main` 병합 전이라 프로토타입은 파일 안 CSS로 맞춤
@@ -1015,7 +1020,7 @@ DS "모바일 정의"의 모바일 간격 규칙. 3-1·3-2·카드 목록을 담
 
 ### DS와 겹치는 값 정리 (2026-10-12)
 - 3-0 크기 기준표의 입력류·버튼·모달 행, 3-2 PC/MO 변형 표, 5장 시맨틱 색 표와 도메인별 칩 표 5개를 `design-system/` 링크로 바꿈(값이 같은 것만, 사용자 확인). 5장 맨 위에 '칩 실물·색 표 → 디자인 시스템 > Status Chip' 링크
-- 남긴 것: 3-0의 DS에 없는 컴포넌트(체크박스·토글·칩·탭), 3-0 상태 표 중 input.md에 없는 표현(글자 흐리게/진하게·정보 아이콘·에러 아이콘 — Codex에 추가 요청 예정), 3-2 상태 표, 3-3 모달 폭 표·규칙, 3-4 버튼 규칙
+- 남긴 것: 3-0의 DS에 없는 컴포넌트(토글·칩·탭), 3-0 상태 표 중 input.md에 없는 표현(글자 흐리게/진하게·정보 아이콘·에러 아이콘 — Codex에 추가 요청 예정), 3-2 상태 표, 3-3 모달 폭 표·규칙, 3-4 버튼 규칙
 - 상태칩 CSS가 `prototypes/status-chip.css`와 DS `.ds-chip--*` 두 벌인 것은 이번에 그대로 두고 7번 #11에 기록
 
 ### 입력칸 상태 기준 · DS 2차 병합 확인 (2026-10-12)
