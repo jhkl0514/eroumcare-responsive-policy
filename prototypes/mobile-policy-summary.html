@@ -93,9 +93,10 @@ th{background:var(--tertiary);font-weight:700;}
 .ls-opt{min-height:var(--oh);padding:0 12px;border-radius:4px;background:#eff1fd;color:#141e76;font-size:var(--if);display:flex;align-items:center;transition:min-height .25s,font-size .25s;}
 .ls-btn{border-radius:4px;font-weight:600;font-size:14px;line-height:1;font-family:inherit;padding:0 16px;cursor:default;}
 .ls-btn.sm{height:36px;border:1px solid #616161;background:#fff;color:#333;}
+.ls-btn.fld{height:var(--bh);border:1px solid #616161;background:#fff;color:#333;}
 .ls-btn.md{height:48px;border:1px solid #616161;background:#fff;color:#333;font-size:16px;padding:0 20px;}
-#liveSize{--ih:48px;--if:16px;--oh:44px;}
-#liveSize.pc{--ih:40px;--if:14px;--oh:36px;}
+#liveSize{--ih:48px;--if:16px;--oh:44px;--bh:48px;}
+#liveSize.pc{--ih:40px;--if:14px;--oh:36px;--bh:36px;}
 .lm-range{display:flex;align-items:center;gap:10px;font-size:14px;flex-wrap:wrap;}
 .lm-range input{flex:1 1 200px;accent-color:var(--brand);}
 .lm-quick{display:flex;gap:4px;flex-wrap:wrap;margin:8px 0 12px;}
@@ -138,12 +139,13 @@ th{background:var(--tertiary);font-weight:700;}
 </ul>
 
 <h2 id="s2" data-sec="s30,s32" data-proto="form-breakpoint-demo.html:360"><span class="num">2</span>무엇이 바뀌나 — 입력류 크기와 폭뿐</h2>
-<div class="rule">1024px 이하에서 크기가 바뀌는 것은 입력칸 · 셀렉트 · 옵션 행뿐이에요. 나머지는 PC와 같아요.</div>
+<div class="rule">1024px 이하에서 크기가 바뀌는 것은 입력칸 · 셀렉트 · 옵션 행과 입력칸 옆 버튼뿐이에요. 나머지는 PC와 같아요.</div>
 <table>
 <tr><th>컴포넌트</th><th>PC</th><th>모바일</th><th></th></tr>
 <tr><td>입력칸 <code>Textfield</code> · 셀렉트 <code>SelectField</code></td><td>40 · 14px</td><td><b>48 · 16px</b></td><td><span class="chg yes">바뀜</span></td></tr>
 <tr><td>옵션 행 <code>SelectOption</code></td><td>36 · 14px</td><td><b>44 · 16px</b></td><td><span class="chg yes">바뀜</span></td></tr>
 <tr><td>긴 글 <code>TextArea</code></td><td>16px</td><td>16px</td><td><span class="chg no">그대로</span></td></tr>
+<tr><td>입력칸 옆 버튼 <code>ds-btn--field</code>(우편번호)</td><td>36 (칸 40 가운데)</td><td><b>48</b> (입력칸과 같은 높이)</td><td><span class="chg yes">바뀜</span></td></tr>
 <tr><td>버튼 SM / MD</td><td>36 / 48</td><td>36 / 48</td><td><span class="chg no">그대로</span></td></tr>
 <tr><td>체크박스·라디오 / 토글</td><td>20 / 48×24</td><td>같음 (줄 전체 터치, 줄 높이 44↑)</td><td><span class="chg no">그대로</span></td></tr>
 <tr><td>필터칩 · 선택칩 · 탭</td><td colspan="2">쓰는 자리에 맞는 크기(필터칩 SM 32 등) — PC·모바일 같음</td><td><span class="chg no">그대로</span></td></tr>
@@ -155,10 +157,11 @@ th{background:var(--tertiary);font-weight:700;}
     <div class="ls-row"><span class="ls-cap">입력칸</span><div class="ls-input">홍길동</div><span class="ls-val" data-pc="40 · 14px" data-mo="48 · 16px"></span></div>
     <div class="ls-row"><span class="ls-cap">셀렉트</span><div class="ls-input ls-select">사유를 선택해 주세요<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ls-val" data-pc="40 · 14px" data-mo="48 · 16px"></span></div>
     <div class="ls-row"><span class="ls-cap">옵션 행</span><div class="ls-opt">병원·요양원 입소</div><span class="ls-val" data-pc="36 · 14px" data-mo="44 · 16px"></span></div>
-    <div class="ls-row"><span class="ls-cap">버튼 SM</span><div><button type="button" class="ls-btn sm">우편번호</button></div><span class="ls-val fixed">36 그대로</span></div>
+    <div class="ls-row"><span class="ls-cap">입력칸 옆 버튼</span><div><button type="button" class="ls-btn fld">우편번호</button></div><span class="ls-val" data-pc="36" data-mo="48"></span></div>
+    <div class="ls-row"><span class="ls-cap">버튼 SM</span><div><button type="button" class="ls-btn sm">조회</button></div><span class="ls-val fixed">36 그대로</span></div>
     <div class="ls-row"><span class="ls-cap">버튼 MD</span><div><button type="button" class="ls-btn md">주문목록</button></div><span class="ls-val fixed">48 그대로</span></div>
   </div>
-  <p class="live-note">버튼을 바꿔 눌러 보세요. <b>입력류만 커지고</b> 버튼은 그대로예요.</p>
+  <p class="live-note">버튼을 바꿔 눌러 보세요. <b>입력류와 입력칸 옆 버튼만 커지고</b> 다른 버튼은 그대로예요.</p>
 </div>
 <ul>
 <li><b>모달 안·바텀시트 안 입력류도 예외 없이</b> 모바일 크기(48·16px)예요</li>
@@ -173,7 +176,7 @@ th{background:var(--tertiary);font-weight:700;}
 <tr><td>모달 버튼</td><td>MD 48 (PC·모바일 같음)</td><td><b>150 고정</b>, 모달이 좁으면 줄어듦 (PC·모바일 같음)</td></tr>
 <tr><td>본문 단독 버튼(주문목록 등)</td><td>MD 48</td><td>내용만큼</td></tr>
 <tr><td>섹션 제목 옆·표 안 보조 버튼(조회·변경하기)</td><td>SM 36</td><td>내용만큼</td></tr>
-<tr><td>입력칸 옆 버튼(우편번호)</td><td>SM 36, 입력칸 높이의 <b>가운데 정렬</b></td><td>내용만큼</td></tr>
+<tr><td>입력칸 옆 버튼(우편번호) <code>ds-btn--field</code></td><td>PC <b>36</b>(칸 40 가운데 정렬) / 모바일 <b>48</b>(입력칸과 같은 높이) — 폭에 따라 자동</td><td>내용만큼</td></tr>
 </table>
 
 <h2 id="s4" data-sec="s33" data-proto="rental-return-detail-prototype.html:360"><span class="num">4</span>모달 vs 바텀시트 — 글자 입력이 있으면 바텀시트</h2>
@@ -270,7 +273,7 @@ th{background:var(--tertiary);font-weight:700;}
 <div class="qa"><div class="q">PC에 340 모달이 있나요?</div><div class="a">없어요. PC는 480 / 600 / 800이에요.</div></div>
 <div class="qa"><div class="q">모달 버튼도 PC 고정인가요?</div><div class="a">네. 높이 48, 폭 150 고정이에요. 폰에서 모달 안쪽이 312(150+12+150)보다 좁으면 버튼이 같이 줄어들어요. Full은 바텀시트 버튼만이에요.</div></div>
 <div class="qa"><div class="q">모달 안 셀렉트도 48로 키우나요?</div><div class="a">네, 예외 없이 1024px 이하면 48·16px이에요. 디자인은 PC 모달 하나로 관리해요.</div></div>
-<div class="qa"><div class="q">입력칸이 48이면 옆 버튼(우편번호)도 48인가요?</div><div class="a">아니요. 버튼은 PC 크기(SM 36) 그대로 두고 입력칸 높이의 가운데에 맞춰요.</div></div>
+<div class="qa"><div class="q">입력칸이 48이면 옆 버튼(우편번호)도 48인가요?</div><div class="a">네. 입력칸 옆 버튼(<code>ds-btn--field</code>)은 모바일(1024px 이하)에서 입력칸과 같은 48, PC에서는 36(칸 40 가운데 정렬)이에요. 화면 폭에 따라 자동으로 바뀌어요.</div></div>
 <div class="qa"><div class="q">바텀시트는 모바일 모달 전부에 쓰나요?</div><div class="a">아니요. 글자를 입력하는 팝업(사유·주소·검색)만이에요. 안내·확인·선택만 하는 팝업은 모바일에서도 모달이에요.</div></div>
 <div class="qa"><div class="q">하단 고정 버튼이 뭔가요?</div><div class="a">모바일에서 화면 아래에 sticky(fixed)로 붙는 버튼이에요. LG 54, 아래 여백 20 + safe-area.</div></div>
 <div class="qa"><div class="q">모바일 목록도 번호(1 2 3 4 5)로 하면 안 되나요?</div><div class="a">축약형으로 해요. 모바일은 필터로 좁혀 최신 건을 보는 일이 대부분이라 멀리 건너뛸 일이 드물고, 번호형은 360 화면에서 칸이 좁아 잘못 누르기 쉬워요. PC와 다른 번호 계산을 따로 관리할 필요도 없어져요.</div></div>
