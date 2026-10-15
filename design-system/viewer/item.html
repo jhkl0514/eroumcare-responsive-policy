@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>이로움케어 디자인 시스템</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@2/fonts/static/woff2/SUIT.css">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/typography.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="doc.css">
+<script defer src="doc.js"></script>
+</head>
+<body>
+<!-- 아직 새 문서로 만들지 않은 항목을 같은 틀 안에서 보여 주는 페이지.
+     ?item=<메뉴 이름> 으로 연다. 기존 문서(.md)가 있으면 그 내용을, 없으면 "준비 중"을 보여 준다. -->
+<script>
+  (function () {
+    var key = new URLSearchParams(location.search).get('item') || '';
+    document.body.dataset.page = key;
+  })();
+</script>
+<header class="doc-header">
+  <button class="doc-menu-btn" id="doc-menu-btn" type="button" aria-label="메뉴" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+  <a class="doc-brand" href="overview.html"><strong>이로움케어</strong><span>디자인 시스템</span></a>
+  <span class="doc-header__spacer"></span>
+  <a class="doc-hub-link" href="../../index.html">← 정책 허브</a>
+</header>
+
+<div class="doc-shell">
+  <nav class="doc-side" id="doc-side" aria-label="디자인 시스템 메뉴"></nav>
+
+  <main class="doc-main">
+    <div class="doc-content">
+      <p class="doc-crumb" id="it-crumb"></p>
+      <h1 class="doc-h1" id="it-title">불러오는 중</h1>
+      <div class="doc-meta" id="it-meta"></div>
+      <div id="panel-design" role="tabpanel" class="it-body"></div>
+    </div>
+  </main>
+
+  <aside class="doc-toc" aria-label="이 페이지에서">
+    <p class="doc-toc__title">이 페이지에서</p>
+    <nav id="doc-toc-links"></nav>
+  </aside>
+</div>
+
+<style>
+.it-body { margin-top: 32px; }
+.it-body .doc-h2 { padding-top: 40px; scroll-margin-top: 80px; }
+.it-body .doc-h2:first-child { padding-top: 0; }
+.it-body .doc-h3 { scroll-margin-top: 80px; }
+.it-body .doc-scroll { margin: 0 0 16px; }
+.it-body .doc-table { margin: 0; }
+.it-body .doc-table td { vertical-align: top; }
+.it-body .doc-code { margin: 0 0 16px; }
+.it-body code { padding: 1px 6px; border-radius: 4px; background: #f2f2f4; color: var(--doc-text); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; }
+.it-body pre code { padding: 0; background: none; font-size: 13px; }
+.it-body blockquote { margin: 0 0 16px; padding: 12px 16px; border-radius: 8px; background: var(--doc-stage); color: var(--doc-text-2); }
+.it-body a { color: var(--doc-accent); }
+.it-status { margin: 24px 0 0; padding: 16px 20px; border: 1px solid var(--doc-line); border-radius: 12px; background: #fff; }
+.it-status strong { display: block; margin-bottom: 4px; font-size: 16px; }
+.it-status p { margin: 0; color: var(--doc-text-2); font-size: 15px; line-height: 24px; }
+.it-empty { padding: 56px 24px; border-radius: 12px; background: var(--doc-stage); text-align: center; }
+.it-empty strong { display: block; margin-bottom: 8px; font-size: 18px; }
+.it-empty p { margin: 0; color: var(--doc-text-2); }
+</style>
+
+<script>
+window.addEventListener('load', function () {
+  var key = document.body.dataset.page;
+  var DS = '64Q1Re56aiAA8Al89pqjnV', FW = 'AD6zHJIIn6yJ0ifS8w5pYv';
+  var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
+
+  fetch('../nav.json').then(function (r) { return r.json(); }).then(function (nav) {
+    var item = null, group = '';
+    nav.forEach(function (g) { g.items.forEach(function (it) {
+      if (!item && (it.title === key || it.file === key || (it.file || '').split('/').pop().replace(/\.md$/, '') === key)) { item = it; group = g.group; }
+    }); });
+    if (!item) return notFound();
+    document.title = item.title + ' · 이로움케어 디자인 시스템';
+    document.body.dataset.page = item.title;
+    document.getElementById('it-crumb').textContent = group;
+    document.getElementById('it-title').textContent = item.title;
+    renderMeta(item);
+    if (item.status === 'todo' || !item.file) return renderTodo(item);
+    fetch('../' + item.file).then(function (r) { if (!r.ok) throw 0; return r.text(); })
+      .then(function (md) { renderDoc(item, md, nav); })
+      .catch(function () { renderTodo(item); });
+  }).catch(notFound);
+
+  function figmaUrl(file, node) { return 'https://www.figma.com/design/' + file + '?node-id=' + node.replace(':', '-'); }
+  function renderMeta(item) {
+    var f = item.figma || {}, out = [];
+    if (f.ds && f.ds.nodes && f.ds.nodes.length) out.push('<a href="' + figmaUrl(f.ds.file || DS, f.ds.nodes[0]) + '" target="_blank" rel="noopener">Figma · DS ↗</a>');
+    if (f.framework && f.framework.nodes && f.framework.nodes.length) out.push('<a href="' + figmaUrl(f.framework.file || FW, f.framework.nodes[0]) + '" target="_blank" rel="noopener">Figma · 프레임워크 ↗</a>');
+    out.push('<span>' + (item.status === 'todo' ? '준비 중' : '정리 전 문서') + '</span>');
+    document.getElementById('it-meta').innerHTML = out.join('');
+  }
+  function renderTodo(item) {
+    document.getElementById('panel-design').innerHTML =
+      '<div class="it-empty"><strong>아직 정리하지 않은 항목입니다</strong><p>Figma에서 값을 읽어 다른 문서와 같은 형식으로 만들 예정입니다. 그 전까지는 위 Figma 링크를 기준으로 봐 주세요.</p></div>';
+    done();
+  }
+  function notFound() {
+    document.getElementById('it-title').textContent = '찾을 수 없는 항목';
+    document.getElementById('panel-design').innerHTML = '<div class="it-empty"><strong>메뉴에 없는 항목입니다</strong><p>왼쪽 메뉴에서 다시 골라 주세요.</p></div>';
+    done();
+  }
+  function done() {
+    if (window.DOC && DOC.toc) DOC.toc();
+    var mark = function () {
+      var cur = document.body.dataset.page;
+      document.querySelectorAll('.doc-side__link').forEach(function (a) {
+        var t = a.querySelector('span') && a.querySelector('span').textContent;
+        if (t === cur) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+      });
+    };
+    mark(); setTimeout(mark, 400);
+  }
+
+  /* ---------- 기존 문서(.md) 표시 ---------- */
+  function renderDoc(item, md, nav) {
+    var base = new URL('../' + item.file, location.href);
+    var pages = (window.DOC && DOC.pages) || {};
+    function link(href) {
+      if (/^(https?:|mailto:|#)/.test(href)) return { href: href, ext: /^https?:/.test(href) };
+      var u = new URL(href, base), path = u.pathname;
+      if (/\/CLAUDE\.md$/.test(path)) return { href: '../../index.html' };
+      if (/\/design-system\/foundations\.md$/.test(path)) return { href: 'color.html' };
+      var m = path.match(/\/design-system\/(.+\.md)$/);
+      if (m) {
+        var hit = null; nav.forEach(function (g) { g.items.forEach(function (it) { if (it.file === m[1]) hit = it; }); });
+        if (hit) return { href: pages[hit.title] || ('item.html?item=' + encodeURIComponent(hit.title)) };
+      }
+      return { href: u.href, ext: false };
+    }
+    function inline(s) {
+      var codes = [];
+      s = s.replace(/`([^`]+)`/g, function (_, c) { codes.push(c); return '\u0000' + (codes.length - 1) + '\u0000'; });
+      s = esc(s);
+      s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function (_, t, h) {
+        var l = link(h.replace(/&amp;/g, '&'));
+        return '<a href="' + esc(l.href) + '"' + (l.ext ? ' target="_blank" rel="noopener"' : '') + '>' + t + '</a>';
+      });
+      return s.replace(/\u0000(\d+)\u0000/g, function (_, i) { return '<code>' + esc(codes[+i]) + '</code>'; });
+    }
+    var lines = md.replace(/\r/g, '').split('\n'), out = [], i = 0, ids = {}, status = '';
+    function slug(t) { var s = 'h-' + (t.replace(/[^\w가-힣]+/g, '-').replace(/^-|-$/g, '').toLowerCase() || 'sec'); while (ids[s]) s += '-'; ids[s] = 1; return s; }
+    while (i < lines.length) {
+      var l = lines[i];
+      if (/^```/.test(l)) {
+        var buf = []; i++;
+        while (i < lines.length && !/^```/.test(lines[i])) buf.push(lines[i++]);
+        i++; out.push('<div class="doc-code"><pre><code>' + esc(buf.join('\n')) + '</code></pre></div>'); continue;
+      }
+      var h = l.match(/^(#{1,4})\s+(.*)$/);
+      if (h) {
+        var lv = h[1].length, t = h[2];
+        if (lv === 1) { i++; continue; }                         // 제목은 위에 이미 있음
+        if (lv === 2) out.push('<h2 class="doc-h2" id="' + slug(t) + '">' + inline(t) + '</h2>');
+        else out.push('<h3 class="doc-h3">' + inline(t) + '</h3>');
+        i++; continue;
+      }
+      if (/^\|/.test(l)) {
+        var rows = [];
+        while (i < lines.length && /^\|/.test(lines[i])) rows.push(lines[i++]);
+        var cells = function (r) { return r.replace(/^\||\|$/g, '').split('|').map(function (c) { return c.trim(); }); };
+        var head = cells(rows[0]), body = rows.slice(/^\|[\s:|-]+\|$/.test(rows[1] || '') ? 2 : 1);
+        out.push('<div class="doc-scroll"><table class="doc-table"><thead><tr>' + head.map(function (c) { return '<th>' + inline(c) + '</th>'; }).join('') +
+          '</tr></thead><tbody>' + body.map(function (r) { return '<tr>' + cells(r).map(function (c) { return '<td>' + inline(c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>');
+        continue;
+      }
+      if (/^\s*([-*]|\d+\.)\s+/.test(l)) {
+        var ordered = /^\s*\d+\./.test(l), items = [];
+        while (i < lines.length && /^\s*([-*]|\d+\.)\s+/.test(lines[i])) {
+          var it = lines[i++].replace(/^\s*([-*]|\d+\.)\s+/, '');
+          while (i < lines.length && /^\s{2,}\S/.test(lines[i]) && !/^\s*([-*]|\d+\.)\s+/.test(lines[i])) it += ' ' + lines[i++].trim();
+          items.push('<li>' + inline(it) + '</li>');
+        }
+        out.push('<' + (ordered ? 'ol' : 'ul') + ' class="doc-list">' + items.join('') + '</' + (ordered ? 'ol' : 'ul') + '>'); continue;
+      }
+      if (/^>\s?/.test(l)) {
+        var q = []; while (i < lines.length && /^>\s?/.test(lines[i])) q.push(lines[i++].replace(/^>\s?/, ''));
+        out.push('<blockquote>' + inline(q.join(' ')) + '</blockquote>'); continue;
+      }
+      if (/^\s*$/.test(l) || /^---+\s*$/.test(l)) { i++; continue; }
+      var p = []; while (i < lines.length && lines[i].trim() && !/^(#|\||```|>|\s*([-*]|\d+\.)\s)/.test(lines[i])) p.push(lines[i++].trim());
+      var text = p.join(' ');
+      if (!status && /^문서 상태/.test(text)) { status = inline(text); continue; }
+      out.push('<p class="doc-p">' + inline(text) + '</p>');
+    }
+    document.getElementById('panel-design').innerHTML =
+      '<div class="it-status"><strong>정리 전 문서</strong><p>예전 형식 그대로 옮겨 온 문서입니다. 새 형식으로 다시 만들 예정이며, 일부 값은 최신 Figma·정책과 다를 수 있습니다.' +
+      (status ? ' (' + status.replace(/<\/?strong>/g, '') + ')' : '') + '</p></div>' +
+      '<div style="height:32px"></div>' + out.join('\n');
+    done();
+  }
+});
+</script>
+</body>
+</html>

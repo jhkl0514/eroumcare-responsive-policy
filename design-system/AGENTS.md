@@ -21,7 +21,7 @@
 2. **CSS** — `css/components.css`에 추가한다. 색 · 간격 · 모서리는 `css/tokens.css` 변수만 쓴다(값 직접 쓰기 금지).
 3. **페이지** — `viewer/src/<이름>.html`을 쓴다(블록: `@title` `@crumb` `@lead` `@meta` `@design` `@dev` `@after` `@script`).
 4. **조립** — `python3 design-system/tools/build-viewer.py`
-5. **메뉴 연결** — `viewer/doc.js`의 `PAGES`와 `viewer/index.html`의 `DS_NEW_PAGES`에 같은 이름으로 추가한다.
+5. **메뉴 연결** — `viewer/doc.js`의 `PAGES`와 `viewer/index.html`의 `NEW`에 같은 이름으로 추가한다. 추가하지 않은 항목은 `item.html`이 같은 틀 안에서 기존 문서나 "준비 중"으로 보여 준다.
 6. **점검** — `python3 design-system/tools/check-viewer.py <이름>.html` → ✗가 하나도 없어야 한다.
 7. **눈으로 확인** — `viewer/_review/<이름>-360.png` · `-1440.png`를 **직접 열어 본다**. 점검 스크립트가 못 잡는 것(겹침, 어색한 줄바꿈, 빈 곳, 정렬)을 여기서 찾는다.
 8. **보고** — 아래 6번 양식으로.

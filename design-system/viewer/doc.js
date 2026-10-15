@@ -2,9 +2,9 @@
    컴포넌트 페이지는 마크업만 쓰고, 이 파일이 화면 장치를 붙인다. */
 (function () {
   'use strict';
-  // 손으로 만든 문서 페이지가 있는 항목. 나머지는 기존 뷰어로 연결한다.
-  var PAGES = { 'Text input': 'text-input.html', 'Select': 'select.html', 'Textarea': 'textarea.html', 'Button': 'button.html', 'Status Chip': 'status-chip.html', 'Modal': 'modal.html', 'Color': 'color.html', 'Typography': 'typography.html', 'Shape': 'shape.html', 'Layout': 'layout.html', 'Icon': 'icon.html' };
-  var LEGACY = 'index.html?item=';
+  // 새 문서 페이지가 있는 항목. 나머지는 item.html이 같은 틀 안에서 기존 문서나 '준비 중'을 보여 준다.
+  var PAGES = { '디자인 시스템 개요': 'overview.html', 'Text input': 'text-input.html', 'Select': 'select.html', 'Textarea': 'textarea.html', 'Button': 'button.html', 'Status Chip': 'status-chip.html', 'Modal': 'modal.html', 'Color': 'color.html', 'Typography': 'typography.html', 'Shape': 'shape.html', 'Layout': 'layout.html', 'Icon': 'icon.html' };
+  var LEGACY = 'item.html?item=';
 
   /* ---------- 왼쪽 메뉴 ---------- */
   function renderNav(nav) {
@@ -202,7 +202,7 @@
     });
   }
 
-  window.DOC = { redraw: drawAll };
+  window.DOC = { redraw: drawAll, toc: buildToc, pages: PAGES };
   document.addEventListener('DOMContentLoaded', function () {
     loadNav();
     initMenu();
